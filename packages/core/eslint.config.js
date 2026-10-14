@@ -1,3 +1,3 @@
 import { base } from "@empire/config/eslint";
 
-export default base(import.meta.dirname);
+export default [...base(import.meta.dirname), { ignores: ["src/database.types.ts"] }];

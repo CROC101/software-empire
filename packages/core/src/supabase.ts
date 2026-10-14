@@ -5,6 +5,9 @@ import {
   type CookieOptionsWithName,
 } from "@supabase/ssr";
 import { z } from "zod";
+import type { Database } from "./database.types";
+
+export type { Database };
 
 const httpUrl = z.url({ protocol: /^https?$/ });
 
@@ -41,14 +44,14 @@ export function authCookieOptions(env: SupabaseEnv): CookieOptionsWithName {
 }
 
 export function createBrowserSupabase(env: SupabaseEnv) {
-  return createBrowserClient(env.url, env.publishableKey, {
+  return createBrowserClient<Database>(env.url, env.publishableKey, {
     cookieOptions: authCookieOptions(env),
   });
 }
 
 /** One client per request — the cache headers handed to `setAll` are sent only once per client. */
 export function createServerSupabase(env: SupabaseEnv, cookies: CookieMethodsServer) {
-  return createServerClient(env.url, env.publishableKey, {
+  return createServerClient<Database>(env.url, env.publishableKey, {
     cookies,
     cookieOptions: authCookieOptions(env),
   });

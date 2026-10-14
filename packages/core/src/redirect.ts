@@ -10,3 +10,24 @@ export function safeRedirectPath(value: unknown, fallback = "/"): string {
   if (/[\u0000-\u001f]/.test(value)) return fallback;
   return value;
 }
+
+/**
+ * Like `safeRedirectPath`, but also accepts an absolute URL whose origin is in
+ * `allowedOrigins` — how other Empire apps get the user back after signing in at the hub.
+ */
+export function safeRedirectTarget(
+  value: unknown,
+  allowedOrigins: readonly string[],
+  fallback = "/",
+): string {
+  const path = safeRedirectPath(value, "");
+  if (path) return path;
+  if (typeof value !== "string" || !URL.canParse(value)) return fallback;
+
+  const url = new URL(value);
+  // compare parsed origins so "http://app.com@evil.com" or a trailing slash can't sneak through
+  const allowed = allowedOrigins.some(
+    (origin) => URL.canParse(origin) && new URL(origin).origin === url.origin,
+  );
+  return allowed ? url.href : fallback;
+}

@@ -1,4 +1,4 @@
-import { safeRedirectPath } from "@empire/core/redirect";
+import { safeNext } from "@/lib/apps";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@empire/ui";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "เข้าสู่ระบบ" }
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
-  const next = safeRedirectPath(params.next, "/dashboard");
+  const next = safeNext(params.next);
   if (await getClaims()) redirect(next);
 
   return (

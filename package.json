@@ -17,7 +17,10 @@
     "format:check": "prettier --check .",
     "db:start": "supabase start -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor",
     "db:stop": "supabase stop",
-    "db:status": "supabase status"
+    "db:status": "supabase status",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db",
+    "db:types": "supabase gen types typescript --local --schema public,toolboxes > packages/core/src/database.types.ts && prettier --write packages/core/src/database.types.ts"
   },
   "devDependencies": {
     "prettier": "^3.9.10",

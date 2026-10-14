@@ -16,6 +16,11 @@ export function base(tsconfigRootDir) {
       languageOptions: { parserOptions: { projectService: true, tsconfigRootDir } },
       rules: {
         "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
+        "@typescript-eslint/no-confusing-void-expression": [
+          "error",
+          { ignoreArrowShorthand: true },
+        ],
       },
     },
     // JS config files sit outside tsconfig, so no type info there

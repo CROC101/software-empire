@@ -1,6 +1,6 @@
 "use server";
 
-import { safeRedirectPath } from "@empire/core/redirect";
+import { safeNext } from "@/lib/apps";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { env } from "@/lib/env";
@@ -27,7 +27,7 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
   if (!input.success) return { email, error: "กรอกอีเมลให้ถูกต้อง และรหัสผ่าน 8–72 ตัวอักษร" };
 
   const { intent, ...credentials } = input.data;
-  const next = safeRedirectPath(formData.get("next"), "/dashboard");
+  const next = safeNext(formData.get("next"));
   const supabase = await createClient();
 
   if (intent === "signin") {

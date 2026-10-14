@@ -43,14 +43,22 @@ pnpm format:check    # CI รันด้วย · แก้ด้วย pnpm fo
 pnpm --filter <pkg> <script>
 
 pnpm db:start        # Supabase ในเครื่อง (Docker) เฉพาะ db + auth + rest · pnpm db:status ดู URL/key
-pnpm --filter @empire/hub dev   # http://localhost:3000 — ต้องมี apps/hub/.env.local (ลอกจาก .env.example)
+pnpm db:reset        # ล้างฐาน + รัน supabase/migrations ใหม่ (ลบผู้ใช้ทดสอบด้วย)
+pnpm db:test         # pgTAP ใน supabase/tests — RLS ทุกตารางต้องมีเทสต์
+pnpm db:types        # สร้าง packages/core/src/database.types.ts ใหม่หลังแก้ migration
+pnpm --filter @empire/hub dev        # http://localhost:3000
+pnpm --filter @empire/toolboxes dev  # http://localhost:3003
 ```
 
-- ใช้ `localhost` ไม่ใช่ `127.0.0.1` — cookie ผูกกับชื่อ host และ `supabase/config.toml` ลงทะเบียน redirect เป็น localhost
-- Auth ฝั่ง server: ใช้ `getClaims()` (ตรวจลายเซ็น JWT) เท่านั้น ห้ามเชื่อ `getSession()` · ทุก `?next=` ผ่าน `safeRedirectPath` จาก `@empire/core/redirect`
+- ทุกแอปต้องมี `.env.local` (ลอกจาก `.env.example`) · hub ต้องมี `APP_URL_<SLUG>` ของแอปที่เปิดแล้ว ไม่งั้นลิงก์และการพากลับหลังล็อกอินไม่ทำงาน
+- แก้ `[api] schemas` ใน `supabase/config.toml` แล้วต้อง `pnpm db:stop && pnpm db:start` (`db:reset` ไม่โหลดค่านี้ใหม่ — อาการคือ 406)
+- ใช้ `localhost` ไม่ใช่ `127.0.0.1` — cookie ผูกกับชื่อ host และ `supabase/config.toml` ลงทะเบียน redirect เป็น localhost · cookie ไม่สนพอร์ต แอปในเครื่องทุกพอร์ตจึงเห็น session เดียวกัน
+- 1 แอป = 1 Postgres schema (`toolboxes`, …) + RLS ตาม ADR-02 · เพิ่ม schema แล้วใส่ใน `[api] schemas` และ `db:types`
+- SPA: Supabase SDK โหลดแบบ lazy (`loadSupabase()`) ไม่ให้ถ่วงหน้าแรก · ล็อกอินที่ hub เสมอ (`signInUrl()`)
+- Auth ฝั่ง server: ใช้ `getClaims()` (ตรวจลายเซ็น JWT) เท่านั้น ห้ามเชื่อ `getSession()` · ทุก `?next=` ผ่าน `safeNext` (hub) / `safeRedirectTarget` จาก `@empire/core/redirect`
 - สร้าง Supabase client ผ่าน `@empire/core/supabase` เสมอ — cookie options ต้องเหมือนกันทุกแอปไม่งั้น SSO ข้าม subdomain พัง
 - Worker: export method ผ่าน `validated(schema, fn)` + `expose` จาก `@empire/core/worker`
-- package ใหม่: `eslint.config.js` = `export default base(import.meta.dirname)` จาก `@empire/config/eslint` · `tsconfig.json` extends `@empire/config/tsconfig/base.json` (หรือ `react.json`)
+- package ใหม่: `eslint.config.js` = `base(import.meta.dirname)` จาก `@empire/config/eslint` (SPA ใช้ `react()` จาก `@empire/config/eslint/react`) · `tsconfig.json` extends `@empire/config/tsconfig/base.json` (หรือ `react.json`)
 - TypeScript ล็อก `~6.0` — typescript-eslint ยังไม่รองรับ TS 7 · TS 6 ตั้ง `types: []` เป็นค่าเริ่มต้น ต้องใส่ `types` เองเมื่อใช้ `node` / `vite/client`
 
 ## กฎที่ห้ามละเมิด
