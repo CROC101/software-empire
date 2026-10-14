@@ -18,5 +18,7 @@ export function base(tsconfigRootDir) {
         "@typescript-eslint/consistent-type-imports": "error",
       },
     },
+    // JS config files sit outside tsconfig, so no type info there
+    { files: ["**/*.{js,mjs,cjs}"], extends: [tseslint.configs.disableTypeChecked] },
   );
 }

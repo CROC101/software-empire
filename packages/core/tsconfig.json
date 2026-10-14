@@ -1,0 +1,4 @@
+{
+  "extends": "@empire/config/tsconfig/base.json",
+  "include": ["src"]
+}

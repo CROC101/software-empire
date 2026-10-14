@@ -14,10 +14,14 @@
     "test": "turbo run test",
     "verify": "turbo run lint typecheck test build",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:start": "supabase start -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor",
+    "db:stop": "supabase stop",
+    "db:status": "supabase status"
   },
   "devDependencies": {
     "prettier": "^3.9.10",
+    "supabase": "^2.120.0",
     "turbo": "^2.11.8",
     "typescript": "~6.0.3"
   }

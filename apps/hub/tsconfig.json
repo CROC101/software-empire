@@ -1,0 +1,9 @@
+{
+  "extends": "@empire/config/tsconfig/react.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["next-env.d.ts", "next.config.ts", "src", "e2e", ".next/types/**/*.ts"]
+}
