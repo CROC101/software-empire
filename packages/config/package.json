@@ -1,0 +1,24 @@
+{
+  "name": "@empire/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./eslint": "./eslint/base.js",
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/react.json": "./tsconfig/react.json"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "typescript-eslint": "^8.71.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "eslint": "^10.12.0",
+    "typescript": "~6.0.3"
+  }
+}

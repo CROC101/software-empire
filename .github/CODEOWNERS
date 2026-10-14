@@ -1,0 +1,20 @@
+# ใครต้อง review path ไหน — แทน ORG ด้วยชื่อ org จริง
+# ตอนนี้เจ้าของคนเดียวอยู่ทุกทีม · มีคนเข้ามาเมื่อไรค่อยแยกเป็น aie-<app> (docs/GITHUB-ORG-PLAYBOOK.md ข้อ 6)
+
+# ค่าเริ่มต้น — PL review ทุก PR
+*                       @ORG/pl
+
+# แอป — AIE เจ้าของงาน + PL
+/apps/                  @ORG/aie @ORG/pl
+
+# design system และมาตรฐาน — PL เท่านั้น
+/packages/ui/           @ORG/pl
+/standards/             @ORG/pl
+
+# ของที่กระทบทุกแอป — ต้องมี PM ร่วม
+/packages/core/         @ORG/aie @ORG/pm
+/supabase/migrations/   @ORG/aie @ORG/pl
+/docs/MASTER-SPEC.md    @ORG/pm @ORG/pl
+
+# CI และกติกา repo
+/.github/               @ORG/pl

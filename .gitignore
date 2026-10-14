@@ -1,0 +1,24 @@
+# dependencies / build
+node_modules/
+.turbo/
+.next/
+dist/
+coverage/
+*.tsbuildinfo
+
+# env — ห้าม commit ความลับ
+.env
+.env.*
+!.env.example
+
+# local Claude / MCP state
+.claude/settings.local.json
+.claude/mcp-memory.jsonl
+
+# โฟลเดอร์อ้างอิง (repo ของคนอื่น/โปรเจกต์เดิม) — อ่านอย่างเดียว ไม่เข้า repo นี้
+/ตัวอย่างของ PM/
+/แหล่งรวมโปรเจคเดิมสามารถ Dupes มาได้/
+
+# OS
+Thumbs.db
+.DS_Store
