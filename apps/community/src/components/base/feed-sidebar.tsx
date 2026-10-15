@@ -274,7 +274,7 @@ export function FeedSidebar() {
             </span>
           ))}
         </nav>
-        <p>© 2569 CS NEXUS · สาขาวิทยาการคอมพิวเตอร์ มหาวิทยาลัยแม่โจ้ · CSMJU2030</p>
+        <p>© 2569 Empire Community · Software Empire</p>
       </footer>
     </aside>
   );

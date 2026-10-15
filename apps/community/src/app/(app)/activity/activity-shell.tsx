@@ -189,7 +189,7 @@ export function ActivityFooter() {
         {CORE_HOME && (
           <li>
             <a href={CORE_HOME} className="hover:underline">
-              บัญชีกลาง CSMJU2030
+              บัญชีกลาง Software Empire
             </a>
           </li>
         )}
@@ -200,9 +200,9 @@ export function ActivityFooter() {
           <ChevronDown aria-hidden className="size-3" />
         </span>
         <span aria-hidden>·</span>
-        <span>© 2026 CS Nexus</span>
+        <span>© 2026 Empire Community</span>
         <span aria-hidden>·</span>
-        <span>CSMJU2030</span>
+        <span>Software Empire</span>
       </p>
     </footer>
   );

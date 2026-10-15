@@ -413,7 +413,7 @@ export function ChangePhotoDialog({ onClose }: { onClose: () => void }) {
         <div className="px-6 pb-5 pt-7 text-center">
           <DialogTitle className="text-xl font-semibold">เปลี่ยนรูปโปรไฟล์</DialogTitle>
           <DialogDescription className="mt-2">
-            รูปโปรไฟล์เป็นของบัญชีกลาง CSMJU2030 และใช้ร่วมกันทุกระบบ —
+            รูปโปรไฟล์เป็นของบัญชีกลาง Software Empire และใช้ร่วมกันทุกระบบ —
             เปลี่ยนที่นั่นแล้วระบบนี้จะแสดงรูปใหม่เอง
           </DialogDescription>
         </div>
@@ -425,7 +425,7 @@ export function ChangePhotoDialog({ onClose }: { onClose: () => void }) {
             onClick={onClose}
             className="flex min-h-12 w-full items-center justify-center border-t border-border px-4 text-center text-nx-label font-bold text-link hover:bg-accent"
           >
-            จัดการรูปโปรไฟล์ที่บัญชีกลาง CSMJU2030
+            จัดการรูปโปรไฟล์ที่บัญชีกลาง Software Empire
           </a>
         )}
         <button

@@ -47,7 +47,7 @@ interface Item {
 /// ในหมวดของเราเอง เพราะเป็นของบัญชีกลาง — อยู่ในหมวดสุดท้ายเป็นลิงก์ออกไป
 const SECTIONS: { caption: string; items: Item[] }[] = [
   {
-    caption: "วิธีที่คุณใช้ CS Nexus",
+    caption: "วิธีที่คุณใช้ Empire Community",
     items: [
       {
         href: "/settings/edit",
@@ -160,7 +160,7 @@ function SettingsMenu({ pathname }: { pathname: string }) {
   const showCore =
     CORE_HOME !== null &&
     matches(
-      "บัญชีกลาง CSMJU2030 รหัสผ่าน อีเมล ชื่อผู้ใช้ กิจกรรมการเข้าสู่ระบบ core hub account password email login",
+      "บัญชีกลาง Software Empire รหัสผ่าน อีเมล ชื่อผู้ใช้ กิจกรรมการเข้าสู่ระบบ core hub account password email login",
     );
   const nothing = sections.length === 0 && !showCore;
 
@@ -227,7 +227,7 @@ function SettingsMenu({ pathname }: { pathname: string }) {
       {showCore && CORE_HOME && (
         <div>
           <p className="px-4 pb-2 pt-6 text-nx-caption font-semibold text-muted-foreground md:px-5">
-            บัญชีกลาง CSMJU2030
+            บัญชีกลาง Software Empire
           </p>
           <a href={CORE_HOME} target="_blank" rel="noreferrer" className={ROW}>
             <KeyRound aria-hidden strokeWidth={1.9} className="size-6 shrink-0" />

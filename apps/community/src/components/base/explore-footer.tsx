@@ -33,7 +33,7 @@ export function ExploreFooter() {
           </li>
         ))}
       </ul>
-      <p className="mt-3">© 2026 CS Nexus · CSMJU2030 มหาวิทยาลัยแม่โจ้</p>
+      <p className="mt-3">© 2026 Empire Community · Software Empire</p>
     </footer>
   );
 }

@@ -160,7 +160,7 @@ describe("แผ่นแชร์", () => {
     expect(href("อีเมล")).toMatch(/^mailto:\?subject=/);
     expect(href("Threads")).toContain("https://www.threads.net/intent/post?text=");
     expect(href("X")).toBe(
-      `https://x.com/intent/post?text=${encodeURIComponent("ดูบน CS Nexus")}&url=${url}`,
+      `https://x.com/intent/post?text=${encodeURIComponent("ดูบน Empire Community")}&url=${url}`,
     );
     expect(screen.getByRole("link", { name: "Facebook" })).toHaveAttribute("target", "_blank");
     expect(screen.queryByRole("link", { name: "Messenger" })).not.toBeInTheDocument();
