@@ -6,7 +6,9 @@
 /// path ที่ยังไม่ย้ายตอบ 501 พร้อมข้อความภาษาไทย — ย้ายทีละรอบ (ดู CLAUDE.md)
 import { meta, notAvailable, type PaginationMeta, type Page, type Route } from "./api-core";
 import { CHAT_ROUTES } from "./chat-api";
+import { ACTIVITY_ROUTES } from "./activity-api";
 import { FEED_ROUTES } from "./feed-api";
+import { NOTIFY_ROUTES } from "./notify-api";
 import { REEL_ROUTES } from "./reels-api";
 import { SOCIAL_ROUTES } from "./social-api";
 import { STORY_ROUTES } from "./stories-api";
@@ -19,6 +21,8 @@ const ROUTES: Route[] = [
   ...FEED_ROUTES,
   ...REEL_ROUTES,
   ...STORY_ROUTES,
+  ...NOTIFY_ROUTES,
+  ...ACTIVITY_ROUTES,
 ];
 
 async function request<T>(

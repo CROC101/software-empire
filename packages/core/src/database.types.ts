@@ -205,6 +205,37 @@ export type Database = {
           },
         ];
       };
+      audit_logs: {
+        Row: {
+          action: string;
+          actor_id: string | null;
+          created_at: string;
+          id: string;
+          metadata: NonNullable<Json>;
+          target_id: string | null;
+          target_kind: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          action: string;
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          metadata?: NonNullable<Json>;
+          target_id?: string | null;
+          target_kind?: string | null;
+        };
+        Update: {
+          action?: string;
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          metadata?: NonNullable<Json>;
+          target_id?: string | null;
+          target_kind?: string | null;
+        };
+        Relationships: [];
+      };
       blocks: {
         Row: {
           blocked_id: string;
@@ -669,6 +700,92 @@ export type Database = {
           created_at?: string;
           expires_at?: string;
           text?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      notification_preferences: {
+        Row: {
+          comment_likes: boolean;
+          comments: string;
+          group_requests: boolean;
+          likes: string;
+          mentions: string;
+          message_requests: boolean;
+          messages: string;
+          new_followers: boolean;
+          paused_until: string | null;
+          reposts: boolean;
+          story_replies: boolean;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comment_likes?: boolean;
+          comments?: string;
+          group_requests?: boolean;
+          likes?: string;
+          mentions?: string;
+          message_requests?: boolean;
+          messages?: string;
+          new_followers?: boolean;
+          paused_until?: string | null;
+          reposts?: boolean;
+          story_replies?: boolean;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          comment_likes?: boolean;
+          comments?: string;
+          group_requests?: boolean;
+          likes?: string;
+          mentions?: string;
+          message_requests?: boolean;
+          messages?: string;
+          new_followers?: boolean;
+          paused_until?: string | null;
+          reposts?: boolean;
+          story_replies?: boolean;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      notifications: {
+        Row: {
+          actor_id: string | null;
+          created_at: string;
+          id: string;
+          kind: string;
+          payload: Json | null;
+          read_at: string | null;
+          ref_id: string;
+          silent: boolean;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          kind: string;
+          payload?: Json | null;
+          read_at?: string | null;
+          ref_id: string;
+          silent?: boolean;
+          user_id: string;
+        };
+        Update: {
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          payload?: Json | null;
+          read_at?: string | null;
+          ref_id?: string;
+          silent?: boolean;
           user_id?: string;
         };
         Relationships: [];
@@ -1313,6 +1430,32 @@ export type Database = {
           },
         ];
       };
+      my_comments: {
+        Row: {
+          content: string | null;
+          created_at: string | null;
+          id: string | null;
+          target_author_id: string | null;
+          target_id: string | null;
+          target_kind: string | null;
+          target_title: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
+      my_post_reactions: {
+        Row: {
+          author_id: string | null;
+          content: string | null;
+          emoji: string | null;
+          media: Json | null;
+          post_id: string | null;
+          reacted_at: string | null;
+          title: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
       post_view: {
         Row: {
           author_id: string | null;
@@ -1494,6 +1637,10 @@ export type Database = {
       add_members: { Args: { channel: string; users: string[] }; Returns: number };
       add_reel_comment: { Args: { body: string; parent?: string; reel: string }; Returns: string };
       asset_in_use: { Args: { asset: string }; Returns: boolean };
+      audit: {
+        Args: { action: string; metadata: Json; target_id: string; target_kind: string };
+        Returns: undefined;
+      };
       block_user: { Args: { target: string }; Returns: string };
       can_comment: { Args: { owner: string }; Returns: boolean };
       can_manage: { Args: { channel: string }; Returns: boolean };
@@ -1585,15 +1732,23 @@ export type Database = {
           user_id: string;
         }[];
       };
+      inbox_folder_of: { Args: { channel: string; member: string }; Returns: string };
       is_blocked_either: { Args: { a: string; b: string }; Returns: boolean };
       is_member: { Args: { channel: string }; Returns: boolean };
+      is_muted: { Args: { channel: string; member: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       leave_channel: { Args: { channel: string }; Returns: undefined };
       like_reel: { Args: { liked: boolean; reel: string }; Returns: number };
       like_reel_comment: { Args: { comment: string; liked: boolean }; Returns: number };
+      mark_all_notifications_read: { Args: Record<PropertyKey, never>; Returns: number };
+      mark_notification_read: { Args: { notification: string }; Returns: number };
       mark_read: { Args: { channel: string; upto: number }; Returns: undefined };
       mark_unread: { Args: { channel: string }; Returns: undefined };
       my_role: { Args: { channel: string }; Returns: string };
+      notify: {
+        Args: { kind: string; payload?: Json; recipient: string; ref: string };
+        Returns: undefined;
+      };
       open_direct: { Args: { group_name?: string; peers: string[] }; Returns: string };
       put_note: { Args: { audience?: string; body: string }; Returns: undefined };
       quota_bytes: { Args: Record<PropertyKey, never>; Returns: number };
@@ -1619,6 +1774,19 @@ export type Database = {
       require_member: { Args: { channel: string }; Returns: string };
       require_reel: { Args: { reel: string }; Returns: string };
       require_user: { Args: Record<PropertyKey, never>; Returns: string };
+      search: {
+        Args: { kind?: string; max_rows?: number; q: string; skip?: number };
+        Returns: {
+          author_id: string;
+          body: string;
+          channel_id: string;
+          created_at: string;
+          hit_kind: string;
+          id: string;
+          title: string;
+          total: number;
+        }[];
+      };
       send_message: {
         Args: {
           attachments?: string[];

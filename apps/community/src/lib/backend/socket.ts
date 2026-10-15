@@ -11,6 +11,7 @@ import { db, supabase } from "@/lib/supabase";
 import { sendMessage } from "./chat-api";
 import { fetchMessage, reactionSummaries } from "./chat-model";
 import { setOnline } from "./presence";
+import { toNotification, unreadCount } from "./notify-api";
 import { onReactionAnnounce } from "./realtime-bus";
 
 type Listener = (...args: unknown[]) => void;
@@ -289,6 +290,21 @@ async function start(target: Socket) {
         };
         if (row.channel_id) target.dispatch("channel:members", { channelId: row.channel_id });
         pingInbox(target);
+      },
+    )
+    // my notifications (RLS: only mine) — silent ones were written while I paused notifications
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "community", table: "notifications" },
+      (payload) => {
+        const row = payload.new as Parameters<typeof toNotification>[0];
+        if (row.silent) return;
+        void unreadCount().then((count) => {
+          target.dispatch("notification:new", {
+            notification: toNotification(row),
+            unreadCount: count,
+          });
+        });
       },
     )
     .on("postgres_changes", { event: "*", schema: "community", table: "channels" }, (payload) => {
