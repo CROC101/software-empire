@@ -17,6 +17,7 @@
    ใช้ #hex หรือคงไว้แบบนี้ก็ได้ ไม่มีผลต่อการแสดงผล
    ─────────────────────────────────────────────────────────────── */
 
+@import "@empire/ui/palette.css";
 @import "tailwindcss";
 
 /* UI fonts (OFL, files in public/fonts) — replaces next/font/local from csmju-nexus */
@@ -413,126 +414,129 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   สีของหน้าจอ — ตามธีมของ Core Hub (PM ขอให้ทุกระบบหน้าตาเดียวกับ Core Hub · PL 8 ต.ค. 2569)
-
-   ค่ามาจาก `globals.css` ของ nx-core-hub (develop):
-     พื้น rgb(248 249 250) · การ์ดขาว · ตัวอักษร rgb(25 28 29) · ตัวอักษรรอง rgb(67 70 84)
-     น้ำเงินหลัก rgb(0 60 180) / rgb(33 84 217) · ปุ่มไล่สี rgb(33 84 217) → rgb(59 128 242)
-     แถบเมนูซ้ายไล่สีน้ำเงินเข้ม rgb(22 38 77) → rgb(13 79 168) ตัวอักษรขาว
-   ค่าเริ่มต้นเป็นโหมดสว่าง · โหมดมืดใช้โทนน้ำเงินเข้มชุดเดียวกัน
+   สีของหน้าจอ — ธีม "Aurora" ของ Software Empire (palette.css ใน @empire/ui)
+   ม่วงหลวงเป็นสีหลัก · ไล่สีออโรรา ม่วง → บานเย็น → ปะการัง สำหรับตราและปุ่มเด่น
+   · แถบเมนูซ้ายม่วงเที่ยงคืน · เทาอมม่วงจาง ๆ ให้ทั้งหน้าไปทางเดียวกับแบรนด์
+   ค่าเริ่มต้นเป็นโหมดสว่าง · โหมดมืดใช้ .dark (theme-boot.js ตั้งให้ก่อนวาดหน้าแรก)
    ───────────────────────────────────────────────────────────────── */
 :root {
   /* ชื่อ --nx-* ยังอยู่ เพราะคอมโพเนนต์หลายตัวอ้างถึงตรง ๆ */
-  --nx-primary: rgb(33 84 217);
-  --nx-primary-soft: rgb(220 225 255);
-  --nx-ink: rgb(25 28 29);
-  --nx-surface: rgb(255 255 255);
+  --nx-primary: var(--em-violet-600);
+  --nx-primary-soft: var(--em-violet-100);
+  --nx-ink: var(--em-ink-900);
+  --nx-surface: var(--em-ink-0);
 
-  /* วงแหวนสตอรี่ที่ยังไม่ได้ดู — ไล่น้ำเงินแบบปุ่มของ Core Hub */
-  --nx-story-ring-1: rgb(0 60 180);
-  --nx-story-ring-2: rgb(33 84 217);
-  --nx-story-ring-3: rgb(59 128 242);
+  /* วงแหวนสตอรี่ที่ยังไม่ได้ดู — ไล่สีออโรรา */
+  --nx-story-ring-1: var(--em-violet-600);
+  --nx-story-ring-2: var(--em-fuchsia-500);
+  --nx-story-ring-3: var(--em-coral-400);
 
-  --background: rgb(248 249 250);
-  --foreground: rgb(25 28 29);
-  --card: rgb(255 255 255);
-  --card-foreground: rgb(25 28 29);
-  --popover: rgb(255 255 255);
-  --popover-foreground: rgb(25 28 29);
-  --primary: rgb(33 84 217);
-  --primary-foreground: rgb(255 255 255);
-  --secondary: rgb(237 238 239);
-  --secondary-foreground: rgb(25 28 29);
-  --muted: rgb(243 244 245);
-  --muted-foreground: rgb(67 70 84);
-  --accent: rgb(0 60 180 / 0.06);
-  --accent-foreground: rgb(25 28 29);
-  --destructive: rgb(186 26 26);
-  --success: rgb(16 185 129);
-  --warning: rgb(245 158 11);
-  --border: rgb(225 227 228);
-  --input: rgb(196 197 215);
-  --ring: rgb(59 128 242);
-  --link: rgb(0 60 180);
-  --badge: rgb(186 26 26);
-  --bubble-mine: rgb(33 84 217);
-  --bubble-theirs: rgb(237 238 239);
-  --chart-1: rgb(33 84 217);
-  --chart-2: rgb(59 128 242);
-  --chart-3: rgb(78 93 135);
-  --chart-4: rgb(245 158 11);
-  --chart-5: rgb(16 185 129);
-  --radius: 0.5rem;
+  --background: var(--em-ink-25);
+  --foreground: var(--em-ink-900);
+  --card: var(--em-ink-0);
+  --card-foreground: var(--em-ink-900);
+  --popover: var(--em-ink-0);
+  --popover-foreground: var(--em-ink-900);
+  --primary: var(--em-violet-600);
+  --primary-foreground: var(--em-ink-0);
+  --secondary: var(--em-ink-100);
+  --secondary-foreground: var(--em-ink-900);
+  --muted: var(--em-ink-50);
+  --muted-foreground: var(--em-ink-600);
+  --accent: oklch(0.535 0.245 284 / 0.07);
+  --accent-foreground: var(--em-ink-900);
+  --destructive: var(--em-danger);
+  --success: var(--em-success);
+  --warning: var(--em-warning);
+  --border: var(--em-ink-200);
+  --input: var(--em-ink-300);
+  --ring: var(--em-violet-500);
+  --link: var(--em-violet-700);
+  --badge: var(--em-fuchsia-500);
+  --bubble-mine: var(--em-violet-600);
+  --bubble-theirs: var(--em-ink-100);
+  --chart-1: var(--em-violet-600);
+  --chart-2: var(--em-fuchsia-500);
+  --chart-3: var(--em-sky-500);
+  --chart-4: var(--em-gold-500);
+  --chart-5: var(--em-teal-600);
+  --radius: 0.625rem;
 
-  /* แถบเมนูซ้าย = แถบน้ำเงินไล่สีของ Core Hub ทั้งสองโหมด */
-  --sidebar: rgb(22 38 77);
-  --sidebar-gradient: linear-gradient(160deg, rgb(22 38 77) 0%, rgb(13 79 168) 100%);
-  --sidebar-foreground: rgb(255 255 255);
-  --sidebar-primary: rgb(255 255 255);
-  --sidebar-primary-foreground: rgb(22 38 77);
-  --sidebar-accent: rgb(255 255 255 / 0.1);
-  --sidebar-accent-foreground: rgb(255 255 255);
-  --sidebar-border: rgb(255 255 255 / 0.08);
-  --sidebar-ring: rgb(255 255 255);
+  /* แถบเมนูซ้าย = ม่วงเที่ยงคืนไล่ไปบานเย็นที่ปลาย ทั้งสองโหมด */
+  --sidebar: oklch(0.2 0.07 286);
+  --sidebar-gradient: var(--em-rail);
+  --sidebar-foreground: var(--em-ink-0);
+  --sidebar-primary: var(--em-ink-0);
+  --sidebar-primary-foreground: var(--em-violet-900);
+  --sidebar-accent: oklch(1 0 0 / 0.12);
+  --sidebar-accent-foreground: var(--em-ink-0);
+  --sidebar-border: oklch(1 0 0 / 0.08);
+  --sidebar-ring: var(--em-gold-300);
 
-  --elevation-xs: 0 1px 2px rgb(0 0 0 / 0.05);
-  --elevation-sm: 0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04);
-  --elevation-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --elevation-lg: 0 10px 25px -5px rgb(0 0 0 / 0.15), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --elevation-glow: 0 4px 14px rgb(33 84 217 / 0.3);
+  --elevation-xs: 0 1px 2px oklch(0.2 0.05 286 / 0.06);
+  --elevation-sm: 0 1px 3px oklch(0.2 0.05 286 / 0.08), 0 1px 2px oklch(0.2 0.05 286 / 0.05);
+  --elevation-md:
+    0 6px 16px -4px oklch(0.2 0.05 286 / 0.12), 0 2px 4px -2px oklch(0.2 0.05 286 / 0.08);
+  --elevation-lg:
+    0 18px 40px -10px oklch(0.2 0.08 286 / 0.22), 0 8px 12px -6px oklch(0.2 0.05 286 / 0.1);
+  --elevation-glow: var(--em-glow);
 
-  /* ปุ่มหลัก/ตราสัญลักษณ์ — ไล่สีเดียวกับ .btn-gradient ของ Core Hub */
-  --nx-gradient: linear-gradient(90deg, rgb(33 84 217) 0%, rgb(59 128 242) 100%);
+  /* ปุ่มหลัก/ตราสัญลักษณ์ — ไล่สีออโรรา */
+  --nx-gradient: var(--em-aurora);
 
-  --hairline: rgb(0 0 0 / 0.08);
+  --hairline: oklch(0.2 0.05 286 / 0.08);
 }
 
 .dark {
-  --nx-primary: rgb(59 128 242);
-  --nx-primary-soft: rgb(30 41 66);
-  --nx-ink: rgb(236 239 244);
-  --nx-surface: rgb(14 20 33);
+  --nx-primary: var(--em-violet-400);
+  --nx-primary-soft: var(--em-ink-850);
+  --nx-ink: var(--em-ink-50);
+  --nx-surface: var(--em-ink-975);
 
-  --background: rgb(14 20 33);
-  --foreground: rgb(236 239 244);
-  --card: rgb(24 32 50);
-  --card-foreground: rgb(236 239 244);
-  --popover: rgb(24 32 50);
-  --popover-foreground: rgb(236 239 244);
-  --primary: rgb(59 128 242);
-  --primary-foreground: rgb(255 255 255);
-  --secondary: rgb(30 41 66);
-  --secondary-foreground: rgb(236 239 244);
-  --muted: rgb(30 41 66);
-  --muted-foreground: rgb(170 180 200);
-  --accent: rgb(255 255 255 / 0.08);
-  --accent-foreground: rgb(236 239 244);
-  --destructive: rgb(255 107 107);
-  --success: rgb(52 211 153);
-  --warning: rgb(251 191 36);
-  --border: rgb(45 56 82);
-  --input: rgb(58 70 98);
-  --ring: rgb(112 160 255);
-  --link: rgb(130 170 255);
-  --badge: rgb(239 68 68);
-  --bubble-mine: rgb(33 84 217);
-  --bubble-theirs: rgb(30 41 66);
-  --chart-1: rgb(112 160 255);
-  --chart-2: rgb(59 128 242);
-  --chart-3: rgb(160 172 210);
-  --chart-4: rgb(251 191 36);
-  --chart-5: rgb(52 211 153);
-  --sidebar: rgb(10 18 38);
-  --sidebar-gradient: linear-gradient(160deg, rgb(10 18 38) 0%, rgb(13 52 120) 100%);
-  --sidebar-ring: rgb(112 160 255);
+  --nx-story-ring-1: var(--em-violet-400);
+  --nx-story-ring-2: var(--em-fuchsia-400);
+  --nx-story-ring-3: var(--em-coral-400);
+
+  --background: var(--em-ink-975);
+  --foreground: var(--em-ink-50);
+  --card: var(--em-ink-950);
+  --card-foreground: var(--em-ink-50);
+  --popover: var(--em-ink-900);
+  --popover-foreground: var(--em-ink-50);
+  --primary: var(--em-violet-400);
+  --primary-foreground: var(--em-ink-975);
+  --secondary: var(--em-ink-850);
+  --secondary-foreground: var(--em-ink-50);
+  --muted: var(--em-ink-900);
+  --muted-foreground: var(--em-ink-400);
+  --accent: oklch(0.7 0.185 288 / 0.12);
+  --accent-foreground: var(--em-ink-50);
+  --destructive: var(--em-danger-dark);
+  --success: var(--em-success-dark);
+  --warning: var(--em-warning-dark);
+  --border: var(--em-ink-800);
+  --input: var(--em-ink-700);
+  --ring: var(--em-violet-400);
+  --link: var(--em-violet-300);
+  --badge: var(--em-fuchsia-400);
+  --bubble-mine: var(--em-violet-600);
+  --bubble-theirs: var(--em-ink-850);
+  --chart-1: var(--em-violet-400);
+  --chart-2: var(--em-fuchsia-400);
+  --chart-3: var(--em-sky-500);
+  --chart-4: var(--em-gold-300);
+  --chart-5: var(--em-teal-400);
+  --sidebar: oklch(0.13 0.03 286);
+  --sidebar-gradient: var(--em-rail-dark);
+  --sidebar-ring: var(--em-gold-300);
 
   --elevation-xs: none;
-  --elevation-sm: 0 2px 8px rgb(0 0 0 / 0.4);
-  --elevation-md: 0 4px 16px rgb(0 0 0 / 0.5);
-  --elevation-lg: 0 12px 40px rgb(0 0 0 / 0.6);
-  --elevation-glow: 0 4px 14px rgb(59 128 242 / 0.35);
+  --elevation-sm: 0 2px 8px oklch(0 0 0 / 0.4);
+  --elevation-md: 0 6px 18px oklch(0 0 0 / 0.5);
+  --elevation-lg: 0 16px 44px oklch(0 0 0 / 0.6);
+  --elevation-glow: var(--em-glow-dark);
 
-  --hairline: rgb(255 255 255 / 0.1);
+  --hairline: oklch(1 0 0 / 0.09);
 }
 
 @layer base {
@@ -566,7 +570,7 @@
   }
 
   ::selection {
-    background: rgb(59 128 242 / 0.3);
+    background: oklch(0.61 0.225 286 / 0.25);
   }
 
   /* แถบเลื่อนบาง ๆ ที่กลมกลืนกับธีม ไม่ใช่แถบเทาของระบบปฏิบัติการ
@@ -811,13 +815,13 @@
     scrollbar-width: none;
   }
 
-  /* โลโก้สาขาในวงกลมขาวแบบหัวแถบของ Core Hub */
+  /* ตรา Empire — วงกลมไล่สีออโรรา */
   .nx-logo-badge {
     display: grid;
     place-items: center;
     border-radius: 9999px;
-    background: rgb(255 255 255);
-    box-shadow: var(--elevation-sm);
+    background: var(--em-aurora);
+    box-shadow: var(--elevation-glow);
   }
 
   .nx-rail-label {

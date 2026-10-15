@@ -44,11 +44,7 @@
 @layer components {
   .brand-gradient,
   .btn-gradient {
-    background-image: linear-gradient(
-      160deg,
-      var(--primary),
-      color-mix(in oklch, var(--primary) 70%, var(--foreground))
-    );
+    background-image: var(--aurora);
     color: var(--primary-foreground);
   }
 
