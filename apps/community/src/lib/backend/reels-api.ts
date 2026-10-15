@@ -25,7 +25,7 @@ type CommentRow = Database["community"]["Views"]["reel_comment_view"]["Row"];
 const reelId = (raw: string | undefined) => idParam(raw, "คลิปนี้ อาจถูกลบไปแล้ว");
 const commentId = (raw: string | undefined) => idParam(raw, "ความคิดเห็นนี้");
 
-const toReel = (row: ReelRow): Reel => ({
+export const toReel = (row: ReelRow): Reel => ({
   id: row.id ?? "",
   title: row.title ?? "",
   caption: row.caption,

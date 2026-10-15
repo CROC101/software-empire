@@ -16,7 +16,7 @@ const { api, qs } = await import("./api");
 
 describe("api router", () => {
   it("answers 501 for csmju-nexus areas that are not ported yet", async () => {
-    await expect(api.list("/activity/likes")).rejects.toMatchObject({
+    await expect(api.list("/voice-sessions")).rejects.toMatchObject({
       status: 501,
       code: "NOT_AVAILABLE",
     });
@@ -119,6 +119,41 @@ describe("api router", () => {
     await expect(api.post("/shares", { targetKind: "REEL", targetId: ME })).rejects.toMatchObject({
       status: 400,
     });
+  });
+
+  it("rejects malformed notification, search and activity input before touching the database", async () => {
+    await expect(api.patch("/notifications/n1/read")).rejects.toMatchObject({ status: 404 });
+    await expect(api.list("/notifications?kind=LIKE")).rejects.toMatchObject({ status: 400 });
+    await expect(
+      api.patch("/me/notification-preferences", { likes: "SOMETIMES" }),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(
+      api.patch("/me/notification-preferences", { pauseMinutes: 30 }),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(api.get("/search?q=a")).rejects.toMatchObject({ status: 400 });
+    await expect(api.get("/search?q=hello&kind=files")).rejects.toMatchObject({ status: 400 });
+    await expect(api.list("/activity/likes?target=STORY")).rejects.toMatchObject({ status: 400 });
+    await expect(api.list("/activity/comments?from=2026-02-31")).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(
+      api.list("/activity/comments?from=2026-03-02&to=2026-03-01"),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(api.list("/activity/media?kind=STORY")).rejects.toMatchObject({ status: 400 });
+    await expect(api.list("/activity/account-history?order=random")).rejects.toMatchObject({
+      status: 400,
+    });
+  });
+
+  it("cuts search snippets around the match", async () => {
+    const { snippet } = await import("./notify-api");
+    expect(snippet(null, "x")).toBeNull();
+    expect(snippet("short text", "zzz")).toBe("short text");
+    const long = `${"a".repeat(100)}needle${"b".repeat(300)}`;
+    const cut = snippet(long, "NEEDLE") ?? "";
+    expect(cut.startsWith("…")).toBe(true);
+    expect(cut.endsWith("…")).toBe(true);
+    expect(cut).toContain("needle");
   });
 
   it("builds query strings without empty values", () => {

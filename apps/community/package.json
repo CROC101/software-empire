@@ -12,7 +12,8 @@
     "test": "vitest run",
     "smoke": "node --env-file=.env.local e2e/social-smoke.ts",
     "smoke:chat": "node --env-file=.env.local e2e/chat-realtime-smoke.ts",
-    "smoke:feed": "node --env-file=.env.local e2e/feed-storage-smoke.ts"
+    "smoke:feed": "node --env-file=.env.local e2e/feed-storage-smoke.ts",
+    "smoke:notify": "node --env-file=.env.local e2e/notify-smoke.ts"
   },
   "dependencies": {
     "@empire/core": "workspace:*",
