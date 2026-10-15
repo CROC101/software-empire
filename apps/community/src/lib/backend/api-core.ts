@@ -61,6 +61,9 @@ export function fromPostgrest(error: PostgrestError): ApiError {
   if (error.code === "42501") return new ApiError(403, "FORBIDDEN", "คุณทำรายการนี้ไม่ได้");
   if (error.code === "23514") return badRequest("ข้อมูลไม่ถูกต้อง");
   if (error.code === "23505") return new ApiError(409, "CONFLICT", "รายการนี้มีอยู่แล้ว");
+  if (error.code === "23503") return badRequest("รายการที่อ้างถึงไม่มีอยู่แล้ว");
+  // P0002 = "not found, or not yours to see" — the SQL never says which
+  if (error.code === "P0002") return new ApiError(404, "NOT_FOUND", error.message);
   // RAISE ในฟังก์ชัน SQL เขียนข้อความภาษาไทยไว้แล้ว
   if (error.code === "P0001") return badRequest(error.message);
   if (error.code === "PGRST301" || error.code === "PGRST303") {
@@ -112,6 +115,13 @@ export function body<T extends object>(value: unknown): Partial<T> {
 }
 
 export const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** A UUID path segment; anything else cannot exist. */
+export function idParam(raw: string | undefined, what: string): string {
+  const value = decodeURIComponent(raw ?? "");
+  if (!UUID.test(value)) throw notFound(what);
+  return value.toLowerCase();
+}
 
 /** Every coreUserId here is a Supabase user id; anything else cannot exist. */
 export function userId(raw: string | undefined): string {

@@ -8,9 +8,9 @@ import {
   check,
   data,
   fromPostgrest,
+  idParam,
   meta,
   myId,
-  notAvailable,
   notFound,
   ok,
   paging,
@@ -18,6 +18,7 @@ import {
   userId,
   UUID,
 } from "./api-core";
+import { purge, signedUrls } from "./storage";
 import type {
   AudienceCounts,
   FollowEdge,
@@ -80,9 +81,21 @@ async function relationWith(me: string, target: string): Promise<Relation> {
   };
 }
 
+/** A cover is an uploaded image; anyone who can see the profile gets a short-lived link to it. */
+async function coverUrl(row: { cover_url: string | null }, target: string): Promise<string | null> {
+  const { data: cover } = await db()
+    .from("profiles")
+    .select("assets!profiles_cover_asset_id_fkey(object_path)")
+    .eq("user_id", target)
+    .maybeSingle();
+  const path = cover?.assets?.object_path;
+  if (!path) return row.cover_url;
+  return (await signedUrls("attachments", [path], 3600)).get(path) ?? null;
+}
+
 async function profileDetail(target: string): Promise<ProfileDetail> {
   const me = await myId();
-  const [row, stats, relation] = await Promise.all([
+  const [row, stats, relation, posts] = await Promise.all([
     db().from("profiles").select(PROFILE_COLUMNS).eq("user_id", target).maybeSingle(),
     db()
       .from("profile_stats")
@@ -90,6 +103,7 @@ async function profileDetail(target: string): Promise<ProfileDetail> {
       .eq("user_id", target)
       .maybeSingle(),
     relationWith(me, target),
+    db().from("posts").select("id", { count: "exact", head: true }).eq("author_id", target),
   ]);
   if (row.error) throw fromPostgrest(row.error);
   // a profile that blocked me is hidden by RLS — it looks exactly like one that doesn't exist
@@ -97,10 +111,10 @@ async function profileDetail(target: string): Promise<ProfileDetail> {
   const p = row.data;
   return {
     ...toSummary(p),
-    // shortcut: post/reel counts arrive with the feed and reels rounds
+    // shortcut: reel counts arrive with round 4
     stats: {
       reelCount: 0,
-      postCount: 0,
+      postCount: posts.count ?? 0,
       followerCount: stats.data?.follower_count ?? 0,
       followingCount: stats.data?.following_count ?? 0,
     },
@@ -108,7 +122,7 @@ async function profileDetail(target: string): Promise<ProfileDetail> {
     layer2Role: p.role,
     joinedAt: p.created_at,
     bio: p.bio,
-    coverUrl: p.cover_url,
+    coverUrl: await coverUrl(p, target),
     website: p.website,
   };
 }
@@ -134,8 +148,13 @@ async function updateMyProfile(raw: unknown): Promise<MyProfile> {
     displayName: string;
     coverAssetId: string | null;
   }>(raw);
-  // cover photos need uploads, which arrive with the feed round
-  if (input.coverAssetId !== undefined) throw notAvailable();
+  if (input.coverAssetId !== undefined) {
+    const cover = input.coverAssetId === null ? null : idParam(input.coverAssetId, "ไฟล์นี้");
+    // set_cover hands back the old cover, whose bytes go now
+    const { data: old, error } = await db().rpc("set_cover", { asset: cover ?? undefined });
+    if (error) throw fromPostgrest(error);
+    await purge([old]);
+  }
   const patch: Database["community"]["Tables"]["profiles"]["Update"] = {};
   if (input.bio !== undefined) patch.bio = input.bio?.trim() || null;
   if (input.website !== undefined) patch.website = input.website?.trim() || null;

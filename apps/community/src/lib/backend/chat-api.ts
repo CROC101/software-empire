@@ -7,6 +7,7 @@ import {
   check,
   data,
   fromPostgrest,
+  idParam,
   meta,
   myId,
   notAvailable,
@@ -20,6 +21,7 @@ import {
 import { fetchChannel, fetchMessage, reactionSummaries, toMessage } from "./chat-model";
 import { isOnline, onlineUserIds } from "./presence";
 import { reactionChanged } from "./realtime-bus";
+import { purge } from "./storage";
 import type {
   Channel,
   ChannelMemberRow,
@@ -34,14 +36,8 @@ import type {
   UpdateInboxBody,
 } from "./types";
 
-function id(raw: string | undefined, what: string): string {
-  const value = decodeURIComponent(raw ?? "");
-  if (!UUID.test(value)) throw notFound(what);
-  return value.toLowerCase();
-}
-
-const channelId = (raw: string | undefined) => id(raw, "ห้องนี้ หรือคุณไม่ได้เป็นสมาชิก");
-const messageId = (raw: string | undefined) => id(raw, "ข้อความนี้");
+const channelId = (raw: string | undefined) => idParam(raw, "ห้องนี้ หรือคุณไม่ได้เป็นสมาชิก");
+const messageId = (raw: string | undefined) => idParam(raw, "ข้อความนี้");
 
 async function channelOrThrow(channel: string): Promise<Channel> {
   const row = await fetchChannel(channel);
@@ -93,9 +89,8 @@ async function openDirect(raw: unknown) {
   const input = body<CreateDirectChannelBody>(raw);
   const peers = input.peerCoreUserIds ?? (input.peerCoreUserId ? [input.peerCoreUserId] : []);
   if (peers.length === 0) throw badRequest("เลือกคนที่จะส่งข้อความหา");
-  const opened = check(
-    await db().rpc("open_direct", { peers: peers.map((p) => userId(p)), group_name: input.name }),
-  );
+  const ids = peers.map((p) => userId(p));
+  const opened = check(await db().rpc("open_direct", { peers: ids, group_name: input.name }));
   return channelOrThrow(opened);
 }
 
@@ -172,18 +167,17 @@ type SendBody = {
 /** Shared by REST and the socket's `message:send`. */
 export async function sendMessage(channel: string, raw: unknown): Promise<Message> {
   const input = body<SendBody>(raw);
-  // shortcut: attachments need the uploads round
-  if (input.assetIds?.length) throw notAvailable();
   if (!input.clientNonce) throw badRequest("ไม่มีรหัสข้อความ (clientNonce)");
-  const sent = check(
-    await db().rpc("send_message", {
-      channel,
-      body: input.content ?? "",
-      nonce: input.clientNonce,
-      parent: input.parentId ? messageId(input.parentId) : undefined,
-      reply_to: input.replyToMessageId ? messageId(input.replyToMessageId) : undefined,
-    }),
-  );
+  // validate every id before the first database call
+  const args = {
+    channel,
+    body: input.content ?? "",
+    nonce: input.clientNonce,
+    parent: input.parentId ? messageId(input.parentId) : undefined,
+    reply_to: input.replyToMessageId ? messageId(input.replyToMessageId) : undefined,
+    attachments: (input.assetIds ?? []).map((a) => idParam(a, "ไฟล์แนบ")),
+  };
+  const sent = check(await db().rpc("send_message", args));
   return messageOrThrow(sent);
 }
 
@@ -222,9 +216,12 @@ const TARGET_KINDS = new Set<ReactionTarget>(["MESSAGE", "POST", "REEL"]);
 function reactionTarget(kind: string | null | undefined, target: string | null | undefined) {
   if (!kind || !TARGET_KINDS.has(kind as ReactionTarget))
     throw badRequest("ชนิดเป้าหมายไม่ถูกต้อง");
-  // shortcut: posts and reels arrive with their rounds
-  if (kind !== "MESSAGE") throw notAvailable();
-  return { kind: kind as ReactionTarget, target: messageId(target ?? undefined) };
+  // shortcut: reels arrive with round 4
+  if (kind === "REEL") throw notAvailable();
+  return {
+    kind: kind as ReactionTarget,
+    target: idParam(target ?? undefined, kind === "POST" ? "โพสต์นี้" : "ข้อความนี้"),
+  };
 }
 
 async function summaryOf(kind: ReactionTarget, target: string): Promise<ReactionSummary> {
@@ -246,7 +243,7 @@ async function react(raw: unknown) {
     .from("reactions")
     .insert({ target_kind: kind, target_id: target, user_id: await myId(), emoji });
   if (error && error.code !== "23505")
-    throw error.code === "42501" ? notFound("ข้อความนี้") : fromPostgrest(error);
+    throw error.code === "42501" ? notFound("สิ่งที่จะรีแอ็กชัน") : fromPostgrest(error);
   return summaryOf(kind, target);
 }
 
@@ -266,12 +263,12 @@ async function unreact(query: URLSearchParams) {
 
 async function summaries(query: URLSearchParams) {
   const kind = query.get("targetKind");
-  if (kind !== "MESSAGE") return [];
+  if (kind !== "MESSAGE" && kind !== "POST") return [];
   const ids = (query.get("targetIds") ?? "")
     .split(",")
     .filter((t) => UUID.test(t))
     .slice(0, 100);
-  return reactionSummaries("MESSAGE", ids);
+  return reactionSummaries(kind, ids);
 }
 
 function presence(query: URLSearchParams): PresenceResponse {
@@ -315,7 +312,8 @@ export const CHAT_ROUTES: Route[] = [
     "DELETE",
     path(C),
     async ({ params: [c] }) => {
-      ok(await db().rpc("delete_channel", { channel: channelId(c) }));
+      const channel = channelId(c);
+      ok(await db().rpc("delete_channel", { channel }));
       return { data: {} };
     },
   ],
@@ -389,7 +387,8 @@ export const CHAT_ROUTES: Route[] = [
     path(`${C}/members`),
     async ({ params: [c], body: raw }) => {
       const users = (body<{ coreUserIds: string[] }>(raw).coreUserIds ?? []).map((u) => userId(u));
-      const added = check(await db().rpc("add_members", { channel: channelId(c), users }));
+      const channel = channelId(c);
+      const added = check(await db().rpc("add_members", { channel, users }));
       return { data: { added } };
     },
   ],
@@ -397,7 +396,8 @@ export const CHAT_ROUTES: Route[] = [
     "DELETE",
     path(`${C}/members/me`),
     async ({ params: [c] }) => {
-      ok(await db().rpc("leave_channel", { channel: channelId(c) }));
+      const channel = channelId(c);
+      ok(await db().rpc("leave_channel", { channel }));
       return { data: {} };
     },
   ],
@@ -405,7 +405,8 @@ export const CHAT_ROUTES: Route[] = [
     "DELETE",
     path(`${C}/members/([^/]+)`),
     async ({ params: [c, u] }) => {
-      ok(await db().rpc("remove_member", { channel: channelId(c), target: userId(u) }));
+      const ids = { channel: channelId(c), target: userId(u) };
+      ok(await db().rpc("remove_member", ids));
       return { data: {} };
     },
   ],
@@ -448,7 +449,13 @@ export const CHAT_ROUTES: Route[] = [
     path(M),
     async ({ params: [c, m] }) => {
       channelId(c);
-      ok(await db().rpc("delete_message", { message: messageId(m) }));
+      const message = messageId(m);
+      // read the attachments first: the delete takes their rows with it
+      const files = check(
+        await db().from("assets").select("object_path").eq("message_id", message),
+      );
+      ok(await db().rpc("delete_message", { message }));
+      await purge(files.map((file) => file.object_path));
       return { data: {} };
     },
   ],

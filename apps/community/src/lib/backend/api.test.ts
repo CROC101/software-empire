@@ -54,10 +54,36 @@ describe("api router", () => {
       status: 400,
     });
     await expect(
-      api.post("/reactions", { targetKind: "POST", targetId: ME, emoji: "👍" }),
+      api.post("/reactions", { targetKind: "REEL", targetId: ME, emoji: "👍" }),
     ).rejects.toMatchObject({
       status: 501,
     });
+    await expect(
+      api.post("/reactions", { targetKind: "POST", targetId: "post-1", emoji: "👍" }),
+    ).rejects.toMatchObject({ status: 404 });
+  });
+
+  it("rejects malformed feed, upload and bookmark input before touching the database", async () => {
+    await expect(api.get("/posts/post-1")).rejects.toMatchObject({ status: 404 });
+    await expect(api.del("/posts/p1/comments/c1")).rejects.toMatchObject({ status: 404 });
+    await expect(api.post("/posts", { content: "hi", assetIds: ["nope"] })).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(api.post("/assets/abc/commit")).rejects.toMatchObject({ status: 404 });
+    await expect(api.get("/assets/abc/download-url")).rejects.toMatchObject({ status: 404 });
+    await expect(api.list("/bookmarks?targetKind=STORY")).rejects.toMatchObject({ status: 400 });
+    await expect(
+      api.post("/bookmarks", { targetKind: "POST", targetId: "x" }),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(api.del("/bookmark-collections/c1/items?targetKind=POST")).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      api.post("/channels/11111111-1111-4111-8111-111111111111/messages", {
+        clientNonce: "n1",
+        assetIds: ["../etc"],
+      }),
+    ).rejects.toMatchObject({ status: 404 });
   });
 
   it("builds query strings without empty values", () => {
