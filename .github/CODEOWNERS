@@ -1,20 +1,20 @@
-# ใครต้อง review path ไหน — แทน ORG ด้วยชื่อ org จริง
+# ใครต้อง review path ไหน (org: CROC101)
 # ตอนนี้เจ้าของคนเดียวอยู่ทุกทีม · มีคนเข้ามาเมื่อไรค่อยแยกเป็น aie-<app> (docs/GITHUB-ORG-PLAYBOOK.md ข้อ 6)
 
 # ค่าเริ่มต้น — PL review ทุก PR
-*                       @ORG/pl
+*                       @CROC101/pl
 
 # แอป — AIE เจ้าของงาน + PL
-/apps/                  @ORG/aie @ORG/pl
+/apps/                  @CROC101/aie @CROC101/pl
 
 # design system และมาตรฐาน — PL เท่านั้น
-/packages/ui/           @ORG/pl
-/standards/             @ORG/pl
+/packages/ui/           @CROC101/pl
+/standards/             @CROC101/pl
 
 # ของที่กระทบทุกแอป — ต้องมี PM ร่วม
-/packages/core/         @ORG/aie @ORG/pm
-/supabase/migrations/   @ORG/aie @ORG/pl
-/docs/MASTER-SPEC.md    @ORG/pm @ORG/pl
+/packages/core/         @CROC101/aie @CROC101/pm
+/supabase/migrations/   @CROC101/aie @CROC101/pl
+/docs/MASTER-SPEC.md    @CROC101/pm @CROC101/pl
 
 # CI และกติกา repo
-/.github/               @ORG/pl
+/.github/               @CROC101/pl
