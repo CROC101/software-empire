@@ -16,7 +16,7 @@ const { api, qs } = await import("./api");
 
 describe("api router", () => {
   it("answers 501 for csmju-nexus areas that are not ported yet", async () => {
-    await expect(api.list("/admin-overview")).rejects.toMatchObject({
+    await expect(api.list("/realtime-tickets")).rejects.toMatchObject({
       status: 501,
       code: "NOT_AVAILABLE",
     });
@@ -153,6 +153,43 @@ describe("api router", () => {
     expect(cut.startsWith("…")).toBe(true);
     expect(cut.endsWith("…")).toBe(true);
     expect(cut).toContain("needle");
+  });
+
+  it("rejects malformed meeting, voice, report and admin input before touching the database", async () => {
+    await expect(api.get("/meetings/m1")).rejects.toMatchObject({ status: 404 });
+    await expect(
+      api.post("/meetings", { channelId: ME, title: "x", startsAt: "tomorrow", endsAt: "later" }),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(api.post("/voice-sessions", { channelId: "room-1" })).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(api.patch("/voice-sessions/s1/participants/me", {})).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      api.post("/calls/feedback", { channelId: ME, rating: 9, kind: "AUDIO" }),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(api.post("/reports", { targetKind: "NOTE", targetId: "x" })).rejects.toMatchObject(
+      {
+        status: 400,
+      },
+    );
+    await expect(api.list("/reports?status=DONE")).rejects.toMatchObject({ status: 400 });
+    await expect(api.patch(`/reports/${ME}`, { status: "OPEN" })).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(api.list("/subsystem-members?layer2Role=OWNER")).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(
+      api.patch("/subsystem-members/someone/role", { layer2Role: "ADMIN" }),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(
+      api.patch(`/subsystem-members/${ME}/storage-quota`, { storageQuotaBytes: 1.5 }),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(
+      api.list("/audit-logs?since=2026-03-02T00:00:00Z&until=2026-03-01T00:00:00Z"),
+    ).rejects.toMatchObject({ status: 400 });
   });
 
   it("builds query strings without empty values", () => {

@@ -22,7 +22,6 @@ import { purge, signedUrls } from "./storage";
 import type {
   AudienceCounts,
   FollowEdge,
-  Layer2Role,
   Me,
   MyProfile,
   PrivacySettings,
@@ -287,22 +286,14 @@ async function updatePrivacy(raw: unknown): Promise<PrivacySettings> {
 }
 
 async function memberMe(): Promise<SubsystemMember & Me> {
-  const me = await myId();
-  const row = check(
-    await db().from("profiles").select("role,created_at,updated_at").eq("user_id", me).single(),
-  );
-  const role = row.role as Layer2Role;
+  const member = check(await db().rpc("my_member")) as unknown as SubsystemMember;
+  const used = Number(member.storageUsedBytes);
+  const quota = Number(member.storageQuotaBytes);
   return {
-    coreUserId: me,
+    ...member,
     coreRole: "student",
-    layer2Role: role,
-    layer2RoleExplicit: role !== "EDITOR",
-    // shortcut: storage numbers arrive with uploads (feed round)
-    storageUsedBytes: "0",
-    storageQuotaBytes: String(50 * 1024 * 1024),
-    storageUsedPercent: 0,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    // one decimal, like nexus; 0 when no quota is set
+    storageUsedPercent: quota > 0 ? Math.round((used / quota) * 1000) / 10 : 0,
   };
 }
 
