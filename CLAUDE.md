@@ -55,7 +55,7 @@ pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จร�
 
 - `db:start` เปิด storage + realtime ด้วย · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
 - canva / community: หน้าจอเดิมของ csmju-canvas / csmju-nexus เรียก `api.get('/designs/…')` → `src/lib/backend/api.ts` ของแอปแปลงเป็น Supabase · path ที่ยังไม่รองรับตอบ 501 · `lib/router.tsx` แทน `next/link` / `next/navigation` · unit test ใช้ `src/test/router-mock.tsx` แทน router จริง
-- community ย้ายทีละรอบ (Full Nexus): 1 social graph ✅ · 2 แชต + Realtime ✅ (`socket.ts` = ตัวกระจาย event แบบ socket.io ที่ป้อนด้วย Supabase Realtime · `pnpm --filter @empire/community smoke:chat`) · 3 ฟีด + อัปโหลด · 4 reels/stories/notes · 5 แจ้งเตือน/ค้นหา/ตั้งค่า · 6 ประชุม/เสียง (WebRTC) · 7 admin/report
+- community ย้ายทีละรอบ (Full Nexus): 1 social graph ✅ · 2 แชต + Realtime ✅ (`socket.ts` = ตัวกระจาย event แบบ socket.io ที่ป้อนด้วย Supabase Realtime · `pnpm --filter @empire/community smoke:chat`) · 3 ฟีด + อัปโหลด ✅ (ไบต์อยู่ใน bucket ส่วนตัว `community-*` · intent → PUT signed URL → `commit_asset` อ่านขนาด/ชนิดจริงจาก storage.objects · SQL ลบแถวแล้วแอปเรียก `purge()` ลบไบต์ · `pnpm --filter @empire/community smoke:feed`) · 4 reels/stories/notes · 5 แจ้งเตือน/ค้นหา/ตั้งค่า · 6 ประชุม/เสียง (WebRTC) · 7 admin/report
 - กติกาความเป็นส่วนตัว (บล็อก · ใครเห็นอะไร) ต้องอยู่ใน RLS / ฟังก์ชัน SQL พร้อม pgTAP — ห้ามอยู่แค่ใน `api.ts`
 - `pnpm verify` จำกัด `--concurrency=50%` — ถ้ารันพร้อมกันหมด worker ของ vitest start ไม่ทัน
 

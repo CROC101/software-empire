@@ -144,6 +144,67 @@ export type Database = {
   };
   community: {
     Tables: {
+      assets: {
+        Row: {
+          blocked_reason: string | null;
+          bucket: string;
+          created_at: string;
+          file_name: string;
+          id: string;
+          kind: string;
+          message_id: string | null;
+          mime_type: string;
+          object_path: string;
+          owner_id: string;
+          size_bytes: number;
+          status: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          blocked_reason?: string | null;
+          bucket: string;
+          created_at?: string;
+          file_name: string;
+          id?: string;
+          kind: string;
+          message_id?: string | null;
+          mime_type: string;
+          object_path: string;
+          owner_id?: string;
+          size_bytes: number;
+          status?: string;
+        };
+        Update: {
+          blocked_reason?: string | null;
+          bucket?: string;
+          created_at?: string;
+          file_name?: string;
+          id?: string;
+          kind?: string;
+          message_id?: string | null;
+          mime_type?: string;
+          object_path?: string;
+          owner_id?: string;
+          size_bytes?: number;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "assets_message_id_fkey";
+            columns: ["message_id"];
+            isOneToOne: false;
+            referencedRelation: "message_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "assets_message_id_fkey";
+            columns: ["message_id"];
+            isOneToOne: false;
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       blocks: {
         Row: {
           blocked_id: string;
@@ -160,6 +221,107 @@ export type Database = {
           blocked_id?: string;
           blocker_id?: string;
           created_at?: string;
+        };
+        Relationships: [];
+      };
+      bookmark_collection_items: {
+        Row: {
+          collection_id: string;
+          created_at: string;
+          owner_id: string;
+          target_id: string;
+          target_kind: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          collection_id: string;
+          created_at?: string;
+          owner_id?: string;
+          target_id: string;
+          target_kind: string;
+        };
+        Update: {
+          collection_id?: string;
+          created_at?: string;
+          owner_id?: string;
+          target_id?: string;
+          target_kind?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "bookmark_collection_items_collection_id_fkey";
+            columns: ["collection_id"];
+            isOneToOne: false;
+            referencedRelation: "bookmark_collection_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "bookmark_collection_items_collection_id_fkey";
+            columns: ["collection_id"];
+            isOneToOne: false;
+            referencedRelation: "bookmark_collections";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "bookmark_collection_items_owner_id_target_kind_target_id_fkey";
+            columns: ["owner_id", "target_kind", "target_id"];
+            isOneToOne: false;
+            referencedRelation: "bookmark_view";
+            referencedColumns: ["user_id", "target_kind", "target_id"];
+          },
+          {
+            foreignKeyName: "bookmark_collection_items_owner_id_target_kind_target_id_fkey";
+            columns: ["owner_id", "target_kind", "target_id"];
+            isOneToOne: false;
+            referencedRelation: "bookmarks";
+            referencedColumns: ["user_id", "target_kind", "target_id"];
+          },
+        ];
+      };
+      bookmark_collections: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+          owner_id: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+          owner_id?: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+          owner_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      bookmarks: {
+        Row: {
+          created_at: string;
+          target_id: string;
+          target_kind: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          target_id: string;
+          target_kind: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          target_id?: string;
+          target_kind?: string;
+          user_id?: string;
         };
         Relationships: [];
       };
@@ -383,11 +545,127 @@ export type Database = {
           },
         ];
       };
+      post_comments: {
+        Row: {
+          author_id: string;
+          content: string;
+          created_at: string;
+          deleted_at: string | null;
+          id: string;
+          post_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id: string;
+          content: string;
+          created_at?: string;
+          deleted_at?: string | null;
+          id?: string;
+          post_id: string;
+        };
+        Update: {
+          author_id?: string;
+          content?: string;
+          created_at?: string;
+          deleted_at?: string | null;
+          id?: string;
+          post_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "post_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "post_comments_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      post_media: {
+        Row: {
+          asset_id: string;
+          position: number;
+          post_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          asset_id: string;
+          position: number;
+          post_id: string;
+        };
+        Update: {
+          asset_id?: string;
+          position?: number;
+          post_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "post_media_asset_id_fkey";
+            columns: ["asset_id"];
+            isOneToOne: true;
+            referencedRelation: "assets";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "post_media_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "post_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "post_media_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      posts: {
+        Row: {
+          author_id: string;
+          comment_count: number;
+          content: string;
+          course_tag: string | null;
+          created_at: string;
+          id: string;
+          title: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id?: string;
+          comment_count?: number;
+          content?: string;
+          course_tag?: string | null;
+          created_at?: string;
+          id?: string;
+          title?: string;
+        };
+        Update: {
+          author_id?: string;
+          comment_count?: number;
+          content?: string;
+          course_tag?: string | null;
+          created_at?: string;
+          id?: string;
+          title?: string;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
           bio: string | null;
           comments_from: string;
+          cover_asset_id: string | null;
           cover_url: string | null;
           created_at: string;
           display_name: string;
@@ -403,6 +681,7 @@ export type Database = {
           avatar_url?: string | null;
           bio?: string | null;
           comments_from?: string;
+          cover_asset_id?: string | null;
           cover_url?: string | null;
           created_at?: string;
           display_name: string;
@@ -417,6 +696,7 @@ export type Database = {
           avatar_url?: string | null;
           bio?: string | null;
           comments_from?: string;
+          cover_asset_id?: string | null;
           cover_url?: string | null;
           created_at?: string;
           display_name?: string;
@@ -427,7 +707,15 @@ export type Database = {
           user_id?: string;
           website?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "profiles_cover_asset_id_fkey";
+            columns: ["cover_asset_id"];
+            isOneToOne: true;
+            referencedRelation: "assets";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       reactions: {
         Row: {
@@ -456,8 +744,52 @@ export type Database = {
       };
     };
     Views: {
+      bookmark_collection_view: {
+        Row: {
+          cover: Json | null;
+          created_at: string | null;
+          id: string | null;
+          item_count: number | null;
+          name: string | null;
+          owner_id: string | null;
+          updated_at: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          cover?: never;
+          created_at?: string | null;
+          id?: string | null;
+          item_count?: never;
+          name?: string | null;
+          owner_id?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          cover?: never;
+          created_at?: string | null;
+          id?: string | null;
+          item_count?: never;
+          name?: string | null;
+          owner_id?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
+      bookmark_view: {
+        Row: {
+          author_id: string | null;
+          created_at: string | null;
+          target_id: string | null;
+          target_kind: string | null;
+          title: string | null;
+          user_id: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
       message_view: {
         Row: {
+          attachments: Json | null;
           author_id: string | null;
           channel_id: string | null;
           client_nonce: string | null;
@@ -499,6 +831,43 @@ export type Database = {
           },
         ];
       };
+      post_view: {
+        Row: {
+          author_id: string | null;
+          can_comment: boolean | null;
+          comment_count: number | null;
+          content: string | null;
+          course_tag: string | null;
+          created_at: string | null;
+          id: string | null;
+          media: Json | null;
+          title: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id?: string | null;
+          can_comment?: never;
+          comment_count?: number | null;
+          content?: string | null;
+          course_tag?: string | null;
+          created_at?: string | null;
+          id?: string | null;
+          media?: never;
+          title?: string | null;
+        };
+        Update: {
+          author_id?: string | null;
+          can_comment?: never;
+          comment_count?: number | null;
+          content?: string | null;
+          course_tag?: string | null;
+          created_at?: string | null;
+          id?: string | null;
+          media?: never;
+          title?: string | null;
+        };
+        Relationships: [];
+      };
       profile_stats: {
         Row: {
           follower_count: number | null;
@@ -520,15 +889,43 @@ export type Database = {
       };
     };
     Functions: {
+      add_comment: { Args: { body: string; post: string }; Returns: string };
       add_members: { Args: { channel: string; users: string[] }; Returns: number };
+      asset_in_use: { Args: { asset: string }; Returns: boolean };
       block_user: { Args: { target: string }; Returns: string };
+      can_comment: { Args: { owner: string }; Returns: boolean };
       can_manage: { Args: { channel: string }; Returns: boolean };
+      can_read_asset: { Args: { asset: string }; Returns: boolean };
       can_see_target: { Args: { kind: string; target: string }; Returns: boolean };
       channel_rows: {
         Args: { max_rows?: number; only_channel?: string; skip?: number };
         Returns: Json[];
       };
+      claim_assets: { Args: { assets: string[]; kinds: string[] }; Returns: undefined };
       clear_channel: { Args: { channel: string }; Returns: string };
+      commit_asset: {
+        Args: { asset: string };
+        Returns: {
+          blocked_reason: string | null;
+          bucket: string;
+          created_at: string;
+          file_name: string;
+          id: string;
+          kind: string;
+          message_id: string | null;
+          mime_type: string;
+          object_path: string;
+          owner_id: string;
+          size_bytes: number;
+          status: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "assets";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       create_channel: {
         Args: {
           course_tag?: string;
@@ -539,9 +936,25 @@ export type Database = {
         };
         Returns: string;
       };
+      create_post: {
+        Args: { asset_ids?: string[]; content?: string; course_tag?: string; title?: string };
+        Returns: string;
+      };
+      create_upload_intent: {
+        Args: { bucket: string; content_type?: string; file_name: string; size_bytes: number };
+        Returns: {
+          id: string;
+          mime: string;
+          path: string;
+        }[];
+      };
+      delete_asset: { Args: { asset: string }; Returns: string };
       delete_channel: { Args: { channel: string }; Returns: undefined };
+      delete_comment: { Args: { comment: string; post: string }; Returns: undefined };
       delete_message: { Args: { message: string }; Returns: undefined };
+      delete_post: { Args: { post: string }; Returns: string[] };
       edit_message: { Args: { body: string; message: string }; Returns: undefined };
+      file_type: { Args: { file_name: string; hint?: string }; Returns: Record<string, unknown> };
       follow_suggestions: {
         Args: { max_rows?: number };
         Returns: {
@@ -559,6 +972,7 @@ export type Database = {
       mark_unread: { Args: { channel: string }; Returns: undefined };
       my_role: { Args: { channel: string }; Returns: string };
       open_direct: { Args: { group_name?: string; peers: string[] }; Returns: string };
+      quota_bytes: { Args: Record<PropertyKey, never>; Returns: number };
       reaction_summaries: {
         Args: { kind: string; targets: string[] };
         Returns: {
@@ -574,6 +988,7 @@ export type Database = {
       require_user: { Args: Record<PropertyKey, never>; Returns: string };
       send_message: {
         Args: {
+          attachments?: string[];
           body: string;
           channel: string;
           is_forward?: boolean;
@@ -583,8 +998,12 @@ export type Database = {
         };
         Returns: string;
       };
+      set_cover: { Args: { asset?: string }; Returns: string };
       set_nickname: { Args: { channel: string; nick: string; target: string }; Returns: undefined };
       set_pin: { Args: { message: string; pinned: boolean }; Returns: undefined };
+      storage_can_purge: { Args: { bucket: string; name: string }; Returns: boolean };
+      storage_can_read: { Args: { bucket: string; name: string }; Returns: boolean };
+      storage_can_upload: { Args: { bucket: string; name: string }; Returns: boolean };
       update_channel: {
         Args: { channel: string; new_description?: string; new_name?: string };
         Returns: undefined;
@@ -593,6 +1012,7 @@ export type Database = {
         Args: { channel: string; folder?: string; mute?: boolean; pinned?: boolean };
         Returns: undefined;
       };
+      used_bytes: { Args: { except_asset?: string; owner: string }; Returns: number };
     };
     Enums: {
       [_ in never]: never;

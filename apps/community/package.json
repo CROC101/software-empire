@@ -11,7 +11,8 @@
     "typecheck": "tsc -p .",
     "test": "vitest run",
     "smoke": "node --env-file=.env.local e2e/social-smoke.ts",
-    "smoke:chat": "node --env-file=.env.local e2e/chat-realtime-smoke.ts"
+    "smoke:chat": "node --env-file=.env.local e2e/chat-realtime-smoke.ts",
+    "smoke:feed": "node --env-file=.env.local e2e/feed-storage-smoke.ts"
   },
   "dependencies": {
     "@empire/core": "workspace:*",

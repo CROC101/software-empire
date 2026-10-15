@@ -2,7 +2,14 @@
 import type { Database } from "@empire/core/supabase";
 import { db } from "@/lib/supabase";
 import { check, fromPostgrest } from "./api-core";
-import type { Channel, Message, MessageReplyTo, ReactionSummary, ReactionTarget } from "./types";
+import type {
+  Channel,
+  Message,
+  MessageAttachment,
+  MessageReplyTo,
+  ReactionSummary,
+  ReactionTarget,
+} from "./types";
 
 type MessageRow = Database["community"]["Views"]["message_view"]["Row"];
 
@@ -13,8 +20,8 @@ export function toMessage(row: MessageRow): Message {
     channelId: row.channel_id ?? "",
     authorCoreUserId: row.author_id ?? "",
     content: row.content,
-    // shortcut: attachments and post/reel embeds arrive with the uploads round
-    attachments: [],
+    attachments: (row.attachments ?? []) as unknown as MessageAttachment[],
+    // shortcut: post/reel share cards arrive with round 4
     embed: null,
     parentId: row.parent_id,
     replyCount: row.reply_count ?? 0,
@@ -57,5 +64,9 @@ export async function reactionSummaries(
     summary.totals.push({ emoji: row.emoji, count: row.count, reactedByMe: row.reacted_by_me });
     summary.totalCount += row.count;
   }
-  return [...byTarget.values()];
+  const all = [...byTarget.values()];
+  // posts and reels list the most used emoji first
+  if (kind !== "MESSAGE")
+    for (const summary of all) summary.totals.sort((a, b) => b.count - a.count);
+  return all;
 }
