@@ -58,7 +58,7 @@ export function SwitchAccountDialog({
         </DialogHeader>
 
         <DialogDescription className="sr-only">
-          ออกจากบัญชีนี้แล้วเข้าสู่ระบบด้วยบัญชีอื่นที่ศูนย์กลาง CSMJU2030
+          ออกจากบัญชีนี้แล้วเข้าสู่ระบบด้วยบัญชีอื่นที่ศูนย์กลาง Software Empire
         </DialogDescription>
 
         <div className="flex items-center gap-3 px-6 py-4">
@@ -94,7 +94,7 @@ export function SwitchAccountDialog({
         </div>
 
         <p className="px-6 pb-5 text-center text-xs leading-relaxed text-muted-foreground">
-          รหัสผ่านและบัญชีทั้งหมดอยู่ที่ศูนย์กลาง CSMJU2030 — ระบบนี้ไม่ได้เก็บรหัสผ่านของคุณ
+          รหัสผ่านและบัญชีทั้งหมดอยู่ที่ศูนย์กลาง Software Empire — ระบบนี้ไม่ได้เก็บรหัสผ่านของคุณ
         </p>
       </DialogContent>
     </Dialog>

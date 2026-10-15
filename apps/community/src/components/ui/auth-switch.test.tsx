@@ -33,7 +33,7 @@ describe("AuthSwitch", () => {
       "aria-selected",
       "true",
     );
-    expect(screen.getByText("มีบัญชี CSMJU2030 อยู่แล้ว")).toBeInTheDocument();
+    expect(screen.getByText("มีบัญชี Software Empire อยู่แล้ว")).toBeInTheDocument();
   });
 
   it("กดสลับไปสมัครสมาชิกแล้วเนื้อหาเปลี่ยนตาม", async () => {
@@ -41,7 +41,7 @@ describe("AuthSwitch", () => {
 
     await userEvent.click(screen.getByRole("tab", { name: /สมัครสมาชิก/ }));
 
-    expect(screen.getByText("ยังไม่มีบัญชี CSMJU2030")).toBeInTheDocument();
+    expect(screen.getByText("ยังไม่มีบัญชี Software Empire")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /ไปหน้าลงทะเบียนของมหาวิทยาลัย/ }),
     ).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe("AuthSwitch", () => {
     // ปุ่มที่กดแล้วพาไปหน้าตาย แย่กว่าปุ่มที่ปิดไว้พร้อมคำอธิบาย
     render(<AuthSwitch />);
 
-    expect(screen.getByRole("button", { name: /ไปยืนยันตัวตนที่ CSMJU2030/ })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /ไปยืนยันตัวตนที่ Software Empire/ })).toBeDisabled();
 
     expect(screen.getByRole("status")).toHaveTextContent(/รอ PM ยืนยันโดเมน/);
   });
@@ -103,7 +103,7 @@ describe("AuthSwitch", () => {
   it("มีปลายทางแล้วปุ่มกดได้ และไม่ขึ้นคำเตือน", () => {
     render(<AuthSwitch {...CORE} />);
 
-    expect(screen.getByRole("button", { name: /ไปยืนยันตัวตนที่ CSMJU2030/ })).toBeEnabled();
+    expect(screen.getByRole("button", { name: /ไปยืนยันตัวตนที่ Software Empire/ })).toBeEnabled();
 
     expect(screen.queryByRole("status")).toBeNull();
   });

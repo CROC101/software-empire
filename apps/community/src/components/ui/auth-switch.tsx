@@ -37,17 +37,17 @@ const TABS: {
     mode: "signin",
     label: "เข้าสู่ระบบ",
     icon: LogIn,
-    heading: "มีบัญชี CSMJU2030 อยู่แล้ว",
+    heading: "มีบัญชี Software Empire อยู่แล้ว",
     body:
       "ใช้บัญชีเดียวกับระบบอื่นของมหาวิทยาลัย กดปุ่มด้านล่างเพื่อไปยืนยันตัวตน " +
       "ที่ศูนย์กลาง แล้วระบบจะพากลับมาที่นี่เอง",
-    cta: "ไปยืนยันตัวตนที่ CSMJU2030",
+    cta: "ไปยืนยันตัวตนที่ Software Empire",
   },
   {
     mode: "signup",
     label: "สมัครสมาชิก",
     icon: IdCard,
-    heading: "ยังไม่มีบัญชี CSMJU2030",
+    heading: "ยังไม่มีบัญชี Software Empire",
     body:
       "บัญชีออกโดยมหาวิทยาลัย ไม่ได้สมัครที่ระบบนี้ — กดเพื่อไปหน้าลงทะเบียน " +
       "ของส่วนกลาง เมื่อได้บัญชีแล้วกลับมาเข้าสู่ระบบได้ทันที",
@@ -238,7 +238,7 @@ export function AuthSwitch({
             role="status"
             className="mt-3 rounded-lg border border-warning/40 bg-warning/5 px-3 py-2 text-xs leading-relaxed text-warning"
           >
-            ยังต่อกับ CSMJU2030 Core ไม่ได้ — รอ PM ยืนยันโดเมนของหน้า
+            ยังต่อกับ Software Empire Core ไม่ได้ — รอ PM ยืนยันโดเมนของหน้า
             {active.mode === "signin" ? "ล็อกอิน" : "ลงทะเบียน"}กลาง
           </p>
         )}
@@ -247,7 +247,8 @@ export function AuthSwitch({
           <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden="true" />
           <span>
             หน้านี้<strong className="font-medium">ไม่รับรหัสผ่าน</strong>{" "}
-            และระบบย่อยนี้ไม่เก็บรหัสผ่านของใครทั้งสิ้น — การยืนยันตัวตน เกิดที่ CSMJU2030 ที่เดียว
+            และระบบย่อยนี้ไม่เก็บรหัสผ่านของใครทั้งสิ้น — การยืนยันตัวตน เกิดที่ Software Empire
+            ที่เดียว
           </span>
         </p>
       </div>

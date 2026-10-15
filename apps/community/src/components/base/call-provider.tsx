@@ -1690,8 +1690,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     try {
       session.metadata = new MediaMetadata({
         title: call.group ? "สายกลุ่ม" : "กำลังคุยสาย",
-        artist: "CS Nexus",
-        artwork: [{ src: "/nx-mark.png", sizes: "256x256", type: "image/png" }],
+        artist: "Empire Community",
       });
     } catch {
       // ไม่มี MediaMetadata — ปุ่มยังใช้ได้

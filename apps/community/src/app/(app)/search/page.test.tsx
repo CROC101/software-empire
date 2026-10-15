@@ -86,7 +86,7 @@ describe("หน้าค้นหา", () => {
     expect(screen.getByRole("heading", { name: "ล่าสุด" })).toBeInTheDocument();
     expect(screen.getByText("ไม่มีการค้นหาล่าสุด")).toBeInTheDocument();
 
-    await user.click(screen.getByText("© 2026 CS Nexus · CSMJU2030 มหาวิทยาลัยแม่โจ้"));
+    await user.click(screen.getByText("© 2026 Empire Community · Software Empire"));
 
     expect(screen.queryByRole("heading", { name: "ล่าสุด" })).not.toBeInTheDocument();
   });

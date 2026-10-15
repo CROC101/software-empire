@@ -122,7 +122,7 @@ export default function ProfilePage() {
 
   // บรรทัดรองใต้ชื่อ — เดิมเป็น coreUserId (UUID) ซึ่งไม่มีความหมายกับคน
   // เจ้าของเห็นอีเมลของตัวเอง (มาจาก token) · คนอื่นเห็นแค่ว่าเป็นบัญชีของระบบนี้
-  const handle = isMe && me.email ? me.email : "บัญชี CS Nexus";
+  const handle = isMe && me.email ? me.email : "บัญชี Empire Community";
 
   return (
     <div className="mx-auto w-full max-w-[935px] pb-10 pt-4 md:px-5 md:pt-8">

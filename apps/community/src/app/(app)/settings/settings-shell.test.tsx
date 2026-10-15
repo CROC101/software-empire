@@ -34,11 +34,11 @@ describe("เมนูการตั้งค่า", () => {
     render(<SettingsShell>เนื้อหา</SettingsShell>);
 
     for (const caption of [
-      "วิธีที่คุณใช้ CS Nexus",
+      "วิธีที่คุณใช้ Empire Community",
       "ใครบ้างที่สามารถดูเนื้อหาของคุณได้",
       "วิธีที่คนอื่นๆ สามารถโต้ตอบกับคุณได้",
       "ส่วนตัว",
-      "บัญชีกลาง CSMJU2030",
+      "บัญชีกลาง Software Empire",
     ]) {
       expect(screen.getByText(caption)).toBeInTheDocument();
     }

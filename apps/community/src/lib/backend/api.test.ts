@@ -16,7 +16,10 @@ const { api, qs } = await import("./api");
 
 describe("api router", () => {
   it("answers 501 for csmju-nexus areas that are not ported yet", async () => {
-    await expect(api.list("/reels")).rejects.toMatchObject({ status: 501, code: "NOT_AVAILABLE" });
+    await expect(api.list("/activity/likes")).rejects.toMatchObject({
+      status: 501,
+      code: "NOT_AVAILABLE",
+    });
     await expect(api.post("/meetings", {})).rejects.toMatchObject({ status: 501 });
   });
 
@@ -54,10 +57,8 @@ describe("api router", () => {
       status: 400,
     });
     await expect(
-      api.post("/reactions", { targetKind: "REEL", targetId: ME, emoji: "👍" }),
-    ).rejects.toMatchObject({
-      status: 501,
-    });
+      api.post("/reactions", { targetKind: "REEL", targetId: "reel-1", emoji: "👍" }),
+    ).rejects.toMatchObject({ status: 404 });
     await expect(
       api.post("/reactions", { targetKind: "POST", targetId: "post-1", emoji: "👍" }),
     ).rejects.toMatchObject({ status: 404 });
@@ -84,6 +85,40 @@ describe("api router", () => {
         assetIds: ["../etc"],
       }),
     ).rejects.toMatchObject({ status: 404 });
+  });
+
+  it("rejects malformed reel, story, highlight, note and share input before touching the database", async () => {
+    await expect(api.get("/reels/r9")).rejects.toMatchObject({ status: 404 });
+    await expect(api.post("/reels/r1/likes")).rejects.toMatchObject({ status: 404 });
+    await expect(api.del("/reels/r1/reposts")).rejects.toMatchObject({ status: 404 });
+    await expect(api.list(`/reels/${ME}/comments?parentId=c1`)).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(api.list("/reels?authorCoreUserId=user-003")).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(api.post("/reels", { title: "x", assetId: "nope" })).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(api.post("/stories/s1/views")).rejects.toMatchObject({ status: 404 });
+    await expect(api.post(`/stories/${ME}/replies`, {})).rejects.toMatchObject({ status: 400 });
+    await expect(
+      api.post(`/stories/${ME}/replies`, { content: "hi", emoji: "🔥" }),
+    ).rejects.toMatchObject({ status: 400 });
+    await expect(api.post("/highlights", { title: "t", storyIds: ["s1"] })).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(api.del("/highlights/h1")).rejects.toMatchObject({ status: 404 });
+    await expect(api.get("/profiles/x/highlights")).rejects.toMatchObject({ status: 404 });
+    await expect(api.post("/shares", { targetKind: "NOTE", targetId: ME })).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(
+      api.post("/shares", { targetKind: "REEL", targetId: ME, channelIds: ["../x"] }),
+    ).rejects.toMatchObject({ status: 404 });
+    await expect(api.post("/shares", { targetKind: "REEL", targetId: ME })).rejects.toMatchObject({
+      status: 400,
+    });
   });
 
   it("builds query strings without empty values", () => {
