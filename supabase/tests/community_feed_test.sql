@@ -103,7 +103,7 @@ select throws_ok(
   $$select community.create_post('mine now', asset_ids => array[(select id from ids where name = 'p2')])$$,
   '42501', null, 'nobody posts someone else''s file'
 );
-select is((select count(*)::int from community.post_view), 1, 'bob sees alice''s post');
+select is((select count(*)::int from community.post_view where author_id = '11111111-1111-1111-1111-111111111111'), 1, 'bob sees alice''s post');
 select ok(
   community.storage_can_read('community-attachments',
     (select media -> 0 ->> 'path' from community.post_view where id = (select id from ids where name = 'post'))),
@@ -178,7 +178,7 @@ select is(
 );
 
 select set_config('request.jwt.claims', '{"sub":"33333333-3333-3333-3333-333333333333","role":"authenticated"}', true);
-select is((select count(*)::int from community.post_view), 0, 'a blocked person sees none of alice''s posts');
+select is((select count(*)::int from community.post_view where author_id = '11111111-1111-1111-1111-111111111111'), 0, 'a blocked person sees none of alice''s posts');
 select ok(
   not community.storage_can_read('community-attachments',
     (select path from paths where name = 'p2')),
@@ -193,7 +193,7 @@ select is(
 );
 reset role;
 select is(
-  (select count(*)::int from community.reactions where target_kind = 'POST'), 0,
+  (select count(*)::int from community.reactions where target_kind = 'POST' and target_id = (select id from ids where name = 'post')), 0,
   'the post''s reactions go with it'
 );
 select ok(

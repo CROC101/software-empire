@@ -7,6 +7,7 @@
 import { meta, notAvailable, type PaginationMeta, type Page, type Route } from "./api-core";
 import { CHAT_ROUTES } from "./chat-api";
 import { ACTIVITY_ROUTES } from "./activity-api";
+import { ADMIN_ROUTES } from "./admin-api";
 import { FEED_ROUTES } from "./feed-api";
 import { NOTIFY_ROUTES } from "./notify-api";
 import { REEL_ROUTES } from "./reels-api";
@@ -25,6 +26,7 @@ const ROUTES: Route[] = [
   ...NOTIFY_ROUTES,
   ...ACTIVITY_ROUTES,
   ...VOICE_ROUTES,
+  ...ADMIN_ROUTES,
 ];
 
 async function request<T>(

@@ -43,7 +43,7 @@ pnpm format:check    # CI รันด้วย · แก้ด้วย pnpm fo
 pnpm --filter <pkg> <script>
 
 pnpm db:start        # Supabase ในเครื่อง (Docker) เฉพาะ db + auth + rest · pnpm db:status ดู URL/key
-pnpm db:reset        # ล้างฐาน + รัน supabase/migrations ใหม่ (ลบผู้ใช้ทดสอบด้วย)
+pnpm db:reset        # ล้างฐาน + รัน supabase/migrations ใหม่ + supabase/seed.sql (บัญชีเดโมในเครื่อง ดูหัวไฟล์ seed)
 pnpm db:test         # pgTAP ใน supabase/tests — RLS ทุกตารางต้องมีเทสต์
 pnpm db:types        # สร้าง packages/core/src/database.types.ts ใหม่หลังแก้ migration
 pnpm --filter @empire/hub dev        # http://localhost:3000
@@ -55,7 +55,7 @@ pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จร�
 
 - `db:start` เปิด storage + realtime ด้วย · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
 - canva / community: หน้าจอเดิมของ csmju-canvas / csmju-nexus เรียก `api.get('/designs/…')` → `src/lib/backend/api.ts` ของแอปแปลงเป็น Supabase · path ที่ยังไม่รองรับตอบ 501 · `lib/router.tsx` แทน `next/link` / `next/navigation` · unit test ใช้ `src/test/router-mock.tsx` แทน router จริง
-- community ย้ายทีละรอบ (Full Nexus): 1 social graph ✅ · 2 แชต + Realtime ✅ (`socket.ts` = ตัวกระจาย event แบบ socket.io ที่ป้อนด้วย Supabase Realtime · `pnpm --filter @empire/community smoke:chat`) · 3 ฟีด + อัปโหลด ✅ (ไบต์อยู่ใน bucket ส่วนตัว `community-*` · intent → PUT signed URL → `commit_asset` อ่านขนาด/ชนิดจริงจาก storage.objects · SQL ลบแถวแล้วแอปเรียก `purge()` ลบไบต์ · `pnpm --filter @empire/community smoke:feed`) · 4 reels/stories/notes ✅ (ตัวนับขยับใน RPC เท่านั้น · การ์ดแชร์ในแชท resolve ตอนอ่านใน `embeds.ts` · ตอบสตอรี่ = DM ที่มีการ์ด STORY) · 5 แจ้งเตือน/ค้นหา/ตั้งค่า ✅ (แจ้งเตือนเกิดจาก trigger บนตารางต้นทาง → `community.notify()` ตัดสินตาม preference · audit_logs เขียนด้วย trigger · `smoke:notify`) · 6 ประชุม/เสียง (WebRTC) ✅ (เหตุการณ์ของสายส่งด้วย `realtime.send` ไป topic ส่วนตัว `user:<id>` · สัญญาณ WebRTC บน `voice:<session>` เฉพาะคนในห้อง · heartbeat 25 วิ ใครเงียบเกิน 90 วิถูกกวาดออก · `smoke:voice`) · 7 admin/report
+- community ย้ายทีละรอบ (Full Nexus): 1 social graph ✅ · 2 แชต + Realtime ✅ (`socket.ts` = ตัวกระจาย event แบบ socket.io ที่ป้อนด้วย Supabase Realtime · `pnpm --filter @empire/community smoke:chat`) · 3 ฟีด + อัปโหลด ✅ (ไบต์อยู่ใน bucket ส่วนตัว `community-*` · intent → PUT signed URL → `commit_asset` อ่านขนาด/ชนิดจริงจาก storage.objects · SQL ลบแถวแล้วแอปเรียก `purge()` ลบไบต์ · `pnpm --filter @empire/community smoke:feed`) · 4 reels/stories/notes ✅ (ตัวนับขยับใน RPC เท่านั้น · การ์ดแชร์ในแชท resolve ตอนอ่านใน `embeds.ts` · ตอบสตอรี่ = DM ที่มีการ์ด STORY) · 5 แจ้งเตือน/ค้นหา/ตั้งค่า ✅ (แจ้งเตือนเกิดจาก trigger บนตารางต้นทาง → `community.notify()` ตัดสินตาม preference · audit_logs เขียนด้วย trigger · `smoke:notify`) · 6 ประชุม/เสียง (WebRTC) ✅ (เหตุการณ์ของสายส่งด้วย `realtime.send` ไป topic ส่วนตัว `user:<id>` · สัญญาณ WebRTC บน `voice:<session>` เฉพาะคนในห้อง · heartbeat 25 วิ ใครเงียบเกิน 90 วิถูกกวาดออก · `smoke:voice`) · 7 admin/report ✅ (ผู้ดูแล = `profiles.role = ADMIN` · คนแรกตั้งด้วย SQL: `update community.profiles set role = 'ADMIN' where user_id = (select id from auth.users where email = '…')` · โควตาต่อคนใน `profiles.storage_quota_bytes`)
 - กติกาความเป็นส่วนตัว (บล็อก · ใครเห็นอะไร) ต้องอยู่ใน RLS / ฟังก์ชัน SQL พร้อม pgTAP — ห้ามอยู่แค่ใน `api.ts`
 - `pnpm verify` จำกัด `--concurrency=50%` — ถ้ารันพร้อมกันหมด worker ของ vitest start ไม่ทัน
 

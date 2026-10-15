@@ -1067,8 +1067,10 @@ export type Database = {
           created_at: string;
           display_name: string;
           role: string;
+          role_explicit: boolean;
           show_activity_status: boolean;
           show_in_suggestions: boolean;
+          storage_quota_bytes: number;
           updated_at: string;
           user_id: string;
           website: string | null;
@@ -1083,8 +1085,10 @@ export type Database = {
           created_at?: string;
           display_name: string;
           role?: string;
+          role_explicit?: boolean;
           show_activity_status?: boolean;
           show_in_suggestions?: boolean;
+          storage_quota_bytes?: number;
           updated_at?: string;
           user_id: string;
           website?: string | null;
@@ -1098,8 +1102,10 @@ export type Database = {
           created_at?: string;
           display_name?: string;
           role?: string;
+          role_explicit?: boolean;
           show_activity_status?: boolean;
           show_in_suggestions?: boolean;
+          storage_quota_bytes?: number;
           updated_at?: string;
           user_id?: string;
           website?: string | null;
@@ -1388,6 +1394,43 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      reports: {
+        Row: {
+          created_at: string;
+          id: string;
+          reason: string;
+          reporter_id: string;
+          resolved_at: string | null;
+          resolved_by: string | null;
+          status: string;
+          target_id: string;
+          target_kind: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          reason: string;
+          reporter_id?: string;
+          resolved_at?: string | null;
+          resolved_by?: string | null;
+          status?: string;
+          target_id: string;
+          target_kind: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          reason?: string;
+          reporter_id?: string;
+          resolved_at?: string | null;
+          resolved_by?: string | null;
+          status?: string;
+          target_id?: string;
+          target_kind?: string;
+        };
+        Relationships: [];
       };
       stories: {
         Row: {
@@ -1940,6 +1983,7 @@ export type Database = {
       add_comment: { Args: { body: string; post: string }; Returns: string };
       add_members: { Args: { channel: string; users: string[] }; Returns: number };
       add_reel_comment: { Args: { body: string; parent?: string; reel: string }; Returns: string };
+      admin_overview: { Args: Record<PropertyKey, never>; Returns: Json };
       asset_in_use: { Args: { asset: string }; Returns: boolean };
       audit: {
         Args: { action: string; metadata: Json; target_id: string; target_kind: string };
@@ -2049,6 +2093,10 @@ export type Database = {
         Args: { asset: string; caption?: string; duration_ms: number; title: string };
         Returns: string;
       };
+      create_report: {
+        Args: { reason: string; target_id: string; target_kind: string };
+        Returns: string;
+      };
       create_story: { Args: { asset: string; caption?: string }; Returns: string };
       create_upload_intent: {
         Args: { bucket: string; content_type?: string; file_name: string; size_bytes: number };
@@ -2104,6 +2152,15 @@ export type Database = {
       mark_notification_read: { Args: { notification: string }; Returns: number };
       mark_read: { Args: { channel: string; upto: number }; Returns: undefined };
       mark_unread: { Args: { channel: string }; Returns: undefined };
+      member_json: { Args: { target: string }; Returns: Json };
+      member_rows: {
+        Args: { max_rows?: number; q?: string; role?: string; skip?: number };
+        Returns: {
+          member: Json;
+          total: number;
+        }[];
+      };
+      my_member: { Args: Record<PropertyKey, never>; Returns: Json };
       my_role: { Args: { channel: string }; Returns: string };
       notify: {
         Args: { kind: string; payload?: Json; recipient: string; ref: string };
@@ -2139,6 +2196,10 @@ export type Database = {
       require_member: { Args: { channel: string }; Returns: string };
       require_reel: { Args: { reel: string }; Returns: string };
       require_user: { Args: Record<PropertyKey, never>; Returns: string };
+      resolve_report: {
+        Args: { note?: string; report: string; status: string };
+        Returns: undefined;
+      };
       search: {
         Args: { kind?: string; max_rows?: number; q: string; skip?: number };
         Returns: {
@@ -2169,6 +2230,11 @@ export type Database = {
       send_to: { Args: { event: string; payload: Json; person: string }; Returns: undefined };
       session_json: { Args: { session: string }; Returns: Json };
       set_cover: { Args: { asset?: string }; Returns: string };
+      set_member_quota: {
+        Args: { quota_bytes: number; reason?: string; target: string };
+        Returns: Json;
+      };
+      set_member_role: { Args: { reason?: string; role: string; target: string }; Returns: Json };
       set_nickname: { Args: { channel: string; nick: string; target: string }; Returns: undefined };
       set_pin: { Args: { message: string; pinned: boolean }; Returns: undefined };
       set_voice_state: {
