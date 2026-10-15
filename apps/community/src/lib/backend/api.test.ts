@@ -17,7 +17,7 @@ const { api, qs } = await import("./api");
 describe("api router", () => {
   it("answers 501 for csmju-nexus areas that are not ported yet", async () => {
     await expect(api.list("/reels")).rejects.toMatchObject({ status: 501, code: "NOT_AVAILABLE" });
-    await expect(api.post("/channels", {})).rejects.toMatchObject({ status: 501 });
+    await expect(api.post("/meetings", {})).rejects.toMatchObject({ status: 501 });
   });
 
   it("treats anything that is not a user id as a missing user", async () => {
@@ -31,6 +31,33 @@ describe("api router", () => {
 
   it("resolves no profiles for an empty or invalid id list", async () => {
     await expect(api.get("/profiles?coreUserIds=not-a-uuid,,")).resolves.toEqual([]);
+  });
+
+  it("rejects malformed room and message ids before touching the database", async () => {
+    await expect(api.get("/channels/not-a-room")).rejects.toMatchObject({ status: 404 });
+    await expect(api.patch("/channels/abc/messages/xyz", { content: "a" })).rejects.toMatchObject({
+      status: 404,
+    });
+    await expect(
+      api.post("/channels/11111111-1111-4111-8111-111111111111/messages", { content: "hi" }),
+    ).rejects.toMatchObject({ status: 400 });
+  });
+
+  it("validates new rooms and reactions locally", async () => {
+    await expect(api.post("/channels", { kind: "GROUP", name: "  " })).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(api.post("/direct-channels", {})).rejects.toMatchObject({ status: 400 });
+    await expect(
+      api.post("/reactions", { targetKind: "STORY", targetId: ME, emoji: "👍" }),
+    ).rejects.toMatchObject({
+      status: 400,
+    });
+    await expect(
+      api.post("/reactions", { targetKind: "POST", targetId: ME, emoji: "👍" }),
+    ).rejects.toMatchObject({
+      status: 501,
+    });
   });
 
   it("builds query strings without empty values", () => {

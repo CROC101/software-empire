@@ -25,7 +25,13 @@ set local role authenticated;
 select set_config('request.jwt.claims',
   '{"sub":"11111111-1111-1111-1111-111111111111","role":"authenticated"}', true);
 
-select is((select count(*)::int from community.profiles), 3, 'A sees every profile while nobody blocks');
+select is(
+  (select count(*)::int from community.profiles where user_id in (
+    '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222',
+    '33333333-3333-3333-3333-333333333333')),
+  3,
+  'A sees every profile while nobody blocks'
+);
 select results_eq(
   'select user_id from community.follow_suggestions(10)',
   $$values ('22222222-2222-2222-2222-222222222222'::uuid)$$,

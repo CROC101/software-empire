@@ -163,6 +163,94 @@ export type Database = {
         };
         Relationships: [];
       };
+      channel_members: {
+        Row: {
+          channel_id: string;
+          cleared_at: string | null;
+          inbox_folder: string | null;
+          inbox_pinned_at: string | null;
+          joined_at: string;
+          last_read_seq: number;
+          marked_unread: boolean;
+          muted: boolean;
+          nickname: string | null;
+          role: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id: string;
+          cleared_at?: string | null;
+          inbox_folder?: string | null;
+          inbox_pinned_at?: string | null;
+          joined_at?: string;
+          last_read_seq?: number;
+          marked_unread?: boolean;
+          muted?: boolean;
+          nickname?: string | null;
+          role?: string;
+          user_id: string;
+        };
+        Update: {
+          channel_id?: string;
+          cleared_at?: string | null;
+          inbox_folder?: string | null;
+          inbox_pinned_at?: string | null;
+          joined_at?: string;
+          last_read_seq?: number;
+          marked_unread?: boolean;
+          muted?: boolean;
+          nickname?: string | null;
+          role?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "channel_members_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      channels: {
+        Row: {
+          course_tag: string | null;
+          created_at: string;
+          created_by: string | null;
+          description: string | null;
+          dm_key: string | null;
+          id: string;
+          kind: string;
+          max_seats: number;
+          name: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          course_tag?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          dm_key?: string | null;
+          id?: string;
+          kind: string;
+          max_seats?: number;
+          name?: string | null;
+        };
+        Update: {
+          course_tag?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          dm_key?: string | null;
+          id?: string;
+          kind?: string;
+          max_seats?: number;
+          name?: string | null;
+        };
+        Relationships: [];
+      };
       close_friends: {
         Row: {
           created_at: string;
@@ -200,6 +288,100 @@ export type Database = {
           follower_id?: string;
         };
         Relationships: [];
+      };
+      messages: {
+        Row: {
+          author_id: string;
+          channel_id: string;
+          client_nonce: string;
+          content: string | null;
+          created_at: string;
+          deleted_at: string | null;
+          edited_at: string | null;
+          forwarded: boolean;
+          id: string;
+          last_change: string;
+          parent_id: string | null;
+          pinned_at: string | null;
+          pinned_by: string | null;
+          reply_count: number;
+          reply_to_id: string | null;
+          seq: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id: string;
+          channel_id: string;
+          client_nonce: string;
+          content?: string | null;
+          created_at?: string;
+          deleted_at?: string | null;
+          edited_at?: string | null;
+          forwarded?: boolean;
+          id?: string;
+          last_change?: string;
+          parent_id?: string | null;
+          pinned_at?: string | null;
+          pinned_by?: string | null;
+          reply_count?: number;
+          reply_to_id?: string | null;
+          seq?: never;
+        };
+        Update: {
+          author_id?: string;
+          channel_id?: string;
+          client_nonce?: string;
+          content?: string | null;
+          created_at?: string;
+          deleted_at?: string | null;
+          edited_at?: string | null;
+          forwarded?: boolean;
+          id?: string;
+          last_change?: string;
+          parent_id?: string | null;
+          pinned_at?: string | null;
+          pinned_by?: string | null;
+          reply_count?: number;
+          reply_to_id?: string | null;
+          seq?: never;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "messages_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "messages_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "message_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "messages_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "messages_reply_to_id_fkey";
+            columns: ["reply_to_id"];
+            isOneToOne: false;
+            referencedRelation: "message_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "messages_reply_to_id_fkey";
+            columns: ["reply_to_id"];
+            isOneToOne: false;
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       profiles: {
         Row: {
@@ -247,8 +429,76 @@ export type Database = {
         };
         Relationships: [];
       };
+      reactions: {
+        Row: {
+          created_at: string;
+          emoji: string;
+          target_id: string;
+          target_kind: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          emoji: string;
+          target_id: string;
+          target_kind: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          emoji?: string;
+          target_id?: string;
+          target_kind?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
+      message_view: {
+        Row: {
+          author_id: string | null;
+          channel_id: string | null;
+          client_nonce: string | null;
+          content: string | null;
+          created_at: string | null;
+          deleted_at: string | null;
+          edited_at: string | null;
+          forwarded: boolean | null;
+          id: string | null;
+          parent_id: string | null;
+          pinned_at: string | null;
+          pinned_by: string | null;
+          reply_count: number | null;
+          reply_to: Json | null;
+          seq: number | null;
+        };
+        ComputedFields: never;
+        Relationships: [
+          {
+            foreignKeyName: "messages_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "messages_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "message_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "messages_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profile_stats: {
         Row: {
           follower_count: number | null;
@@ -270,7 +520,28 @@ export type Database = {
       };
     };
     Functions: {
+      add_members: { Args: { channel: string; users: string[] }; Returns: number };
       block_user: { Args: { target: string }; Returns: string };
+      can_manage: { Args: { channel: string }; Returns: boolean };
+      can_see_target: { Args: { kind: string; target: string }; Returns: boolean };
+      channel_rows: {
+        Args: { max_rows?: number; only_channel?: string; skip?: number };
+        Returns: Json[];
+      };
+      clear_channel: { Args: { channel: string }; Returns: string };
+      create_channel: {
+        Args: {
+          course_tag?: string;
+          description?: string;
+          kind: string;
+          max_seats?: number;
+          name: string;
+        };
+        Returns: string;
+      };
+      delete_channel: { Args: { channel: string }; Returns: undefined };
+      delete_message: { Args: { message: string }; Returns: undefined };
+      edit_message: { Args: { body: string; message: string }; Returns: undefined };
       follow_suggestions: {
         Args: { max_rows?: number };
         Returns: {
@@ -281,6 +552,47 @@ export type Database = {
         }[];
       };
       is_blocked_either: { Args: { a: string; b: string }; Returns: boolean };
+      is_member: { Args: { channel: string }; Returns: boolean };
+      is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      leave_channel: { Args: { channel: string }; Returns: undefined };
+      mark_read: { Args: { channel: string; upto: number }; Returns: undefined };
+      mark_unread: { Args: { channel: string }; Returns: undefined };
+      my_role: { Args: { channel: string }; Returns: string };
+      open_direct: { Args: { group_name?: string; peers: string[] }; Returns: string };
+      reaction_summaries: {
+        Args: { kind: string; targets: string[] };
+        Returns: {
+          count: number;
+          emoji: string;
+          first_at: string;
+          reacted_by_me: boolean;
+          target_id: string;
+        }[];
+      };
+      remove_member: { Args: { channel: string; target: string }; Returns: undefined };
+      require_member: { Args: { channel: string }; Returns: string };
+      require_user: { Args: Record<PropertyKey, never>; Returns: string };
+      send_message: {
+        Args: {
+          body: string;
+          channel: string;
+          is_forward?: boolean;
+          nonce: string;
+          parent?: string;
+          reply_to?: string;
+        };
+        Returns: string;
+      };
+      set_nickname: { Args: { channel: string; nick: string; target: string }; Returns: undefined };
+      set_pin: { Args: { message: string; pinned: boolean }; Returns: undefined };
+      update_channel: {
+        Args: { channel: string; new_description?: string; new_name?: string };
+        Returns: undefined;
+      };
+      update_inbox: {
+        Args: { channel: string; folder?: string; mute?: boolean; pinned?: boolean };
+        Returns: undefined;
+      };
     };
     Enums: {
       [_ in never]: never;

@@ -1,6 +1,9 @@
 import "@testing-library/jest-dom/vitest";
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
 import { afterEach, beforeEach, expect, vi } from "vitest";
+
+// findBy*/waitFor default to 1 s; under parallel turbo builds that is too tight and tests flake
+configure({ asyncUtilTimeout: 3000 });
 
 // components use React Router hooks; unit tests render them without a <Router>
 vi.mock("@/lib/router", async () => (await import("./src/test/router-mock")).testRouter);
