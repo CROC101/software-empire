@@ -21,6 +21,11 @@ export function base(tsconfigRootDir) {
           "error",
           { ignoreArrowShorthand: true },
         ],
+        // `_name` marks a parameter that must exist for the signature but is unused
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
+        ],
       },
     },
     // JS config files sit outside tsconfig, so no type info there

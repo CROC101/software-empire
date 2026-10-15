@@ -1,6 +1,147 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  canva: {
+    Tables: {
+      assets: {
+        Row: {
+          created_at: string;
+          file_name: string;
+          id: string;
+          mime_type: string;
+          size_bytes: number;
+          source_site: string | null;
+          source_url: string | null;
+          trashed_at: string | null;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          file_name: string;
+          id?: string;
+          mime_type: string;
+          size_bytes: number;
+          source_site?: string | null;
+          source_url?: string | null;
+          trashed_at?: string | null;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          file_name?: string;
+          id?: string;
+          mime_type?: string;
+          size_bytes?: number;
+          source_site?: string | null;
+          source_url?: string | null;
+          trashed_at?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      designs: {
+        Row: {
+          created_at: string;
+          design_type: string;
+          document: NonNullable<Json>;
+          folder_id: string | null;
+          height: number;
+          id: string;
+          source_template_id: string | null;
+          starred_at: string | null;
+          tags: string[];
+          thumbnail: string | null;
+          title: string;
+          trashed_at: string | null;
+          updated_at: string;
+          user_id: string;
+          width: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          design_type: string;
+          document: NonNullable<Json>;
+          folder_id?: string | null;
+          height: number;
+          id?: string;
+          source_template_id?: string | null;
+          starred_at?: string | null;
+          tags?: string[];
+          thumbnail?: string | null;
+          title: string;
+          trashed_at?: string | null;
+          updated_at?: string;
+          user_id?: string;
+          width: number;
+        };
+        Update: {
+          created_at?: string;
+          design_type?: string;
+          document?: NonNullable<Json>;
+          folder_id?: string | null;
+          height?: number;
+          id?: string;
+          source_template_id?: string | null;
+          starred_at?: string | null;
+          tags?: string[];
+          thumbnail?: string | null;
+          title?: string;
+          trashed_at?: string | null;
+          updated_at?: string;
+          user_id?: string;
+          width?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "designs_folder_id_fkey";
+            columns: ["folder_id"];
+            isOneToOne: false;
+            referencedRelation: "folders";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      folders: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       [_ in never]: never;
@@ -157,6 +298,9 @@ export type CompositeTypes<
     : never;
 
 export const Constants = {
+  canva: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },

@@ -1,3 +1,7 @@
 pnpm-lock.yaml
 .claude/
 *.txt
+apps/canva/src/components/
+apps/canva/src/pages/
+apps/canva/src/styles.css
+apps/canva/public/
