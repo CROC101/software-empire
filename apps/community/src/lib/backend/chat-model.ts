@@ -2,10 +2,13 @@
 import type { Database } from "@empire/core/supabase";
 import { db } from "@/lib/supabase";
 import { check, fromPostgrest } from "./api-core";
+import { embedKey, resolveEmbeds } from "./embeds";
 import type {
+  CallLog,
   Channel,
   Message,
   MessageAttachment,
+  MessageEmbed,
   MessageReplyTo,
   ReactionSummary,
   ReactionTarget,
@@ -21,7 +24,7 @@ export function toMessage(row: MessageRow): Message {
     authorCoreUserId: row.author_id ?? "",
     content: row.content,
     attachments: (row.attachments ?? []) as unknown as MessageAttachment[],
-    // shortcut: post/reel share cards arrive with round 4
+    // filled in by toMessages, which resolves every card on the page in one go
     embed: null,
     parentId: row.parent_id,
     replyCount: row.reply_count ?? 0,
@@ -32,13 +35,32 @@ export function toMessage(row: MessageRow): Message {
     createdAt: row.created_at ?? "",
     replyTo: row.reply_to as MessageReplyTo | null,
     forwarded: row.forwarded ?? false,
+    callLog: (row.call_log ?? null) as unknown as CallLog | null,
+    storyReply: row.story_reply_kind
+      ? { kind: row.story_reply_kind as "REPLY" | "REACTION", emoji: row.story_reply_emoji }
+      : null,
   };
+}
+
+/** Rows to messages, with shared post/reel/story cards resolved for the whole page. */
+export async function toMessages(rows: MessageRow[]): Promise<Message[]> {
+  const refs = rows.flatMap((row) =>
+    row.embed_kind && row.embed_ref ? [{ kind: row.embed_kind, refId: row.embed_ref }] : [],
+  );
+  const cards = refs.length ? await resolveEmbeds(refs) : new Map<string, MessageEmbed>();
+  return rows.map((row) => ({
+    ...toMessage(row),
+    embed:
+      row.embed_kind && row.embed_ref
+        ? (cards.get(embedKey(row.embed_kind, row.embed_ref)) ?? null)
+        : null,
+  }));
 }
 
 export async function fetchMessage(id: string): Promise<Message | null> {
   const { data, error } = await db().from("message_view").select("*").eq("id", id).maybeSingle();
   if (error) throw fromPostgrest(error);
-  return data ? toMessage(data) : null;
+  return data ? ((await toMessages([data]))[0] ?? null) : null;
 }
 
 /** One channel in the nexus inbox shape (null when it doesn't exist or you're not a member). */

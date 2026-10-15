@@ -196,19 +196,22 @@ export function AppRail() {
         }}
         className="nx-rail absolute inset-y-0 left-0 flex flex-col border-r border-sidebar-border bg-sidebar px-3"
       >
-        <Link href="/feed" aria-label="CS Nexus หน้าหลัก" className="nx-rail-item nx-rail-brand">
+        <Link
+          href="/feed"
+          aria-label="Empire Community หน้าหลัก"
+          className="nx-rail-item nx-rail-brand"
+        >
           {/* โลโก้สาขาในวงกลมขาวแบบหัวแถบของ Core Hub */}
           <span className="nx-rail-icon nx-logo-badge size-9 p-0.5">
-            <img
-              src="/nx-mark.png"
-              alt=""
-              width={32}
-              height={32}
-              className="size-8 rounded-full object-contain"
-            />
+            <span
+              aria-hidden
+              className="grid size-8 place-items-center font-heading text-base font-extrabold text-sidebar-foreground"
+            >
+              E
+            </span>
           </span>
           <span className="nx-rail-label font-heading text-xl font-extrabold leading-none tracking-tight">
-            CS Nexus
+            Empire Community
           </span>
         </Link>
 
@@ -424,9 +427,9 @@ export function AppRail() {
           </button>
 
           {CORE_HOME && (
-            <a href={CORE_HOME} aria-label="ระบบอื่นใน CSMJU2030" className="nx-rail-item">
+            <a href={CORE_HOME} aria-label="ระบบอื่นใน Software Empire" className="nx-rail-item">
               <Shapes aria-hidden className="size-6" strokeWidth={1.9} />
-              <span className="nx-rail-label">ระบบอื่นใน CSMJU2030</span>
+              <span className="nx-rail-label">ระบบอื่นใน Software Empire</span>
             </a>
           )}
         </div>

@@ -9,3 +9,4 @@ export {
   CardHeader,
   CardTitle,
 } from "./components/card";
+export { BrandMark } from "./components/brand-mark";

@@ -55,6 +55,8 @@ export default defineConfig(({ mode }) => {
       restoreMocks: true,
       // threads start without spawning a process — forks timed out while turbo ran builds in parallel
       pool: "threads",
+      // turbo runs every package's tests at once; half the cores each keeps workers from timing out on start
+      maxWorkers: "50%",
       // the first test in a file pays for transforming large screens; under parallel turbo
       // lint/build that can exceed the 5 s default even though each test runs in < 0.5 s alone
       testTimeout: 20_000,

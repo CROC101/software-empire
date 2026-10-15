@@ -9,6 +9,9 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        // the signature call to action: aurora sweep, white text in both themes, a soft glow
+        aurora:
+          "bg-aurora text-white shadow-glow transition-[filter,transform] hover:brightness-110 active:translate-y-px",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         outline: "border bg-background hover:bg-muted",
         ghost: "hover:bg-muted",

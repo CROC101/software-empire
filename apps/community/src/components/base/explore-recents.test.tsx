@@ -184,6 +184,6 @@ describe("ท้ายหน้าสำรวจ", () => {
     for (const label of ["เกี่ยวกับ", "ความช่วยเหลือ", "ความเป็นส่วนตัว", "ข้อกำหนด", "ภาษา ไทย"]) {
       expect(screen.getByText(label)).toBeInTheDocument();
     }
-    expect(screen.getByText("© 2026 CS Nexus · CSMJU2030 มหาวิทยาลัยแม่โจ้")).toBeInTheDocument();
+    expect(screen.getByText("© 2026 Empire Community · Software Empire")).toBeInTheDocument();
   });
 });

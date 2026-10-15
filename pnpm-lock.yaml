@@ -184,6 +184,9 @@ importers:
       '@empire/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@empire/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@supabase/supabase-js':
         specifier: ^2.117.3
         version: 2.117.3
@@ -263,6 +266,9 @@ importers:
       '@empire/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@empire/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@supabase/supabase-js':
         specifier: ^2.117.3
         version: 2.117.3

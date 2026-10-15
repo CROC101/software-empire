@@ -1482,7 +1482,9 @@ function PeerIntro({
       {peer ? (
         <>
           <p className="text-sm text-muted-foreground">
-            {hasKnownName(peerProfile) ? `${peerProfile.displayName} · CS Nexus` : "บัญชี CS Nexus"}
+            {hasKnownName(peerProfile)
+              ? `${peerProfile.displayName} · Empire Community`
+              : "บัญชี Empire Community"}
           </p>
           <Link
             href={`/profile/${encodeURIComponent(peer)}`}
@@ -1543,5 +1545,5 @@ function RequestBanner({ channel, onGone }: { channel: Channel; onGone?: () => v
 /// ชื่อผู้ใช้ของคู่สนทนาแบบบรรทัดรองของ Instagram — ไม่รู้ชื่อ (ยังไม่เคยเข้าระบบนี้)
 /// ก็บอกแค่ว่าเป็นบัญชีของระบบนี้ **ห้ามแสดง coreUserId**
 function peerHandle(profile: ProfileSummary): string {
-  return hasKnownName(profile) ? profile.displayName : "บัญชี CS Nexus";
+  return hasKnownName(profile) ? profile.displayName : "บัญชี Empire Community";
 }

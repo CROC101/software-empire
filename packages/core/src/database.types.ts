@@ -205,6 +205,37 @@ export type Database = {
           },
         ];
       };
+      audit_logs: {
+        Row: {
+          action: string;
+          actor_id: string | null;
+          created_at: string;
+          id: string;
+          metadata: NonNullable<Json>;
+          target_id: string | null;
+          target_kind: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          action: string;
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          metadata?: NonNullable<Json>;
+          target_id?: string | null;
+          target_kind?: string | null;
+        };
+        Update: {
+          action?: string;
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          metadata?: NonNullable<Json>;
+          target_id?: string | null;
+          target_kind?: string | null;
+        };
+        Relationships: [];
+      };
       blocks: {
         Row: {
           blocked_id: string;
@@ -324,6 +355,113 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [];
+      };
+      call_feedback: {
+        Row: {
+          channel_id: string;
+          created_at: string;
+          duration_sec: number | null;
+          id: string;
+          kind: string;
+          rating: number;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id: string;
+          created_at?: string;
+          duration_sec?: number | null;
+          id?: string;
+          kind: string;
+          rating: number;
+          user_id?: string;
+        };
+        Update: {
+          channel_id?: string;
+          created_at?: string;
+          duration_sec?: number | null;
+          id?: string;
+          kind?: string;
+          rating?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "call_feedback_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      call_logs: {
+        Row: {
+          answered_at: string | null;
+          caller_id: string;
+          channel_id: string;
+          declined: string[];
+          duration_sec: number | null;
+          ended_at: string | null;
+          invitees: string[];
+          media: string;
+          message_id: string;
+          session_id: string;
+          started_at: string;
+          status: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          answered_at?: string | null;
+          caller_id: string;
+          channel_id: string;
+          declined?: string[];
+          duration_sec?: number | null;
+          ended_at?: string | null;
+          invitees?: string[];
+          media?: string;
+          message_id: string;
+          session_id: string;
+          started_at?: string;
+          status?: string;
+        };
+        Update: {
+          answered_at?: string | null;
+          caller_id?: string;
+          channel_id?: string;
+          declined?: string[];
+          duration_sec?: number | null;
+          ended_at?: string | null;
+          invitees?: string[];
+          media?: string;
+          message_id?: string;
+          session_id?: string;
+          started_at?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "call_logs_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "call_logs_message_id_fkey";
+            columns: ["message_id"];
+            isOneToOne: true;
+            referencedRelation: "message_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "call_logs_message_id_fkey";
+            columns: ["message_id"];
+            isOneToOne: true;
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       channel_members: {
         Row: {
@@ -451,6 +589,142 @@ export type Database = {
         };
         Relationships: [];
       };
+      highlight_items: {
+        Row: {
+          highlight_id: string;
+          position: number;
+          story_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          highlight_id: string;
+          position: number;
+          story_id: string;
+        };
+        Update: {
+          highlight_id?: string;
+          position?: number;
+          story_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "highlight_items_highlight_id_fkey";
+            columns: ["highlight_id"];
+            isOneToOne: false;
+            referencedRelation: "highlight_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "highlight_items_highlight_id_fkey";
+            columns: ["highlight_id"];
+            isOneToOne: false;
+            referencedRelation: "highlights";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "highlight_items_story_id_fkey";
+            columns: ["story_id"];
+            isOneToOne: false;
+            referencedRelation: "stories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "highlight_items_story_id_fkey";
+            columns: ["story_id"];
+            isOneToOne: false;
+            referencedRelation: "story_feed";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      highlights: {
+        Row: {
+          cover_story_id: string | null;
+          created_at: string;
+          id: string;
+          owner_id: string;
+          title: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          cover_story_id?: string | null;
+          created_at?: string;
+          id?: string;
+          owner_id: string;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          cover_story_id?: string | null;
+          created_at?: string;
+          id?: string;
+          owner_id?: string;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "highlights_cover_story_id_fkey";
+            columns: ["cover_story_id"];
+            isOneToOne: false;
+            referencedRelation: "stories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "highlights_cover_story_id_fkey";
+            columns: ["cover_story_id"];
+            isOneToOne: false;
+            referencedRelation: "story_feed";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      meetings: {
+        Row: {
+          agenda: string | null;
+          channel_id: string;
+          created_at: string;
+          created_by: string | null;
+          ends_at: string;
+          id: string;
+          starts_at: string;
+          status: string;
+          title: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          agenda?: string | null;
+          channel_id: string;
+          created_at?: string;
+          created_by?: string | null;
+          ends_at: string;
+          id?: string;
+          starts_at: string;
+          status?: string;
+          title: string;
+        };
+        Update: {
+          agenda?: string | null;
+          channel_id?: string;
+          created_at?: string;
+          created_by?: string | null;
+          ends_at?: string;
+          id?: string;
+          starts_at?: string;
+          status?: string;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "meetings_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       messages: {
         Row: {
           author_id: string;
@@ -460,6 +734,8 @@ export type Database = {
           created_at: string;
           deleted_at: string | null;
           edited_at: string | null;
+          embed_kind: string | null;
+          embed_ref: string | null;
           forwarded: boolean;
           id: string;
           last_change: string;
@@ -469,6 +745,8 @@ export type Database = {
           reply_count: number;
           reply_to_id: string | null;
           seq: number;
+          story_reply_emoji: string | null;
+          story_reply_kind: string | null;
         };
         ComputedFields: never;
         Insert: {
@@ -479,6 +757,8 @@ export type Database = {
           created_at?: string;
           deleted_at?: string | null;
           edited_at?: string | null;
+          embed_kind?: string | null;
+          embed_ref?: string | null;
           forwarded?: boolean;
           id?: string;
           last_change?: string;
@@ -488,6 +768,8 @@ export type Database = {
           reply_count?: number;
           reply_to_id?: string | null;
           seq?: never;
+          story_reply_emoji?: string | null;
+          story_reply_kind?: string | null;
         };
         Update: {
           author_id?: string;
@@ -497,6 +779,8 @@ export type Database = {
           created_at?: string;
           deleted_at?: string | null;
           edited_at?: string | null;
+          embed_kind?: string | null;
+          embed_ref?: string | null;
           forwarded?: boolean;
           id?: string;
           last_change?: string;
@@ -506,6 +790,8 @@ export type Database = {
           reply_count?: number;
           reply_to_id?: string | null;
           seq?: never;
+          story_reply_emoji?: string | null;
+          story_reply_kind?: string | null;
         };
         Relationships: [
           {
@@ -544,6 +830,117 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      notes: {
+        Row: {
+          audience: string;
+          created_at: string;
+          expires_at: string;
+          text: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          audience?: string;
+          created_at?: string;
+          expires_at?: string;
+          text: string;
+          user_id: string;
+        };
+        Update: {
+          audience?: string;
+          created_at?: string;
+          expires_at?: string;
+          text?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      notification_preferences: {
+        Row: {
+          comment_likes: boolean;
+          comments: string;
+          group_requests: boolean;
+          likes: string;
+          mentions: string;
+          message_requests: boolean;
+          messages: string;
+          new_followers: boolean;
+          paused_until: string | null;
+          reposts: boolean;
+          story_replies: boolean;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comment_likes?: boolean;
+          comments?: string;
+          group_requests?: boolean;
+          likes?: string;
+          mentions?: string;
+          message_requests?: boolean;
+          messages?: string;
+          new_followers?: boolean;
+          paused_until?: string | null;
+          reposts?: boolean;
+          story_replies?: boolean;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          comment_likes?: boolean;
+          comments?: string;
+          group_requests?: boolean;
+          likes?: string;
+          mentions?: string;
+          message_requests?: boolean;
+          messages?: string;
+          new_followers?: boolean;
+          paused_until?: string | null;
+          reposts?: boolean;
+          story_replies?: boolean;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      notifications: {
+        Row: {
+          actor_id: string | null;
+          created_at: string;
+          id: string;
+          kind: string;
+          payload: Json | null;
+          read_at: string | null;
+          ref_id: string;
+          silent: boolean;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          kind: string;
+          payload?: Json | null;
+          read_at?: string | null;
+          ref_id: string;
+          silent?: boolean;
+          user_id: string;
+        };
+        Update: {
+          actor_id?: string | null;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          payload?: Json | null;
+          read_at?: string | null;
+          ref_id?: string;
+          silent?: boolean;
+          user_id?: string;
+        };
+        Relationships: [];
       };
       post_comments: {
         Row: {
@@ -670,8 +1067,10 @@ export type Database = {
           created_at: string;
           display_name: string;
           role: string;
+          role_explicit: boolean;
           show_activity_status: boolean;
           show_in_suggestions: boolean;
+          storage_quota_bytes: number;
           updated_at: string;
           user_id: string;
           website: string | null;
@@ -686,8 +1085,10 @@ export type Database = {
           created_at?: string;
           display_name: string;
           role?: string;
+          role_explicit?: boolean;
           show_activity_status?: boolean;
           show_in_suggestions?: boolean;
+          storage_quota_bytes?: number;
           updated_at?: string;
           user_id: string;
           website?: string | null;
@@ -701,8 +1102,10 @@ export type Database = {
           created_at?: string;
           display_name?: string;
           role?: string;
+          role_explicit?: boolean;
           show_activity_status?: boolean;
           show_in_suggestions?: boolean;
+          storage_quota_bytes?: number;
           updated_at?: string;
           user_id?: string;
           website?: string | null;
@@ -741,6 +1144,466 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [];
+      };
+      reel_comment_likes: {
+        Row: {
+          comment_id: string;
+          created_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comment_id: string;
+          created_at?: string;
+          user_id: string;
+        };
+        Update: {
+          comment_id?: string;
+          created_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reel_comment_likes_comment_id_fkey";
+            columns: ["comment_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_comment_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_comment_likes_comment_id_fkey";
+            columns: ["comment_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_comments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reel_comments: {
+        Row: {
+          author_id: string;
+          content: string;
+          created_at: string;
+          deleted_at: string | null;
+          id: string;
+          like_count: number;
+          parent_id: string | null;
+          reel_id: string;
+          reply_count: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id: string;
+          content: string;
+          created_at?: string;
+          deleted_at?: string | null;
+          id?: string;
+          like_count?: number;
+          parent_id?: string | null;
+          reel_id: string;
+          reply_count?: number;
+        };
+        Update: {
+          author_id?: string;
+          content?: string;
+          created_at?: string;
+          deleted_at?: string | null;
+          id?: string;
+          like_count?: number;
+          parent_id?: string | null;
+          reel_id?: string;
+          reply_count?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reel_comments_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_comment_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_comments_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_comments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_comments_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_comments_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reel_likes: {
+        Row: {
+          created_at: string;
+          reel_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          reel_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          reel_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reel_likes_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_likes_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reel_reposts: {
+        Row: {
+          created_at: string;
+          reel_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          reel_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          reel_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reel_reposts_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_reposts_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reel_views: {
+        Row: {
+          reel_id: string;
+          user_id: string;
+          viewed_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          reel_id: string;
+          user_id: string;
+          viewed_at?: string;
+        };
+        Update: {
+          reel_id?: string;
+          user_id?: string;
+          viewed_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reel_views_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_views_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reels: {
+        Row: {
+          asset_id: string;
+          author_id: string;
+          caption: string | null;
+          created_at: string;
+          duration_ms: number;
+          id: string;
+          like_count: number;
+          repost_count: number;
+          title: string;
+          view_count: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          asset_id: string;
+          author_id: string;
+          caption?: string | null;
+          created_at?: string;
+          duration_ms: number;
+          id?: string;
+          like_count?: number;
+          repost_count?: number;
+          title: string;
+          view_count?: number;
+        };
+        Update: {
+          asset_id?: string;
+          author_id?: string;
+          caption?: string | null;
+          created_at?: string;
+          duration_ms?: number;
+          id?: string;
+          like_count?: number;
+          repost_count?: number;
+          title?: string;
+          view_count?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reels_asset_id_fkey";
+            columns: ["asset_id"];
+            isOneToOne: true;
+            referencedRelation: "assets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reports: {
+        Row: {
+          created_at: string;
+          id: string;
+          reason: string;
+          reporter_id: string;
+          resolved_at: string | null;
+          resolved_by: string | null;
+          status: string;
+          target_id: string;
+          target_kind: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          reason: string;
+          reporter_id?: string;
+          resolved_at?: string | null;
+          resolved_by?: string | null;
+          status?: string;
+          target_id: string;
+          target_kind: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          reason?: string;
+          reporter_id?: string;
+          resolved_at?: string | null;
+          resolved_by?: string | null;
+          status?: string;
+          target_id?: string;
+          target_kind?: string;
+        };
+        Relationships: [];
+      };
+      stories: {
+        Row: {
+          asset_id: string;
+          author_id: string;
+          caption: string | null;
+          created_at: string;
+          expires_at: string;
+          id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          asset_id: string;
+          author_id: string;
+          caption?: string | null;
+          created_at?: string;
+          expires_at?: string;
+          id?: string;
+        };
+        Update: {
+          asset_id?: string;
+          author_id?: string;
+          caption?: string | null;
+          created_at?: string;
+          expires_at?: string;
+          id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "stories_asset_id_fkey";
+            columns: ["asset_id"];
+            isOneToOne: true;
+            referencedRelation: "assets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      story_views: {
+        Row: {
+          story_id: string;
+          user_id: string;
+          viewed_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          story_id: string;
+          user_id: string;
+          viewed_at?: string;
+        };
+        Update: {
+          story_id?: string;
+          user_id?: string;
+          viewed_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "story_views_story_id_fkey";
+            columns: ["story_id"];
+            isOneToOne: false;
+            referencedRelation: "stories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "story_views_story_id_fkey";
+            columns: ["story_id"];
+            isOneToOne: false;
+            referencedRelation: "story_feed";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      turn_config: {
+        Row: {
+          credential: string | null;
+          id: boolean;
+          urls: string[];
+          username: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          credential?: string | null;
+          id?: boolean;
+          urls: string[];
+          username?: string | null;
+        };
+        Update: {
+          credential?: string | null;
+          id?: boolean;
+          urls?: string[];
+          username?: string | null;
+        };
+        Relationships: [];
+      };
+      voice_participants: {
+        Row: {
+          deafened: boolean;
+          id: string;
+          joined_at: string;
+          last_seen_at: string;
+          left_at: string | null;
+          muted: boolean;
+          session_id: string;
+          sharing: boolean;
+          user_id: string;
+          video: boolean;
+        };
+        ComputedFields: never;
+        Insert: {
+          deafened?: boolean;
+          id?: string;
+          joined_at?: string;
+          last_seen_at?: string;
+          left_at?: string | null;
+          muted?: boolean;
+          session_id: string;
+          sharing?: boolean;
+          user_id: string;
+          video?: boolean;
+        };
+        Update: {
+          deafened?: boolean;
+          id?: string;
+          joined_at?: string;
+          last_seen_at?: string;
+          left_at?: string | null;
+          muted?: boolean;
+          session_id?: string;
+          sharing?: boolean;
+          user_id?: string;
+          video?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "voice_participants_session_id_fkey";
+            columns: ["session_id"];
+            isOneToOne: false;
+            referencedRelation: "voice_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      voice_sessions: {
+        Row: {
+          channel_id: string;
+          ended_at: string | null;
+          id: string;
+          presenter_id: string | null;
+          started_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id: string;
+          ended_at?: string | null;
+          id?: string;
+          presenter_id?: string | null;
+          started_at?: string;
+        };
+        Update: {
+          channel_id?: string;
+          ended_at?: string | null;
+          id?: string;
+          presenter_id?: string | null;
+          started_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "voice_sessions_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
     Views: {
@@ -787,16 +1650,97 @@ export type Database = {
         ComputedFields: never;
         Relationships: [];
       };
+      highlight_view: {
+        Row: {
+          cover_kind: string | null;
+          cover_path: string | null;
+          cover_story_id: string | null;
+          created_at: string | null;
+          id: string | null;
+          item_count: number | null;
+          owner_id: string | null;
+          title: string | null;
+          updated_at: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [
+          {
+            foreignKeyName: "highlights_cover_story_id_fkey";
+            columns: ["cover_story_id"];
+            isOneToOne: false;
+            referencedRelation: "stories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "highlights_cover_story_id_fkey";
+            columns: ["cover_story_id"];
+            isOneToOne: false;
+            referencedRelation: "story_feed";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      meeting_view: {
+        Row: {
+          agenda: string | null;
+          channel_id: string | null;
+          created_at: string | null;
+          created_by: string | null;
+          ends_at: string | null;
+          id: string | null;
+          joinable_now: boolean | null;
+          starts_at: string | null;
+          status: string | null;
+          title: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          agenda?: string | null;
+          channel_id?: string | null;
+          created_at?: string | null;
+          created_by?: string | null;
+          ends_at?: string | null;
+          id?: string | null;
+          joinable_now?: never;
+          starts_at?: string | null;
+          status?: string | null;
+          title?: string | null;
+        };
+        Update: {
+          agenda?: string | null;
+          channel_id?: string | null;
+          created_at?: string | null;
+          created_by?: string | null;
+          ends_at?: string | null;
+          id?: string | null;
+          joinable_now?: never;
+          starts_at?: string | null;
+          status?: string | null;
+          title?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "meetings_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       message_view: {
         Row: {
           attachments: Json | null;
           author_id: string | null;
+          call_log: Json | null;
           channel_id: string | null;
           client_nonce: string | null;
           content: string | null;
           created_at: string | null;
           deleted_at: string | null;
           edited_at: string | null;
+          embed_kind: string | null;
+          embed_ref: string | null;
           forwarded: boolean | null;
           id: string | null;
           parent_id: string | null;
@@ -805,6 +1749,8 @@ export type Database = {
           reply_count: number | null;
           reply_to: Json | null;
           seq: number | null;
+          story_reply_emoji: string | null;
+          story_reply_kind: string | null;
         };
         ComputedFields: never;
         Relationships: [
@@ -830,6 +1776,32 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      my_comments: {
+        Row: {
+          content: string | null;
+          created_at: string | null;
+          id: string | null;
+          target_author_id: string | null;
+          target_id: string | null;
+          target_kind: string | null;
+          target_title: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
+      my_post_reactions: {
+        Row: {
+          author_id: string | null;
+          content: string | null;
+          emoji: string | null;
+          media: Json | null;
+          post_id: string | null;
+          reacted_at: string | null;
+          title: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
       };
       post_view: {
         Row: {
@@ -887,22 +1859,185 @@ export type Database = {
         };
         Relationships: [];
       };
+      reel_comment_view: {
+        Row: {
+          author_id: string | null;
+          content: string | null;
+          created_at: string | null;
+          id: string | null;
+          like_count: number | null;
+          liked_by_me: boolean | null;
+          parent_id: string | null;
+          reel_id: string | null;
+          reply_count: number | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id?: string | null;
+          content?: string | null;
+          created_at?: string | null;
+          id?: string | null;
+          like_count?: number | null;
+          liked_by_me?: never;
+          parent_id?: string | null;
+          reel_id?: string | null;
+          reply_count?: number | null;
+        };
+        Update: {
+          author_id?: string | null;
+          content?: string | null;
+          created_at?: string | null;
+          id?: string | null;
+          like_count?: number | null;
+          liked_by_me?: never;
+          parent_id?: string | null;
+          reel_id?: string | null;
+          reply_count?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reel_comments_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_comment_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_comments_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_comments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_comments_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reel_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reel_comments_reel_id_fkey";
+            columns: ["reel_id"];
+            isOneToOne: false;
+            referencedRelation: "reels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reel_view: {
+        Row: {
+          asset_id: string | null;
+          author_id: string | null;
+          can_comment: boolean | null;
+          caption: string | null;
+          comment_count: number | null;
+          created_at: string | null;
+          duration_ms: number | null;
+          id: string | null;
+          like_count: number | null;
+          liked_by_me: boolean | null;
+          repost_count: number | null;
+          reposted_by_me: boolean | null;
+          title: string | null;
+          video_path: string | null;
+          view_count: number | null;
+        };
+        ComputedFields: never;
+        Relationships: [
+          {
+            foreignKeyName: "reels_asset_id_fkey";
+            columns: ["asset_id"];
+            isOneToOne: true;
+            referencedRelation: "assets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      story_feed: {
+        Row: {
+          asset_id: string | null;
+          author_id: string | null;
+          caption: string | null;
+          created_at: string | null;
+          expires_at: string | null;
+          id: string | null;
+          kind: string | null;
+          path: string | null;
+          view_count: number | null;
+          viewed_by_me: boolean | null;
+        };
+        ComputedFields: never;
+        Relationships: [
+          {
+            foreignKeyName: "stories_asset_id_fkey";
+            columns: ["asset_id"];
+            isOneToOne: true;
+            referencedRelation: "assets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Functions: {
       add_comment: { Args: { body: string; post: string }; Returns: string };
       add_members: { Args: { channel: string; users: string[] }; Returns: number };
+      add_reel_comment: { Args: { body: string; parent?: string; reel: string }; Returns: string };
+      admin_overview: { Args: Record<PropertyKey, never>; Returns: Json };
       asset_in_use: { Args: { asset: string }; Returns: boolean };
+      audit: {
+        Args: { action: string; metadata: Json; target_id: string; target_kind: string };
+        Returns: undefined;
+      };
       block_user: { Args: { target: string }; Returns: string };
+      broadcast_occupants: { Args: { channel: string }; Returns: undefined };
+      call_answer: {
+        Args: { accepted: boolean; caller: string; session: string };
+        Returns: undefined;
+      };
+      call_cancel: {
+        Args: { callee: string; session: string; timed_out?: boolean };
+        Returns: undefined;
+      };
+      call_end: { Args: { peer: string; session: string }; Returns: undefined };
+      call_log_json: { Args: { message: string }; Returns: Json };
+      call_peer_check: {
+        Args: { peer: string; session: string };
+        Returns: {
+          channel_id: string;
+          ended_at: string | null;
+          id: string;
+          presenter_id: string | null;
+          started_at: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "voice_sessions";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      call_ring: { Args: { callee: string; media?: string; session: string }; Returns: undefined };
       can_comment: { Args: { owner: string }; Returns: boolean };
       can_manage: { Args: { channel: string }; Returns: boolean };
       can_read_asset: { Args: { asset: string }; Returns: boolean };
+      can_see_note: { Args: { audience: string; owner: string }; Returns: boolean };
+      can_see_reel: { Args: { reel: string }; Returns: boolean };
+      can_see_story: { Args: { story: string }; Returns: boolean };
       can_see_target: { Args: { kind: string; target: string }; Returns: boolean };
+      cancel_meeting: { Args: { meeting: string }; Returns: undefined };
       channel_rows: {
         Args: { max_rows?: number; only_channel?: string; skip?: number };
         Returns: Json[];
       };
+      check_highlight: {
+        Args: { cover: string; story_ids: string[]; title: string };
+        Returns: undefined;
+      };
       claim_assets: { Args: { assets: string[]; kinds: string[] }; Returns: undefined };
+      claim_screen: { Args: { session: string }; Returns: Json };
       clear_channel: { Args: { channel: string }; Returns: string };
+      close_if_empty: { Args: { channel: string }; Returns: undefined };
       commit_asset: {
         Args: { asset: string };
         Returns: {
@@ -936,10 +2071,33 @@ export type Database = {
         };
         Returns: string;
       };
+      create_highlight: {
+        Args: { cover?: string; story_ids: string[]; title: string };
+        Returns: string;
+      };
+      create_meeting: {
+        Args: {
+          agenda?: string;
+          channel: string;
+          ends_at: string;
+          starts_at: string;
+          title: string;
+        };
+        Returns: string;
+      };
       create_post: {
         Args: { asset_ids?: string[]; content?: string; course_tag?: string; title?: string };
         Returns: string;
       };
+      create_reel: {
+        Args: { asset: string; caption?: string; duration_ms: number; title: string };
+        Returns: string;
+      };
+      create_report: {
+        Args: { reason: string; target_id: string; target_kind: string };
+        Returns: string;
+      };
+      create_story: { Args: { asset: string; caption?: string }; Returns: string };
       create_upload_intent: {
         Args: { bucket: string; content_type?: string; file_name: string; size_bytes: number };
         Returns: {
@@ -953,8 +2111,22 @@ export type Database = {
       delete_comment: { Args: { comment: string; post: string }; Returns: undefined };
       delete_message: { Args: { message: string }; Returns: undefined };
       delete_post: { Args: { post: string }; Returns: string[] };
+      delete_reel: { Args: { reel: string }; Returns: string };
+      delete_reel_comment: { Args: { comment: string }; Returns: undefined };
+      delete_story: { Args: { story: string }; Returns: string };
       edit_message: { Args: { body: string; message: string }; Returns: undefined };
       file_type: { Args: { file_name: string; hint?: string }; Returns: Record<string, unknown> };
+      finish_call: {
+        Args: {
+          final: string;
+          log: Omit<
+            Database["community"]["Tables"]["call_logs"]["Row"],
+            Database["community"]["Tables"]["call_logs"]["ComputedFields"]
+          >;
+        };
+        Returns: undefined;
+      };
+      finish_calls: { Args: { person: string; session: string }; Returns: undefined };
       follow_suggestions: {
         Args: { max_rows?: number };
         Returns: {
@@ -964,14 +2136,42 @@ export type Database = {
           user_id: string;
         }[];
       };
+      ice_servers: { Args: Record<PropertyKey, never>; Returns: Json };
+      in_voice: { Args: { session: string }; Returns: boolean };
+      inbox_folder_of: { Args: { channel: string; member: string }; Returns: string };
       is_blocked_either: { Args: { a: string; b: string }; Returns: boolean };
       is_member: { Args: { channel: string }; Returns: boolean };
+      is_muted: { Args: { channel: string; member: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      join_voice: { Args: { channel: string }; Returns: Json };
       leave_channel: { Args: { channel: string }; Returns: undefined };
+      leave_voice: { Args: { session: string }; Returns: undefined };
+      like_reel: { Args: { liked: boolean; reel: string }; Returns: number };
+      like_reel_comment: { Args: { comment: string; liked: boolean }; Returns: number };
+      mark_all_notifications_read: { Args: Record<PropertyKey, never>; Returns: number };
+      mark_notification_read: { Args: { notification: string }; Returns: number };
       mark_read: { Args: { channel: string; upto: number }; Returns: undefined };
       mark_unread: { Args: { channel: string }; Returns: undefined };
+      member_json: { Args: { target: string }; Returns: Json };
+      member_rows: {
+        Args: { max_rows?: number; q?: string; role?: string; skip?: number };
+        Returns: {
+          member: Json;
+          total: number;
+        }[];
+      };
+      my_member: { Args: Record<PropertyKey, never>; Returns: Json };
       my_role: { Args: { channel: string }; Returns: string };
+      notify: {
+        Args: { kind: string; payload?: Json; recipient: string; ref: string };
+        Returns: undefined;
+      };
+      notify_as: {
+        Args: { actor: string; kind: string; payload: Json; recipient: string; ref: string };
+        Returns: undefined;
+      };
       open_direct: { Args: { group_name?: string; peers: string[] }; Returns: string };
+      put_note: { Args: { audience?: string; body: string }; Returns: undefined };
       quota_bytes: { Args: Record<PropertyKey, never>; Returns: number };
       reaction_summaries: {
         Args: { kind: string; targets: string[] };
@@ -983,14 +2183,43 @@ export type Database = {
           target_id: string;
         }[];
       };
+      release_screen: { Args: { session: string }; Returns: undefined };
       remove_member: { Args: { channel: string; target: string }; Returns: undefined };
+      reply_story: {
+        Args: { body?: string; emoji?: string; story: string };
+        Returns: {
+          channel: string;
+          message: string;
+        }[];
+      };
+      repost_reel: { Args: { reel: string; reposted: boolean }; Returns: number };
       require_member: { Args: { channel: string }; Returns: string };
+      require_reel: { Args: { reel: string }; Returns: string };
       require_user: { Args: Record<PropertyKey, never>; Returns: string };
+      resolve_report: {
+        Args: { note?: string; report: string; status: string };
+        Returns: undefined;
+      };
+      search: {
+        Args: { kind?: string; max_rows?: number; q: string; skip?: number };
+        Returns: {
+          author_id: string;
+          body: string;
+          channel_id: string;
+          created_at: string;
+          hit_kind: string;
+          id: string;
+          title: string;
+          total: number;
+        }[];
+      };
       send_message: {
         Args: {
           attachments?: string[];
           body: string;
           channel: string;
+          embed_kind?: string;
+          embed_ref?: string;
           is_forward?: boolean;
           nonce: string;
           parent?: string;
@@ -998,14 +2227,38 @@ export type Database = {
         };
         Returns: string;
       };
+      send_to: { Args: { event: string; payload: Json; person: string }; Returns: undefined };
+      session_json: { Args: { session: string }; Returns: Json };
       set_cover: { Args: { asset?: string }; Returns: string };
+      set_member_quota: {
+        Args: { quota_bytes: number; reason?: string; target: string };
+        Returns: Json;
+      };
+      set_member_role: { Args: { reason?: string; role: string; target: string }; Returns: Json };
       set_nickname: { Args: { channel: string; nick: string; target: string }; Returns: undefined };
       set_pin: { Args: { message: string; pinned: boolean }; Returns: undefined };
+      set_voice_state: {
+        Args: { deafened?: boolean; muted?: boolean; session: string; video?: boolean };
+        Returns: Json;
+      };
       storage_can_purge: { Args: { bucket: string; name: string }; Returns: boolean };
       storage_can_read: { Args: { bucket: string; name: string }; Returns: boolean };
       storage_can_upload: { Args: { bucket: string; name: string }; Returns: boolean };
+      story_insights: { Args: { story: string }; Returns: Json };
+      sweep_calls: { Args: Record<PropertyKey, never>; Returns: undefined };
+      sweep_voice: { Args: { channel?: string }; Returns: undefined };
       update_channel: {
         Args: { channel: string; new_description?: string; new_name?: string };
+        Returns: undefined;
+      };
+      update_highlight: {
+        Args: {
+          cover?: string;
+          highlight: string;
+          set_cover?: boolean;
+          story_ids?: string[];
+          title?: string;
+        };
         Returns: undefined;
       };
       update_inbox: {
@@ -1013,6 +2266,11 @@ export type Database = {
         Returns: undefined;
       };
       used_bytes: { Args: { except_asset?: string; owner: string }; Returns: number };
+      view_reel: { Args: { reel: string }; Returns: number };
+      view_story: { Args: { story: string }; Returns: number };
+      voice_heartbeat: { Args: { session: string }; Returns: boolean };
+      voice_occupants: { Args: { channel: string }; Returns: Json };
+      voice_sessions_list: { Args: { channel?: string }; Returns: Json[] };
     };
     Enums: {
       [_ in never]: never;

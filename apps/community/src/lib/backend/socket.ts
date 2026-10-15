@@ -7,10 +7,12 @@
 ///   ใครออนไลน์           Presence หัวข้อ "online"
 /// ส่งข้อความ (message:send) เรียก send_message เดียวกับ REST — ตัวตนมาจาก JWT ไม่ใช่จาก payload
 import { REALTIME_SUBSCRIBE_STATES, type RealtimeChannel } from "@supabase/supabase-js";
+import { env } from "@/lib/env";
 import { db, supabase } from "@/lib/supabase";
 import { sendMessage } from "./chat-api";
 import { fetchMessage, reactionSummaries } from "./chat-model";
 import { setOnline } from "./presence";
+import { toNotification, unreadCount } from "./notify-api";
 import { onReactionAnnounce } from "./realtime-bus";
 
 type Listener = (...args: unknown[]) => void;
@@ -129,7 +131,9 @@ async function onMessageChange(target: Socket, change: "INSERT" | "UPDATE", row:
       ? "message:edited"
       : row.last_change === "pin" || row.last_change === "unpin"
         ? "message:pinned"
-        : null;
+        : row.last_change === "call"
+          ? "message:updated"
+          : null;
   if (!event) return;
   const message = await fetchMessage(row.id);
   if (message) target.dispatch(event, message);
@@ -250,10 +254,161 @@ async function handleEmit(event: string, payload: unknown, ack: Ack) {
     case "presence:heartbeat":
       ack({ ok: true });
       return;
+    case "rtc:signal":
+      ack(signal(payload));
+      return;
+    case "screen:claim":
+      ack(await screenClaim(payload));
+      return;
+    case "screen:release":
+      await rpcOrThrow(db().rpc("release_screen", { session: field(payload, "sessionId") }));
+      ack({ ok: true });
+      return;
+    case "call:ring":
+    case "call:answer":
+    case "call:cancel":
+    case "call:end":
+      await callEvent(event, payload);
+      ack({ ok: true });
+      return;
     default:
-      // shortcut: calls, voice rooms and screen sharing (rtc:*, call:*, screen:*) arrive in round 6
       ack({ ok: false, error: "ฟีเจอร์นี้ยังไม่เปิดใช้" });
   }
+}
+
+// ── สาย · ห้องเสียง · สัญญาณ WebRTC ────────────────────────────────────────
+//
+// person-to-person events arrive on the private topic user:<me> (the database sends them with
+// realtime.send); WebRTC offers/answers/ICE travel on voice:<session>, which only people in that
+// session may read or write. The database never sees media — browsers connect peer to peer.
+
+function field(payload: unknown, name: string): string {
+  const value = (payload as Record<string, unknown> | null)?.[name];
+  if (typeof value !== "string" || !UUID_RE.test(value)) throw new Error("คำขอไม่ถูกต้อง");
+  return value;
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+async function rpcOrThrow(call: PromiseLike<{ error: { message: string } | null }>) {
+  const { error } = await call;
+  if (error) throw new Error(error.message);
+}
+
+// when a ring started, so a cancel after the client's 45 s timeout counts as "missed"
+const ringStarted = new Map<string, number>();
+const RING_TIMEOUT_MS = 45_000;
+
+async function callEvent(event: string, payload: unknown) {
+  const session = field(payload, "sessionId");
+  const peer = field(payload, "toCoreUserId");
+  switch (event) {
+    case "call:ring": {
+      const media = (payload as { media?: unknown }).media === "VIDEO" ? "VIDEO" : "AUDIO";
+      ringStarted.set(session, Date.now());
+      await rpcOrThrow(db().rpc("call_ring", { session, callee: peer, media }));
+      return;
+    }
+    case "call:answer":
+      await rpcOrThrow(
+        db().rpc("call_answer", {
+          session,
+          caller: peer,
+          accepted: (payload as { accepted?: unknown }).accepted === true,
+        }),
+      );
+      return;
+    case "call:cancel": {
+      const started = ringStarted.get(session);
+      const timedOut = started !== undefined && Date.now() - started >= RING_TIMEOUT_MS - 1000;
+      await rpcOrThrow(db().rpc("call_cancel", { session, callee: peer, timed_out: timedOut }));
+      return;
+    }
+    default:
+      ringStarted.delete(session);
+      await rpcOrThrow(db().rpc("call_end", { session, peer }));
+  }
+}
+
+async function screenClaim(payload: unknown) {
+  const { data, error } = await db().rpc("claim_screen", { session: field(payload, "sessionId") });
+  if (error) return { ok: false, error: error.message };
+  return data;
+}
+
+let voice: {
+  session: string;
+  channel: RealtimeChannel;
+  beat: ReturnType<typeof setInterval>;
+} | null = null;
+let voiceToken = "";
+
+function signal(payload: unknown) {
+  const to = (payload as { toCoreUserId?: unknown } | null)?.toCoreUserId;
+  if (!voice) return { ok: false, error: "คุณไม่ได้อยู่ในห้องเสียงนี้" };
+  if (typeof to !== "string") return { ok: false, error: "คำขอไม่ถูกต้อง" };
+  if (to === me) return { ok: false, error: "ส่งสัญญาณหาตัวเองไม่ได้" };
+  void voice.channel.send({
+    type: "broadcast",
+    event: "rtc:signal",
+    payload: { ...(payload as object), fromCoreUserId: me },
+  });
+  return { ok: true };
+}
+
+/** Joined a voice session: listen for its signals, heartbeat, and leave on tab close. */
+export async function enterVoice(session: string): Promise<void> {
+  if (voice?.session === session) return;
+  if (voice) exitVoice(voice.session);
+  const target = await connectSocket();
+  voiceToken = (await supabase.auth.getSession()).data.session?.access_token ?? "";
+  const channel = supabase
+    .channel(`voice:${session}`, { config: { private: true } })
+    .on("broadcast", { event: "rtc:signal" }, ({ payload }) => {
+      if ((payload as { toCoreUserId?: unknown }).toCoreUserId === me)
+        target.dispatch("rtc:signal", payload);
+    })
+    .on("broadcast", { event: "screen:changed" }, ({ payload }) => {
+      target.dispatch("screen:changed", payload);
+    });
+  await new Promise<void>((resolve) => {
+    channel.subscribe((state) => {
+      if (state !== REALTIME_SUBSCRIBE_STATES.CLOSED) resolve();
+    });
+  });
+  // the database sweeps anyone silent for 90 s — this is how it knows we're still here
+  const beat = setInterval(() => {
+    void supabase.auth.getSession().then(({ data }) => {
+      voiceToken = data.session?.access_token ?? voiceToken;
+    });
+    void db().rpc("voice_heartbeat", { session });
+  }, 25_000);
+  voice = { session, channel, beat };
+}
+
+export function exitVoice(session: string): void {
+  if (voice?.session !== session) return;
+  clearInterval(voice.beat);
+  void supabase.removeChannel(voice.channel);
+  voice = null;
+}
+
+// a closing tab gets no chance to await anything: fire-and-forget the leave so the room updates now
+if (typeof window !== "undefined") {
+  window.addEventListener("pagehide", () => {
+    if (!voice || !voiceToken) return;
+    void fetch(`${env.supabase.url}/rest/v1/rpc/leave_voice`, {
+      method: "POST",
+      keepalive: true,
+      headers: {
+        apikey: env.supabase.publishableKey,
+        Authorization: `Bearer ${voiceToken}`,
+        "Content-Type": "application/json",
+        "Content-Profile": "community",
+      },
+      body: JSON.stringify({ session: voice.session }),
+    });
+  });
 }
 
 // ── เชื่อมต่อ ────────────────────────────────────────────────────────────
@@ -291,6 +446,21 @@ async function start(target: Socket) {
         pingInbox(target);
       },
     )
+    // my notifications (RLS: only mine) — silent ones were written while I paused notifications
+    .on(
+      "postgres_changes",
+      { event: "INSERT", schema: "community", table: "notifications" },
+      (payload) => {
+        const row = payload.new as Parameters<typeof toNotification>[0];
+        if (row.silent) return;
+        void unreadCount().then((count) => {
+          target.dispatch("notification:new", {
+            notification: toNotification(row),
+            unreadCount: count,
+          });
+        });
+      },
+    )
     .on("postgres_changes", { event: "*", schema: "community", table: "channels" }, (payload) => {
       if (payload.eventType === "DELETE") {
         const row = payload.old as { id?: string };
@@ -321,7 +491,21 @@ async function start(target: Socket) {
     }
   });
 
-  globalChannels.push(inbox, presence);
+  const personal = supabase.channel(`user:${me}`, { config: { private: true } });
+  for (const event of [
+    "call:incoming",
+    "call:answered",
+    "call:cancelled",
+    "call:ended",
+    "voice:occupants",
+  ]) {
+    personal.on("broadcast", { event }, ({ payload }) => {
+      target.dispatch(event, payload);
+    });
+  }
+  personal.subscribe();
+
+  globalChannels.push(inbox, presence, personal);
   inbox.subscribe((state) => {
     if (state === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) setStatus("connected");
     else if (
