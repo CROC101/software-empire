@@ -1,46 +1,89 @@
 /*
  * Empire design tokens. Apps import this once: @import "@empire/ui/styles.css";
  * Components use semantic names only (bg-primary, text-muted-foreground) — never raw colors.
- * Palette is a neutral placeholder until PL sets the brand.
+ * Colors come from palette.css ("Aurora"); this file only says which shade means what.
  */
 @import "tailwindcss";
+@import "./palette.css";
 
 /* scan this package's components; each app's own files are detected automatically */
 @source "./";
 
 :root {
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.18 0.01 270);
-  --muted: oklch(0.96 0.005 270);
-  --muted-foreground: oklch(0.48 0.02 270);
-  --card: oklch(1 0 0);
+  --background: var(--em-ink-25);
+  --foreground: var(--em-ink-900);
+  --muted: var(--em-ink-50);
+  --muted-foreground: var(--em-ink-500);
+  --card: var(--em-ink-0);
   --card-foreground: var(--foreground);
-  --primary: oklch(0.45 0.2 280);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.94 0.01 270);
-  --secondary-foreground: var(--foreground);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.9 0.01 270);
-  --input: var(--border);
-  --ring: oklch(0.6 0.18 280);
-  --radius: 0.625rem;
+  --popover: var(--em-ink-0);
+  --popover-foreground: var(--foreground);
+  --primary: var(--em-violet-600);
+  --primary-foreground: var(--em-ink-0);
+  --secondary: var(--em-violet-50);
+  --secondary-foreground: var(--em-violet-800);
+  --accent: var(--em-violet-100);
+  --accent-foreground: var(--em-violet-900);
+  --destructive: var(--em-danger);
+  --destructive-foreground: var(--em-ink-0);
+  --success: var(--em-success);
+  --warning: var(--em-warning);
+  --border: var(--em-ink-200);
+  --input: var(--em-ink-300);
+  --ring: var(--em-violet-500);
+  --aurora: var(--em-aurora);
+  --aurora-soft: var(--em-aurora-soft);
+  --rail: var(--em-rail);
+  --glow: var(--em-glow);
+  --radius: 0.75rem;
 }
 
+/* dark: an explicit .dark class wins; otherwise follow the OS unless the app pinned .light */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: oklch(0.15 0.01 270);
-    --foreground: oklch(0.96 0.005 270);
-    --muted: oklch(0.22 0.01 270);
-    --muted-foreground: oklch(0.7 0.02 270);
-    --card: oklch(0.19 0.01 270);
-    --primary: oklch(0.72 0.15 280);
-    --primary-foreground: oklch(0.15 0.01 270);
-    --secondary: oklch(0.26 0.01 270);
-    --destructive: oklch(0.65 0.2 27);
-    --border: oklch(0.3 0.01 270);
-    --ring: oklch(0.72 0.15 280);
+  :root:not(.light) {
+    --background: var(--em-ink-975);
+    --foreground: var(--em-ink-50);
+    --muted: var(--em-ink-900);
+    --muted-foreground: var(--em-ink-400);
+    --card: var(--em-ink-950);
+    --popover: var(--em-ink-900);
+    --primary: var(--em-violet-400);
+    --primary-foreground: var(--em-ink-975);
+    --secondary: var(--em-ink-850);
+    --secondary-foreground: var(--em-violet-200);
+    --accent: oklch(0.7 0.185 288 / 0.14);
+    --accent-foreground: var(--em-violet-100);
+    --destructive: var(--em-danger-dark);
+    --success: var(--em-success-dark);
+    --warning: var(--em-warning-dark);
+    --border: var(--em-ink-800);
+    --input: var(--em-ink-700);
+    --ring: var(--em-violet-400);
+    --rail: var(--em-rail-dark);
+    --glow: var(--em-glow-dark);
   }
+}
+:root.dark {
+  --background: var(--em-ink-975);
+  --foreground: var(--em-ink-50);
+  --muted: var(--em-ink-900);
+  --muted-foreground: var(--em-ink-400);
+  --card: var(--em-ink-950);
+  --popover: var(--em-ink-900);
+  --primary: var(--em-violet-400);
+  --primary-foreground: var(--em-ink-975);
+  --secondary: var(--em-ink-850);
+  --secondary-foreground: var(--em-violet-200);
+  --accent: oklch(0.7 0.185 288 / 0.14);
+  --accent-foreground: var(--em-violet-100);
+  --destructive: var(--em-danger-dark);
+  --success: var(--em-success-dark);
+  --warning: var(--em-warning-dark);
+  --border: var(--em-ink-800);
+  --input: var(--em-ink-700);
+  --ring: var(--em-violet-400);
+  --rail: var(--em-rail-dark);
+  --glow: var(--em-glow-dark);
 }
 
 @theme inline {
@@ -50,12 +93,18 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -63,6 +112,23 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --shadow-glow: var(--glow);
+}
+
+/* the signature sweep: bg-aurora on hero bands and primary CTAs, text-aurora on brand words */
+@utility bg-aurora {
+  background-image: var(--aurora);
+}
+@utility bg-aurora-soft {
+  background-image: var(--aurora-soft);
+}
+@utility bg-rail {
+  background-image: var(--rail);
+}
+@utility text-aurora {
+  background-image: var(--aurora);
+  background-clip: text;
+  color: transparent;
 }
 
 @layer base {
@@ -74,5 +140,8 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+  }
+  ::selection {
+    background: oklch(0.61 0.225 286 / 0.25);
   }
 }

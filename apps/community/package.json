@@ -16,13 +16,14 @@
   },
   "dependencies": {
     "@empire/core": "workspace:*",
-    "@supabase/supabase-js": "^2.117.3",
-    "@tanstack/react-query": "^5.104.2",
+    "@empire/ui": "workspace:*",
     "lucide-react": "^1.56.0",
     "qrcode.react": "^4.2.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "react-router": "^8.4.0",
+    "@supabase/supabase-js": "^2.117.3",
+    "@tanstack/react-query": "^5.104.2",
     "zod": "^4.6.7",
     "zustand": "^5.0.15"
   },

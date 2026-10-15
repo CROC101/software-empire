@@ -54,6 +54,8 @@ export default defineConfig(({ mode }) => {
       restoreMocks: true,
       // threads start without spawning a process — forks timed out while turbo ran builds in parallel
       pool: "threads",
+      // turbo runs every package's tests at once; half the cores each keeps workers from timing out on start
+      maxWorkers: "50%",
       // CI has no .env.local — modules that read VITE_* at import still need valid values
       env: {
         VITE_SUPABASE_URL: "http://localhost:54321",
