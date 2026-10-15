@@ -7,8 +7,9 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
+    "typegen": "next typegen",
     "lint": "eslint .",
-    "typecheck": "next typegen && tsc -p .",
+    "typecheck": "tsc -p .",
     "smoke": "node --env-file=.env.local e2e/auth-smoke.ts"
   },
   "dependencies": {

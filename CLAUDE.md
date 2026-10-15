@@ -81,6 +81,13 @@ pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จร�
 7. สีและระยะใช้ design token จาก `packages/ui` ไม่ใช้ค่าดิบ
 8. Commit แบบ Conventional Commits: `feat(<app>): ...` · branch `feature/<app>/<เรื่อง>`
 
+## GitHub (CROC101/software-empire · public)
+
+- `main` ป้องกันด้วย ruleset `main-protection-solo`: ต้องผ่าน PR + check `verify` · approve 0 คน (ทำคนเดียว)
+- branch: `feature|fix|chore|docs/<app>/<เรื่อง>` → PR เข้า `main` · merge แล้วลบ branch อัตโนมัติ
+- เปิด squash และ merge commit (merge commit ไว้สำหรับ PR ที่ซ้อนกัน) · secret scanning + push protection + Dependabot เปิดแล้ว
+- teams (pm/pl/aie) ยังไม่ได้สร้าง — ต้องใช้สิทธิ์ `admin:org` (ทำในหน้าเว็บ หรือ `gh auth refresh -s admin:org`)
+
 ## MCP ที่ตั้งไว้ (`.mcp.json`)
 
 - `github` — remote server ของ GitHub, ต้องตั้ง env `GITHUB_PAT` (fine-grained token)
