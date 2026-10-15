@@ -142,6 +142,153 @@ export type Database = {
       [_ in never]: never;
     };
   };
+  community: {
+    Tables: {
+      blocks: {
+        Row: {
+          blocked_id: string;
+          blocker_id: string;
+          created_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          blocked_id: string;
+          blocker_id: string;
+          created_at?: string;
+        };
+        Update: {
+          blocked_id?: string;
+          blocker_id?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      close_friends: {
+        Row: {
+          created_at: string;
+          friend_id: string;
+          owner_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          friend_id: string;
+          owner_id: string;
+        };
+        Update: {
+          created_at?: string;
+          friend_id?: string;
+          owner_id?: string;
+        };
+        Relationships: [];
+      };
+      follows: {
+        Row: {
+          created_at: string;
+          followee_id: string;
+          follower_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          followee_id: string;
+          follower_id: string;
+        };
+        Update: {
+          created_at?: string;
+          followee_id?: string;
+          follower_id?: string;
+        };
+        Relationships: [];
+      };
+      profiles: {
+        Row: {
+          avatar_url: string | null;
+          bio: string | null;
+          comments_from: string;
+          cover_url: string | null;
+          created_at: string;
+          display_name: string;
+          role: string;
+          show_activity_status: boolean;
+          show_in_suggestions: boolean;
+          updated_at: string;
+          user_id: string;
+          website: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          avatar_url?: string | null;
+          bio?: string | null;
+          comments_from?: string;
+          cover_url?: string | null;
+          created_at?: string;
+          display_name: string;
+          role?: string;
+          show_activity_status?: boolean;
+          show_in_suggestions?: boolean;
+          updated_at?: string;
+          user_id: string;
+          website?: string | null;
+        };
+        Update: {
+          avatar_url?: string | null;
+          bio?: string | null;
+          comments_from?: string;
+          cover_url?: string | null;
+          created_at?: string;
+          display_name?: string;
+          role?: string;
+          show_activity_status?: boolean;
+          show_in_suggestions?: boolean;
+          updated_at?: string;
+          user_id?: string;
+          website?: string | null;
+        };
+        Relationships: [];
+      };
+    };
+    Views: {
+      profile_stats: {
+        Row: {
+          follower_count: number | null;
+          following_count: number | null;
+          user_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          follower_count?: never;
+          following_count?: never;
+          user_id?: string | null;
+        };
+        Update: {
+          follower_count?: never;
+          following_count?: never;
+          user_id?: string | null;
+        };
+        Relationships: [];
+      };
+    };
+    Functions: {
+      block_user: { Args: { target: string }; Returns: string };
+      follow_suggestions: {
+        Args: { max_rows?: number };
+        Returns: {
+          followed_by: string[];
+          followed_by_count: number;
+          mutual_count: number;
+          user_id: string;
+        }[];
+      };
+      is_blocked_either: { Args: { a: string; b: string }; Returns: boolean };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       [_ in never]: never;
@@ -299,6 +446,9 @@ export type CompositeTypes<
 
 export const Constants = {
   canva: {
+    Enums: {},
+  },
+  community: {
     Enums: {},
   },
   public: {

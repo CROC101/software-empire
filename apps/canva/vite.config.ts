@@ -54,6 +54,13 @@ export default defineConfig(({ mode }) => {
       restoreMocks: true,
       // threads start without spawning a process — forks timed out while turbo ran builds in parallel
       pool: "threads",
+      // CI has no .env.local — modules that read VITE_* at import still need valid values
+      env: {
+        VITE_SUPABASE_URL: "http://localhost:54321",
+        VITE_SUPABASE_PUBLISHABLE_KEY: "test-publishable-key",
+        VITE_SITE_URL: "http://localhost:3006",
+        VITE_HUB_URL: "http://localhost:3000",
+      },
     },
   };
 });

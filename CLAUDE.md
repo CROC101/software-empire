@@ -49,10 +49,15 @@ pnpm db:types        # สร้าง packages/core/src/database.types.ts ใ�
 pnpm --filter @empire/hub dev        # http://localhost:3000
 pnpm --filter @empire/toolboxes dev  # http://localhost:3003
 pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็อกอิน)
+pnpm --filter @empire/community dev  # http://localhost:3001 (ต้องล็อกอิน)
+pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จริง (ต้อง db:start)
 ```
 
-- `db:start` เปิด storage ด้วย (canva เก็บไฟล์ใน bucket `canva-assets`) · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
-- canva: หน้าจอเดิมของ csmju-canvas เรียก `api.get('/designs/…')` → `apps/canva/src/lib/backend/api.ts` แปลงเป็น Supabase · path ที่ยังไม่รองรับตอบ 501 · `lib/router.tsx` แทน `next/link` / `next/navigation`
+- `db:start` เปิด storage + realtime ด้วย · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
+- canva / community: หน้าจอเดิมของ csmju-canvas / csmju-nexus เรียก `api.get('/designs/…')` → `src/lib/backend/api.ts` ของแอปแปลงเป็น Supabase · path ที่ยังไม่รองรับตอบ 501 · `lib/router.tsx` แทน `next/link` / `next/navigation` · unit test ใช้ `src/test/router-mock.tsx` แทน router จริง
+- community ย้ายทีละรอบ (Full Nexus): 1 social graph ✅ · 2 แชต + Realtime (ทำ `lib/backend/socket.ts` ให้ป้อน event จาก Supabase Realtime) · 3 ฟีด + อัปโหลด · 4 reels/stories/notes · 5 แจ้งเตือน/ค้นหา/ตั้งค่า · 6 ประชุม/เสียง (WebRTC) · 7 admin/report
+- กติกาความเป็นส่วนตัว (บล็อก · ใครเห็นอะไร) ต้องอยู่ใน RLS / ฟังก์ชัน SQL พร้อม pgTAP — ห้ามอยู่แค่ใน `api.ts`
+- `pnpm verify` จำกัด `--concurrency=50%` — ถ้ารันพร้อมกันหมด worker ของ vitest start ไม่ทัน
 
 - ทุกแอปต้องมี `.env.local` (ลอกจาก `.env.example`) · hub ต้องมี `APP_URL_<SLUG>` ของแอปที่เปิดแล้ว ไม่งั้นลิงก์และการพากลับหลังล็อกอินไม่ทำงาน
 - แก้ `[api] schemas` ใน `supabase/config.toml` แล้วต้อง `pnpm db:stop && pnpm db:start` (`db:reset` ไม่โหลดค่านี้ใหม่ — อาการคือ 406)
