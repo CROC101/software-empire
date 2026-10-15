@@ -23,3 +23,6 @@ next-env.d.ts
 # OS
 Thumbs.db
 .DS_Store
+
+# owner's working notes at the repo root (session logs, drafts) — never published
+/*.txt
