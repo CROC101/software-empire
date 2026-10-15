@@ -130,20 +130,18 @@ describe("การแปลงพิกัดระหว่างหน้า"
 
 describe("editor store: ย้ายชิ้นงานข้ามหน้า และยกเลิกการลาก", () => {
   beforeEach(() => {
-    useEditor
-      .getState()
-      .load(
-        {
-          designId: "d1",
-          title: "งานทดสอบ",
-          designType: "presentation",
-          width: 1000,
-          height: 1000,
-          access: "OWNER",
-          linkAccess: "NONE",
-        },
-        { ...blankDocument(), pages: [blankPage(), blankPage()] },
-      );
+    useEditor.getState().load(
+      {
+        designId: "d1",
+        title: "งานทดสอบ",
+        designType: "presentation",
+        width: 1000,
+        height: 1000,
+        access: "OWNER",
+        linkAccess: "NONE",
+      },
+      { ...blankDocument(), pages: [blankPage(), blankPage()] },
+    );
   });
 
   it("ย้ายหลายชิ้น (รวมกลุ่ม) ไปอีกหน้าในขั้น undo เดียว คงระยะห่างระหว่างชิ้น และเปิดหน้าปลายทาง", () => {

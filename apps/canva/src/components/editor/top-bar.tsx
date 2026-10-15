@@ -665,7 +665,7 @@ function ShareMain({ onDownload, onClose }: { onDownload: () => void; onClose: (
           <Avatar email={me.email} size="sm" />
           <span className="text-cv-caption text-ink">{me.email.split('@')[0]} (คุณ) · เจ้าของ</span>
         </div>
-        <p className="mt-2 text-cv-caption text-muted">เพิ่มคนทีละคนยังทำไม่ได้ เพราะระบบกลางยังไม่เปิดให้ค้นรายชื่อ — แชร์ด้วยลิงก์แทน ผู้รับต้องเข้าสู่ระบบ CSMJU2030</p>
+        <p className="mt-2 text-cv-caption text-muted">เพิ่มคนทีละคนยังทำไม่ได้ เพราะระบบกลางยังไม่เปิดให้ค้นรายชื่อ — แชร์ด้วยลิงก์แทน ผู้รับต้องเข้าสู่ระบบ Software Empire</p>
       </div>
       <div>
         <p className="mb-2 text-cv-caption font-semibold text-ink">ระดับการเข้าถึง</p>

@@ -22,7 +22,7 @@ export function AnswerBubble({ question, answer, onNavigate }: { question: strin
     <div className="cv-fade-in flex max-w-full flex-col gap-3 self-start rounded-2xl rounded-bl-md bg-surface-muted px-4 py-3 text-cv-caption text-ink">
       {nothing ? (
         <p>
-          ไม่พบคำตอบสำหรับ “{question}” — ผู้ช่วยตอบได้เฉพาะเรื่องการใช้งาน CS Canvas เทมเพลต และงานของคุณ ลองถามเช่น “ดาวน์โหลด png” หรือ “แชร์ดีไซน์”
+          ไม่พบคำตอบสำหรับ “{question}” — ผู้ช่วยตอบได้เฉพาะเรื่องการใช้งาน Empire Canvas เทมเพลต และงานของคุณ ลองถามเช่น “ดาวน์โหลด png” หรือ “แชร์ดีไซน์”
           {answer.failed && ' (ค้นเทมเพลตและงานไม่สำเร็จ ลองอีกครั้ง)'}
         </p>
       ) : (

@@ -13,7 +13,7 @@ export interface ReportTargetRef {
   label?: string;
 }
 
-/// หน้าต่าง "รายงาน" — ส่งเรื่องให้ผู้ดูแลระบบตรวจ (POST /reports · เก็บในฐานของ CS Canvas เท่านั้น)
+/// หน้าต่าง "รายงาน" — ส่งเรื่องให้ผู้ดูแลระบบตรวจ (POST /reports · เก็บในฐานของ Empire Canvas เท่านั้น)
 export function ReportDialog({ target, onClose }: { target: ReportTargetRef; onClose: () => void }) {
   const [reason, setReason] = useState<ReportReason | null>(null);
   const [details, setDetails] = useState('');

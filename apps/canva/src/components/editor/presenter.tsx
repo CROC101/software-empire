@@ -170,7 +170,7 @@ export const usePresent = create<PresentState>((set, get) => ({
 function setupPopup(win: Window): HTMLElement {
   const doc = win.document;
 
-  doc.title = 'หน้าต่างผู้พรีเซนต์ · CS Canvas';
+  doc.title = 'หน้าต่างผู้พรีเซนต์ · Empire Canvas';
   doc.documentElement.lang = 'th';
   // ใช้ธีมเดียวกับหน้าแก้ไข · สีของเวทีพรีเซนต์ล็อกด้วย .cv-stage อยู่แล้ว
   doc.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') ?? 'light');

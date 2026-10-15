@@ -42,7 +42,7 @@ export function buildPdf(pages: PdfPage[], title: string): Blob {
       `<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(" ")}] /Count ${pages.length} >>`,
     ),
   );
-  object(3, () => write(`<< /Title <${utf16Hex(title)}> /Producer (CS Canvas) >>`));
+  object(3, () => write(`<< /Title <${utf16Hex(title)}> /Producer (Empire Canvas) >>`));
 
   pages.forEach((page, i) => {
     const pageId = pageIds[i];

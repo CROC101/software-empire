@@ -84,7 +84,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 
                 <img src="/cv-mark.png" alt="" width={36} height={36} className="size-9 rounded-full object-contain" />
               </span>
-              <span className="cv-logo text-cv-h2 leading-tight">CS Canvas</span>
+              <span className="cv-logo text-cv-h2 leading-tight">Empire Canvas</span>
             </Link>
             {secondary === 'projects' ? (
               <ProjectsNav />
@@ -132,12 +132,12 @@ function Rail({ open, onToggleSecondary }: { open: boolean; onToggleSecondary: (
   return (
     <div className="sticky top-0 z-40 hidden h-dvh w-[4.5rem] shrink-0 md:block">
       <nav aria-label="เมนูหลัก" className="cv-on-brand cv-rail absolute inset-y-0 left-0 flex flex-col gap-1 px-3">
-        <Link href="/" aria-label="CS Canvas หน้าแรก" className="cv-rail-item cv-rail-brand">
+        <Link href="/" aria-label="Empire Canvas หน้าแรก" className="cv-rail-item cv-rail-brand">
           <span className="cv-logo-badge size-9 shrink-0 p-0.5">
             
             <img src="/cv-mark.png" alt="" width={32} height={32} className="size-8 rounded-full object-contain" />
           </span>
-          <span className="cv-rail-label cv-logo text-xl leading-none">CS Canvas</span>
+          <span className="cv-rail-label cv-logo text-xl leading-none">Empire Canvas</span>
         </Link>
 
         <button
@@ -179,9 +179,9 @@ function Rail({ open, onToggleSecondary }: { open: boolean; onToggleSecondary: (
           )}
           <NotificationsPopover />
           {/* ปุ่มกลับพอร์ทัลกลาง (ui-design-system.md ข้อ 5.1) — ไปอีก origin จึงใช้ <a> ไม่ใช่ Link */}
-          <a href={CORE_HUB_WEB_URL} aria-label="กลับ CSMJU Portal" className="cv-rail-item">
+          <a href={CORE_HUB_WEB_URL} aria-label="กลับ Software Empire Hub" className="cv-rail-item">
             <ArrowLeft aria-hidden className="size-6 shrink-0" strokeWidth={1.9} />
-            <span className="cv-rail-label">ระบบอื่นใน CSMJU2030</span>
+            <span className="cv-rail-label">ระบบอื่นใน Software Empire</span>
           </a>
           <AccountPopover />
         </div>

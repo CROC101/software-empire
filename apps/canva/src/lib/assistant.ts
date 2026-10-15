@@ -3,7 +3,7 @@ import { api, qs } from "@/lib/backend/api";
 import { searchHelp, type HelpArticle } from "./help-articles";
 import type { DesignSummary, TemplateSummary } from "./types";
 
-/// สมองของผู้ช่วย CS Canvas — ค้นจากคู่มือ เทมเพลต และงานของผู้ใช้จริงในระบบ
+/// สมองของผู้ช่วย Empire Canvas — ค้นจากคู่มือ เทมเพลต และงานของผู้ใช้จริงในระบบ
 ///
 /// ไม่ใช้ LLM และไม่ส่งคำถามออกนอกระบบ (การตัดสินใจของ PL) · ใช้ร่วมกันระหว่างปุ่ม ? และหน้า /assistant
 export interface AssistantAnswer {

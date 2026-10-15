@@ -12,9 +12,9 @@ import { canEditDoc, useEditor } from '@/lib/editor/store';
 import type { Asset } from '@/lib/types';
 import { ReceiveDropZone, useReceiveImport, useReceiveStatus } from './receive-import';
 
-/// "ถาดรับภาพ": หน้าต่าง CS Canvas เล็ก ๆ ที่ลอยอยู่เหนือทุกหน้าต่าง (Document Picture-in-Picture · Chrome/Edge 116+)
+/// "ถาดรับภาพ": หน้าต่าง Empire Canvas เล็ก ๆ ที่ลอยอยู่เหนือทุกหน้าต่าง (Document Picture-in-Picture · Chrome/Edge 116+)
 ///
-/// PL อยากให้เปิดแหล่งภาพ "ข้างใน CS Canvas" แต่เว็บอย่าง Pinterest ห้ามฝัง (iframe) — จึงเปิดเว็บนั้นในแท็บปกติ
+/// PL อยากให้เปิดแหล่งภาพ "ข้างใน Empire Canvas" แต่เว็บอย่าง Pinterest ห้ามฝัง (iframe) — จึงเปิดเว็บนั้นในแท็บปกติ
 /// แล้วลอยถาดนี้ไว้ด้านบน ผู้ใช้ลากภาพหรือกด Ctrl+V ในถาด ภาพก็เข้าไปในงานที่เปิดอยู่ทันที
 /// เบราว์เซอร์ที่ไม่มี API นี้ได้หน้าต่างป๊อปอัปเล็กที่มีถาดเดียวกัน (แต่ไม่ลอยเหนือหน้าต่างอื่น)
 ///
@@ -45,7 +45,7 @@ export function hasPictureInPicture(): boolean {
 function setupTrayDocument(win: Window): HTMLElement {
   const doc = win.document;
 
-  doc.title = 'ถาดรับภาพ · CS Canvas';
+  doc.title = 'ถาดรับภาพ · Empire Canvas';
   doc.documentElement.lang = 'th';
   doc.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') ?? 'light');
   doc.head.querySelectorAll('[data-csc-clone]').forEach((node) => node.remove());
@@ -109,7 +109,7 @@ export function openReceiveTray(site: KnownSite | null, onBlocked: (message: str
     return;
   }
 
-  const blocked = 'เบราว์เซอร์บล็อกหน้าต่างถาดรับภาพ — อนุญาตป๊อปอัปสำหรับ CS Canvas แล้วลองอีกครั้ง';
+  const blocked = 'เบราว์เซอร์บล็อกหน้าต่างถาดรับภาพ — อนุญาตป๊อปอัปสำหรับ Empire Canvas แล้วลองอีกครั้ง';
   const dpip = (window as Window & { documentPictureInPicture?: DocumentPictureInPicture }).documentPictureInPicture;
 
   if (dpip) {

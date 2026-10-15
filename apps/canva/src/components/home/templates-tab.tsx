@@ -74,7 +74,7 @@ export function TemplatesTab({
     <>
       {mobile ? <BrowseSquares title="สำรวจเทมเพลต" rows={2} onPick={setType} /> : <Explore onPick={setType} />}
       <LikeYourDesigns />
-      <TemplateRow title="มีอะไรใหม่ใน CS Canvas" sort="recent" />
+      <TemplateRow title="มีอะไรใหม่ใน Empire Canvas" sort="recent" />
       <TemplateRow title="ยอดนิยม" sort="popular" />
       <AllTemplates title={mobile ? 'เทมเพลตอื่นๆ ที่เหมาะกับคุณ' : 'เทมเพลตทั้งหมด'} />
     </>
@@ -213,7 +213,7 @@ function AllTemplates({ title }: { title: string }) {
   );
 }
 
-const SCOPE_TITLE = { starred: 'คอนเทนต์ติดดาว', builtIn: 'เทมเพลตตั้งต้นของทีม CS Canvas', mine: 'เทมเพลตที่ฉันเผยแพร่' } as const;
+const SCOPE_TITLE = { starred: 'คอนเทนต์ติดดาว', builtIn: 'เทมเพลตตั้งต้นของทีม Empire Canvas', mine: 'เทมเพลตที่ฉันเผยแพร่' } as const;
 
 function Results({
   query,

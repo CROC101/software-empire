@@ -896,7 +896,7 @@ function UploadsPanel() {
           <FolderIcon aria-hidden className="size-5" /> อัปโหลดโฟลเดอร์
         </button>
         <p className="mt-3 text-cv-caption text-muted">อัปโหลดรูปทุกไฟล์ในโฟลเดอร์ที่เลือก (ไฟล์ที่ไม่ใช่รูปจะถูกข้าม)</p>
-        <p className="mt-2 text-cv-caption text-muted">CS Canvas ไม่เชื่อมต่อแอปภายนอก เพื่อไม่ให้ไฟล์ของคุณออกนอกระบบของคณะ</p>
+        <p className="mt-2 text-cv-caption text-muted">Empire Canvas ไม่เชื่อมต่อแอปภายนอก เพื่อไม่ให้ไฟล์ของคุณออกนอกระบบของคณะ</p>
         <section aria-label="แหล่งภาพ" className="mt-6 border-t border-line pt-4">
           <h3 className="mb-3 text-cv-body font-bold text-ink">แหล่งภาพ</h3>
           <ImageSourcesBrowser onShowImported={() => setView({ kind: 'imported' })} />
@@ -965,7 +965,7 @@ function UploadsPanel() {
     >
       {tab === 'images' ? (
         <>
-          <p className="mb-3 text-cv-caption text-muted">รูป PNG, JPEG, WebP, GIF, SVG ไม่เกิน 10 MB · วิดีโอและเสียงไม่เกิน 10 MB · ไฟล์ของคุณเห็นได้เฉพาะคุณ · ลากรูปไปวางบนกรอบหรือกริดเพื่อใส่รูปในช่อง</p>
+          <p className="mb-3 text-cv-caption text-muted">รูป PNG, JPEG, WebP, GIF, SVG ไม่เกิน 10 MB · วิดีโอและเสียงไม่เกิน 10 MB · ไฟล์ที่อัปโหลดเปิดได้ด้วยลิงก์ที่เดาไม่ได้ อย่าอัปโหลดเอกสารลับ · ลากรูปไปวางบนกรอบหรือกริดเพื่อใส่รูปในช่อง</p>
           <AssetGrid q={q.trim()} folders={folders.data?.items ?? []} onInsert={insert} emptyText={q.trim() ? 'ไม่พบรูปที่ค้นหา' : null} />
         </>
       ) : tab === 'videos' ? (

@@ -9,7 +9,7 @@ let marker: string | null = null;
 let markerFailed = false;
 
 export function announceInternalCopy(count: number) {
-  marker = `[CS Canvas] คัดลอก ${count} ชิ้นงาน · ${Date.now().toString(36)}`;
+  marker = `[Empire Canvas] คัดลอก ${count} ชิ้นงาน · ${Date.now().toString(36)}`;
   markerFailed = false;
 
   if (typeof navigator === "undefined" || !navigator.clipboard?.writeText) {

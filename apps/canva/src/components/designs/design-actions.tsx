@@ -10,7 +10,7 @@ import { Button, Dialog, IconButton, errorMessage, useToast } from '../base/prim
 import { Avatar } from '../shell/avatar';
 import { Thumbnail } from './cards';
 
-/// ลิงก์ของงาน (ผู้ได้ลิงก์ต้องเข้าสู่ระบบ CSMJU2030 ก่อนเสมอ)
+/// ลิงก์ของงาน (ผู้ได้ลิงก์ต้องเข้าสู่ระบบ Software Empire ก่อนเสมอ)
 export function designUrl(id: string): string {
   return typeof window === 'undefined' ? `/design/${id}` : `${window.location.origin}/design/${id}`;
 }
@@ -40,7 +40,7 @@ const ACCESS_OPTIONS = [
   {
     value: 'link',
     title: 'ทุกคนที่มีลิงก์',
-    description: 'ทุกคนที่มีบัญชี CSMJU2030 เปิดดีไซน์นี้ได้ด้วยลิงก์นี้ (ต้องเข้าสู่ระบบก่อน)',
+    description: 'ทุกคนที่มีบัญชี Software Empire เปิดดีไซน์นี้ได้ด้วยลิงก์นี้ (ต้องเข้าสู่ระบบก่อน)',
     icon: <Globe aria-hidden className="size-5" />,
   },
 ] as const;
@@ -75,7 +75,7 @@ export function ShareDialog({ design, onClose }: { design: Pick<DesignSummary, '
           <span className="text-cv-caption font-semibold text-ink">เจ้าของ</span>
         </div>
         <p className="rounded-xl bg-surface-muted px-3 py-2 text-cv-caption text-muted">
-          การเพิ่มคนทีละคนด้วยชื่อหรืออีเมลยังทำไม่ได้ เพราะระบบกลาง CSMJU2030 ยังไม่เปิดให้ระบบย่อยค้นรายชื่อผู้ใช้ — ใช้การแชร์ด้วยลิงก์แทน
+          การเพิ่มคนทีละคนด้วยชื่อหรืออีเมลยังทำไม่ได้ เพราะระบบกลาง Software Empire ยังไม่เปิดให้ระบบย่อยค้นรายชื่อผู้ใช้ — ใช้การแชร์ด้วยลิงก์แทน
         </p>
         <div className="h-px bg-line" />
         <div>

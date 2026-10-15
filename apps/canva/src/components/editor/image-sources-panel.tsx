@@ -47,7 +47,7 @@ export function useOpenSource() {
     const win = window.open(sourceUrl(source, q), SOURCE_WINDOW_NAME, sideWindowFeatures(screenInfo));
 
     if (!win) {
-      toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ — อนุญาตป๊อปอัปสำหรับ CS Canvas หรือกด “เปิดในแท็บใหม่”', 'error');
+      toast('เบราว์เซอร์บล็อกหน้าต่างใหม่ — อนุญาตป๊อปอัปสำหรับ Empire Canvas หรือกด “เปิดในแท็บใหม่”', 'error');
       return;
     }
 
@@ -81,11 +81,11 @@ export function ImageSourcesBrowser({ onShowImported }: { onShowImported?: () =>
         <AppWindow aria-hidden className="size-4" /> {floating ? 'ปิดหน้าต่างลอยแหล่งภาพ' : 'แยกเป็นหน้าต่างลอย (ย้าย/ย่อได้ เหนือหน้างาน)'}
       </button>
       <p className="text-cv-caption text-body">
-        เปิดเว็บคลังภาพไว้ข้างจอ แล้วคัดลอกหรือลากภาพกลับมาใส่งาน — CS Canvas ไม่ฝังหรือดึงภาพจากเว็บเหล่านี้เอง และไม่ส่งข้อมูลของคุณไปให้ (คำค้นที่พิมพ์จะไปที่เว็บนั้นโดยตรง)
+        เปิดเว็บคลังภาพไว้ข้างจอ แล้วคัดลอกหรือลากภาพกลับมาใส่งาน — Empire Canvas ไม่ฝังหรือดึงภาพจากเว็บเหล่านี้เอง และไม่ส่งข้อมูลของคุณไปให้ (คำค้นที่พิมพ์จะไปที่เว็บนั้นโดยตรง)
       </p>
       <p className="flex gap-2 rounded-xl bg-info-bg px-3 py-2 text-cv-caption text-body">
         <PanelRight aria-hidden className="mt-0.5 size-4 shrink-0" />
-        <span>“เปิดข้างจอ” จะเปิดเว็บไว้ครึ่งขวาของจอ · CS Canvas ย่อหน้าต่างตัวเองไม่ได้ ให้จัดหน้าต่างนี้ไปครึ่งซ้ายเอง (Windows: กด Win + ←)</span>
+        <span>“เปิดข้างจอ” จะเปิดเว็บไว้ครึ่งขวาของจอ · Empire Canvas ย่อหน้าต่างตัวเองไม่ได้ ให้จัดหน้าต่างนี้ไปครึ่งซ้ายเอง (Windows: กด Win + ←)</span>
       </p>
 
       <ImportGuide />
@@ -128,7 +128,7 @@ function ImportGuide() {
       <ol className="flex flex-col gap-1.5 text-cv-caption text-body">
         <li className="flex gap-2">
           <ClipboardPaste aria-hidden className="mt-0.5 size-4 shrink-0" />
-          <span>คลิกขวาที่ภาพ → “คัดลอกรูปภาพ” → กลับมาที่ CS Canvas แล้วกด Ctrl+V</span>
+          <span>คลิกขวาที่ภาพ → “คัดลอกรูปภาพ” → กลับมาที่ Empire Canvas แล้วกด Ctrl+V</span>
         </li>
         <li className="flex gap-2">
           <MousePointer2 aria-hidden className="mt-0.5 size-4 shrink-0" />

@@ -5,20 +5,18 @@ import { useEditor } from "./store";
 import { blankDocument } from "./types";
 
 function load() {
-  useEditor
-    .getState()
-    .load(
-      {
-        designId: "d1",
-        title: "งานทดสอบ",
-        designType: "presentation",
-        width: 1920,
-        height: 1080,
-        access: "OWNER",
-        linkAccess: "NONE",
-      },
-      blankDocument(),
-    );
+  useEditor.getState().load(
+    {
+      designId: "d1",
+      title: "งานทดสอบ",
+      designType: "presentation",
+      width: 1920,
+      height: 1080,
+      access: "OWNER",
+      linkAccess: "NONE",
+    },
+    blankDocument(),
+  );
 }
 
 describe("editor store: หน้า", () => {

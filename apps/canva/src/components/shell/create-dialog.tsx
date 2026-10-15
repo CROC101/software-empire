@@ -167,7 +167,7 @@ function GroupPanel({ group, onPick, busy }: { group: DesignGroupKey; onPick: (t
     return (
       <EmptyState
         title={`${meta.label} จะเปิดให้ใช้ในช่วงถัดไป`}
-        description="ช่วงแรกของ CS Canvas รองรับงานกราฟิกนิ่ง (สไลด์ โพสต์ งานพิมพ์ เอกสาร ไวท์บอร์ด) ก่อน ประเภทงานนี้อยู่ในแผนของช่วงถัดไป"
+        description="ช่วงแรกของ Empire Canvas รองรับงานกราฟิกนิ่ง (สไลด์ โพสต์ งานพิมพ์ เอกสาร ไวท์บอร์ด) ก่อน ประเภทงานนี้อยู่ในแผนของช่วงถัดไป"
       />
     );
   }

@@ -22,7 +22,7 @@ type Submenu = 'theme' | 'help' | null;
 /// เมนูบัญชีแบบ Canva (ภาพบรีฟ "บัญชี" · "Theme" · "HELP")
 ///
 /// ตัดรายการที่ระบบนี้ไม่มีจริงออก: สร้างทีม · เครื่องมือขั้นสูง · แผนและราคา · ประวัติการซื้อ · แอปเดสก์ท็อป
-/// (ทีมอยู่ในแผนช่วงถัดไป ส่วนที่เหลือเป็นเรื่องการขายของ Canva ซึ่ง CS Canvas ไม่มี)
+/// (ทีมอยู่ในแผนช่วงถัดไป ส่วนที่เหลือเป็นเรื่องการขายของ Canva ซึ่ง Empire Canvas ไม่มี)
 export function AccountPopover() {
   const [open, setOpen] = useState(false);
   const [submenu, setSubmenu] = useState<Submenu>(null);
@@ -247,7 +247,7 @@ function HelpSubmenu({
   );
 }
 
-/// ส่งข้อเสนอแนะหรือรายงานเนื้อหาให้ผู้ดูแลระบบ (เก็บในฐานข้อมูลของ CS Canvas — ไม่ส่งออกนอกระบบ)
+/// ส่งข้อเสนอแนะหรือรายงานเนื้อหาให้ผู้ดูแลระบบ (เก็บในฐานข้อมูลของ Empire Canvas — ไม่ส่งออกนอกระบบ)
 ///
 /// "รายงานคอนเทนต์" เป็นเรื่องร้องเรียนประเภท "อื่น ๆ" (POST /reports) ที่ผู้ดูแลจัดการในแผงผู้ดูแล
 export function FeedbackDialog({ kind, onClose }: { kind: 'SUGGESTION' | 'REPORT'; onClose: () => void }) {
@@ -284,7 +284,7 @@ function SuggestionDialog({ kind, onClose }: { kind: 'SUGGESTION'; onClose: () =
     >
       <div className="flex flex-col gap-4">
         <p className="text-cv-caption text-muted">
-          บอกเราว่าอยากให้ CS Canvas ทำอะไรได้ดีขึ้น ผู้ดูแลระบบจะเห็นเฉพาะข้อความ ไม่เห็นชื่อของคุณ
+          บอกเราว่าอยากให้ Empire Canvas ทำอะไรได้ดีขึ้น ผู้ดูแลระบบจะเห็นเฉพาะข้อความ ไม่เห็นชื่อของคุณ
         </p>
         <FormField label="รายละเอียด" error={message && tooShort ? 'เขียนอย่างน้อย 5 ตัวอักษร' : null} hint={`${message.length}/2000`}>
           {(props) => <textarea {...props} autoFocus rows={5} maxLength={2000} value={message} onChange={(e) => setMessage(e.target.value)} className={cx(inputClass, 'py-3')} />}

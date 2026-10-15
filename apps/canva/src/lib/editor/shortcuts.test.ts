@@ -8,20 +8,18 @@ import { blankDocument } from "./types";
 const PAGE = { width: 1920, height: 1080 };
 
 function load() {
-  useEditor
-    .getState()
-    .load(
-      {
-        designId: "d1",
-        title: "งานทดสอบ",
-        designType: "presentation",
-        width: PAGE.width,
-        height: PAGE.height,
-        access: "OWNER",
-        linkAccess: "NONE",
-      },
-      blankDocument(),
-    );
+  useEditor.getState().load(
+    {
+      designId: "d1",
+      title: "งานทดสอบ",
+      designType: "presentation",
+      width: PAGE.width,
+      height: PAGE.height,
+      access: "OWNER",
+      linkAccess: "NONE",
+    },
+    blankDocument(),
+  );
 }
 
 describe("ตารางคีย์ลัด", () => {

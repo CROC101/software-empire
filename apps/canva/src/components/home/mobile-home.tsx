@@ -226,7 +226,7 @@ function TypeRow({ title, source }: { title: string; source: 'usage' | 'popular'
   );
 }
 
-/// เครื่องมือด่วน — เฉพาะเครื่องมือที่ CS Canvas มีจริง (ไม่มีเครื่องมือ AI ของ Canva)
+/// เครื่องมือด่วน — เฉพาะเครื่องมือที่ Empire Canvas มีจริง (ไม่มีเครื่องมือ AI ของ Canva)
 function QuickTools() {
   const openCreate = useOpenCreate();
   const tools: { key: string; label: string; icon: ReactNode; tone: string; href?: string; onClick?: () => void }[] = [

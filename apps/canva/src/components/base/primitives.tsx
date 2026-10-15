@@ -13,7 +13,7 @@ import {
   type ReactNode,
 } from 'react';
 
-/// ชิ้นส่วนหน้าจอพื้นฐานของ CS Canvas — ใช้ token ล้วน (globals.css)
+/// ชิ้นส่วนหน้าจอพื้นฐานของ Empire Canvas — ใช้ token ล้วน (globals.css)
 ///
 /// เขียนเองเพราะยังติดตั้ง @csmju2030/design-system ไม่ได้ (ต้องมี PAT ของ org)
 /// ชื่อและพฤติกรรมเลียน component ของ DS เพื่อให้ย้ายไปใช้ของจริงได้ง่าย

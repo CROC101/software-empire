@@ -48,7 +48,11 @@ pnpm db:test         # pgTAP ใน supabase/tests — RLS ทุกตารา
 pnpm db:types        # สร้าง packages/core/src/database.types.ts ใหม่หลังแก้ migration
 pnpm --filter @empire/hub dev        # http://localhost:3000
 pnpm --filter @empire/toolboxes dev  # http://localhost:3003
+pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็อกอิน)
 ```
+
+- `db:start` เปิด storage ด้วย (canva เก็บไฟล์ใน bucket `canva-assets`) · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
+- canva: หน้าจอเดิมของ csmju-canvas เรียก `api.get('/designs/…')` → `apps/canva/src/lib/backend/api.ts` แปลงเป็น Supabase · path ที่ยังไม่รองรับตอบ 501 · `lib/router.tsx` แทน `next/link` / `next/navigation`
 
 - ทุกแอปต้องมี `.env.local` (ลอกจาก `.env.example`) · hub ต้องมี `APP_URL_<SLUG>` ของแอปที่เปิดแล้ว ไม่งั้นลิงก์และการพากลับหลังล็อกอินไม่ทำงาน
 - แก้ `[api] schemas` ใน `supabase/config.toml` แล้วต้อง `pnpm db:stop && pnpm db:start` (`db:reset` ไม่โหลดค่านี้ใหม่ — อาการคือ 406)

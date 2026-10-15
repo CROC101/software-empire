@@ -14,7 +14,7 @@ interface Turn {
 
 export const SUGGESTIONS = ['เริ่มสร้างงานใหม่', 'ดาวน์โหลด png โปร่งใส', 'แชร์ดีไซน์ให้เพื่อน', 'กู้คืนงานจากถังขยะ', 'คีย์ลัด'];
 
-/// ผู้ช่วย CS Canvas (ปุ่ม ?) — หน้าตาตามภาพบรีฟ "AI" และ "AI 1.1"
+/// ผู้ช่วย Empire Canvas (ปุ่ม ?) — หน้าตาตามภาพบรีฟ "AI" และ "AI 1.1"
 ///
 /// ตอบด้วยการค้นจากคู่มือ เทมเพลต และงานของผู้ใช้จริงในระบบ ไม่ส่งคำถามออกนอกระบบ
 /// และไม่ใช้ LLM (การตัดสินใจของ PL 4 ต.ค. 2569) · คำถามนอกเรื่องได้คำตอบตรง ๆ ว่าช่วยได้แค่เรื่องใด
@@ -85,8 +85,8 @@ export function HelpAssistant() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="help-panel"
-        aria-label="ผู้ช่วย CS Canvas"
-        title="ผู้ช่วย CS Canvas"
+        aria-label="ผู้ช่วย Empire Canvas"
+        title="ผู้ช่วย Empire Canvas"
         // มือถือมีแท็บ "ผู้ช่วย" ที่แถบล่างแทนปุ่มนี้
         className="group fixed right-4 bottom-6 z-30 hidden size-14 items-center justify-center rounded-full bg-primary text-on-inverse shadow-cv-lg hover:bg-primary-hover md:inline-flex"
       >
@@ -97,7 +97,7 @@ export function HelpAssistant() {
         <section
           id="help-panel"
           role="dialog"
-          aria-label="ผู้ช่วย CS Canvas"
+          aria-label="ผู้ช่วย Empire Canvas"
           className={cx(
             'cv-pop fixed z-40 flex w-100 max-w-full flex-col overflow-hidden border border-line bg-surface shadow-cv-lg',
             docked ? 'top-2 right-2 bottom-2 rounded-3xl' : 'right-4 bottom-36 h-160 max-h-popover rounded-3xl md:bottom-24',
@@ -125,7 +125,7 @@ export function HelpAssistant() {
             {turns.length === 0 ? (
               <div className="flex min-h-full flex-col items-center justify-center py-10 text-center">
                 <h2 className="text-cv-h1 leading-snug font-bold text-ink">
-                  <span className="cv-gradient-text">ขอความช่วยเหลือ</span>เกี่ยวกับ CS Canvas ได้ทุกเรื่อง
+                  <span className="cv-gradient-text">ขอความช่วยเหลือ</span>เกี่ยวกับ Empire Canvas ได้ทุกเรื่อง
                 </h2>
                 <p className="mt-2 text-cv-caption text-muted">ค้นคำตอบจากคู่มือ เทมเพลต และงานของคุณได้ทันที</p>
                 <ul className="mt-6 flex flex-wrap justify-center gap-2">
@@ -172,7 +172,7 @@ export function HelpAssistant() {
               </button>
             </div>
           </form>
-          <p className="relative px-4 pb-3 text-center text-cv-caption text-muted">ผู้ช่วยค้นจากข้อมูลใน CS Canvas เท่านั้น ไม่ได้ใช้ AI ภายนอก · ตรวจรายละเอียดในคู่มืออีกครั้ง</p>
+          <p className="relative px-4 pb-3 text-center text-cv-caption text-muted">ผู้ช่วยค้นจากข้อมูลใน Empire Canvas เท่านั้น ไม่ได้ใช้ AI ภายนอก · ตรวจรายละเอียดในคู่มืออีกครั้ง</p>
         </section>
       )}
     </>
