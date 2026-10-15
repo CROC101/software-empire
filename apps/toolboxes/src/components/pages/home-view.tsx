@@ -39,7 +39,7 @@ export function HomeView() {
           <p className="text-primary-foreground/80">{name ? `สวัสดี ${name}` : "ยินดีต้อนรับ"}</p>
           <h1 className="mt-2 font-display text-3xl font-bold leading-tight sm:text-5xl">
             เครื่องมือออนไลน์ฟรี
-            <span className="block text-brand-amber">{TOOLS.length} ชิ้นในที่เดียว</span>
+            <span className="block text-white/85">{TOOLS.length} ชิ้นในที่เดียว</span>
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-primary-foreground/85">
             สำหรับนักพัฒนาและทุกคน — แปลง คำนวณ สร้าง ตรวจ ทำงานในเบราว์เซอร์ทั้งหมด

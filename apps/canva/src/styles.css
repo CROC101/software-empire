@@ -511,8 +511,8 @@
     display: inline-grid;
     place-items: center;
     border-radius: 9999px;
-    background: rgb(255 255 255);
-    box-shadow: var(--cv-shadow-sm);
+    background: var(--em-aurora);
+    box-shadow: var(--em-glow);
   }
 
   /* ชื่อระบบข้างโลโก้ (เดิมเป็นตัวเขียน Dancing Script) — Plus Jakarta Sans หนาแบบหัวข้อของ Core Hub */
