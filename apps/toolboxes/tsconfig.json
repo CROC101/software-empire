@@ -1,0 +1,11 @@
+{
+  "extends": "@empire/config/tsconfig/react.json",
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "paths": { "@/*": ["./src/*"] },
+    // shortcut: code ported from csmju-toolboxes was written without this flag (255 index sites).
+    // Turn it back on file by file as PL redesigns each page.
+    "noUncheckedIndexedAccess": false
+  },
+  "include": ["src", "vite.config.ts"]
+}

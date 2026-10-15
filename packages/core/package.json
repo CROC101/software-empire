@@ -1,0 +1,29 @@
+{
+  "name": "@empire/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./supabase": "./src/supabase.ts",
+    "./worker": "./src/worker.ts",
+    "./redirect": "./src/redirect.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc -p .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.3",
+    "comlink": "^4.4.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@empire/config": "workspace:*",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.12.0",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.4"
+  }
+}

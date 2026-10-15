@@ -1,0 +1,6 @@
+{
+  "extends": "@empire/config/tsconfig/base.json",
+  // runs in browsers and Node (both provide URL, fetch, crypto)
+  "compilerOptions": { "lib": ["ES2023", "DOM"] },
+  "include": ["src"]
+}

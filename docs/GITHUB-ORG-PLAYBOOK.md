@@ -1,14 +1,14 @@
 # 🧭 GitHub Org Playbook — คนเดียวเป็น PM · PL · AIE และพร้อมรับทีมในอนาคต
 
 > ย่อส่วนจาก `csmju2030-standards/org-settings` ให้เหมาะกับเจ้าของคนเดียว
-> ทุกขั้นทำบน **GitHub Free** ได้ · แทน `ORG` ด้วยชื่อ org จริงทุกที่ (ใน `.github/CODEOWNERS` ด้วย)
+> ทุกขั้นทำบน **GitHub Free** ได้ · org ของโปรเจกต์นี้คือ **CROC101**
 
 ---
 
 ## 0. ภาพรวมสิ่งที่จะได้
 
 ```text
-github.com/ORG                       ← Organization (ฟรี) — คุณเป็น Owner
+github.com/CROC101                       ← Organization (ฟรี) — คุณเป็น Owner
 ├── team: pm        (Maintain)       ← หมวก PM
 ├── team: pl        (Maintain)       ← หมวก PL · CODEOWNER ของ ui/standards
 ├── team: aie       (Write)          ← หมวก AIE
@@ -26,7 +26,7 @@ github.com/ORG                       ← Organization (ฟรี) — คุณ�
 ## 1. สร้าง Organization
 
 1. github.com → รูปโปรไฟล์ → **Your organizations** → **New organization** → **Free**
-2. ตั้งชื่อเป็นแบรนด์ (เช่น `<ชื่อคุณ>-labs`, `empire-studio`) — ชื่อนี้จะเป็น scope `@ORG/...` และอยู่ใน URL portfolio
+2. ตั้งชื่อเป็นแบรนด์ (เช่น `<ชื่อคุณ>-labs`, `empire-studio`) — ชื่อนี้จะเป็น scope `@CROC101/...` และอยู่ใน URL portfolio
 3. ใส่ logo, คำอธิบาย, เว็บไซต์ → org ดูเป็นบริษัททันที
 4. สร้าง repo `.github` ใน org แล้วใส่ `profile/README.md` → กลายเป็นหน้าแรกของ org (โชว์ 8 ระบบ + Architecture Map)
 
@@ -45,7 +45,7 @@ gh auth refresh -s admin:org       # สิทธิ์จัดการ teams/
 **Token ให้ GitHub MCP** (`.mcp.json` อ่านจาก env `GITHUB_PAT`):
 
 1. Settings → Developer settings → **Fine-grained tokens** → Generate
-2. Resource owner = `ORG` · Repository access = เฉพาะ `software-empire` · ตั้งวันหมดอายุ (90 วัน)
+2. Resource owner = `CROC101` · Repository access = เฉพาะ `software-empire` · ตั้งวันหมดอายุ (90 วัน)
 3. Permissions: Contents RW, Issues RW, Pull requests RW, Actions R, Metadata R
 4. ตั้งเป็น env ของผู้ใช้ แล้ว **ปิด-เปิด terminal ใหม่** ก่อนรัน `claude`:
 
@@ -64,7 +64,7 @@ cd D:\projects\software-empire
 git init -b main
 git add .
 git commit -m "chore: initial project docs and MCP config"
-gh repo create ORG/software-empire --public --source . --push
+gh repo create CROC101/software-empire --public --source . --push
 ```
 
 > **Public** เพราะ (1) เป็น portfolio (2) Rulesets, secret scanning, push protection บน **private repo ต้องใช้แผน Team** — public ได้ฟรีทั้งหมด
@@ -75,14 +75,14 @@ gh repo create ORG/software-empire --public --source . --push
 ## 4. Teams = บทบาท
 
 ```powershell
-gh api orgs/ORG/teams -f name=pm  -f privacy=closed -f description="Product Manager — backlog & DoD"
-gh api orgs/ORG/teams -f name=pl  -f privacy=closed -f description="Product Leader — quality gate & design system"
-gh api orgs/ORG/teams -f name=aie -f privacy=closed -f description="AI Engineer — implementation"
+gh api orgs/CROC101/teams -f name=pm  -f privacy=closed -f description="Product Manager — backlog & DoD"
+gh api orgs/CROC101/teams -f name=pl  -f privacy=closed -f description="Product Leader — quality gate & design system"
+gh api orgs/CROC101/teams -f name=aie -f privacy=closed -f description="AI Engineer — implementation"
 
 # ผูกสิทธิ์ team เข้า repo (CODEOWNERS ใช้ team ได้ก็ต่อเมื่อ team มีสิทธิ์ write ขึ้นไป)
-gh api -X PUT orgs/ORG/teams/pm/repos/ORG/software-empire  -f permission=maintain
-gh api -X PUT orgs/ORG/teams/pl/repos/ORG/software-empire  -f permission=maintain
-gh api -X PUT orgs/ORG/teams/aie/repos/ORG/software-empire -f permission=push
+gh api -X PUT orgs/CROC101/teams/pm/repos/CROC101/software-empire  -f permission=maintain
+gh api -X PUT orgs/CROC101/teams/pl/repos/CROC101/software-empire  -f permission=maintain
+gh api -X PUT orgs/CROC101/teams/aie/repos/CROC101/software-empire -f permission=push
 ```
 
 ผู้สร้าง team เป็นสมาชิกอัตโนมัติ — คุณอยู่ครบทั้ง 3 ทีมแล้ว
@@ -106,7 +106,7 @@ gh api -X PUT orgs/ORG/teams/aie/repos/ORG/software-empire -f permission=push
 โหมดคนเดียวจึงบังคับ "ต้องผ่าน PR + CI เขียว" แต่จำนวน approve = 0 · ตัว PL review ผ่าน checklist ใน PR template
 
 ```powershell
-gh api -X POST repos/ORG/software-empire/rulesets --input standards/org-settings/ruleset-main-solo.json
+gh api -X POST repos/CROC101/software-empire/rulesets --input standards/org-settings/ruleset-main-solo.json
 ```
 
 ไฟล์อยู่ที่ [`standards/org-settings/ruleset-main-solo.json`](../standards/org-settings/ruleset-main-solo.json) — กันลบ `main`, กัน force-push, บังคับ PR, บังคับ resolve ทุก thread
@@ -125,7 +125,7 @@ ruleset นี้บังคับ check `verify` (job ใน `.github/workflow
 วันที่มีคนมาทำ `tarot` ให้สร้าง team `aie-tarot` แล้วเปลี่ยนบรรทัดเดียว:
 
 ```text
-/apps/tarot/   @ORG/aie-tarot @ORG/pl
+/apps/tarot/   @CROC101/aie-tarot @CROC101/pl
 ```
 
 ---
@@ -154,8 +154,8 @@ ruleset นี้บังคับ check `verify` (job ใน `.github/workflow
 - **Labels**: `app:<ชื่อ>`, `type:feature|bug|chore`, `priority:p0|p1|p2`
 
 ```powershell
-foreach ($a in "hub","community","commerce","toolboxes","tarot","design","canva","stream") { gh label create "app:$a" -R ORG/software-empire -c 1D76DB }
-foreach ($p in "p0","p1","p2") { gh label create "priority:$p" -R ORG/software-empire -c B60205 }
+foreach ($a in "hub","community","commerce","toolboxes","tarot","design","canva","stream") { gh label create "app:$a" -R CROC101/software-empire -c 1D76DB }
+foreach ($p in "p0","p1","p2") { gh label create "priority:$p" -R CROC101/software-empire -c B60205 }
 ```
 
 ---
@@ -180,9 +180,9 @@ Settings → **Code security** → เปิด: Secret scanning · **Push prote
 
 ## 10. Checklist ตั้งค่าครั้งแรก
 
-- [ ] สร้าง org + profile README
+- [x] สร้าง org (CROC101) — profile README ยังไม่ทำ
 - [ ] `gh` ติดตั้งและล็อกอิน · ตั้ง `GITHUB_PAT` · เปิด `claude` ใหม่แล้ว `/mcp` เห็น `github` connected
-- [ ] แทน `ORG` ใน `.github/CODEOWNERS`
+- [x] แทน `ORG` ใน `.github/CODEOWNERS` (CROC101)
 - [ ] สร้าง repo + push ครั้งแรก
 - [ ] สร้าง teams pm/pl/aie + ผูกสิทธิ์
 - [ ] ตั้ง org member privileges

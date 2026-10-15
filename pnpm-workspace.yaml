@@ -1,3 +1,7 @@
 packages:
   - apps/*
   - packages/*
+
+# postinstall only re-checks a prebuilt binary that the optional deps already ship
+allowBuilds:
+  unrs-resolver: false
