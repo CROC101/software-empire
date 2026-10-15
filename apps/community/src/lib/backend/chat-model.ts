@@ -4,6 +4,7 @@ import { db } from "@/lib/supabase";
 import { check, fromPostgrest } from "./api-core";
 import { embedKey, resolveEmbeds } from "./embeds";
 import type {
+  CallLog,
   Channel,
   Message,
   MessageAttachment,
@@ -34,6 +35,7 @@ export function toMessage(row: MessageRow): Message {
     createdAt: row.created_at ?? "",
     replyTo: row.reply_to as MessageReplyTo | null,
     forwarded: row.forwarded ?? false,
+    callLog: (row.call_log ?? null) as unknown as CallLog | null,
     storyReply: row.story_reply_kind
       ? { kind: row.story_reply_kind as "REPLY" | "REACTION", emoji: row.story_reply_emoji }
       : null,
