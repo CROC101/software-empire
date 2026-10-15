@@ -356,6 +356,113 @@ export type Database = {
         };
         Relationships: [];
       };
+      call_feedback: {
+        Row: {
+          channel_id: string;
+          created_at: string;
+          duration_sec: number | null;
+          id: string;
+          kind: string;
+          rating: number;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id: string;
+          created_at?: string;
+          duration_sec?: number | null;
+          id?: string;
+          kind: string;
+          rating: number;
+          user_id?: string;
+        };
+        Update: {
+          channel_id?: string;
+          created_at?: string;
+          duration_sec?: number | null;
+          id?: string;
+          kind?: string;
+          rating?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "call_feedback_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      call_logs: {
+        Row: {
+          answered_at: string | null;
+          caller_id: string;
+          channel_id: string;
+          declined: string[];
+          duration_sec: number | null;
+          ended_at: string | null;
+          invitees: string[];
+          media: string;
+          message_id: string;
+          session_id: string;
+          started_at: string;
+          status: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          answered_at?: string | null;
+          caller_id: string;
+          channel_id: string;
+          declined?: string[];
+          duration_sec?: number | null;
+          ended_at?: string | null;
+          invitees?: string[];
+          media?: string;
+          message_id: string;
+          session_id: string;
+          started_at?: string;
+          status?: string;
+        };
+        Update: {
+          answered_at?: string | null;
+          caller_id?: string;
+          channel_id?: string;
+          declined?: string[];
+          duration_sec?: number | null;
+          ended_at?: string | null;
+          invitees?: string[];
+          media?: string;
+          message_id?: string;
+          session_id?: string;
+          started_at?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "call_logs_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "call_logs_message_id_fkey";
+            columns: ["message_id"];
+            isOneToOne: true;
+            referencedRelation: "message_view";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "call_logs_message_id_fkey";
+            columns: ["message_id"];
+            isOneToOne: true;
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       channel_members: {
         Row: {
           channel_id: string;
@@ -569,6 +676,51 @@ export type Database = {
             columns: ["cover_story_id"];
             isOneToOne: false;
             referencedRelation: "story_feed";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      meetings: {
+        Row: {
+          agenda: string | null;
+          channel_id: string;
+          created_at: string;
+          created_by: string | null;
+          ends_at: string;
+          id: string;
+          starts_at: string;
+          status: string;
+          title: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          agenda?: string | null;
+          channel_id: string;
+          created_at?: string;
+          created_by?: string | null;
+          ends_at: string;
+          id?: string;
+          starts_at: string;
+          status?: string;
+          title: string;
+        };
+        Update: {
+          agenda?: string | null;
+          channel_id?: string;
+          created_at?: string;
+          created_by?: string | null;
+          ends_at?: string;
+          id?: string;
+          starts_at?: string;
+          status?: string;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "meetings_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
             referencedColumns: ["id"];
           },
         ];
@@ -1307,6 +1459,109 @@ export type Database = {
           },
         ];
       };
+      turn_config: {
+        Row: {
+          credential: string | null;
+          id: boolean;
+          urls: string[];
+          username: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          credential?: string | null;
+          id?: boolean;
+          urls: string[];
+          username?: string | null;
+        };
+        Update: {
+          credential?: string | null;
+          id?: boolean;
+          urls?: string[];
+          username?: string | null;
+        };
+        Relationships: [];
+      };
+      voice_participants: {
+        Row: {
+          deafened: boolean;
+          id: string;
+          joined_at: string;
+          last_seen_at: string;
+          left_at: string | null;
+          muted: boolean;
+          session_id: string;
+          sharing: boolean;
+          user_id: string;
+          video: boolean;
+        };
+        ComputedFields: never;
+        Insert: {
+          deafened?: boolean;
+          id?: string;
+          joined_at?: string;
+          last_seen_at?: string;
+          left_at?: string | null;
+          muted?: boolean;
+          session_id: string;
+          sharing?: boolean;
+          user_id: string;
+          video?: boolean;
+        };
+        Update: {
+          deafened?: boolean;
+          id?: string;
+          joined_at?: string;
+          last_seen_at?: string;
+          left_at?: string | null;
+          muted?: boolean;
+          session_id?: string;
+          sharing?: boolean;
+          user_id?: string;
+          video?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "voice_participants_session_id_fkey";
+            columns: ["session_id"];
+            isOneToOne: false;
+            referencedRelation: "voice_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      voice_sessions: {
+        Row: {
+          channel_id: string;
+          ended_at: string | null;
+          id: string;
+          presenter_id: string | null;
+          started_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id: string;
+          ended_at?: string | null;
+          id?: string;
+          presenter_id?: string | null;
+          started_at?: string;
+        };
+        Update: {
+          channel_id?: string;
+          ended_at?: string | null;
+          id?: string;
+          presenter_id?: string | null;
+          started_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "voice_sessions_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       bookmark_collection_view: {
@@ -1382,10 +1637,59 @@ export type Database = {
           },
         ];
       };
+      meeting_view: {
+        Row: {
+          agenda: string | null;
+          channel_id: string | null;
+          created_at: string | null;
+          created_by: string | null;
+          ends_at: string | null;
+          id: string | null;
+          joinable_now: boolean | null;
+          starts_at: string | null;
+          status: string | null;
+          title: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          agenda?: string | null;
+          channel_id?: string | null;
+          created_at?: string | null;
+          created_by?: string | null;
+          ends_at?: string | null;
+          id?: string | null;
+          joinable_now?: never;
+          starts_at?: string | null;
+          status?: string | null;
+          title?: string | null;
+        };
+        Update: {
+          agenda?: string | null;
+          channel_id?: string | null;
+          created_at?: string | null;
+          created_by?: string | null;
+          ends_at?: string | null;
+          id?: string | null;
+          joinable_now?: never;
+          starts_at?: string | null;
+          status?: string | null;
+          title?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "meetings_channel_id_fkey";
+            columns: ["channel_id"];
+            isOneToOne: false;
+            referencedRelation: "channels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       message_view: {
         Row: {
           attachments: Json | null;
           author_id: string | null;
+          call_log: Json | null;
           channel_id: string | null;
           client_nonce: string | null;
           content: string | null;
@@ -1642,6 +1946,34 @@ export type Database = {
         Returns: undefined;
       };
       block_user: { Args: { target: string }; Returns: string };
+      broadcast_occupants: { Args: { channel: string }; Returns: undefined };
+      call_answer: {
+        Args: { accepted: boolean; caller: string; session: string };
+        Returns: undefined;
+      };
+      call_cancel: {
+        Args: { callee: string; session: string; timed_out?: boolean };
+        Returns: undefined;
+      };
+      call_end: { Args: { peer: string; session: string }; Returns: undefined };
+      call_log_json: { Args: { message: string }; Returns: Json };
+      call_peer_check: {
+        Args: { peer: string; session: string };
+        Returns: {
+          channel_id: string;
+          ended_at: string | null;
+          id: string;
+          presenter_id: string | null;
+          started_at: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "voice_sessions";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      call_ring: { Args: { callee: string; media?: string; session: string }; Returns: undefined };
       can_comment: { Args: { owner: string }; Returns: boolean };
       can_manage: { Args: { channel: string }; Returns: boolean };
       can_read_asset: { Args: { asset: string }; Returns: boolean };
@@ -1649,6 +1981,7 @@ export type Database = {
       can_see_reel: { Args: { reel: string }; Returns: boolean };
       can_see_story: { Args: { story: string }; Returns: boolean };
       can_see_target: { Args: { kind: string; target: string }; Returns: boolean };
+      cancel_meeting: { Args: { meeting: string }; Returns: undefined };
       channel_rows: {
         Args: { max_rows?: number; only_channel?: string; skip?: number };
         Returns: Json[];
@@ -1658,7 +1991,9 @@ export type Database = {
         Returns: undefined;
       };
       claim_assets: { Args: { assets: string[]; kinds: string[] }; Returns: undefined };
+      claim_screen: { Args: { session: string }; Returns: Json };
       clear_channel: { Args: { channel: string }; Returns: string };
+      close_if_empty: { Args: { channel: string }; Returns: undefined };
       commit_asset: {
         Args: { asset: string };
         Returns: {
@@ -1696,6 +2031,16 @@ export type Database = {
         Args: { cover?: string; story_ids: string[]; title: string };
         Returns: string;
       };
+      create_meeting: {
+        Args: {
+          agenda?: string;
+          channel: string;
+          ends_at: string;
+          starts_at: string;
+          title: string;
+        };
+        Returns: string;
+      };
       create_post: {
         Args: { asset_ids?: string[]; content?: string; course_tag?: string; title?: string };
         Returns: string;
@@ -1723,6 +2068,17 @@ export type Database = {
       delete_story: { Args: { story: string }; Returns: string };
       edit_message: { Args: { body: string; message: string }; Returns: undefined };
       file_type: { Args: { file_name: string; hint?: string }; Returns: Record<string, unknown> };
+      finish_call: {
+        Args: {
+          final: string;
+          log: Omit<
+            Database["community"]["Tables"]["call_logs"]["Row"],
+            Database["community"]["Tables"]["call_logs"]["ComputedFields"]
+          >;
+        };
+        Returns: undefined;
+      };
+      finish_calls: { Args: { person: string; session: string }; Returns: undefined };
       follow_suggestions: {
         Args: { max_rows?: number };
         Returns: {
@@ -1732,12 +2088,16 @@ export type Database = {
           user_id: string;
         }[];
       };
+      ice_servers: { Args: Record<PropertyKey, never>; Returns: Json };
+      in_voice: { Args: { session: string }; Returns: boolean };
       inbox_folder_of: { Args: { channel: string; member: string }; Returns: string };
       is_blocked_either: { Args: { a: string; b: string }; Returns: boolean };
       is_member: { Args: { channel: string }; Returns: boolean };
       is_muted: { Args: { channel: string; member: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      join_voice: { Args: { channel: string }; Returns: Json };
       leave_channel: { Args: { channel: string }; Returns: undefined };
+      leave_voice: { Args: { session: string }; Returns: undefined };
       like_reel: { Args: { liked: boolean; reel: string }; Returns: number };
       like_reel_comment: { Args: { comment: string; liked: boolean }; Returns: number };
       mark_all_notifications_read: { Args: Record<PropertyKey, never>; Returns: number };
@@ -1747,6 +2107,10 @@ export type Database = {
       my_role: { Args: { channel: string }; Returns: string };
       notify: {
         Args: { kind: string; payload?: Json; recipient: string; ref: string };
+        Returns: undefined;
+      };
+      notify_as: {
+        Args: { actor: string; kind: string; payload: Json; recipient: string; ref: string };
         Returns: undefined;
       };
       open_direct: { Args: { group_name?: string; peers: string[] }; Returns: string };
@@ -1762,6 +2126,7 @@ export type Database = {
           target_id: string;
         }[];
       };
+      release_screen: { Args: { session: string }; Returns: undefined };
       remove_member: { Args: { channel: string; target: string }; Returns: undefined };
       reply_story: {
         Args: { body?: string; emoji?: string; story: string };
@@ -1801,13 +2166,21 @@ export type Database = {
         };
         Returns: string;
       };
+      send_to: { Args: { event: string; payload: Json; person: string }; Returns: undefined };
+      session_json: { Args: { session: string }; Returns: Json };
       set_cover: { Args: { asset?: string }; Returns: string };
       set_nickname: { Args: { channel: string; nick: string; target: string }; Returns: undefined };
       set_pin: { Args: { message: string; pinned: boolean }; Returns: undefined };
+      set_voice_state: {
+        Args: { deafened?: boolean; muted?: boolean; session: string; video?: boolean };
+        Returns: Json;
+      };
       storage_can_purge: { Args: { bucket: string; name: string }; Returns: boolean };
       storage_can_read: { Args: { bucket: string; name: string }; Returns: boolean };
       storage_can_upload: { Args: { bucket: string; name: string }; Returns: boolean };
       story_insights: { Args: { story: string }; Returns: Json };
+      sweep_calls: { Args: Record<PropertyKey, never>; Returns: undefined };
+      sweep_voice: { Args: { channel?: string }; Returns: undefined };
       update_channel: {
         Args: { channel: string; new_description?: string; new_name?: string };
         Returns: undefined;
@@ -1829,6 +2202,9 @@ export type Database = {
       used_bytes: { Args: { except_asset?: string; owner: string }; Returns: number };
       view_reel: { Args: { reel: string }; Returns: number };
       view_story: { Args: { story: string }; Returns: number };
+      voice_heartbeat: { Args: { session: string }; Returns: boolean };
+      voice_occupants: { Args: { channel: string }; Returns: Json };
+      voice_sessions_list: { Args: { channel?: string }; Returns: Json[] };
     };
     Enums: {
       [_ in never]: never;

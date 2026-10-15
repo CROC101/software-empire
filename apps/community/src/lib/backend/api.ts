@@ -12,6 +12,7 @@ import { NOTIFY_ROUTES } from "./notify-api";
 import { REEL_ROUTES } from "./reels-api";
 import { SOCIAL_ROUTES } from "./social-api";
 import { STORY_ROUTES } from "./stories-api";
+import { VOICE_ROUTES } from "./voice-api";
 
 export { ApiError, qs, setUnauthorizedHandler, type Page, type PaginationMeta } from "./api-core";
 
@@ -23,6 +24,7 @@ const ROUTES: Route[] = [
   ...STORY_ROUTES,
   ...NOTIFY_ROUTES,
   ...ACTIVITY_ROUTES,
+  ...VOICE_ROUTES,
 ];
 
 async function request<T>(

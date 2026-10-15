@@ -16,11 +16,10 @@ const { api, qs } = await import("./api");
 
 describe("api router", () => {
   it("answers 501 for csmju-nexus areas that are not ported yet", async () => {
-    await expect(api.list("/voice-sessions")).rejects.toMatchObject({
+    await expect(api.list("/admin-overview")).rejects.toMatchObject({
       status: 501,
       code: "NOT_AVAILABLE",
     });
-    await expect(api.post("/meetings", {})).rejects.toMatchObject({ status: 501 });
   });
 
   it("treats anything that is not a user id as a missing user", async () => {
