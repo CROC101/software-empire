@@ -43,7 +43,7 @@ pnpm format:check    # CI รันด้วย · แก้ด้วย pnpm fo
 pnpm --filter <pkg> <script>
 
 pnpm db:start        # Supabase ในเครื่อง (Docker) เฉพาะ db + auth + rest · pnpm db:status ดู URL/key
-pnpm db:reset        # ล้างฐาน + รัน supabase/migrations ใหม่ (ลบผู้ใช้ทดสอบด้วย)
+pnpm db:reset        # ล้างฐาน + รัน supabase/migrations ใหม่ + supabase/seed.sql (บัญชีเดโมในเครื่อง ดูหัวไฟล์ seed)
 pnpm db:test         # pgTAP ใน supabase/tests — RLS ทุกตารางต้องมีเทสต์
 pnpm db:types        # สร้าง packages/core/src/database.types.ts ใหม่หลังแก้ migration
 pnpm --filter @empire/hub dev        # http://localhost:3000

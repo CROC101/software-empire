@@ -7,6 +7,8 @@ insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'admin@test.local'),
   ('22222222-2222-2222-2222-222222222222', 'bob@test.local'),
   ('33333333-3333-3333-3333-333333333333', 'carol@test.local');
+-- this file assumes it has the only admin (seed data may add others; all rolled back at the end)
+update community.profiles set role = 'EDITOR' where role = 'ADMIN';
 update community.profiles set role = 'ADMIN' where user_id = '11111111-1111-1111-1111-111111111111';
 
 create temp table ids (name text primary key, id uuid);
