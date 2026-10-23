@@ -13,6 +13,7 @@ import { ReelUploader } from "@/components/base/reel-uploader";
 import { api, ApiError, qs, type Page } from "@/lib/backend/api";
 import { useMe } from "@/lib/backend/session";
 import type { Bookmark as BookmarkRow, Reel, RepostState } from "@/lib/backend/types";
+import { RepostBurst } from "@/components/base/repost-burst";
 import { cn } from "@/lib/utils";
 
 /// ฟีดคลิปสั้นแบบ Instagram Reels บนเว็บ — จอละคลิป เลื่อนแล้วดีดเข้าที่
@@ -302,6 +303,8 @@ function ReelsView() {
   }
 
   /// รีโพสต์ — ใช้ตัวเลขจริงจากหลังบ้าน (กดซ้ำไม่นับซ้ำ) ไม่บวกลบเอง
+  const [burst, setBurst] = useState(0);
+
   async function toggleRepost(reel: ReelView) {
     try {
       const result = reel.repostedByMe
@@ -309,6 +312,7 @@ function ReelsView() {
         : await api.post<RepostState>(`/reels/${reel.id}/reposts`);
 
       patchReel(reel.id, (row) => ({ ...row, ...result }));
+      if (result.repostedByMe) setBurst((n) => n + 1);
       showToast(result.repostedByMe ? "รีโพสต์แล้ว" : "เลิกรีโพสต์แล้ว");
     } catch (caught) {
       showToast(caught instanceof ApiError ? caught.message : "รีโพสต์ไม่สำเร็จ");
@@ -380,6 +384,8 @@ function ReelsView() {
           </div>
         )}
       </div>
+
+      {burst > 0 && <RepostBurst key={burst} coreUserId={me.id} />}
 
       {loading && (
         <div className="absolute inset-0 grid place-items-center text-muted-foreground">

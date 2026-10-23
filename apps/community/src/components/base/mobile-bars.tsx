@@ -131,7 +131,7 @@ export function MobileTopBar() {
       >
         <span
           aria-hidden
-          className="nx-logo-badge size-7 font-heading text-sm font-extrabold text-sidebar-foreground"
+          className="nx-logo-badge size-7 font-heading text-sm font-extrabold text-white"
         >
           E
         </span>

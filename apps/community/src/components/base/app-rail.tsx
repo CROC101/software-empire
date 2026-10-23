@@ -205,7 +205,7 @@ export function AppRail() {
           <span className="nx-rail-icon nx-logo-badge size-9 p-0.5">
             <span
               aria-hidden
-              className="grid size-8 place-items-center font-heading text-base font-extrabold text-sidebar-foreground"
+              className="grid size-8 place-items-center font-heading text-base font-extrabold text-white"
             >
               E
             </span>
