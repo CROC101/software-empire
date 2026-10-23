@@ -5,3 +5,19 @@ packages:
 # postinstall only re-checks a prebuilt binary that the optional deps already ship
 allowBuilds:
   unrs-resolver: false
+
+# security exception: Next.js 16.4.3 patches a published advisory but is younger than the
+# minimumReleaseAge window. Remove these once 16.4.3 is older than the window.
+minimumReleaseAgeExclude:
+  - next@16.4.3
+  - eslint-config-next@16.4.3
+  - "@next/env@16.4.3"
+  - "@next/eslint-plugin-next@16.4.3"
+  - "@next/swc-darwin-arm64@16.4.3"
+  - "@next/swc-darwin-x64@16.4.3"
+  - "@next/swc-linux-arm64-gnu@16.4.3"
+  - "@next/swc-linux-arm64-musl@16.4.3"
+  - "@next/swc-linux-x64-gnu@16.4.3"
+  - "@next/swc-linux-x64-musl@16.4.3"
+  - "@next/swc-win32-arm64-msvc@16.4.3"
+  - "@next/swc-win32-x64-msvc@16.4.3"
