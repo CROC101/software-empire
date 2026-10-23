@@ -12,6 +12,9 @@ const contentSecurityPolicy = [
 const nextConfig: NextConfig = {
   transpilePackages: ["@empire/ui", "@empire/core"],
   poweredByHeader: false,
+  experimental: {
+    agentUpgrade: "security",
+  },
   headers() {
     return Promise.resolve([
       {
