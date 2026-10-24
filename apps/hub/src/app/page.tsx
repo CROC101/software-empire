@@ -1,5 +1,6 @@
 import {
   AmbienceButton,
+  KeyholeIntro,
   CrocReveal,
   LinkPreview,
   MorphingText,
@@ -58,6 +59,13 @@ export default async function HomePage() {
 
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-background">
+      <KeyholeIntro
+        rest="rocwork"
+        welcome="welcome to"
+        tag="#crocwork.studio"
+        lines={["สตูดิโอซอฟต์แวร์", "ทำคนเดียว", "ทุกตำแหน่ง"]}
+        skipLabel="ข้าม"
+      />
       <span id="top" aria-hidden className="absolute top-0 h-px w-px" />
       <header className="vt-top sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">

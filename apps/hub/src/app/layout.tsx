@@ -16,6 +16,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         {/* eslint-disable-next-line @next/next/no-sync-scripts -- must run before first paint */}
         <script src="/theme-boot.js" />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts -- the first-visit intro, decided before paint */}
+        <script src="/intro-boot.js" />
       </head>
       <body className="min-h-dvh">
         {children}
