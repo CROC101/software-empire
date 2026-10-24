@@ -1,9 +1,11 @@
-// Keyhole intro, decided before first paint: home page, first visit this session, motion allowed.
+// Keyhole intro, decided before first paint: home page, first visit this session (or ?intro),
+// motion allowed.
 // The flag name matches INTRO_KEY in @empire/ui keyhole-intro.tsx.
 try {
   if (
     location.pathname === "/" &&
-    !sessionStorage.getItem("em-intro-seen") &&
+    // ?intro replays it on demand
+    (location.search.includes("intro") || !sessionStorage.getItem("em-intro-seen")) &&
     !matchMedia("(prefers-reduced-motion: reduce)").matches
   )
     document.documentElement.classList.add("em-intro");

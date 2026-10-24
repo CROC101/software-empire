@@ -1622,6 +1622,61 @@ html.em-intro .ki {
   letter-spacing: 0.2em;
   color: var(--em-ink-300);
 }
+.ki__ver {
+  position: absolute;
+  top: 0;
+  right: 0;
+  translate: 0 -0.4rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-style: italic;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  color: var(--em-ink-300);
+}
+.ki__about {
+  color: var(--em-ink-400);
+  font-weight: 500;
+}
+.ki__grab {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.ki__grab .ki__key {
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+}
+.ki__grab .ki__key:active {
+  cursor: grabbing;
+}
+.ki__hint,
+.ki__brand {
+  position: absolute;
+  bottom: 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--em-ink-400);
+}
+.ki__hint {
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
+}
+.ki__brand {
+  right: 6rem;
+}
+@media (max-width: 639px) {
+  .ki__brand {
+    display: none;
+  }
+  .ki__hint {
+    bottom: 2.2rem;
+  }
+}
 /* the dive: the whole stage rushes through the keyhole and the page shows through */
 .ki[data-phase="dive"] {
   animation: ki-out 0.7s ease forwards;

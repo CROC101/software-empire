@@ -64,6 +64,9 @@ export default async function HomePage() {
         welcome="welcome to"
         tag="#crocwork.studio"
         lines={["สตูดิโอซอฟต์แวร์", "ทำคนเดียว", "ทุกตำแหน่ง"]}
+        aboutLabel="about/"
+        grabLabel="ลากกุญแจเล่นได้ ↗"
+        brand="crocwork.studio"
         skipLabel="ข้าม"
       />
       <span id="top" aria-hidden className="absolute top-0 h-px w-px" />
