@@ -3,6 +3,7 @@ import {
   MeshGhost,
   Meteors,
   PhoneFrame,
+  PolaroidCarousel,
   ScrollAssemble,
   TearFooter,
   TidelineCta,
@@ -445,6 +446,44 @@ export function WorkSection() {
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+/* ── screens: real screenshots pegged to a string ─────────── */
+
+const SHOTS = [
+  ["/previews/community.webp", "Community", "ฟีดหน้าแรก · เดสก์ท็อป"],
+  ["/previews/m-community.webp", "Community", "ฟีด · มือถือ"],
+  ["/previews/m-messages.webp", "Community", "แชตเรียลไทม์ · มือถือ"],
+  ["/previews/canva.webp", "Empire Canvas", "หน้าแรก · เดสก์ท็อป"],
+  ["/previews/m-canva.webp", "Empire Canvas", "มือถือ"],
+  ["/previews/toolboxes.webp", "Toolboxes", "รวมเครื่องมือ · เดสก์ท็อป"],
+  ["/previews/m-toolboxes.webp", "Toolboxes", "มือถือ"],
+  ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ · มือถือ"],
+] as const;
+
+export function ShotsSection() {
+  return (
+    <section id="screens" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-t pt-12">
+        <div>
+          <p className={`${EYEBROW} cw-blue`}>screens</p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">
+            หน้าจอจริง <span className="cw-blue">ไม่ใช่ภาพตัวอย่าง</span>
+          </h2>
+        </div>
+        <p className="text-sm text-muted-foreground">ลากเพื่อเลื่อน กดรูปเพื่อดูใกล้ ๆ</p>
+      </div>
+      <PolaroidCarousel
+        labels={{ prev: "รูปก่อนหน้า", next: "รูปถัดไป", region: "ภาพหน้าจอจริงของระบบ" }}
+        items={SHOTS.map(([src, caption, note]) => ({
+          src,
+          caption,
+          note,
+          alt: `ภาพหน้าจอ ${caption} ${note}`,
+        }))}
+      />
     </section>
   );
 }

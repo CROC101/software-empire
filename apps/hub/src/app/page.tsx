@@ -21,6 +21,7 @@ import {
   HowSection,
   PGTAP_TESTS,
   ServicesSection,
+  ShotsSection,
   SiteFooter,
   SkillsSection,
   StatusSection,
@@ -167,6 +168,7 @@ export default async function HomePage() {
         <AboutSection />
         <WorkReel />
         <WorkSection />
+        <ShotsSection />
         <SkillsSection />
         <ServicesSection aside={<StackCard href="#subsystems" />} />
         <HowSection />
