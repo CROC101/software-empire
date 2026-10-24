@@ -1268,3 +1268,53 @@ html:has(dialog[open]) .vt-top {
     display: none;
   }
 }
+
+/* ── PhosphorNotFound: the tube ───────────────────────────────────────────── */
+.em-crt {
+  background: var(--em-ink-975);
+  box-shadow:
+    inset 0 0 80px oklch(0 0 0 / 0.8),
+    0 0 0 14px var(--em-ink-900),
+    0 0 0 16px var(--em-ink-800),
+    0 30px 80px -20px oklch(0.5 0.15 240 / 0.35);
+  cursor: crosshair;
+}
+.em-crt__picture {
+  transform-origin: 50% 50%;
+  transition:
+    transform 0.25s cubic-bezier(0.7, 0, 0.84, 0) 0.12s,
+    opacity 0.2s ease 0.3s;
+}
+.em-crt:not([data-on]) .em-crt__picture {
+  transform: scale(0, 0.004);
+  opacity: 0;
+  transition:
+    transform 0.32s cubic-bezier(0.7, 0, 0.84, 0),
+    opacity 0.2s ease 0.3s;
+}
+.em-crt__glass {
+  background:
+    repeating-linear-gradient(to bottom, oklch(0 0 0 / 0.22) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 30% 20%, oklch(1 0 0 / 0.07), transparent 45%),
+    radial-gradient(ellipse at center, transparent 55%, oklch(0 0 0 / 0.6) 100%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .em-crt[data-on] .em-crt__picture {
+    animation: em-crt-flicker 3.2s steps(1) infinite;
+  }
+}
+@keyframes em-crt-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  47% {
+    opacity: 0.94;
+  }
+  48% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 0.97;
+  }
+}
