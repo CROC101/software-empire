@@ -59,7 +59,13 @@ export default async function HomePage() {
       <header className="vt-top sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-extrabold">
-            <Image src="/crocwork-logo.jpg" alt="" width={32} height={32} className="rounded-md" />
+            <Image
+              src="/crocwork-logo.jpg"
+              alt=""
+              width={32}
+              height={32}
+              className="size-8 rounded-md"
+            />
             crocwork.studio
           </Link>
           <nav aria-label="เมนูหลัก" className="flex items-center gap-1 sm:gap-6">

@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // theme-boot.js sets the shared theme class before paint, so React sees a different class
-    <html lang="th" suppressHydrationWarning>
+    // data-scroll-behavior: Next turns smooth scrolling off during route changes, on in-page anchors
+    <html lang="th" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         {/* eslint-disable-next-line @next/next/no-sync-scripts -- must run before first paint */}
         <script src="/theme-boot.js" />
