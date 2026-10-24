@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { HubSwitcher } from "@empire/ui";
+import { subsystems } from "@empire/core/subsystems";
+import { env } from "@/lib/env";
 import { Link } from "@/lib/router";
 import { usePathname } from "@/lib/router";
 import {
@@ -70,13 +73,11 @@ export const CREATE_ITEMS: { href: string; label: string; icon: LucideIcon }[] =
   { href: "/chat?create=1", label: "ห้อง", icon: Users },
 ];
 
-/// ศูนย์กลาง CSMJU2030 — ที่เดียวกับที่ผู้ใช้ล็อกอินมา
+/// Portfolio Hub — ที่เดียวกับที่ผู้ใช้ล็อกอินมา
+/// (เดิมอ่าน process.env.NEXT_PUBLIC_* ซึ่งไม่มีใน Vite ลิงก์กลับ hub เลยไม่เคยขึ้น)
 export const CORE_HOME = (() => {
   try {
-    // NEXT_PUBLIC_CORE_LOGIN_URL เป็นชื่อเดิมของ SSO 1.0 — อ่านไว้เผื่อเครื่องที่ยังไม่ได้ตั้งค่าใหม่
-    return new URL(
-      process.env.NEXT_PUBLIC_CORE_HUB_WEB_URL ?? process.env.NEXT_PUBLIC_CORE_LOGIN_URL ?? "",
-    ).origin;
+    return new URL(env.hubUrl).origin;
   } catch {
     return null;
   }
@@ -191,6 +192,8 @@ export function AppRail() {
       <aside
         aria-label="เมนูหลัก"
         data-expanded={menu !== null}
+        // IG: หน้าข้อความ/ห้องมีรายชื่อชิดแถบ — แถบไม่กางทับ
+        data-compact={onMessages || isActivePath(pathname, "/chat")}
         onKeyDown={(event) => {
           if (event.key === "Escape") setMenu(null);
         }}
@@ -203,15 +206,7 @@ export function AppRail() {
         >
           {/* โลโก้สาขาในวงกลมขาวแบบหัวแถบของ Core Hub */}
           <span className="nx-rail-icon nx-logo-badge size-9 p-0.5">
-            <span
-              aria-hidden
-              className="grid size-8 place-items-center font-heading text-base font-extrabold text-white"
-            >
-              E
-            </span>
-          </span>
-          <span className="nx-rail-label font-heading text-xl font-extrabold leading-none tracking-tight">
-            Empire Community
+            <img src="/logo.jpg" alt="" className="size-8 rounded-full object-cover" />
           </span>
         </Link>
 
@@ -427,10 +422,16 @@ export function AppRail() {
           </button>
 
           {CORE_HOME && (
-            <a href={CORE_HOME} aria-label="ระบบอื่นใน Software Empire" className="nx-rail-item">
+            <HubSwitcher
+              hubUrl={CORE_HOME}
+              apps={subsystems}
+              current="community"
+              cookieDomain={env.supabase.cookieDomain}
+              className="nx-rail-item"
+            >
               <Shapes aria-hidden className="size-6" strokeWidth={1.9} />
-              <span className="nx-rail-label">ระบบอื่นใน Software Empire</span>
-            </a>
+              <span className="nx-rail-label">สำรวจระบบอื่นใน hub</span>
+            </HubSwitcher>
           )}
         </div>
       </aside>

@@ -129,15 +129,7 @@ export function MobileTopBar() {
         aria-label="Empire Community หน้าหลัก"
         className="flex shrink-0 items-center gap-2"
       >
-        <span
-          aria-hidden
-          className="nx-logo-badge size-7 font-heading text-sm font-extrabold text-white"
-        >
-          E
-        </span>
-        <span className="font-heading text-lg font-extrabold leading-none tracking-tight text-primary">
-          Empire Community
-        </span>
+        <img src="/logo.jpg" alt="" className="size-8 rounded-full object-cover" />
       </Link>
 
       {/* หน้าค้นหามีช่องค้นหาของตัวเองอยู่แล้ว — ถ้าคงช่องนี้ไว้จะเห็นสองช่องซ้อนกัน */}

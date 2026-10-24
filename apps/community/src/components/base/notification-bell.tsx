@@ -166,7 +166,7 @@ export function NotificationBell({
 
       {open && variant === "rail" && (
         // แผงแบบ Instagram — เลื่อนออกจากขอบแถบ เต็มความสูง มุมขวาโค้ง
-        <div className="fixed inset-y-0 left-[4.5rem] z-50 w-[24.8rem] max-w-[calc(100vw-4.5rem)] overflow-hidden rounded-r-2xl border-r border-border bg-background shadow-nx-lg animate-in slide-in-from-left-4 fade-in-0 duration-200">
+        <div data-rail-panel className="fixed inset-y-0 left-[4.5rem] z-50 w-[24.8rem] max-w-[calc(100vw-4.5rem)] overflow-hidden rounded-r-2xl border-r border-border bg-background shadow-nx-lg animate-in slide-in-from-left-4 fade-in-0 duration-200">
           <NotificationsPanel unread={unread} onClose={() => setOpen(false)} />
         </div>
       )}

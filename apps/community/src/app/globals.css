@@ -463,9 +463,9 @@
   --radius: 0.625rem;
 
   /* แถบเมนูซ้าย = ม่วงเที่ยงคืนไล่ไปบานเย็นที่ปลาย ทั้งสองโหมด */
-  --sidebar: oklch(0.2 0.07 286);
+  --sidebar: var(--em-ink-25);
   --sidebar-gradient: var(--em-rail);
-  --sidebar-foreground: var(--foreground);
+  --sidebar-foreground: var(--em-ink-900);
   --sidebar-primary: var(--foreground);
   --sidebar-primary-foreground: var(--background);
   --sidebar-accent: var(--muted);
@@ -526,8 +526,15 @@
   --chart-3: var(--em-sky-500);
   --chart-4: var(--em-gold-300);
   --chart-5: var(--em-teal-400);
-  --sidebar: oklch(0.13 0.03 286);
+  --sidebar: var(--em-ink-975);
   --sidebar-gradient: var(--em-rail-dark);
+  /* rail follows the page in dark mode too: light ink on the dark surface */
+  --sidebar-foreground: var(--em-ink-50);
+  --sidebar-primary: var(--em-ink-50);
+  --sidebar-primary-foreground: var(--em-ink-975);
+  --sidebar-accent: var(--em-ink-900);
+  --sidebar-accent-foreground: var(--em-ink-50);
+  --sidebar-border: var(--em-ink-800);
   --sidebar-ring: var(--em-gold-300);
 
   --elevation-xs: none;
@@ -793,7 +800,8 @@
   .nx-rail:hover,
   .nx-rail:has(:focus-visible),
   .nx-rail[data-expanded="true"] {
-    box-shadow: var(--elevation-lg);
+    /* IG: กางแล้วแค่เส้นขอบเดิม ไม่มีเงา */
+    box-shadow: none;
   }
 
   /* ตัวอย่างสีของฟิลเตอร์กล้อง (story-camera) — วงล้อสีให้เห็นผลของฟิลเตอร์ */
@@ -900,4 +908,19 @@
     animation-duration: 1ms;
     opacity: 0;
   }
+}
+
+
+/* IG: แถบซ้ายไม่กาง (เหลือแค่ไอคอน) ในหน้าข้อความ และตอนแผงแจ้งเตือนเปิดอยู่ —
+   ไม่งั้นชื่อเมนูโผล่ไปซ้อนกับรายชื่อแชต/แผงที่ชิดแถบ */
+.nx-rail[data-compact="true"]:not([data-expanded="true"]),
+.nx-rail:has([data-rail-panel]) {
+  width: 4.5rem;
+  box-shadow: none;
+}
+
+.nx-rail[data-compact="true"]:not([data-expanded="true"]) .nx-rail-label,
+.nx-rail:has([data-rail-panel]) .nx-rail-label {
+  visibility: hidden;
+  opacity: 0;
 }

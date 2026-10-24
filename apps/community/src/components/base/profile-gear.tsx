@@ -3,7 +3,7 @@ import { Link } from "@/lib/router";
 import { Settings } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { CORE_HOME } from "@/components/base/profile-settings-form";
-import { useNotes } from "@/components/base/messages-notes";
+import { NoteComposer, useNotes } from "@/components/base/messages-notes";
 import { useSignOut } from "@/lib/backend/session";
 
 /// ปุ่มฟันเฟืองข้างชื่อบนโปรไฟล์ตัวเอง — กล่องตัวเลือกแบบ Instagram
@@ -90,25 +90,45 @@ export function ProfileNoteBubble() {
   const { data } = useNotes();
   // หลังบ้านกรองโน้ตที่หมดอายุออกแล้ว และ useNotes ดึงใหม่ทุก 5 นาที
   const mine = data?.find((note) => note.isMe);
+  // IG: แก้โน้ตในกล่องลอยบนหน้าโปรไฟล์เลย ไม่พาไปหน้าข้อความ
+  const [open, setOpen] = useState(false);
 
   if (!data) return null;
 
   return (
-    <Link
-      href="/messages?note=1"
-      aria-label={mine ? `โน้ตของคุณ: ${mine.text} — แก้ไขโน้ต` : "แชร์โน้ต"}
-      className="absolute -top-3 left-0 z-10 max-w-[120px] -translate-x-1/4 animate-in fade-in-0 zoom-in-95 md:-top-4 md:left-2 md:max-w-[150px] md:translate-x-0"
-    >
-      <span
-        className={`relative block rounded-2xl bg-card px-3 py-1.5 text-center text-nx-caption leading-snug shadow-[var(--elevation-sm)] ${
-          mine ? "text-foreground" : "text-muted-foreground"
-        }`}
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label={mine ? `โน้ตของคุณ: ${mine.text} — แก้ไขโน้ต` : "แชร์โน้ต"}
+        className="absolute -top-3 left-0 z-10 max-w-[120px] -translate-x-1/4 animate-in fade-in-0 zoom-in-95 md:-top-4 md:left-2 md:max-w-[150px] md:translate-x-0"
       >
-        <span className="line-clamp-2 break-words">{mine ? mine.text : "แชร์โน้ต…"}</span>
-        {/* หางฟองคำพูดสองจุดแบบ Instagram */}
-        <span aria-hidden className="absolute -bottom-1.5 left-4 size-2.5 rounded-full bg-card" />
-        <span aria-hidden className="absolute -bottom-3 left-2.5 size-1.5 rounded-full bg-card" />
-      </span>
-    </Link>
+        <span
+          className={`relative block rounded-2xl bg-card px-3 py-1.5 text-center text-nx-caption leading-snug shadow-[var(--elevation-sm)] ${
+            mine ? "text-foreground" : "text-muted-foreground"
+          }`}
+        >
+          <span className="line-clamp-2 break-words">{mine ? mine.text : "แชร์โน้ต…"}</span>
+          {/* หางฟองคำพูดสองจุดแบบ Instagram */}
+          <span aria-hidden className="absolute -bottom-1.5 left-4 size-2.5 rounded-full bg-card" />
+          <span aria-hidden className="absolute -bottom-3 left-2.5 size-1.5 rounded-full bg-card" />
+        </span>
+      </button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent
+          showCloseButton={false}
+          className="w-[min(26rem,calc(100vw-2rem))] overflow-visible p-0"
+        >
+          <DialogTitle className="sr-only">โน้ตใหม่</DialogTitle>
+          <DialogDescription className="sr-only">
+            แชร์ความคิดสั้น ๆ ไม่เกิน 60 ตัวอักษร
+          </DialogDescription>
+          {/* ห้ามใส่ flex ที่ DialogContent: ทับ display:none ของ <dialog> ที่ปิดอยู่ เห็นเป็นเส้น */}
+          <div className="flex flex-col">
+            {open && <NoteComposer onClose={() => setOpen(false)} />}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
