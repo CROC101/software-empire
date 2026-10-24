@@ -1,5 +1,6 @@
 import {
   AmbienceButton,
+  CrocReveal,
   LinkPreview,
   MorphingText,
   PhoneFrame,
@@ -155,6 +156,14 @@ export default async function HomePage() {
 
         <StatusSection />
         <DepthSection />
+        <CrocReveal
+          word="CROCWORK"
+          tagline="สตูดิโอนี้มีจระเข้ตัวเดียว"
+          hint="เลื่อนลง"
+          stickyTop="4rem"
+          height="calc(100svh - 4rem)"
+          label="โปสเตอร์ CROCWORK ถูกฉีกออก จระเข้โผล่ขึ้นจากน้ำแล้วลืมตามอง"
+        />
         <AboutSection />
         <WorkReel />
         <WorkSection />

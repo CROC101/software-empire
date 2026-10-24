@@ -27,6 +27,12 @@
   --em-gold-500: oklch(0.78 0.16 75);
   --em-teal-400: oklch(0.78 0.13 175);
   --em-teal-600: oklch(0.6 0.12 170);
+  /* crocodile hide (CrocReveal): olive scutes, deep grooves, pale belly scales */
+  --em-croc-200: oklch(0.86 0.06 115);
+  --em-croc-400: oklch(0.62 0.1 128);
+  --em-croc-600: oklch(0.45 0.085 135);
+  --em-croc-800: oklch(0.3 0.055 140);
+  --em-croc-950: oklch(0.17 0.03 145);
   --em-sky-500: oklch(0.66 0.15 240);
   /* crocwork.studio blue — from the S-wave logo */
   --em-blue-500: oklch(0.6 0.2 258);
