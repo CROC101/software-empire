@@ -148,6 +148,10 @@ html.em-intro .intro-cover {
   inset: 0;
   z-index: 100;
 }
+/* the gate takes over from the cover in the same colour: a fade-in would show the page through */
+.intro-layer .skp-gate {
+  animation: none;
+}
 .intro-skip {
   position: absolute;
   top: clamp(16px, 3vh, 30px);

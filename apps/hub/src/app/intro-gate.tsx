@@ -20,7 +20,27 @@ const serverSaysNo = () => false;
 export function IntroGate() {
   const wanted = useSyncExternalStore(noSubscribe, bootSaysIntro, serverSaysNo);
   const [finished, setFinished] = useState(false);
+  const [fontsReady, setFontsReady] = useState(false);
   const live = wanted && !finished;
+
+  // the script and hand faces must be in before the collage starts writing, or they swap
+  // mid-stroke; the cover holds the screen meanwhile, never longer than 1.2 s
+  useEffect(() => {
+    if (!wanted) return;
+    let alive = true;
+    const ready = () => {
+      if (alive) setFontsReady(true);
+    };
+    const timer = window.setTimeout(ready, 1200);
+    void Promise.all([
+      document.fonts.load('400 1em "Fleur De Leah"'),
+      document.fonts.load("500 1em Caveat"),
+    ]).then(ready, ready);
+    return () => {
+      alive = false;
+      window.clearTimeout(timer);
+    };
+  }, [wanted]);
   const colors = useTokenColors(["--em-ink-975", "--em-ink-0"]);
 
   const finish = useCallback(() => {
@@ -48,7 +68,7 @@ export function IntroGate() {
   }, [live, finish]);
 
   const [paper, ink] = colors ?? [];
-  if (!live || !paper || !ink) return <div aria-hidden className="intro-cover" />;
+  if (!live || !fontsReady || !paper || !ink) return <div aria-hidden className="intro-cover" />;
 
   return (
     <div className="intro-layer">
