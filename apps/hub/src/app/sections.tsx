@@ -1,5 +1,6 @@
 import {
   BlueprintReveal,
+  GlassFolders,
   LanyardBadge,
   MeshGhost,
   Meteors,
@@ -673,21 +674,37 @@ const SERVICES = [
     "เว็บแอปและ MVP",
     "ตัวแรกของโปรดักต์ที่เอาไปให้ลูกค้าลองได้ พร้อมหน้าผู้ดูแลไว้ดูข้อมูล",
     ["4–8 สัปดาห์", "ราคาเหมา"],
+    ["หน้าจอที่ใช้งานได้จริง", "หน้าผู้ดูแลดูข้อมูล", "ลิงก์ให้ลองทุกรอบ"],
   ],
   [
     "02",
     "AI ที่รันในเครื่อง",
     "ให้โมเดลทำงานในเบราว์เซอร์ผู้ใช้เลย ไม่ต้องจ่ายค่า GPU รายเดือน",
     ["ราคาเหมา"],
+    ["โมเดลรันในเบราว์เซอร์", "ไม่ส่งข้อมูลออกนอกเครื่อง", "ไม่มีค่า GPU รายเดือน"],
   ],
   [
     "03",
     "ระบบหลังบ้านและสิทธิ์",
     "ฐานข้อมูล ล็อกอินครั้งเดียวหลายระบบ กฎว่าใครเห็นอะไรพร้อมเทสต์",
     ["ราคาเหมา"],
+    ["ฐานข้อมูลพร้อมกฎสิทธิ์", "ล็อกอินครั้งเดียวทุกระบบ", "เทสต์สิทธิ์ทุกตาราง"],
   ],
-  ["04", "ดูแลต่อหลังเปิดใช้", "แก้บั๊ก อัปเดตความปลอดภัย เพิ่มของเล็ก ๆ ทุกเดือน", ["รายเดือน"]],
+  [
+    "04",
+    "ดูแลต่อหลังเปิดใช้",
+    "แก้บั๊ก อัปเดตความปลอดภัย เพิ่มของเล็ก ๆ ทุกเดือน",
+    ["รายเดือน"],
+    ["แก้บั๊ก", "อัปเดตความปลอดภัย", "ของเล็ก ๆ ทุกเดือน"],
+  ],
 ] as const;
+
+const FOLDER_ACCENTS = [
+  "var(--em-blue-600)",
+  "var(--em-violet-600)",
+  "var(--em-teal-600)",
+  "var(--em-coral-500)",
+];
 
 export function ServicesSection({ aside }: { aside: ReactNode }) {
   return (
@@ -706,22 +723,19 @@ export function ServicesSection({ aside }: { aside: ReactNode }) {
         <div className="w-full max-w-md">{aside}</div>
       </div>
 
-      <div className="mt-12 grid border-l border-t sm:grid-cols-2">
-        {SERVICES.map(([n, title, body, tags]) => (
-          <div key={n} className="flex flex-col gap-3 border-b border-r p-7">
-            <p className="font-mono text-xs cw-blue">{n}</p>
-            <h3 className="text-2xl font-black">{title}</h3>
-            <p className="text-sm text-muted-foreground">{body}</p>
-            <p className="mt-auto flex gap-2 pt-4 text-xs">
-              {tags.map((t) => (
-                <span key={t} className="border px-2 py-1">
-                  {t}
-                </span>
-              ))}
-            </p>
-          </div>
-        ))}
-      </div>
+      <GlassFolders
+        className="mt-4"
+        hint="ชี้เพื่อเอียง · กดเพื่อเปิดดูว่าได้อะไร"
+        folders={SERVICES.map(([n, title, body, tags, files], i) => ({
+          id: n,
+          label: n,
+          title,
+          body,
+          tags,
+          files,
+          accent: FOLDER_ACCENTS[i % FOLDER_ACCENTS.length] ?? "var(--em-blue-600)",
+        }))}
+      />
 
       <TornPanel tone="dark" seed={7} className="mt-10 max-w-2xl">
         <div className="px-9 py-9">

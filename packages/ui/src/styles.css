@@ -1318,3 +1318,132 @@ html:has(dialog[open]) .vt-top {
     opacity: 0.97;
   }
 }
+
+/* ── GlassFolders ─────────────────────────────────────────────────────────────
+   back plate (accent, with a tab) → files tucked inside → frosted front pane.
+   Open: the front tips down, the files fan out above the folder. */
+.gf {
+  --gf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  height: 15rem;
+  perspective: 900px;
+}
+.gf-grid .gf {
+  opacity: 0;
+  translate: 0 28px;
+  transition:
+    opacity 0.7s var(--gf-ease),
+    translate 0.8s var(--gf-ease);
+  transition-delay: calc(var(--gf-i, 0) * 90ms);
+}
+.gf-grid[data-seen] .gf {
+  opacity: 1;
+  translate: 0 0;
+}
+.gf__hit {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  text-align: left;
+  /* flat stacking (no preserve-3d): DOM order keeps the glass over the files */
+  transform: rotateX(var(--gf-ry, 0deg)) rotateY(var(--gf-rx, 0deg));
+  transition: transform 0.5s var(--gf-ease);
+  cursor: pointer;
+}
+.gf__hit:focus-visible {
+  outline: 2px solid var(--em-blue-500);
+  outline-offset: 6px;
+}
+.gf__back {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  background: linear-gradient(160deg, oklch(1 0 0 / 0.18), transparent 60%), var(--gf-accent);
+  /* the tab on the top left */
+  clip-path: polygon(0 0.75rem, 0.75rem 0, 42% 0, 50% 1.4rem, 100% 1.4rem, 100% 100%, 0 100%);
+  box-shadow: 0 20px 40px -18px oklch(0 0 0 / 0.5);
+}
+.gf__files {
+  position: absolute;
+  inset: 1.6rem 0.9rem auto;
+  height: 10rem;
+}
+.gf__file {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 3rem;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--card);
+  color: var(--card-foreground);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  box-shadow: 0 8px 18px -10px oklch(0 0 0 / 0.45);
+  transform: translateY(calc(1.2rem + var(--gf-k) * 0.4rem));
+  transition: transform 0.6s var(--gf-ease);
+  transition-delay: calc(var(--gf-k) * 40ms);
+}
+.gf__file-ico {
+  flex: none;
+  width: 0.9rem;
+  height: 1.1rem;
+  border-radius: 2px;
+  background:
+    linear-gradient(var(--card), var(--card)) 3px 4px / 7px 1.5px no-repeat,
+    linear-gradient(var(--card), var(--card)) 3px 8px / 5px 1.5px no-repeat,
+    var(--gf-accent);
+}
+/* hover: the files lift a little out of the folder */
+.gf:hover .gf__file {
+  transform: translateY(calc(0.3rem + var(--gf-k) * 0.4rem));
+}
+.gf[data-open] .gf__file {
+  transform: translate(calc(var(--gf-o) * 2.4rem), calc(-7.5rem - var(--gf-k) * 3.3rem))
+    rotate(calc(var(--gf-o) * 4deg));
+}
+.gf__front {
+  position: absolute;
+  inset: 3.4rem 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.1rem;
+  border: 1px solid oklch(1 0 0 / 0.45);
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, var(--background) 62%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  color: var(--foreground);
+  transform-origin: 50% 100%;
+  /* in front of the files on the z axis: inside preserve-3d, DOM order alone does not decide */
+  transform: translateZ(2px);
+  transition: transform 0.6s var(--gf-ease);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.5);
+}
+.gf[data-open] .gf__front {
+  transform: translateZ(2px) rotateX(-24deg);
+}
+.gf__knob {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 0.6rem;
+  background: var(--em-ink-975);
+  color: var(--em-ink-0);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gf,
+  .gf *,
+  .gf-grid .gf {
+    transition: none !important;
+  }
+}

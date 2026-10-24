@@ -36,3 +36,4 @@ export { LanyardBadge } from "./components/lanyard-badge";
 export { PhosphorNotFound } from "./components/phosphor-not-found";
 export { PolaroidCarousel, type Polaroid } from "./components/polaroid-carousel";
 export { BlueprintReveal } from "./components/blueprint-reveal";
+export { GlassFolders, type GlassFolderItem } from "./components/glass-folders";
