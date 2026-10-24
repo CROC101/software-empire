@@ -5,9 +5,12 @@ packages:
 # postinstall only re-checks a prebuilt binary that the optional deps already ship
 allowBuilds:
   # CrocByte (Firebase): autoinit defaults and a version banner, neither needed with explicit config
-  '@firebase/util': false
+  "@firebase/util": false
+  # wrangler / OpenNext (CrocByte on Cloudflare): native binary checks
+  esbuild: true
   protobufjs: false
   unrs-resolver: false
+  workerd: true
 
 # security exception: Next.js 16.4.3 patches a published advisory but is younger than the
 # minimumReleaseAge window. Remove these once 16.4.3 is older than the window.

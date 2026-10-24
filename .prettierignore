@@ -5,3 +5,8 @@ apps/canva/src/components/
 apps/canva/src/pages/
 apps/canva/src/styles.css
 apps/canva/public/
+# CrocByte legacy pages (one-line handlers); formatted when ported
+apps/crocbyte/src/app/
+apps/crocbyte/src/components/
+supabase/.temp/
+supabase/templates/

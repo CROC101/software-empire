@@ -14,5 +14,5 @@ export default defineConfig(
       "react/no-unescaped-entities": "warn",
     },
   },
-  globalIgnores([".next/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", ".open-next/**", ".wrangler/**", "next-env.d.ts"]),
 );

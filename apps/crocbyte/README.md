@@ -9,14 +9,14 @@
 
 ## โครงข้อมูล (Firestore)
 
-| collection | เก็บอะไร | ใครอ่าน | ใครเขียน |
-|---|---|---|---|
-| `users/{uid}` | ชื่อจริง เบอร์ ที่อยู่ LINE ยอดสะสม VIP | เจ้าของ + แอดมิน | เจ้าของ (เฉพาะข้อมูลติดต่อ/รูป), แอดมิน |
-| `leaderboard/{uid}` | ชื่อ รูป ยอดสะสม VIP (สำหรับหน้า Ranking) | ทุกคน | แอดมิน (หน้า admin sync จาก `users` ให้อัตโนมัติ) |
-| `transactions/{id}` | รายการซื้อ สลิป งานที่ส่ง | ลูกค้าคนนั้น + แอดมิน | แอดมิน |
-| `services/{id}` | บริการและแพ็กเกจ | ทุกคน | แอดมิน |
-| `system/info` | ข้อความอัปเดตระบบ | ทุกคน | แอดมิน |
-| `ranking_comments/{id}` | แชตหน้า Ranking | ทุกคน | สมาชิก (ของตัวเอง), รีแอ็กชันได้ทุกข้อความ |
+| collection              | เก็บอะไร                                  | ใครอ่าน               | ใครเขียน                                          |
+| ----------------------- | ----------------------------------------- | --------------------- | ------------------------------------------------- |
+| `users/{uid}`           | ชื่อจริง เบอร์ ที่อยู่ LINE ยอดสะสม VIP   | เจ้าของ + แอดมิน      | เจ้าของ (เฉพาะข้อมูลติดต่อ/รูป), แอดมิน           |
+| `leaderboard/{uid}`     | ชื่อ รูป ยอดสะสม VIP (สำหรับหน้า Ranking) | ทุกคน                 | แอดมิน (หน้า admin sync จาก `users` ให้อัตโนมัติ) |
+| `transactions/{id}`     | รายการซื้อ สลิป งานที่ส่ง                 | ลูกค้าคนนั้น + แอดมิน | แอดมิน                                            |
+| `services/{id}`         | บริการและแพ็กเกจ                          | ทุกคน                 | แอดมิน                                            |
+| `system/info`           | ข้อความอัปเดตระบบ                         | ทุกคน                 | แอดมิน                                            |
+| `ranking_comments/{id}` | แชตหน้า Ranking                           | ทุกคน                 | สมาชิก (ของตัวเอง), รีแอ็กชันได้ทุกข้อความ        |
 
 แอดมิน = อีเมล `ADMIN_EMAIL` ใน `src/app/admin/page.tsx` และใน `firestore.rules` (ต้องตรงกัน)
 
@@ -41,13 +41,24 @@
 
 ตัวหลักของโค้ดคือ `apps/crocbyte` ใน monorepo นี้ repo `Sarawut2005-icloud/Crocbyte` เดิมเลิกแก้ (archive ไว้)
 
-**Vercel** (ตั้งค่า project ของเว็บเดิม):
-- Root Directory: `apps/crocbyte` · Framework: Next.js · Install Command: `pnpm install` (Vercel ตรวจ pnpm workspace เอง)
-- Environment Variables: ค่า `NEXT_PUBLIC_FIREBASE_*` ทั้ง 6 ตัว, `NEXT_PUBLIC_HUB_URL`, `NEXT_PUBLIC_COOKIE_DOMAIN` (ถ้ามีโดเมนร่วมกับ hub)
-- Git: เชื่อม repo `CROC101/software-empire` แทน repo เดิม — push เข้า `main` แล้ว deploy เอง
+**Cloudflare Workers — ฟรี** (ADR-05) ผ่าน OpenNext · build บน GitHub Actions
+(`.github/workflows/crocbyte-cloudflare.yml`) เพราะ OpenNext ต้องใช้ symlink ที่ Windows ไม่ยอมถ้าไม่เปิด Developer Mode
+แผนฟรี: 100,000 request/วัน · Worker ไม่เกิน 3 MiB (gzip) — PR ทุกอันเช็กขนาดให้
 
-⚠️ **Vercel Hobby ห้ามใช้เชิงพาณิชย์** และเว็บนี้รับงานจริง ทางที่ถูก: Vercel Pro หรือ Cloudflare Pages (ADR-05)
-ผ่าน OpenNext adapter — คุยก่อนตัดสินใจ เพราะ Pro มีค่าใช้จ่าย
+ตั้งครั้งเดียว (ทำเองในหน้าเว็บ ห้ามวาง token ในแชต):
+
+1. สมัคร Cloudflare (ฟรี) → My Profile → API Tokens → Create Token → template **Edit Cloudflare Workers**
+2. GitHub repo → Settings → Secrets and variables → Actions
+   - **Secrets:** `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` (Account ID อยู่หน้า Workers & Pages ด้านขวา)
+   - **Variables:** `CROCBYTE_FIREBASE_API_KEY`, `CROCBYTE_FIREBASE_AUTH_DOMAIN`, `CROCBYTE_FIREBASE_PROJECT_ID`,
+     `CROCBYTE_FIREBASE_STORAGE_BUCKET`, `CROCBYTE_FIREBASE_MESSAGING_SENDER_ID`, `CROCBYTE_FIREBASE_APP_ID`
+     (ค่าเดียวกับ `.env.local`), `CROCBYTE_HUB_URL`, `CROCBYTE_COOKIE_DOMAIN` (ว่างได้ถ้ายังไม่มีโดเมนร่วม)
+3. merge เข้า `main` → workflow deploy เอง ได้ URL `https://crocbyte.<ชื่อบัญชี>.workers.dev`
+4. **Firebase console → Authentication → Settings → Authorized domains → เพิ่มโดเมนใหม่** ไม่งั้นล็อกอิน Google ไม่ผ่าน
+5. ใช้ได้ครบแล้วค่อยย้ายโดเมนจริง: Workers → crocbyte → Settings → Domains & Routes (ต้องให้ Cloudflare ดูแล DNS ของโดเมน)
+   แล้วปิด project บน Vercel · archive repo `Sarawut2005-icloud/Crocbyte`
+
+ลองแบบ Worker ในเครื่อง (ต้อง Linux/WSL หรือ Windows Developer Mode): `pnpm --filter @empire/crocbyte cf:preview`
 
 ## สิ่งที่ยังค้าง
 
