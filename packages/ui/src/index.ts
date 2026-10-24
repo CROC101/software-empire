@@ -42,3 +42,8 @@ export {
   SkeletonKeyPreloader,
   type SkeletonKeyPreloaderProps,
 } from "./components/skeleton-key-preloader";
+export {
+  WaterRippleCarousel,
+  type Slide,
+  type WaterRippleCarouselProps,
+} from "./components/water-ripple-carousel";

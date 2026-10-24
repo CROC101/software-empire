@@ -6,6 +6,7 @@ import {
   Meteors,
   PhoneFrame,
   PolaroidCarousel,
+  WaterRippleCarousel,
   ScrollAssemble,
   TearFooter,
   TidelineCta,
@@ -454,13 +455,17 @@ export function WorkSection() {
 
 /* ── screens: real screenshots pegged to a string ─────────── */
 
+// desktop screens ripple in large; phone screens hang on the string below
+const DESKTOP_SHOTS = [
+  ["/previews/community.webp", "community"],
+  ["/previews/canva.webp", "canva"],
+  ["/previews/toolboxes.webp", "toolboxes"],
+] as const;
+
 const SHOTS = [
-  ["/previews/community.webp", "Community", "ฟีดหน้าแรก · เดสก์ท็อป"],
   ["/previews/m-community.webp", "Community", "ฟีด · มือถือ"],
   ["/previews/m-messages.webp", "Community", "แชตเรียลไทม์ · มือถือ"],
-  ["/previews/canva.webp", "Empire Canvas", "หน้าแรก · เดสก์ท็อป"],
   ["/previews/m-canva.webp", "Empire Canvas", "มือถือ"],
-  ["/previews/toolboxes.webp", "Toolboxes", "รวมเครื่องมือ · เดสก์ท็อป"],
   ["/previews/m-toolboxes.webp", "Toolboxes", "มือถือ"],
   ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ · มือถือ"],
 ] as const;
@@ -475,8 +480,33 @@ export function ShotsSection() {
             หน้าจอจริง <span className="cw-blue">ไม่ใช่ภาพตัวอย่าง</span>
           </h2>
         </div>
-        <p className="text-sm text-muted-foreground">ลากเพื่อเลื่อน กดรูปเพื่อดูใกล้ ๆ</p>
+        <p className="text-sm text-muted-foreground">
+          แตะภาพเพื่อเปลี่ยน · ลากรูปมือถือเพื่อเลื่อน
+        </p>
       </div>
+      <WaterRippleCarousel
+        className="mb-16"
+        height="min(68svh, 640px)"
+        autoplay={7000}
+        ariaLabel="ภาพหน้าจอเดสก์ท็อปของระบบ"
+        labels={{
+          prev: "ภาพก่อนหน้า",
+          next: "ภาพถัดไป",
+          slide: (n, t) => `ภาพที่ ${String(n)} จาก ${String(t)}`,
+        }}
+        style={{
+          ["--wr-title-font" as string]: "900 clamp(32px, 5vw, 68px)/1 var(--font-heading)",
+        }}
+        slides={DESKTOP_SHOTS.map(([image, slug]) => {
+          const app = subsystems.find((x) => x.slug === slug);
+          return {
+            image,
+            title: app?.name ?? slug,
+            caption: app?.summary,
+            alt: `ภาพหน้าจอ ${app?.name ?? slug} บนเดสก์ท็อป`,
+          };
+        })}
+      />
       <PolaroidCarousel
         labels={{ prev: "รูปก่อนหน้า", next: "รูปถัดไป", region: "ภาพหน้าจอจริงของระบบ" }}
         items={SHOTS.map(([src, caption, note]) => ({
