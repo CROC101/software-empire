@@ -4,6 +4,7 @@ import { MeshGradient } from "@paper-design/shaders-react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
+import { useTokenColors } from "../lib/token-colors";
 
 /**
  * The studio mascot: a little ghost filled with a live mesh-gradient shader, eyes that follow
@@ -22,7 +23,7 @@ const MASK = `url("data:image/svg+xml,${encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 231 289'><path d='${BODY}'/></svg>`,
 )}") center / 100% 100% no-repeat`;
 
-// palette tokens (light → deep), resolved to rgb at runtime: the shader cannot read CSS vars
+// palette tokens (light → deep); the shader cannot read CSS vars, so they are resolved at runtime
 const TOKENS = [
   "--em-coral-400",
   "--em-sky-500",
@@ -31,27 +32,12 @@ const TOKENS = [
   "--em-ink-975",
 ];
 
-/** CSS custom property → "rgb(r, g, b)" via a 1px canvas, so oklch tokens work too. */
-function resolveColors(): string[] {
-  const ctx = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
-  const root = getComputedStyle(document.documentElement);
-  return TOKENS.map((token) => {
-    const value = root.getPropertyValue(token).trim() || "#4a90e2";
-    if (!ctx) return value;
-    ctx.clearRect(0, 0, 1, 1);
-    ctx.fillStyle = value;
-    ctx.fillRect(0, 0, 1, 1);
-    const [r = 0, g = 0, b = 0] = ctx.getImageData(0, 0, 1, 1).data;
-    return `rgb(${String(r)}, ${String(g)}, ${String(b)})`;
-  });
-}
-
 const MAX_LOOK = 8; // how far the eyes travel, in viewBox units
 
 export function MeshGhost({ className }: { className?: string }) {
   const box = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const [colors, setColors] = useState<string[] | null>(null);
+  const colors = useTokenColors(TOKENS);
   const [visible, setVisible] = useState(true);
 
   const lookX = useSpring(useMotionValue(0), { stiffness: 150, damping: 15 });
@@ -59,14 +45,6 @@ export function MeshGhost({ className }: { className?: string }) {
   const leftX = useTransform(lookX, (v) => 80 + v);
   const rightX = useTransform(lookX, (v) => 150 + v);
   const eyeY = useTransform(lookY, (v) => 120 + v);
-
-  useEffect(() => {
-    setColors(resolveColors());
-    // the shared theme switch changes the tokens: re-read them when <html> class flips
-    const watch = new MutationObserver(() => setColors(resolveColors()));
-    watch.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => watch.disconnect();
-  }, []);
 
   useEffect(() => {
     const el = box.current;

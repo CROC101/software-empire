@@ -35,6 +35,10 @@ font pair or corner style per app.
   (`TornEdge`, overlap 1px so no hairline shows).
 - Boxes that matter (promise, good-fit, info cards) are **`TornPanel`**: ripped on all four
   sides, a grey sheet offset behind, optional faint grid inside (`apps/hub/src/app/sections.tsx`).
+- Cinematic parts (`@empire/ui`): `ScrollAssemble` = pinned scroll interlude (letters fan in,
+  items swing in; native scroll + sticky), `TidelineCta` = closing CTA whose water rises to a true
+  level and loops seamlessly, `TearFooter` = torn-poster footer with a pushpin. Colours for canvas /
+  shader / SVG maths come from `useTokenColors`, never hex literals.
 - Terminals for facts: `$ crocwork status`, real data only, blinking caret (`em-cursor`).
 - Phones: `PhoneFrame` from `@empire/ui` (titanium edge, Dynamic Island, status bar 9:41) over
   paper-cut art (`PaperArt`); pairs fan out on hover. Screens are real screenshots

@@ -1,10 +1,28 @@
-import { MeshGhost, Meteors, PhoneFrame } from "@empire/ui";
-import { Cat, Code2, MessageCircle, Plane, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  MeshGhost,
+  Meteors,
+  PhoneFrame,
+  ScrollAssemble,
+  TearFooter,
+  TidelineCta,
+} from "@empire/ui";
+import {
+  Cat,
+  Code2,
+  LayoutGrid,
+  MessageCircle,
+  MessagesSquare,
+  Music,
+  Palette,
+  Plane,
+  ShieldCheck,
+  Sparkles,
+  Store,
+  Wrench,
+} from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { appUrl } from "@/lib/apps";
-import { CopyButton } from "./copy-button";
 import { subsystems } from "@/lib/subsystems";
 
 /*
@@ -13,7 +31,7 @@ import { subsystems } from "@/lib/subsystems";
  * comes from APP_URL_<SLUG>, counts from the repo.
  */
 
-export const PGTAP_TESTS = 239;
+export const PGTAP_TESTS = 245;
 const COMMUNITY_ROUNDS = 7;
 
 // last commits, as I would say them out loud (update when shipping)
@@ -311,6 +329,47 @@ function Phones({
         </PhoneFrame>
       )}
     </div>
+  );
+}
+
+/* ── work reel: a pinned scroll interlude before the case studies ── */
+
+const APP_ICON: Record<string, typeof Code2> = {
+  community: MessagesSquare,
+  commerce: Store,
+  toolboxes: Wrench,
+  tarot: Sparkles,
+  design: LayoutGrid,
+  canva: Palette,
+  crocbyte: Code2,
+  stream: Music,
+};
+
+export function WorkReel() {
+  return (
+    <ScrollAssemble
+      title="selected work"
+      eyebrow={<p className={`${EYEBROW} cw-blue`}>portfolio · {subsystems.length} ระบบ</p>}
+      items={subsystems.map((s) => {
+        const Icon = APP_ICON[s.slug] ?? Code2;
+        return (
+          <span key={s.slug} className="flex w-20 flex-col items-center gap-2 text-xs font-medium">
+            <span
+              className="grid size-16 place-items-center rounded-2xl text-[var(--em-ink-0)] shadow-lg"
+              style={{ background: s.accent }}
+            >
+              <Icon className="size-7" aria-hidden />
+            </span>
+            {s.name}
+          </span>
+        );
+      })}
+      caption={
+        <p className="max-w-md text-muted-foreground">
+          ล็อกอินครั้งเดียว ใช้ได้ทุกระบบ เลื่อนลงไปดูทีละตัว
+        </p>
+      }
+    />
   );
 }
 
@@ -802,144 +861,85 @@ export function FaqSection() {
 
 export function ContactSection({ cta }: { cta: { href: string; label: string } }) {
   const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
-  const github = "https://github.com/CROC101/software-empire";
+  const live = subsystems.filter((s) => appUrl(s.slug)).length;
+  const share = live / subsystems.length;
   return (
-    <>
-      <TornEdge color="var(--em-blue-600)" />
-      <section
-        id="contact"
-        className={`${BLUE} relative scroll-mt-16 overflow-hidden`}
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, oklch(1 0 0 / 0.07) 1px, transparent 1px), linear-gradient(to bottom, oklch(1 0 0 / 0.07) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-        }}
-      >
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-24 sm:px-6 lg:grid-cols-[1.25fr_1fr] lg:items-end">
-          <div className="flex flex-col gap-6">
-            <p className={`${EYEBROW} opacity-80`}>start a project</p>
-            <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-7xl">
-              ยังไม่มีสเปก ก็ทักมาได้
-            </h2>
-            <p className="max-w-lg text-lg opacity-90">
-              แค่อยากรู้ว่าไอเดียนี้ทำได้ไหม ทักมาได้ ไม่ต้องเตรียมสไลด์ เล่าคร่าว ๆ ว่าอยากได้อะไร
-              ใช้เมื่อไร ผมจะตอบว่าควรเริ่มตรงไหนให้พอกับงบ
-            </p>
-            {email ? (
-              <div className="flex flex-wrap items-end gap-4">
-                <a
-                  href={`mailto:${email}`}
-                  className="break-all text-3xl font-black underline decoration-2 underline-offset-[10px] sm:text-5xl"
-                >
-                  {email}
-                </a>
-                <CopyButton text={email} />
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href={cta.href}
-                  className="bg-[var(--em-ink-0)] px-6 py-3.5 font-bold text-[var(--em-blue-700)]"
-                >
-                  {cta.label} →
-                </Link>
-                <a
-                  href={github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="border border-current px-6 py-3.5 font-bold"
-                >
-                  GitHub ↗
-                </a>
-              </div>
-            )}
-          </div>
-          <div className="relative">
-            <Sticker className="absolute -top-56 right-6 w-44 rotate-6 sm:-top-64 sm:w-52" />
-            <div className="relative border border-[var(--em-ink-0)]/20 bg-[oklch(0.25_0.12_265/0.85)] font-mono text-sm shadow-2xl">
-              <p className="flex items-center gap-2 border-b border-[var(--em-ink-0)]/15 px-5 py-3 text-xs opacity-70">
-                <span className="size-2.5 bg-[var(--em-ink-0)]/25" />
-                <span className="size-2.5 bg-[var(--em-ink-0)]/25" />
-                <span className="size-2.5 bg-[var(--em-ink-0)]/25" />
-                <span className="ml-2">crocwork@studio ~</span>
-              </p>
-              <div className="flex flex-col gap-1.5 p-6">
-                <p>
-                  <span className="opacity-60">$</span> crocwork contact
-                </p>
-                {email && <p>อีเมล&nbsp; {email}</p>}
-                <p>GitHub&nbsp; CROC101/software-empire</p>
-                <p>ตอบ&nbsp;&nbsp;&nbsp; ภายใน 1 วันทำการ</p>
-                <p>ภาษา&nbsp;&nbsp; ไทย / English</p>
-                <p aria-hidden className="em-cursor mt-2 h-4 w-2.5 bg-[var(--em-ink-0)]" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+    <div id="contact" className="scroll-mt-16">
+      <TidelineCta
+        eyebrow="start a project"
+        headline={
+          <>
+            ยังไม่มีสเปก
+            <br />
+            <span className="cw-blue">ก็ทักมาได้</span>
+          </>
+        }
+        sub="แค่อยากรู้ว่าไอเดียนี้ทำได้ไหม ทักมาได้ ไม่ต้องเตรียมสไลด์ เล่าคร่าว ๆ ว่าอยากได้อะไร ใช้เมื่อไร ผมจะตอบว่าควรเริ่มตรงไหนให้พอกับงบ"
+        level={share}
+        levelLabel={`ระดับน้ำ = ระบบที่เปิดใช้แล้ว ${String(live)} จาก ${String(subsystems.length)} (${String(Math.round(share * 100))}%)`}
+        details={[
+          ...(email ? [`อีเมล ${email}`] : []),
+          "GitHub CROC101/software-empire",
+          "ตอบภายใน 1 วันทำการ",
+          "ไทย / English",
+        ]}
+        action={email ? "ส่งอีเมลหาผม" : cta.label}
+        href={email ? `mailto:${email}` : cta.href}
+        floating={<MeshGhost className="w-20 sm:w-28" />}
+      />
+    </div>
   );
 }
+
+const GITHUB = "https://github.com/CROC101/software-empire";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
-    <footer className={`${DARK} relative overflow-hidden`}>
-      <Meteors count={3} />
-      <TornEdge color="var(--em-blue-600)" flip />
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-48 pt-16 text-sm sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
-        <div>
-          <p className={`${EYEBROW} text-[var(--em-blue-500)]`}>crocwork.studio</p>
-          <p className="mt-3 text-[var(--em-ink-300)]">
-            สตูดิโอซอฟต์แวร์คนเดียว ทำเว็บแอป AI และระบบหลังบ้าน แล้วดูแลต่อเป็นรายเดือน
-          </p>
-        </div>
-        <FooterCol title="รับทำ" items={SERVICES.map(([, t]) => [t, "#services"])} />
-        <FooterCol title="ผลงาน" items={subsystems.map((s) => [s.name, `/go/${s.slug}`])} />
-        <FooterCol
-          title="ไปต่อ"
-          items={[
-            ["สถานะระบบ", "#status"],
-            ["ทำงานยังไง", "#how"],
-            ["ถามกันบ่อย", "#faq"],
-            ["เข้าสู่ระบบ", "/login"],
-          ]}
-        />
-      </div>
-      <p
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-6 select-none text-center text-[17vw] font-black leading-none tracking-tighter text-[var(--em-ink-0)]/[0.05]"
-      >
-        CROCWORK
-      </p>
-      <div className="relative mx-auto flex max-w-6xl justify-between border-t border-[var(--em-ink-800)] px-4 py-5 font-mono text-xs text-[var(--em-ink-400)] sm:px-6">
-        <span>© {year} crocwork.studio</span>
-        <span>ทำคนเดียว · ทดสอบ {PGTAP_TESTS} ข้อ</span>
-      </div>
-    </footer>
-  );
-}
-
-function FooterCol({
-  title,
-  items,
-}: {
-  title: string;
-  items: readonly (readonly [string, string])[];
-}) {
-  return (
-    <div>
-      <p className={`${EYEBROW} text-[var(--em-blue-500)]`}>{title}</p>
-      <ul className="mt-3 flex flex-col gap-2 text-[var(--em-ink-300)]">
-        {items.map(([label, href]) => (
-          <li key={label}>
-            <a href={href} className="hover:text-[var(--em-ink-0)]">
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <TearFooter
+      brand="crocwork."
+      name="crocwork.studio"
+      logo={<Image src="/crocwork-logo.jpg" alt="" width={44} height={44} className="rounded-xl" />}
+      logoHref="/"
+      socials={[{ icon: "github", label: "GitHub", href: GITHUB }]}
+      email={process.env.NEXT_PUBLIC_CONTACT_EMAIL}
+      corner={{ label: "CROC101/software-empire", href: GITHUB }}
+      invite={{ label: "มีไอเดียแล้ว? เล่าให้ผมฟัง", text: "เริ่มโปรเจกต์", href: "#contact" }}
+      status={{ label: "เปิดรับงาน · ตอบภายใน 1 วันทำการ", href: "#contact" }}
+      mark="since 2569"
+      timeZone="Asia/Bangkok"
+      timeLabel="BKK"
+      columns={[
+        {
+          title: "ผลงาน",
+          links: subsystems.slice(0, 3).map((s) => ({ label: s.name, href: `/go/${s.slug}` })),
+          cta: { label: "work.", href: "#subsystems" },
+        },
+        {
+          title: "ไปต่อ",
+          links: [
+            { label: "สถานะระบบ", href: "#status" },
+            { label: "ทำงานยังไง", href: "#how" },
+            { label: "ถามกันบ่อย", href: "#faq" },
+          ],
+          cta: { label: "talk.", href: "#contact" },
+        },
+      ]}
+      chat={{ label: "ทักผม", href: "#contact" }}
+      sideLinks={[
+        { icon: "globe", label: "สถานะ", href: "#status" },
+        { icon: "link", label: "GitHub", href: GITHUB },
+      ]}
+      copyright={`© ${String(year)} crocwork.studio`}
+      credit={`ทำคนเดียว · ทดสอบ ${String(PGTAP_TESTS)} ข้อ`}
+      handle={{ label: "@CROC101", href: "https://github.com/CROC101" }}
+      labels={{
+        top: "กลับขึ้นบนสุด",
+        pin: "ดึงหมุด ฉีกขอบใหม่",
+        copied: "คัดลอกแล้ว",
+        copy: "คัดลอก",
+      }}
+    />
   );
 }
 

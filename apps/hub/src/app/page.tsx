@@ -24,6 +24,7 @@ import {
   SkillsSection,
   StatusSection,
   TeamSection,
+  WorkReel,
   WorkSection,
 } from "./sections";
 import { StackCard } from "./stack-card";
@@ -155,6 +156,7 @@ export default async function HomePage() {
         <StatusSection />
         <DepthSection />
         <AboutSection />
+        <WorkReel />
         <WorkSection />
         <SkillsSection />
         <ServicesSection aside={<StackCard href="#subsystems" />} />

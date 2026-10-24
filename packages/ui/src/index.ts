@@ -27,3 +27,7 @@ export { SunMoonThemeToggle } from "./components/sun-moon-theme-toggle";
 export { type ThemeEffect } from "./components/sun-moon-theme-toggle";
 export { Ambience, AmbienceButton, Meteors } from "./components/ambience";
 export { MeshGhost } from "./components/mesh-ghost";
+export { ScrollAssemble } from "./components/scroll-assemble";
+export { TidelineCta } from "./components/tideline-cta";
+export { TearFooter, type TearFooterProps } from "./components/tear-footer";
+export { useTokenColors } from "./lib/token-colors";
