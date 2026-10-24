@@ -55,3 +55,8 @@ export {
   type PolaroidLineCarouselProps,
   type PolaroidSlide,
 } from "./components/polaroid-line-carousel";
+export {
+  ComebackPoster,
+  type ComebackPosterProps,
+  type ComebackPalette,
+} from "./components/comeback-poster";

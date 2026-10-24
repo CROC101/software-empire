@@ -15,6 +15,7 @@ import { MobileMenu } from "./mobile-menu";
 import { BackToTop, NavSpy } from "./nav-spy";
 import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
+import { CrocPoster } from "./croc-poster";
 import {
   AboutSection,
   ContactSection,
@@ -176,6 +177,7 @@ export default async function HomePage() {
         <HowSection />
         <TeamSection />
         <FaqSection />
+        <CrocPoster />
         <ContactSection cta={cta} />
       </main>
       <BackToTop />
