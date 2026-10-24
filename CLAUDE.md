@@ -51,6 +51,7 @@ pnpm --filter @empire/toolboxes dev  # http://localhost:3003
 pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็อกอิน)
 pnpm --filter @empire/community dev  # http://localhost:3001 (ต้องล็อกอิน)
 pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จริง (ต้อง db:start)
+pnpm --filter @empire/crocbyte dev     # http://localhost:3007 เว็บรับงานเดิม (ยังใช้ Firebase)
 ```
 
 - `db:start` เปิด storage + realtime ด้วย · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
@@ -66,9 +67,12 @@ pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จร�
 - SPA: Supabase SDK โหลดแบบ lazy (`loadSupabase()`) ไม่ให้ถ่วงหน้าแรก · ล็อกอินที่ hub เสมอ (`signInUrl()`)
 - Auth ฝั่ง server: ใช้ `getClaims()` (ตรวจลายเซ็น JWT) เท่านั้น ห้ามเชื่อ `getSession()` · ทุก `?next=` ผ่าน `safeNext` (hub) / `safeRedirectTarget` จาก `@empire/core/redirect`
 - สร้าง Supabase client ผ่าน `@empire/core/supabase` เสมอ — cookie options ต้องเหมือนกันทุกแอปไม่งั้น SSO ข้าม subdomain พัง
+- ธีม = cookie กลาง `em-theme` (`@empire/core/theme`) ทุกแอปเห็นค่าเดียวกัน · แอปใหม่ต้องมี `public/theme-boot.js` (สร้าง: `WRITE_THEME_BOOT=1 pnpm --filter @empire/core test`) และโหลดใน `<head>` · ปุ่มธีมอยู่ใน `HubSwitcher` แล้ว · บรรยากาศ (ฤดูกาล/ดาวตก) = cookie `em-ambience` + `<Ambience/>` ก็อยู่ใน `HubSwitcher` · ของที่ขยับตลอดใส่คลาส `vt-live` ไม่ให้ค้างตอนสลับธีม
 - Worker: export method ผ่าน `validated(schema, fn)` + `expose` จาก `@empire/core/worker`
 - package ใหม่: `eslint.config.js` = `base(import.meta.dirname)` จาก `@empire/config/eslint` (SPA ใช้ `react()` จาก `@empire/config/eslint/react`) · `tsconfig.json` extends `@empire/config/tsconfig/base.json` (หรือ `react.json`)
 - TypeScript ล็อก `~6.0` — typescript-eslint ยังไม่รองรับ TS 7 · TS 6 ตั้ง `types: []` เป็นค่าเริ่มต้น ต้องใส่ `types` เองเมื่อใช้ `node` / `vite/client`
+
+- งาน UI ทุกชิ้นต้องตรง template ดีไซน์ crocwork.studio — โหลด skill `crocwork-design` (`.claude/skills/crocwork-design/SKILL.md`) ก่อนเสมอ
 
 ## กฎที่ห้ามละเมิด
 
