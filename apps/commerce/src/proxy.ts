@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { env, signInUrl } from "@/lib/env";
 
 // the catalogue is public (SEO); buying, selling and the wallet need an account
-const PROTECTED_PREFIXES = ["/orders", "/sell", "/wallet"];
+const PROTECTED_PREFIXES = ["/orders", "/sell"];
 
 /** Refreshes the Supabase session on every request and sends guests to the hub to sign in. */
 export async function proxy(request: NextRequest) {

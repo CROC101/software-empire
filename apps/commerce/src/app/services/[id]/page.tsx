@@ -125,7 +125,8 @@ export default async function ServicePage({ params }: PageProps<"/services/[id]"
           )}
         </div>
         <p className="mt-4 text-xs text-muted-foreground">
-          เงินจะถูกพักไว้ในเอสโครว์ ผู้ขายได้รับเมื่อคุณกดรับงาน หรืออัตโนมัติ 3 วันหลังส่งมอบ
+          หลังสั่งงาน คุณจะได้ QR พร้อมเพย์ของผู้ขายพร้อมยอดเงิน โอนแล้วกดแจ้งโอน
+          ผู้ขายยืนยันรับเงินแล้วจึงเริ่มงาน
         </p>
       </aside>
     </main>

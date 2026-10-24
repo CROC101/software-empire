@@ -27,7 +27,7 @@ export default async function ServicesPage({ searchParams }: PageProps<"/service
         <h1 className="font-heading text-3xl font-bold tracking-tight">
           {category ? CATEGORIES[category] : "บริการทั้งหมด"}
         </h1>
-        <p className="text-muted-foreground">ราคาล็อกตอนสั่ง ชำระผ่านเอสโครว์ทุกงาน</p>
+        <p className="text-muted-foreground">ราคาล็อกตอนสั่ง โอนตรงเข้าพร้อมเพย์ของผู้ขาย</p>
       </div>
       <form className="flex flex-wrap gap-2" role="search">
         {category && <input type="hidden" name="category" value={category} />}

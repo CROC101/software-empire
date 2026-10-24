@@ -53,14 +53,14 @@ export async function placeOrder(_prev: FormState, form: FormData): Promise<Form
 }
 
 const ORDER_STEPS = {
-  fund: "fund_order",
+  confirm: "confirm_payment",
   release: "release_order",
 } as const;
 
 export async function orderStep(_prev: FormState, form: FormData): Promise<FormState> {
   const order = uuid.safeParse(form.get("orderId"));
   const action = z
-    .enum(["fund", "release", "cancel", "deliver", "dispute", "resolve"])
+    .enum(["confirm", "release", "cancel", "deliver", "dispute", "resolve"])
     .safeParse(form.get("action"));
   if (!order.success || !action.success) return { error: "คำขอไม่ถูกต้อง" };
   await requireUser(`/orders/${order.data}`);
@@ -73,7 +73,7 @@ export async function orderStep(_prev: FormState, form: FormData): Promise<FormS
   const client = await db();
   const id = order.data;
   const { error } =
-    action.data === "fund" || action.data === "release"
+    action.data === "confirm" || action.data === "release"
       ? await client.rpc(ORDER_STEPS[action.data], { order_id: id })
       : action.data === "cancel"
         ? await client.rpc("cancel_order", { order_id: id, note: note.data || undefined })
@@ -89,7 +89,6 @@ export async function orderStep(_prev: FormState, form: FormData): Promise<FormS
   if (error) return failure(error);
   revalidatePath(`/orders/${id}`);
   revalidatePath("/orders");
-  revalidatePath("/wallet");
   return { ok: "บันทึกแล้ว" };
 }
 
@@ -130,14 +129,52 @@ export async function leaveReview(_prev: FormState, form: FormData): Promise<For
   return { ok: "ขอบคุณสำหรับรีวิว" };
 }
 
-export async function topUp(_prev: FormState, form: FormData): Promise<FormState> {
-  await requireUser("/wallet");
-  const amount = bahtInput.safeParse(text(form, "amount"));
-  if (!amount.success) return { error: amount.error.issues[0]?.message };
-  const { error } = await (await db()).rpc("topup_demo", { amount_satang: amount.data });
+/** Buyer: "I transferred to the seller" plus an optional reference (time, last digits…). */
+export async function reportPayment(_prev: FormState, form: FormData): Promise<FormState> {
+  const order = uuid.safeParse(form.get("orderId"));
+  if (!order.success) return { error: "คำขอไม่ถูกต้อง" };
+  await requireUser(`/orders/${order.data}`);
+  const note = z
+    .string()
+    .trim()
+    .max(200, "หมายเหตุยาวเกิน 200 ตัวอักษร")
+    .safeParse(text(form, "note"));
+  if (!note.success) return { error: note.error.issues[0]?.message };
+  const { error } = await (
+    await db()
+  ).rpc("report_payment", {
+    order_id: order.data,
+    note: note.data || undefined,
+  });
   if (error) return failure(error);
-  revalidatePath("/wallet");
-  return { ok: "เติมเงินจำลองแล้ว" };
+  revalidatePath(`/orders/${order.data}`);
+  return { ok: "แจ้งผู้ขายแล้ว รอผู้ขายยืนยันรับเงิน" };
+}
+
+/** Seller: where buyers pay me. Same rule as the SQL CHECK: mobile or 15-digit e-wallet. */
+const payoutForm = z.object({
+  promptpay: z
+    .string()
+    .transform((s) => s.replace(/[\s-]/g, ""))
+    .pipe(z.string().regex(/^(0\d{9}|\d{15})$/, "ใส่เบอร์มือถือ 10 หลัก หรือเลขวอลเล็ต 15 หลัก")),
+  name: z.string().trim().min(1, "ใส่ชื่อบัญชี").max(80),
+});
+
+export async function savePayout(_prev: FormState, form: FormData): Promise<FormState> {
+  const me = await requireUser("/sell");
+  const parsed = payoutForm.safeParse({
+    promptpay: text(form, "promptpay"),
+    name: text(form, "name"),
+  });
+  if (!parsed.success) return { error: parsed.error.issues[0]?.message };
+  const { error } = await (
+    await db()
+  )
+    .from("payout_accounts")
+    .upsert({ user_id: me, promptpay_id: parsed.data.promptpay, account_name: parsed.data.name });
+  if (error) return failure(error);
+  revalidatePath("/sell");
+  return { ok: "บันทึกพร้อมเพย์แล้ว" };
 }
 
 const serviceForm = z.object({

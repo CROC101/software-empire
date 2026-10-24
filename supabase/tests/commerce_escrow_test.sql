@@ -1,4 +1,4 @@
--- Marketplace, simulated escrow and the double-entry ledger · run: pnpm db:test
+-- Marketplace with direct payment to each seller (no platform money) · run: pnpm db:test
 begin;
 create extension if not exists pgtap with schema extensions;
 select plan(33);
@@ -14,10 +14,6 @@ create temp table ids (name text primary key, id uuid);
 grant all on ids to authenticated, anon;
 create function pg_temp.as_user(id text) returns void language sql as $$
   select set_config('request.jwt.claims', json_build_object('sub', id, 'role', 'authenticated')::text, true);
-$$;
--- balances through the ledger itself, as the owner of the function (not through RLS)
-create function pg_temp.balance(account text) returns bigint language sql security definer as $$
-  select coalesce(sum(amount_satang), 0)::bigint from commerce.ledger where ledger.account = balance.account;
 $$;
 
 set local role authenticated;
@@ -62,74 +58,78 @@ select throws_ok($$select commerce.place_order((select id from ids where name = 
   'P0002', null, 'drafts cannot be ordered');
 insert into ids values ('o1', commerce.place_order((select id from ids where name = 'svc'), 'อยากได้เว็บร้านกาแฟ 3 หน้า'));
 select is((select status from commerce.orders where id = (select id from ids where name = 'o1')), 'CREATED', 'an order starts CREATED');
-select throws_ok($$select commerce.fund_order((select id from ids where name = 'o1'))$$,
-  'P0001', null, 'an empty wallet cannot fund it');
-select throws_ok($$select commerce.topup_demo(99999999)$$, 'P0001', null, 'demo top-ups are capped');
-select is(commerce.topup_demo(1000000), 1000000::bigint, 'buyer tops up 10,000 baht of demo credit');
-select lives_ok($$select commerce.fund_order((select id from ids where name = 'o1'))$$, 'buyer funds the order');
-select is(pg_temp.balance('user:22222222-2222-2222-2222-222222222222'), 800000::bigint, 'the price left the wallet');
-select is(pg_temp.balance('escrow:' || (select id from ids where name = 'o1')), 200000::bigint, 'and sits in escrow');
-select throws_ok($$select commerce.fund_order((select id from ids where name = 'o1'))$$,
-  'P0001', null, 'an order is funded once');
+select is((select fee_satang from commerce.orders where id = (select id from ids where name = 'o1')), 0, 'the platform takes no fee');
 
--- ── privacy ──
+-- ── paying the seller directly ──
+select is((select count(*)::int from commerce.payment_target((select id from ids where name = 'o1'))), 0,
+  'no PromptPay to show until the seller sets one');
+select pg_temp.as_user('11111111-1111-1111-1111-111111111111');
+select throws_ok($$insert into commerce.payout_accounts (promptpay_id, account_name) values ('1234567890123', 'x')$$,
+  '23514', null, 'a national ID is not accepted as PromptPay (it would be shown to buyers)');
+select lives_ok($$insert into commerce.payout_accounts (promptpay_id, account_name) values ('0812345678', 'ร้านเว็บดี')$$,
+  'seller sets their own PromptPay');
+select pg_temp.as_user('22222222-2222-2222-2222-222222222222');
+select is((select count(*)::int from commerce.payout_accounts), 0, 'buyers cannot read the payout table');
+select is((select promptpay_id || '|' || amount_satang from commerce.payment_target((select id from ids where name = 'o1'))),
+  '0812345678|200000', 'the buyer of this order sees the seller PromptPay and the exact amount');
+select throws_ok($$select commerce.confirm_payment((select id from ids where name = 'o1'))$$,
+  '42501', null, 'a buyer cannot mark their own order as paid');
+select lives_ok($$select commerce.report_payment((select id from ids where name = 'o1'), 'โอน 14:05')$$,
+  'buyer reports the transfer');
+select isnt((select payment_reported_at from commerce.orders where id = (select id from ids where name = 'o1')), null,
+  'the report is stamped on the order');
 select pg_temp.as_user('33333333-3333-3333-3333-333333333333');
+select is((select count(*)::int from commerce.payment_target((select id from ids where name = 'o1'))), 0,
+  'strangers never get a seller PromptPay');
 select is((select count(*)::int from commerce.orders), 0, 'strangers see no orders');
-select is((select count(*)::int from commerce.ledger), 0, 'or anyone''s money');
 select throws_ok(
   $$insert into commerce.order_messages (order_id, body) values ((select id from ids where name = 'o1'), 'แทรก')$$,
   '42501', null, 'or write in their order chat'
 );
-
--- ── delivery and release ──
+select pg_temp.as_user('11111111-1111-1111-1111-111111111111');
+select lives_ok($$select commerce.confirm_payment((select id from ids where name = 'o1'))$$, 'seller confirms the money arrived');
+select throws_ok($$select commerce.confirm_payment((select id from ids where name = 'o1'))$$,
+  'P0001', null, 'a payment is confirmed once');
 select pg_temp.as_user('22222222-2222-2222-2222-222222222222');
+select is((select count(*)::int from commerce.payment_target((select id from ids where name = 'o1'))), 0,
+  'once paid, the PromptPay is no longer handed out');
+
+-- ── delivery and acceptance ──
 select throws_ok($$select commerce.deliver_order((select id from ids where name = 'o1'), 'ส่งเองเลย')$$,
   '42501', null, 'only the seller delivers');
 select pg_temp.as_user('11111111-1111-1111-1111-111111111111');
 select lives_ok($$select commerce.deliver_order((select id from ids where name = 'o1'), 'ส่งงานเว็บพร้อมลิงก์ตัวอย่าง')$$,
   'seller delivers');
 select throws_ok($$select commerce.release_order((select id from ids where name = 'o1'))$$,
-  '42501', null, 'only the buyer releases the money');
+  '42501', null, 'only the buyer accepts the work');
 select pg_temp.as_user('22222222-2222-2222-2222-222222222222');
 select throws_ok($$select commerce.leave_review((select id from ids where name = 'o1'), 5)$$,
   'P0001', null, 'no review before the work is accepted');
-select lives_ok($$select commerce.release_order((select id from ids where name = 'o1'))$$, 'buyer releases');
-select is(pg_temp.balance('user:11111111-1111-1111-1111-111111111111'), 190000::bigint, 'seller gets the price minus 5%');
-select is(pg_temp.balance('platform'), 10000::bigint, 'the platform keeps the 5% fee');
-select is(pg_temp.balance('escrow:' || (select id from ids where name = 'o1')), 0::bigint, 'escrow is empty again');
+select lives_ok($$select commerce.release_order((select id from ids where name = 'o1'))$$, 'buyer accepts');
 select lives_ok($$select commerce.leave_review((select id from ids where name = 'o1'), 5, 'งานดีมาก ส่งไว')$$, 'buyer reviews');
 select throws_ok($$select commerce.leave_review((select id from ids where name = 'o1'), 1)$$,
   '23505', null, 'one review per order');
 select is((select array_agg(to_status order by id)::text from commerce.order_events
            where order_id = (select id from ids where name = 'o1')),
-  '{CREATED,FUNDED,DELIVERED,RELEASED}', 'the timeline records every step');
+  '{CREATED,CREATED,FUNDED,DELIVERED,RELEASED}', 'the timeline records the transfer report and every step');
 
 -- ── cancellation after payment, and a dispute ──
 insert into ids values ('o2', commerce.place_order((select id from ids where name = 'svc'), 'งานที่สองสำหรับทดสอบยกเลิก'));
-select commerce.fund_order((select id from ids where name = 'o2'));
-select throws_ok($$select commerce.cancel_order((select id from ids where name = 'o2'))$$,
-  '42501', null, 'once paid, only the seller can cancel');
 insert into ids values ('o3', commerce.place_order((select id from ids where name = 'svc'), 'งานที่สามสำหรับทดสอบข้อพิพาท'));
-select commerce.fund_order((select id from ids where name = 'o3'));
+select pg_temp.as_user('11111111-1111-1111-1111-111111111111');
+select commerce.confirm_payment((select id from ids where name = 'o2'));
+select commerce.confirm_payment((select id from ids where name = 'o3'));
+select pg_temp.as_user('22222222-2222-2222-2222-222222222222');
+select throws_ok($$select commerce.cancel_order((select id from ids where name = 'o2'))$$,
+  '42501', null, 'once paid, only the seller can cancel (and refunds directly)');
 select commerce.dispute_order((select id from ids where name = 'o3'), 'ผู้ขายไม่ตอบข้อความเลยหลายวัน');
 select throws_ok($$select commerce.resolve_dispute((select id from ids where name = 'o3'), 'REFUND')$$,
   '42501', null, 'parties cannot judge their own dispute');
-select pg_temp.as_user('11111111-1111-1111-1111-111111111111');
-select commerce.cancel_order((select id from ids where name = 'o2'), 'คิวเต็ม ขออภัย');
 select pg_temp.as_user('44444444-4444-4444-4444-444444444444');
-select lives_ok($$select commerce.resolve_dispute((select id from ids where name = 'o3'), 'REFUND', 'คืนเงินผู้ซื้อ')$$,
-  'staff refund the disputed order');
-select is(pg_temp.balance('user:22222222-2222-2222-2222-222222222222'), 800000::bigint,
-  'both cancelled and disputed money came back to the buyer');
-
--- ── the ledger's own guarantees ──
-reset role;
-select throws_ok($$update commerce.ledger set amount_satang = 1$$, '42501', null, 'the ledger is append-only');
-set constraints all immediate;
-select throws_ok(
-  $$insert into commerce.ledger (txn_id, account, amount_satang, memo) values (gen_random_uuid(), 'platform', 999, 'free money')$$,
-  '23514', null, 'an unbalanced transaction is rejected'
-);
+select lives_ok($$select commerce.resolve_dispute((select id from ids where name = 'o3'), 'REFUND', 'ให้ผู้ขายคืนเงิน')$$,
+  'staff settle the dispute');
+select is((select status from commerce.orders where id = (select id from ids where name = 'o3')), 'REFUNDED',
+  'the order records the refund');
 
 select * from finish();
 rollback;

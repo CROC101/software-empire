@@ -18,9 +18,3 @@ export async function isStaff(): Promise<boolean> {
   const { data } = await (await db()).rpc("is_staff");
   return data === true;
 }
-
-/** Wallet balance in satang: the sum of this user's ledger entries. */
-export async function walletBalance(): Promise<number> {
-  const { data } = await (await db()).from("my_wallet").select("amount_satang");
-  return (data ?? []).reduce((sum, row) => sum + (row.amount_satang ?? 0), 0);
-}

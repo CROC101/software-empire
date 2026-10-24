@@ -16,6 +16,7 @@
     "@empire/core": "workspace:*",
     "@empire/ui": "workspace:*",
     "next": "^16.4.3",
+    "qrcode.react": "^4.2.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "server-only": "^0.0.1",

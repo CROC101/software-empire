@@ -22,7 +22,8 @@ Claude ทำงานแทน AIE ได้เต็มที่ภายใ�
 ```
 apps/hub        Core Hub — SSO, dashboard, portfolio showroom     (Next.js)
 apps/community  ระบบย่อย 1 — แชต realtime  (dupe จาก nexus)        (Vite)
-apps/commerce   ระบบย่อย 2 — ตลาดฟรีแลนซ์ + escrow จำลอง           (Next.js)
+apps/commerce   ระบบย่อย 2 — ตลาดฟรีแลนซ์ จ่ายตรงเข้าพร้อมเพย์ผู้ขาย  (Next.js)
+apps/crocbyte   เว็บรับงานของเจ้าของคนเดียว (legacy, Firebase)     (Next.js)
 apps/toolboxes  ระบบย่อย 3 — dev tools + MCP inspector (dupe)      (Vite)
 apps/tarot      ระบบย่อย 4 — AI tarot 3D, WebGPU/BYOK             (Vite)
 apps/design     ระบบย่อย 5 — component & prompt registry          (Next.js)

@@ -1,21 +1,25 @@
-import { Button } from "@empire/ui";
+import { Button, Label } from "@empire/ui";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { currentUserId, db } from "@/lib/db";
 import { signInUrl } from "@/lib/env";
 import { CATEGORIES, formatBaht, isCategory } from "@/lib/market";
-import { deleteService } from "../actions";
+import { ActionForm } from "../action-form";
+import { deleteService, savePayout } from "../actions";
 
 export const metadata: Metadata = { title: "ขายงาน" };
 
 export default async function SellPage() {
   const me = await currentUserId();
   if (!me) redirect(signInUrl("/sell"));
-  // RLS lets sellers see their own drafts as well as published services
-  const { data: services } = await (
-    await db()
-  )
+  const client = await db();
+  // RLS: sellers see their own drafts as well as published services, and only their own payout row
+  const { data: payout } = await client
+    .from("payout_accounts")
+    .select("promptpay_id,account_name")
+    .maybeSingle();
+  const { data: services } = await client
     .from("services")
     .select("id,title,category,price_satang,delivery_days,published,updated_at")
     .eq("seller_id", me)
@@ -28,13 +32,58 @@ export default async function SellPage() {
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary">sell</p>
           <h1 className="mt-2 font-heading text-3xl font-black tracking-tight">บริการของฉัน</h1>
           <p className="mt-1 text-muted-foreground">
-            ร่างไว้ก่อนได้ เผยแพร่เมื่อพร้อม ผู้ซื้อจ่ายเข้าเอสโครว์ คุณได้เงินเมื่อเขากดรับงาน
+            ร่างไว้ก่อนได้ เผยแพร่เมื่อพร้อม ผู้ซื้อโอนเข้าพร้อมเพย์ของคุณโดยตรง
+            คุณยืนยันรับเงินแล้วค่อยเริ่มงาน
           </p>
         </div>
         <Button asChild variant="aurora">
           <Link href="/sell/new">+ บริการใหม่</Link>
         </Button>
       </div>
+
+      <section
+        aria-labelledby="payout"
+        className={`rounded-xl border p-5 ${payout ? "bg-card" : "border-warning/50 bg-warning/5"}`}
+      >
+        <h2 id="payout" className="font-heading text-lg font-bold">
+          ผู้ซื้อโอนเงินให้คุณทางไหน
+        </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {payout
+            ? "ผู้ซื้อจะเห็น QR พร้อมเพย์นี้เฉพาะคำสั่งซื้อของตัวเองที่รอชำระอยู่ ระบบไม่ถือเงินของคุณ"
+            : "ยังไม่ได้ตั้ง: ผู้ซื้อจะสแกนจ่ายไม่ได้ ใช้เบอร์มือถือหรือเลขวอลเล็ต ไม่รับเลขบัตรประชาชน"}
+        </p>
+        <ActionForm
+          action={savePayout}
+          submit={payout ? "บันทึกการแก้ไข" : "บันทึกพร้อมเพย์"}
+          variant="outline"
+          className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end"
+        >
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="promptpay">พร้อมเพย์ (เบอร์มือถือ / วอลเล็ต)</Label>
+            <input
+              id="promptpay"
+              name="promptpay"
+              inputMode="numeric"
+              required
+              defaultValue={payout?.promptpay_id ?? ""}
+              placeholder="0812345678"
+              className="rounded-md border bg-background px-3 py-2 font-mono"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="name">ชื่อบัญชี</Label>
+            <input
+              id="name"
+              name="name"
+              required
+              maxLength={80}
+              defaultValue={payout?.account_name ?? ""}
+              className="rounded-md border bg-background px-3 py-2"
+            />
+          </div>
+        </ActionForm>
+      </section>
 
       {services?.length ? (
         <ul className="flex flex-col gap-3">

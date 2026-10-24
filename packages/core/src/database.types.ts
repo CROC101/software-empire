@@ -144,37 +144,6 @@ export type Database = {
   };
   commerce: {
     Tables: {
-      ledger: {
-        Row: {
-          account: string;
-          amount_satang: number;
-          created_at: string;
-          id: number;
-          memo: string;
-          order_id: string | null;
-          txn_id: string;
-        };
-        ComputedFields: never;
-        Insert: {
-          account: string;
-          amount_satang: number;
-          created_at?: string;
-          id?: never;
-          memo: string;
-          order_id?: string | null;
-          txn_id: string;
-        };
-        Update: {
-          account?: string;
-          amount_satang?: number;
-          created_at?: string;
-          id?: never;
-          memo?: string;
-          order_id?: string | null;
-          txn_id?: string;
-        };
-        Relationships: [];
-      };
       order_events: {
         Row: {
           actor_id: string | null;
@@ -257,16 +226,16 @@ export type Database = {
           due_at: string | null;
           fee_satang: number;
           id: string;
+          payment_note: string | null;
+          payment_reported_at: string | null;
           requirements: string;
           seller_id: string;
           service_id: string | null;
           status: string;
           title: string;
           updated_at: string;
-          pay_out: undefined | null;
-          refund: undefined | null;
         };
-        ComputedFields: "pay_out" | "refund";
+        ComputedFields: never;
         Insert: {
           amount_satang: number;
           buyer_id: string;
@@ -276,6 +245,8 @@ export type Database = {
           due_at?: string | null;
           fee_satang: number;
           id?: string;
+          payment_note?: string | null;
+          payment_reported_at?: string | null;
           requirements: string;
           seller_id: string;
           service_id?: string | null;
@@ -292,6 +263,8 @@ export type Database = {
           due_at?: string | null;
           fee_satang?: number;
           id?: string;
+          payment_note?: string | null;
+          payment_reported_at?: string | null;
           requirements?: string;
           seller_id?: string;
           service_id?: string | null;
@@ -315,6 +288,28 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      payout_accounts: {
+        Row: {
+          account_name: string;
+          promptpay_id: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          account_name: string;
+          promptpay_id: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          account_name?: string;
+          promptpay_id?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
       };
       profiles: {
         Row: {
@@ -445,37 +440,6 @@ export type Database = {
       };
     };
     Views: {
-      my_wallet: {
-        Row: {
-          account: string | null;
-          amount_satang: number | null;
-          created_at: string | null;
-          id: number | null;
-          memo: string | null;
-          order_id: string | null;
-          txn_id: string | null;
-        };
-        ComputedFields: never;
-        Insert: {
-          account?: string | null;
-          amount_satang?: number | null;
-          created_at?: string | null;
-          id?: number | null;
-          memo?: string | null;
-          order_id?: string | null;
-          txn_id?: string | null;
-        };
-        Update: {
-          account?: string | null;
-          amount_satang?: number | null;
-          created_at?: string | null;
-          id?: number | null;
-          memo?: string | null;
-          order_id?: string | null;
-          txn_id?: string | null;
-        };
-        Relationships: [];
-      };
       service_cards: {
         Row: {
           category: string | null;
@@ -500,37 +464,27 @@ export type Database = {
     };
     Functions: {
       auto_release: { Args: Record<PropertyKey, never>; Returns: number };
-      balance_of: { Args: { account: string }; Returns: number };
       cancel_order: { Args: { note?: string; order_id: string }; Returns: undefined };
+      confirm_payment: { Args: { order_id: string }; Returns: undefined };
       deliver_order: { Args: { note: string; order_id: string }; Returns: undefined };
       dispute_order: { Args: { order_id: string; reason: string }; Returns: undefined };
       fee_for: { Args: { amount: number }; Returns: number };
-      fund_order: { Args: { order_id: string }; Returns: undefined };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       leave_review: {
         Args: { body?: string; order_id: string; rating: number };
         Returns: undefined;
       };
-      pay_out: {
-        Args: {
-          o: Omit<
-            Database["commerce"]["Tables"]["orders"]["Row"],
-            Database["commerce"]["Tables"]["orders"]["ComputedFields"]
-          >;
-        };
-        Returns: undefined;
+      payment_target: {
+        Args: { order_id: string };
+        Returns: {
+          account_name: string;
+          amount_satang: number;
+          promptpay_id: string;
+        }[];
       };
       place_order: { Args: { requirements: string; service: string }; Returns: string };
-      refund: {
-        Args: {
-          o: Omit<
-            Database["commerce"]["Tables"]["orders"]["Row"],
-            Database["commerce"]["Tables"]["orders"]["ComputedFields"]
-          >;
-        };
-        Returns: undefined;
-      };
       release_order: { Args: { order_id: string }; Returns: undefined };
+      report_payment: { Args: { note?: string; order_id: string }; Returns: undefined };
       resolve_dispute: {
         Args: { note?: string; order_id: string; outcome: string };
         Returns: undefined;
@@ -552,6 +506,8 @@ export type Database = {
           due_at: string | null;
           fee_satang: number;
           id: string;
+          payment_note: string | null;
+          payment_reported_at: string | null;
           requirements: string;
           seller_id: string;
           service_id: string | null;
@@ -565,17 +521,6 @@ export type Database = {
           isOneToOne: true;
           isSetofReturn: false;
         };
-      };
-      topup_demo: { Args: { amount_satang: number }; Returns: number };
-      transfer: {
-        Args: {
-          amount: number;
-          from_account: string;
-          memo: string;
-          order_ref?: string;
-          to_account: string;
-        };
-        Returns: string;
       };
     };
     Enums: {

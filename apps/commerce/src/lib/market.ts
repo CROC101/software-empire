@@ -19,13 +19,13 @@ export type OrderStatus =
   "CREATED" | "FUNDED" | "DELIVERED" | "RELEASED" | "CANCELLED" | "DISPUTED" | "REFUNDED";
 
 export const STATUS_LABEL: Record<OrderStatus, string> = {
-  CREATED: "รอชำระเงิน",
-  FUNDED: "ชำระแล้ว · กำลังทำงาน",
+  CREATED: "รอชำระเงิน · โอนตรงให้ผู้ขาย",
+  FUNDED: "ผู้ขายยืนยันรับเงินแล้ว · กำลังทำงาน",
   DELIVERED: "ส่งมอบแล้ว · รอผู้ซื้อตรวจรับ",
-  RELEASED: "เสร็จสิ้น · โอนเงินให้ผู้ขายแล้ว",
+  RELEASED: "เสร็จสิ้น · ผู้ซื้อรับงานแล้ว",
   CANCELLED: "ยกเลิกแล้ว",
   DISPUTED: "มีข้อพิพาท · รอผู้ดูแลตัดสิน",
-  REFUNDED: "คืนเงินผู้ซื้อแล้ว",
+  REFUNDED: "ยุติ · ผู้ขายคืนเงินผู้ซื้อ",
 };
 
 const BAHT = new Intl.NumberFormat("th-TH", {
@@ -51,7 +51,7 @@ export const bahtInput = z
 
 export type Side = "buyer" | "seller" | "staff" | "none";
 export type OrderAction =
-  "fund" | "cancel" | "deliver" | "release" | "dispute" | "resolve" | "review";
+  "report" | "confirm" | "cancel" | "deliver" | "release" | "dispute" | "resolve" | "review";
 
 /** What the viewer may do now — mirrors the SQL state machine so the UI never offers a dead button. */
 export function availableActions(
@@ -60,7 +60,9 @@ export function availableActions(
   opts: { reviewed?: boolean } = {},
 ): OrderAction[] {
   const actions: OrderAction[] = [];
-  if (status === "CREATED" && side === "buyer") actions.push("fund");
+  // money goes straight to the seller: the buyer reports the transfer, the seller confirms it
+  if (status === "CREATED" && side === "buyer") actions.push("report");
+  if (status === "CREATED" && side === "seller") actions.push("confirm");
   if (status === "CREATED" && (side === "buyer" || side === "seller")) actions.push("cancel");
   if (status === "FUNDED" && side === "seller") actions.push("deliver", "cancel");
   if (status === "DELIVERED" && side === "buyer") actions.push("release");

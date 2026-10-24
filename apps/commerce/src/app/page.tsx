@@ -6,8 +6,11 @@ import { ServiceCard } from "./service-card";
 
 const STEPS = [
   { title: "สั่งงาน", body: "บอกรายละเอียดที่ต้องการ ราคาล็อกตามที่ประกาศ" },
-  { title: "ชำระเข้าเอสโครว์", body: "เงินถูกพักไว้ ผู้ขายเห็นว่าจ่ายแล้วแต่ยังถอนไม่ได้" },
-  { title: "ตรวจรับงาน", body: "พอใจแล้วค่อยปล่อยเงิน มีปัญหาเปิดข้อพิพาทให้ผู้ดูแลตัดสิน" },
+  {
+    title: "โอนตรงให้ผู้ขาย",
+    body: "สแกน QR พร้อมเพย์ของผู้ขาย แล้วกดแจ้งโอน ผู้ขายยืนยันรับเงินแล้วงานจึงเริ่ม",
+  },
+  { title: "ตรวจรับงาน", body: "พอใจแล้วกดรับงานและรีวิว มีปัญหาเปิดข้อพิพาทให้ผู้ดูแลช่วยตัดสิน" },
 ];
 
 export default async function HomePage() {
@@ -29,10 +32,11 @@ export default async function HomePage() {
         />
         <p className="relative text-sm text-white/70">ระบบย่อย 2 · Software Empire</p>
         <h1 className="relative mt-2 max-w-2xl font-heading text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-          จ้างฟรีแลนซ์อย่างสบายใจ เงินปล่อยเมื่อได้งาน
+          จ้างฟรีแลนซ์ จ่ายตรงถึงคนทำงาน
         </h1>
         <p className="relative mt-4 max-w-xl text-white/80">
-          ทุกการจ่ายผ่านเอสโครว์และบัญชีแยกประเภทคู่ — ตรวจย้อนได้ทุกสตางค์ว่าเงินอยู่ที่ไหน
+          ไม่มีคนกลางถือเงิน ไม่มีค่าธรรมเนียม ผู้ซื้อโอนเข้าพร้อมเพย์ของผู้ขายโดยตรง
+          ทุกขั้นบันทึกในไทม์ไลน์ของคำสั่งซื้อ
         </p>
         <div className="relative mt-8 flex flex-wrap gap-3">
           <Button asChild variant="aurora" size="lg">
@@ -51,7 +55,7 @@ export default async function HomePage() {
 
       <section aria-labelledby="how" className="flex flex-col gap-6">
         <h2 id="how" className="font-heading text-2xl font-bold tracking-tight">
-          เอสโครว์ทำงานอย่างไร
+          จ้างงานทำงานอย่างไร
         </h2>
         <ol className="grid gap-4 sm:grid-cols-3">
           {STEPS.map((step, i) => (

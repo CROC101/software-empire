@@ -3,26 +3,22 @@ import { subsystems } from "@empire/core/subsystems";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { currentUserId, db, walletBalance } from "@/lib/db";
+import { currentUserId, db } from "@/lib/db";
 import { env, hubUrl, signInUrl } from "@/lib/env";
-import { formatBaht } from "@/lib/market";
 import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.siteUrl),
   title: { default: "Empire Commerce", template: "%s · Empire Commerce" },
   description:
-    "ตลาดงานฟรีแลนซ์ของ Software Empire — จ้างงานผ่านเอสโครว์จำลอง เงินปล่อยเมื่อรับงานแล้วเท่านั้น",
+    "ตลาดงานฟรีแลนซ์ของ Software Empire: จ้างแล้วโอนตรงเข้าพร้อมเพย์ของผู้ขาย ระบบไม่ถือเงินใคร",
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const me = await currentUserId();
-  const [profile, balance] = me
-    ? await Promise.all([
-        (await db()).from("profiles").select("display_name").eq("user_id", me).maybeSingle(),
-        walletBalance(),
-      ])
-    : [null, 0];
+  const profile = me
+    ? await (await db()).from("profiles").select("display_name").eq("user_id", me).maybeSingle()
+    : null;
 
   return (
     // theme-boot.js sets the shared theme class before paint, so React sees a different class
@@ -65,15 +61,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               )}
             </div>
             {me ? (
-              <Link
-                href="/wallet"
-                className="flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm hover:border-primary"
-              >
-                <span className="font-semibold">{formatBaht(balance)}</span>
-                <span className="hidden text-muted-foreground sm:inline">
-                  · {profile?.data?.display_name ?? "บัญชีของฉัน"}
-                </span>
-              </Link>
+              <span className="rounded-full border bg-card px-3 py-1.5 text-sm">
+                {profile?.data?.display_name ?? "บัญชีของฉัน"}
+              </span>
             ) : (
               <Button asChild size="sm" variant="aurora">
                 <a href={signInUrl("/")}>เข้าสู่ระบบ</a>
@@ -83,7 +73,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         </header>
         {children}
         <footer className="mx-auto max-w-6xl px-4 py-10 text-sm text-muted-foreground sm:px-6">
-          เงินทั้งหมดในระบบนี้เป็นเงินจำลองสำหรับสาธิต — ไม่มีการตัดบัตรหรือโอนเงินจริง
+          ผู้ซื้อโอนเงินตรงเข้าพร้อมเพย์ของผู้ขายแต่ละคน ระบบนี้ไม่รับ ไม่ถือ และไม่โอนเงินของใคร
         </footer>
       </body>
     </html>

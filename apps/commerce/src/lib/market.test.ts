@@ -22,8 +22,8 @@ describe("money", () => {
 
 describe("order actions mirror the escrow state machine", () => {
   it("lets only the buyer pay, and either side walk away before payment", () => {
-    expect(availableActions("CREATED", "buyer")).toEqual(["fund", "cancel"]);
-    expect(availableActions("CREATED", "seller")).toEqual(["cancel"]);
+    expect(availableActions("CREATED", "buyer")).toEqual(["report", "cancel"]);
+    expect(availableActions("CREATED", "seller")).toEqual(["confirm", "cancel"]);
   });
 
   it("after payment only the seller delivers or cancels; both may dispute", () => {
