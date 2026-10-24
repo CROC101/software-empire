@@ -1,4 +1,5 @@
 import {
+  BlueprintReveal,
   LanyardBadge,
   MeshGhost,
   Meteors,
@@ -784,7 +785,8 @@ export function HowSection() {
               ทำเป็นรอบสั้น ๆ ถ้าเดินผิดทาง จะรู้ตั้งแต่รอบแรก ๆ ตอนที่เลี้ยวกลับยังง่าย
             </p>
           </div>
-          <ol className="mt-16 flex flex-col">
+          <BlueprintReveal word="BLUEPRINT" className="mt-12" />
+          <ol className="mt-12 flex flex-col">
             {STEPS.map(([label, title, body]) => (
               <li
                 key={title}
