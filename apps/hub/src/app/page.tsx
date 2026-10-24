@@ -15,6 +15,7 @@ import { MobileMenu } from "./mobile-menu";
 import { BackToTop, NavSpy } from "./nav-spy";
 import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
+import { ActivitySkyline } from "./activity-skyline";
 import { HiddenWork } from "./hidden-work";
 import { CrocPoster } from "./croc-poster";
 import {
@@ -175,6 +176,7 @@ export default async function HomePage() {
         <ShotsSection />
         <HiddenWork />
         <SkillsSection />
+        <ActivitySkyline />
         <ServicesSection aside={<StackCard href="#subsystems" />} />
         <HowSection />
         <TeamSection />

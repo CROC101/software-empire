@@ -64,3 +64,8 @@ export {
   FlashlightTextReveal,
   type FlashlightTextRevealProps,
 } from "./components/flashlight-text-reveal";
+export {
+  ContributionSkyline,
+  type ContributionSkylineProps,
+  type ContributionDay,
+} from "./components/contribution-skyline";
