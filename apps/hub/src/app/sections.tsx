@@ -37,7 +37,8 @@ import { SoloFlock } from "./solo-flock";
  * comes from APP_URL_<SLUG>, counts from the repo.
  */
 
-export const PGTAP_TESTS = 245;
+export { PGTAP_TESTS } from "@/lib/facts";
+import { PGTAP_TESTS } from "@/lib/facts";
 const COMMUNITY_ROUNDS = 7;
 
 // last commits, as I would say them out loud (update when shipping)

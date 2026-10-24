@@ -60,3 +60,7 @@ export {
   type ComebackPosterProps,
   type ComebackPalette,
 } from "./components/comeback-poster";
+export {
+  FlashlightTextReveal,
+  type FlashlightTextRevealProps,
+} from "./components/flashlight-text-reveal";

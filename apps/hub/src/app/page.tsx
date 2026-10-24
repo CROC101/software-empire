@@ -15,6 +15,7 @@ import { MobileMenu } from "./mobile-menu";
 import { BackToTop, NavSpy } from "./nav-spy";
 import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
+import { HiddenWork } from "./hidden-work";
 import { CrocPoster } from "./croc-poster";
 import {
   AboutSection,
@@ -172,6 +173,7 @@ export default async function HomePage() {
         <WorkReel />
         <WorkSection />
         <ShotsSection />
+        <HiddenWork />
         <SkillsSection />
         <ServicesSection aside={<StackCard href="#subsystems" />} />
         <HowSection />
