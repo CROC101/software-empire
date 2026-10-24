@@ -41,7 +41,8 @@ export type WaterRippleCarouselProps = {
   className?: string;
   style?: React.CSSProperties;
   ariaLabel?: string;
-  labels?: { prev: string; next: string; slide: (n: number, total: number) => string };
+  /** Plain strings so a server component can pass them; {n} and {total} fill the slide label. */
+  labels?: { prev: string; next: string; slide: string };
 };
 
 // #region logic
@@ -467,7 +468,7 @@ export function WaterRippleCarousel({
   labels = {
     prev: "Previous",
     next: "Next",
-    slide: (n, t) => `Slide ${String(n)} of ${String(t)}`,
+    slide: "Slide {n} of {total}",
   },
 }: WaterRippleCarouselProps) {
   const n = slides.length;
@@ -627,7 +628,8 @@ export function WaterRippleCarousel({
         />
       </div>
       <div className="wr-sr" aria-live="polite">
-        {labels.slide(shown + 1, n) + (s.title ? `: ${s.title}` : "")}
+        {labels.slide.replace("{n}", String(shown + 1)).replace("{total}", String(n)) +
+          (s.title ? `: ${s.title}` : "")}
       </div>
     </div>
   );

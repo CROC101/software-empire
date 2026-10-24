@@ -492,7 +492,7 @@ export function ShotsSection() {
         labels={{
           prev: "ภาพก่อนหน้า",
           next: "ภาพถัดไป",
-          slide: (n, t) => `ภาพที่ ${String(n)} จาก ${String(t)}`,
+          slide: "ภาพที่ {n} จาก {total}",
         }}
         style={{
           ["--wr-title-font" as string]: "900 clamp(32px, 5vw, 68px)/1 var(--font-heading)",
