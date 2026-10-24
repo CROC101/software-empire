@@ -32,3 +32,4 @@ export { TidelineCta } from "./components/tideline-cta";
 export { TearFooter, type TearFooterProps } from "./components/tear-footer";
 export { useTokenColors } from "./lib/token-colors";
 export { CrocReveal } from "./components/croc-reveal";
+export { LanyardBadge } from "./components/lanyard-badge";

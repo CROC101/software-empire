@@ -1,4 +1,5 @@
 import {
+  LanyardBadge,
   MeshGhost,
   Meteors,
   PhoneFrame,
@@ -481,14 +482,55 @@ export function AboutSection() {
             </p>
           </div>
         </div>
-        <ul className="grid grid-cols-2 self-end border-l border-t">
-          {FOCUS.map((f, n) => (
-            <li key={f} className="border-b border-r p-5">
-              <p className="font-mono text-xs cw-blue">0{n + 1}</p>
-              <p className="mt-3 font-black">{f}</p>
-            </li>
-          ))}
-        </ul>
+        <LanyardBadge
+          className="lg:-mt-24"
+          strapText="crocwork.studio"
+          flipLabel="ดูด้านหลัง"
+          frontLabel="ดูด้านหน้า"
+          cardLabel="บัตรของ crocwork.studio กดเพื่อพลิก ลากเพื่อเหวี่ยง"
+          front={
+            <div className="flex h-full flex-col p-6 pt-10">
+              <Image
+                src="/crocwork-logo.jpg"
+                alt=""
+                width={56}
+                height={56}
+                className="rounded-xl"
+              />
+              <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] cw-blue">
+                solo studio · since 2569
+              </p>
+              <p className="mt-2 text-2xl font-black leading-none tracking-tight">
+                crocwork<span className="cw-blue">.studio</span>
+              </p>
+              <p className="mt-3 text-sm text-muted-foreground">
+                ทำคนเดียวทุกตำแหน่ง ตั้งแต่คุยโจทย์จนดูแลระบบ
+              </p>
+              <p className="mt-auto flex justify-between border-t pt-4 font-mono text-[10px] text-muted-foreground">
+                <span>PM · PL · AIE</span>
+                <span>
+                  {live}/{subsystems.length} live
+                </span>
+              </p>
+            </div>
+          }
+          back={
+            <div className="flex h-full flex-col p-6 pt-10">
+              <p className={`${EYEBROW} cw-blue`}>focus</p>
+              <ol className="mt-4 flex flex-col gap-3">
+                {FOCUS.map((f, n) => (
+                  <li key={f} className="flex gap-3 border-b pb-3">
+                    <span className="font-mono text-xs cw-blue">0{n + 1}</span>
+                    <span className="font-black">{f}</span>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-auto font-mono text-[10px] text-muted-foreground">
+                github.com/CROC101
+              </p>
+            </div>
+          }
+        />
       </div>
 
       <div className="mt-14 grid gap-12 lg:grid-cols-[1.1fr_1fr]">

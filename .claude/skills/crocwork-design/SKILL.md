@@ -38,7 +38,9 @@ font pair or corner style per app.
 - Cinematic parts (`@empire/ui`): `ScrollAssemble` = pinned scroll interlude (letters fan in,
   items swing in; native scroll + sticky), `TidelineCta` = closing CTA whose water rises to a true
   level and loops seamlessly, `TearFooter` = torn-poster footer with a pushpin. Colours for canvas /
-  shader / SVG maths come from `useTokenColors`, never hex literals.
+  shader / SVG maths come from `useTokenColors`, never hex literals. `CrocReveal` = poster torn by
+  scroll, a crocodile surfaces (palette `--em-croc-*`). `LanyardBadge` = ID card on a Verlet strap
+  (drag, flick to spin, tap to flip); faces take any content.
 - Terminals for facts: `$ crocwork status`, real data only, blinking caret (`em-cursor`).
 - Phones: `PhoneFrame` from `@empire/ui` (titanium edge, Dynamic Island, status bar 9:41) over
   paper-cut art (`PaperArt`); pairs fan out on hover. Screens are real screenshots
