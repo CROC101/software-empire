@@ -47,3 +47,7 @@ export {
   type Slide,
   type WaterRippleCarouselProps,
 } from "./components/water-ripple-carousel";
+export {
+  MurmurationWordmark,
+  type MurmurationWordmarkProps,
+} from "./components/murmuration-wordmark";
