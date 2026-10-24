@@ -142,6 +142,449 @@ export type Database = {
       [_ in never]: never;
     };
   };
+  commerce: {
+    Tables: {
+      ledger: {
+        Row: {
+          account: string;
+          amount_satang: number;
+          created_at: string;
+          id: number;
+          memo: string;
+          order_id: string | null;
+          txn_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          account: string;
+          amount_satang: number;
+          created_at?: string;
+          id?: never;
+          memo: string;
+          order_id?: string | null;
+          txn_id: string;
+        };
+        Update: {
+          account?: string;
+          amount_satang?: number;
+          created_at?: string;
+          id?: never;
+          memo?: string;
+          order_id?: string | null;
+          txn_id?: string;
+        };
+        Relationships: [];
+      };
+      order_events: {
+        Row: {
+          actor_id: string | null;
+          created_at: string;
+          from_status: string | null;
+          id: number;
+          note: string | null;
+          order_id: string;
+          to_status: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          actor_id?: string | null;
+          created_at?: string;
+          from_status?: string | null;
+          id?: never;
+          note?: string | null;
+          order_id: string;
+          to_status: string;
+        };
+        Update: {
+          actor_id?: string | null;
+          created_at?: string;
+          from_status?: string | null;
+          id?: never;
+          note?: string | null;
+          order_id?: string;
+          to_status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "order_events_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      order_messages: {
+        Row: {
+          author_id: string;
+          body: string;
+          created_at: string;
+          id: string;
+          order_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          author_id?: string;
+          body: string;
+          created_at?: string;
+          id?: string;
+          order_id: string;
+        };
+        Update: {
+          author_id?: string;
+          body?: string;
+          created_at?: string;
+          id?: string;
+          order_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "order_messages_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      orders: {
+        Row: {
+          amount_satang: number;
+          buyer_id: string;
+          created_at: string;
+          delivered_at: string | null;
+          delivery_days: number;
+          due_at: string | null;
+          fee_satang: number;
+          id: string;
+          requirements: string;
+          seller_id: string;
+          service_id: string | null;
+          status: string;
+          title: string;
+          updated_at: string;
+          pay_out: undefined | null;
+          refund: undefined | null;
+        };
+        ComputedFields: "pay_out" | "refund";
+        Insert: {
+          amount_satang: number;
+          buyer_id: string;
+          created_at?: string;
+          delivered_at?: string | null;
+          delivery_days: number;
+          due_at?: string | null;
+          fee_satang: number;
+          id?: string;
+          requirements: string;
+          seller_id: string;
+          service_id?: string | null;
+          status?: string;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          amount_satang?: number;
+          buyer_id?: string;
+          created_at?: string;
+          delivered_at?: string | null;
+          delivery_days?: number;
+          due_at?: string | null;
+          fee_satang?: number;
+          id?: string;
+          requirements?: string;
+          seller_id?: string;
+          service_id?: string | null;
+          status?: string;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "orders_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "service_cards";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "orders_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      profiles: {
+        Row: {
+          bio: string | null;
+          created_at: string;
+          display_name: string;
+          headline: string | null;
+          skills: string[];
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          bio?: string | null;
+          created_at?: string;
+          display_name: string;
+          headline?: string | null;
+          skills?: string[];
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          bio?: string | null;
+          created_at?: string;
+          display_name?: string;
+          headline?: string | null;
+          skills?: string[];
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      reviews: {
+        Row: {
+          body: string | null;
+          buyer_id: string;
+          created_at: string;
+          order_id: string;
+          rating: number;
+          seller_id: string;
+          service_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          body?: string | null;
+          buyer_id: string;
+          created_at?: string;
+          order_id: string;
+          rating: number;
+          seller_id: string;
+          service_id?: string | null;
+        };
+        Update: {
+          body?: string | null;
+          buyer_id?: string;
+          created_at?: string;
+          order_id?: string;
+          rating?: number;
+          seller_id?: string;
+          service_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reviews_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: true;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "service_cards";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reviews_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      services: {
+        Row: {
+          category: string;
+          created_at: string;
+          delivery_days: number;
+          description: string;
+          id: string;
+          price_satang: number;
+          published: boolean;
+          seller_id: string;
+          tags: string[];
+          title: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          category: string;
+          created_at?: string;
+          delivery_days: number;
+          description: string;
+          id?: string;
+          price_satang: number;
+          published?: boolean;
+          seller_id?: string;
+          tags?: string[];
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          category?: string;
+          created_at?: string;
+          delivery_days?: number;
+          description?: string;
+          id?: string;
+          price_satang?: number;
+          published?: boolean;
+          seller_id?: string;
+          tags?: string[];
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+    };
+    Views: {
+      my_wallet: {
+        Row: {
+          account: string | null;
+          amount_satang: number | null;
+          created_at: string | null;
+          id: number | null;
+          memo: string | null;
+          order_id: string | null;
+          txn_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          account?: string | null;
+          amount_satang?: number | null;
+          created_at?: string | null;
+          id?: number | null;
+          memo?: string | null;
+          order_id?: string | null;
+          txn_id?: string | null;
+        };
+        Update: {
+          account?: string | null;
+          amount_satang?: number | null;
+          created_at?: string | null;
+          id?: number | null;
+          memo?: string | null;
+          order_id?: string | null;
+          txn_id?: string | null;
+        };
+        Relationships: [];
+      };
+      service_cards: {
+        Row: {
+          category: string | null;
+          created_at: string | null;
+          delivery_days: number | null;
+          description: string | null;
+          id: string | null;
+          price_satang: number | null;
+          published: boolean | null;
+          rating: number | null;
+          review_count: number | null;
+          seller_headline: string | null;
+          seller_id: string | null;
+          seller_name: string | null;
+          tags: string[] | null;
+          title: string | null;
+          updated_at: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
+    };
+    Functions: {
+      auto_release: { Args: Record<PropertyKey, never>; Returns: number };
+      balance_of: { Args: { account: string }; Returns: number };
+      cancel_order: { Args: { note?: string; order_id: string }; Returns: undefined };
+      deliver_order: { Args: { note: string; order_id: string }; Returns: undefined };
+      dispute_order: { Args: { order_id: string; reason: string }; Returns: undefined };
+      fee_for: { Args: { amount: number }; Returns: number };
+      fund_order: { Args: { order_id: string }; Returns: undefined };
+      is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      leave_review: {
+        Args: { body?: string; order_id: string; rating: number };
+        Returns: undefined;
+      };
+      pay_out: {
+        Args: {
+          o: Omit<
+            Database["commerce"]["Tables"]["orders"]["Row"],
+            Database["commerce"]["Tables"]["orders"]["ComputedFields"]
+          >;
+        };
+        Returns: undefined;
+      };
+      place_order: { Args: { requirements: string; service: string }; Returns: string };
+      refund: {
+        Args: {
+          o: Omit<
+            Database["commerce"]["Tables"]["orders"]["Row"],
+            Database["commerce"]["Tables"]["orders"]["ComputedFields"]
+          >;
+        };
+        Returns: undefined;
+      };
+      release_order: { Args: { order_id: string }; Returns: undefined };
+      resolve_dispute: {
+        Args: { note?: string; order_id: string; outcome: string };
+        Returns: undefined;
+      };
+      step: {
+        Args: {
+          allowed_from: string[];
+          note?: string;
+          order_id: string;
+          side: string;
+          to_status: string;
+        };
+        Returns: {
+          amount_satang: number;
+          buyer_id: string;
+          created_at: string;
+          delivered_at: string | null;
+          delivery_days: number;
+          due_at: string | null;
+          fee_satang: number;
+          id: string;
+          requirements: string;
+          seller_id: string;
+          service_id: string | null;
+          status: string;
+          title: string;
+          updated_at: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "orders";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      topup_demo: { Args: { amount_satang: number }; Returns: number };
+      transfer: {
+        Args: {
+          amount: number;
+          from_account: string;
+          memo: string;
+          order_ref?: string;
+          to_account: string;
+        };
+        Returns: string;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   community: {
     Tables: {
       assets: {
@@ -2436,6 +2879,9 @@ export type CompositeTypes<
 
 export const Constants = {
   canva: {
+    Enums: {},
+  },
+  commerce: {
     Enums: {},
   },
   community: {
