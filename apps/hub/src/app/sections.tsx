@@ -1018,6 +1018,7 @@ export function SiteFooter() {
             { label: "สถานะระบบ", href: "#status" },
             { label: "ทำงานยังไง", href: "#how" },
             { label: "ถามกันบ่อย", href: "#faq" },
+            { label: "เล่น intro อีกครั้ง", href: "/?intro" },
           ],
           cta: { label: "talk.", href: "#contact" },
         },

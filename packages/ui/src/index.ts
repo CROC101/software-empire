@@ -37,5 +37,8 @@ export { PhosphorNotFound } from "./components/phosphor-not-found";
 export { PolaroidCarousel, type Polaroid } from "./components/polaroid-carousel";
 export { BlueprintReveal } from "./components/blueprint-reveal";
 export { GlassFolders, type GlassFolderItem } from "./components/glass-folders";
-export { KeyholeIntro, INTRO_KEY } from "./components/keyhole-intro";
 export { GlassClock } from "./components/glass-clock";
+export {
+  SkeletonKeyPreloader,
+  type SkeletonKeyPreloaderProps,
+} from "./components/skeleton-key-preloader";

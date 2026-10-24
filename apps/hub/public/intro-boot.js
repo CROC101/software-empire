@@ -1,6 +1,6 @@
 // Keyhole intro, decided before first paint: home page, first visit this session (or ?intro),
 // motion allowed.
-// The flag name matches INTRO_KEY in @empire/ui keyhole-intro.tsx.
+// The flag name matches SEEN in apps/hub/src/app/intro-gate.tsx.
 try {
   if (
     location.pathname === "/" &&

@@ -128,3 +128,38 @@ html {
     opacity: 0;
   }
 }
+
+/* first-visit intro (intro-gate.tsx, public/intro-boot.js) */
+.intro-cover {
+  display: none;
+}
+html.em-intro {
+  overflow: hidden;
+}
+html.em-intro .intro-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: block;
+  background: var(--em-ink-975);
+}
+.intro-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+.intro-skip {
+  position: absolute;
+  top: clamp(16px, 3vh, 30px);
+  right: clamp(16px, 3vw, 36px);
+  z-index: 3;
+  border: 1px solid oklch(1 0 0 / 0.25);
+  padding: 0.4rem 0.9rem;
+  font:
+    400 11px/1.4 ui-monospace,
+    Menlo,
+    Consolas,
+    monospace;
+  letter-spacing: 0.2em;
+  color: var(--em-ink-200);
+}
