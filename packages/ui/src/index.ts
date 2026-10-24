@@ -26,3 +26,4 @@ export { LinkPreview } from "./components/link-preview";
 export { SunMoonThemeToggle } from "./components/sun-moon-theme-toggle";
 export { type ThemeEffect } from "./components/sun-moon-theme-toggle";
 export { Ambience, AmbienceButton, Meteors } from "./components/ambience";
+export { MeshGhost } from "./components/mesh-ghost";

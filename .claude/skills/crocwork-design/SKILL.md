@@ -39,7 +39,8 @@ font pair or corner style per app.
 - Phones: `PhoneFrame` from `@empire/ui` (titanium edge, Dynamic Island, status bar 9:41) over
   paper-cut art (`PaperArt`); pairs fan out on hover. Screens are real screenshots
   (`apps/hub/public/previews/m-*.webp`), never mock text.
-- Mascot: `apps/hub/public/mascot.png` (die-cut, transparent) via `Sticker`.
+- Mascot: `MeshGhost` from `@empire/ui` (shader ghost, eyes follow the pointer) via `Sticker`.
+  Colours come from palette tokens (resolved at runtime); never hard-code hex.
 - Copy: first person, plain Thai, no em dashes, no buzzwords, only true numbers.
 
 ## 3. Shared across every app (wire these in, every time)

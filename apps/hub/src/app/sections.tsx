@@ -1,4 +1,4 @@
-import { Meteors, PhoneFrame } from "@empire/ui";
+import { MeshGhost, Meteors, PhoneFrame } from "@empire/ui";
 import { Cat, Code2, MessageCircle, Plane, ShieldCheck, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -855,7 +855,7 @@ export function ContactSection({ cta }: { cta: { href: string; label: string } }
             )}
           </div>
           <div className="relative">
-            <Sticker className="absolute -top-44 right-6 w-44 rotate-6 sm:w-52" />
+            <Sticker className="absolute -top-56 right-6 w-44 rotate-6 sm:-top-64 sm:w-52" />
             <div className="relative border border-[var(--em-ink-0)]/20 bg-[oklch(0.25_0.12_265/0.85)] font-mono text-sm shadow-2xl">
               <p className="flex items-center gap-2 border-b border-[var(--em-ink-0)]/15 px-5 py-3 text-xs opacity-70">
                 <span className="size-2.5 bg-[var(--em-ink-0)]/25" />
@@ -943,19 +943,7 @@ function FooterCol({
   );
 }
 
-/** The studio mascot, die-cut (transparent PNG with its own soft shadow); bobs a little on hover. */
+/** The studio mascot (MeshGhost from @empire/ui): shader-filled ghost whose eyes follow the pointer. */
 export function Sticker({ className = "" }: { className?: string }) {
-  return (
-    <div
-      className={`vt-live relative aspect-[15/14] transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-2 hover:rotate-0 ${className}`}
-    >
-      <Image
-        src="/mascot.png"
-        alt="มาสคอตของ crocwork.studio ถือถ้วยกาแฟ"
-        fill
-        sizes="16rem"
-        className="object-contain"
-      />
-    </div>
-  );
+  return <MeshGhost className={className} />;
 }
