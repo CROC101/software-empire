@@ -66,6 +66,9 @@ export function Ambience() {
   const { season } = useAmbience();
   const [reduced, setReduced] = useState(true);
   useEffect(() => {
+    // no matchMedia (test DOMs, very old embedded browsers): stay off, as if motion were reduced
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (typeof window.matchMedia !== "function") return;
     const q = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduced(q.matches);
     const on = () => setReduced(q.matches);
