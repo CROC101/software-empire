@@ -1502,6 +1502,7 @@ export type Database = {
       };
       profiles: {
         Row: {
+          avatar_frame: string;
           avatar_url: string | null;
           bio: string | null;
           comments_from: string;
@@ -1520,6 +1521,7 @@ export type Database = {
         };
         ComputedFields: never;
         Insert: {
+          avatar_frame?: string;
           avatar_url?: string | null;
           bio?: string | null;
           comments_from?: string;
@@ -1537,6 +1539,7 @@ export type Database = {
           website?: string | null;
         };
         Update: {
+          avatar_frame?: string;
           avatar_url?: string | null;
           bio?: string | null;
           comments_from?: string;
