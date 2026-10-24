@@ -281,6 +281,10 @@
   view-transition-name: match-element;
   view-transition-class: live;
 }
+/* off screen during a theme switch: not worth a snapshot (set by revealPage) */
+.vt-live.vt-off {
+  view-transition-name: none;
+}
 ::view-transition-old(*.live) {
   display: none;
 }

@@ -122,7 +122,17 @@ function revealPage(effect: ThemeEffect, from: HTMLElement, swap: () => void, fa
     swap();
     return;
   }
+  // only what is on screen needs its own live snapshot; capturing every vt-live element down a
+  // long page is what makes the browser time out
+  const off = Array.from(document.querySelectorAll<HTMLElement>(".vt-live")).filter((el) => {
+    const r = el.getBoundingClientRect();
+    return r.bottom < 0 || r.top > innerHeight;
+  });
+  for (const el of off) el.classList.add("vt-off");
   const transition = document.startViewTransition(swap);
+  const restore = () => {
+    for (const el of off) el.classList.remove("vt-off");
+  };
   const box = from.getBoundingClientRect();
   const x = box.left + box.width / 2;
   const y = box.top + box.height / 2;
@@ -135,12 +145,20 @@ function revealPage(effect: ThemeEffect, from: HTMLElement, swap: () => void, fa
           `circle(${String(r)}px at ${String(x)}px ${String(y)}px)`,
         ]
       : ["inset(0 100% 0 0)", "inset(0 0 0 0)"];
-  void transition.ready.then(() =>
-    document.documentElement.animate(
-      { clipPath },
-      { duration: REVEAL_MS, easing: SKY_EASE, pseudoElement: "::view-transition-new(root)" },
-    ),
-  );
+  // On a long, busy page Chrome may give up capturing ("Transition was aborted because of timeout
+  // in DOM update"). The theme has still swapped; only the reveal is skipped, so swallow the
+  // rejections instead of surfacing them as unhandled errors.
+  const skip = () => undefined;
+  transition.updateCallbackDone.catch(skip);
+  transition.finished.then(restore, restore);
+  transition.ready
+    .then(() =>
+      document.documentElement.animate(
+        { clipPath },
+        { duration: REVEAL_MS, easing: SKY_EASE, pseudoElement: "::view-transition-new(root)" },
+      ),
+    )
+    .catch(skip);
 }
 
 const resolvedNow = (): ResolvedTheme => resolve(currentChoice(), osDark());
