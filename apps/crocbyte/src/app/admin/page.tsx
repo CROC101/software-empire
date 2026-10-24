@@ -15,7 +15,7 @@ import Image from "next/image";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { 
   collection, addDoc, serverTimestamp, query, orderBy, limit, onSnapshot, 
-  doc, updateDoc, deleteDoc, getDocs, where, getDoc, setDoc
+  doc, updateDoc, deleteDoc, getDocs, where, getDoc, setDoc, writeBatch
 } from "firebase/firestore";
 import { motion, AnimatePresence } from "motion/react";
 import { 
@@ -257,6 +257,26 @@ export default function AdminPage() {
   }, [isAuthorized]);
 
   const isAdmin = user?.email === ADMIN_EMAIL;
+
+  // leaderboard/{uid} = the public part of users/{uid} (name, photo, total, VIP) for the ranking
+  // page; users/ itself keeps phone/address/LINE and is private (firestore.rules). Rebuilt here
+  // because only the admin changes totals; a ref remembers what was written so unchanged rows
+  // cost nothing.
+  const mirrored = useRef(new Map<string, string>());
+  useEffect(() => {
+    if (!isAdmin || users.length === 0) return;
+    const batch = writeBatch(db);
+    let writes = 0;
+    for (const u of users) {
+      const row = { name: u.name || u.nickname || "Member", photoURL: u.photoURL || "", totalSpent: u.totalSpent || 0, vipLevel: u.vipLevel || 0 };
+      const key = JSON.stringify(row);
+      if (mirrored.current.get(u.id) === key || writes >= 450) continue;
+      batch.set(doc(db, "leaderboard", u.id), row, { merge: true });
+      mirrored.current.set(u.id, key);
+      writes++;
+    }
+    if (writes > 0) batch.commit().catch((e) => console.error("leaderboard sync", e));
+  }, [users, isAdmin]);
   
   const checkPermission = () => {
       if (!isAdmin) {

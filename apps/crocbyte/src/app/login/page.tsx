@@ -373,14 +373,6 @@ const LoginContent = () => {
     e.preventDefault();
     if (!validateForm()) return;
     setLoading(true);
-    const q = query(collection(db, "users"), where("email", "==", formData.email));
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-        showNotification("Email already in use", "error");
-        setLoading(false);
-        return;
-    }
-
     try {
       const result = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       await saveUserData(result.user);
@@ -402,7 +394,8 @@ const LoginContent = () => {
       showNotification("Profile Updated!", "success");
       setTimeout(() => router.push("/services"), 2000);
     } catch (error: any) {
-      showNotification(error.message, "error");
+      // Firebase Auth itself refuses a taken email; no need to read anyone's user document first
+      showNotification(error?.code === "auth/email-already-in-use" ? "Email already in use" : error.message, "error");
       setLoading(false);
     }
   };

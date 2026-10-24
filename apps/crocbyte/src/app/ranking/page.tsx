@@ -105,7 +105,9 @@ export default function RankingPage() {
 
     const unsubAuth = onAuthStateChanged(auth, (currentUser) => setUser(currentUser));
     
-    const qLeaders = query(collection(db, "users"), orderBy("totalSpent", "desc"), limit(50));
+    // public projection (name, photo, total, VIP) kept by the admin page; users/ holds private
+    // contact details and is readable only by its owner and the admin (firestore.rules)
+    const qLeaders = query(collection(db, "leaderboard"), orderBy("totalSpent", "desc"), limit(50));
     const unsubLeaders = onSnapshot(qLeaders, (snapshot) => {
         const data = snapshot.docs.map((doc, index) => ({ id: doc.id, rank: index + 1, ...doc.data() }));
         setLeaders(data);
@@ -122,7 +124,7 @@ export default function RankingPage() {
 
   useEffect(() => {
       if (user && leaders.length > 0) {
-          const me = leaders.find(l => l.email === user.email); 
+          const me = leaders.find(l => l.id === user.uid); 
           if (me) setMyRank(me.rank);
       }
   }, [user, leaders]);
@@ -146,7 +148,7 @@ export default function RankingPage() {
       
       setIsSubmitting(true);
       try {
-          const myData = leaders.find(l => l.email === user.email);
+          const myData = leaders.find(l => l.id === user.uid);
           const currentVip = getVipLabel(myData?.totalSpent || 0);
 
           const payload: any = {
@@ -335,7 +337,7 @@ export default function RankingPage() {
               {rest.map((r) => {
                   const vip = getVipLabel(r.totalSpent || 0);
                   return (
-                      <div key={r.id} className={cn("flex items-center p-2 rounded-xl border transition-all hover:scale-[1.01]", panelColor, user?.email === r.email ? "border-cyan-500 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.3)]" : "border-transparent")}>
+                      <div key={r.id} className={cn("flex items-center p-2 rounded-xl border transition-all hover:scale-[1.01]", panelColor, user?.uid === r.id ? "border-cyan-500 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.3)]" : "border-transparent")}>
                           <div className="w-8 font-black text-center opacity-50 font-mono italic">#{r.rank}</div>
                           <div className="w-10 h-10 rounded-full bg-black/30 overflow-hidden mx-2 border border-white/10 relative">
                               {r.photoURL ? <img src={r.photoURL} className="w-full h-full object-cover"/> : <div className="w-full h-full flex items-center justify-center text-xs">👤</div>}

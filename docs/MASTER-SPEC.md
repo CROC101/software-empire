@@ -115,6 +115,18 @@ community  commerce  toolboxes   tarot     design     canva     stream
 
 - Cloudflare Pages: bandwidth ไม่จำกัด, ใช้เชิงพาณิชย์ได้ · Vercel Hobby ห้ามใช้เชิงพาณิชย์
 
+### ADR-06 ✅ ข้อยกเว้น: CrocByte อยู่บน Firebase (2569-10-24)
+
+- **ขอบเขต:** `apps/crocbyte` แอปเดียว ใช้ Firebase (Auth + Firestore + Storage, project `crocbyte-system`)
+  ระบบย่อยอื่นทั้งหมดยังใช้ Supabase + SSO ของ Core Hub ตาม ADR-02/03
+- **เหตุผล:** เป็นเว็บรับงานจริงของเจ้าของที่มีลูกค้า ยอดสะสม VIP และบัญชี Google อยู่แล้ว
+  ย้ายฐานข้อมูลตอนนี้เสี่ยงข้อมูลหายมากกว่าประโยชน์ที่ได้
+- **ที่ยังแชร์กับทุกระบบ:** ดีไซน์ (skill `crocwork-design`), ธีม/บรรยากาศ (cookie `em-theme`/`em-ambience`),
+  `HubSwitcher` และลิงก์ `/go/crocbyte` จาก hub — ผู้ใช้เห็นเป็นระบบเดียวกัน แต่บัญชีแยกกัน
+- **ตัวหลักของโค้ด:** monorepo (`apps/crocbyte`) — repo `Sarawut2005-icloud/Crocbyte` เดิมเลิกแก้แล้ว archive
+- **กฎความปลอดภัย:** อยู่ใน repo (`apps/crocbyte/firestore.rules`, `storage.rules`) — สิทธิ์ต้องอยู่ที่กฎ ไม่ใช่แค่ในหน้าเว็บ
+- **ทางออกในอนาคต:** ถ้าต้องการบัญชีเดียวข้ามระบบ ย้ายไป schema `crocbyte` บน Supabase แล้วจับคู่บัญชีด้วยอีเมล Google
+
 ---
 
 ## 4. Tech Stack

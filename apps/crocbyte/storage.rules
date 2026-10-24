@@ -1,0 +1,18 @@
+rules_version = '2';
+
+// CrocByte Storage. Profile pictures only (dashboard upload: profile_images/<uid>/<file>).
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /profile_images/{uid}/{file} {
+      allow read: if true;
+      // the owner uploads their own picture: images up to 5 MB
+      allow write: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
