@@ -1,0 +1,82 @@
+@import "@empire/ui/styles.css";
+
+/*
+ * CrocByte, retuned to the crocwork.studio template: same fonts, ink + blue palette, sharp
+ * corners. The legacy pages keep their Tailwind class names; this file remaps the scales they
+ * use (cyan → crocwork blue, slate/gray → ink) so 4,000 lines follow the theme untouched.
+ */
+
+@font-face {
+  font-family: "Noto Sans Thai UI";
+  src: url("/fonts/NotoSansThai-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans UI";
+  src: url("/fonts/PlusJakartaSans-Variable.ttf") format("truetype");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Noto Sans Thai UI", ui-sans-serif, system-ui, sans-serif;
+  /* the old Playfair "luxury" headings become the template's heavy display sans */
+  --font-serif: "Noto Sans Thai UI", ui-sans-serif, sans-serif;
+  --font-heading: "Plus Jakarta Sans UI", "Noto Sans Thai UI", ui-sans-serif, sans-serif;
+
+  /* accent: cyan was the brand colour → crocwork blue */
+  --color-cyan-50: oklch(0.97 0.02 255);
+  --color-cyan-100: oklch(0.93 0.05 255);
+  --color-cyan-200: oklch(0.86 0.09 256);
+  --color-cyan-300: oklch(0.76 0.14 258);
+  --color-cyan-400: var(--em-blue-500);
+  --color-cyan-500: var(--em-blue-600);
+  --color-cyan-600: var(--em-blue-700);
+  --color-cyan-700: oklch(0.38 0.18 266);
+  --color-cyan-800: oklch(0.32 0.14 266);
+  --color-cyan-900: oklch(0.26 0.1 266);
+  --color-cyan-950: oklch(0.2 0.07 266);
+
+  /* neutrals → the ink scale every other app uses */
+  --color-slate-50: var(--em-ink-25);
+  --color-slate-100: var(--em-ink-50);
+  --color-slate-200: var(--em-ink-100);
+  --color-slate-300: var(--em-ink-200);
+  --color-slate-400: var(--em-ink-400);
+  --color-slate-500: var(--em-ink-500);
+  --color-slate-600: var(--em-ink-600);
+  --color-slate-700: var(--em-ink-700);
+  --color-slate-800: var(--em-ink-800);
+  --color-slate-900: var(--em-ink-900);
+  --color-slate-950: var(--em-ink-975);
+  --color-gray-50: var(--em-ink-25);
+  --color-gray-100: var(--em-ink-50);
+  --color-gray-200: var(--em-ink-100);
+  --color-gray-300: var(--em-ink-200);
+  --color-gray-400: var(--em-ink-400);
+  --color-gray-500: var(--em-ink-500);
+  --color-gray-600: var(--em-ink-600);
+  --color-gray-700: var(--em-ink-700);
+  --color-gray-800: var(--em-ink-800);
+  --color-gray-900: var(--em-ink-900);
+  --color-gray-950: var(--em-ink-975);
+
+  /* template corners: crisp, not pillowy */
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 0.75rem;
+}
+
+/* legacy class: the old theme toggled `.dark` on its own; the shared theme-boot does it now */
+::selection {
+  background: var(--em-blue-600);
+  color: var(--em-ink-0);
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--em-blue-500);
+  border-radius: 4px;
+}
