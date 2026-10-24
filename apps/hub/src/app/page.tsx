@@ -1,73 +1,284 @@
-import { BrandMark, Button } from "@empire/ui";
+import {
+  AmbienceButton,
+  LinkPreview,
+  MorphingText,
+  PhoneFrame,
+  SunMoonThemeToggle,
+} from "@empire/ui";
+import Image from "next/image";
 import Link from "next/link";
 import { getClaims } from "@/lib/supabase/server";
 import { subsystems } from "@/lib/subsystems";
-import { SubsystemGrid } from "./subsystem-grid";
+import { CountUp } from "./count-up";
+import { MobileMenu } from "./mobile-menu";
+import { BackToTop, NavSpy } from "./nav-spy";
+import { DepthSection } from "./depth-section";
+import {
+  AboutSection,
+  ContactSection,
+  FaqSection,
+  HowSection,
+  PGTAP_TESTS,
+  ServicesSection,
+  SiteFooter,
+  SkillsSection,
+  StatusSection,
+  TeamSection,
+  WorkSection,
+} from "./sections";
+import { StackCard } from "./stack-card";
 
-const highlights = [
-  { value: String(subsystems.length), label: "ระบบย่อย" },
-  { value: "1", label: "บัญชีเดียว (SSO)" },
-  { value: "0 ฿", label: "ค่าเซิร์ฟเวอร์" },
+const ROLES = [
+  "Product Manager",
+  "Tech Lead",
+  "AI Engineer",
+  "UX Designer",
+  "DBA",
+  "DevOps",
+  "QA",
+  "คนเดียวทั้งหมด",
+];
+
+const NAV = [
+  { href: "#about", label: "เกี่ยวกับ" },
+  { href: "#subsystems", label: "ผลงาน" },
+  { href: "#services", label: "รับทำอะไร" },
+  { href: "#how", label: "ทำงานยังไง" },
+  { href: "#faq", label: "คำถาม" },
 ];
 
 export default async function HomePage() {
   const claims = await getClaims();
   const cta = claims
-    ? { href: "/dashboard", label: "ไปที่แดชบอร์ด" }
-    : { href: "/login", label: "เริ่มใช้งาน" };
+    ? { href: "/dashboard", label: "แดชบอร์ด" }
+    : { href: "/login", label: "เข้าสู่ระบบ" };
 
   return (
-    <div className="hub-aurora-backdrop min-h-dvh">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5 font-heading font-bold tracking-tight">
-          <BrandMark />
-          <span>Software Empire</span>
-        </Link>
-        <Button asChild variant="outline" size="sm">
-          <Link href={cta.href}>{claims ? "แดชบอร์ด" : "เข้าสู่ระบบ"}</Link>
-        </Button>
+    <div className="relative min-h-dvh overflow-x-clip bg-background">
+      <span id="top" aria-hidden className="absolute top-0 h-px w-px" />
+      <header className="vt-top sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-extrabold">
+            <Image src="/crocwork-logo.jpg" alt="" width={32} height={32} className="rounded-md" />
+            crocwork.studio
+          </Link>
+          <nav aria-label="เมนูหลัก" className="flex items-center gap-1 sm:gap-6">
+            <NavSpy items={NAV} />
+            <span className="hidden items-center gap-2 lg:flex">
+              <AmbienceButton cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
+              <SunMoonThemeToggle cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
+            </span>
+            <Link
+              href={cta.href}
+              className="cw-btn-blue hidden items-center gap-2 whitespace-nowrap px-4 py-2.5 text-sm font-bold sm:inline-flex"
+            >
+              {cta.label} <span aria-hidden>→</span>
+            </Link>
+            <MobileMenu items={NAV} cta={cta} />
+          </nav>
+        </div>
       </header>
 
-      <main className="mx-auto flex max-w-6xl flex-col gap-16 px-4 pb-24 pt-10 sm:px-6 sm:pt-16">
-        <section className="flex flex-col items-start gap-6">
-          <p className="rounded-full border bg-card/70 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-            Core Hub · ล็อกอินครั้งเดียว ใช้ได้ทุกระบบ
-          </p>
-          <h1 className="max-w-3xl font-heading text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-6xl">
-            อาณาจักรซอฟต์แวร์ <span className="text-aurora">ที่สร้างโดยคนเดียว</span>
-          </h1>
-          <p className="max-w-2xl text-lg text-muted-foreground">
-            ระบบย่อย {subsystems.length} ตัวบน monorepo เดียว ทำงานฝั่งเบราว์เซอร์เป็นหลัก
-            ทุกตารางคุมสิทธิ์ด้วย Row Level Security และไม่มีค่าเซิร์ฟเวอร์
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button asChild variant="aurora" size="lg">
-              <Link href={cta.href}>{cta.label}</Link>
-            </Button>
-            <Button asChild variant="ghost" size="lg">
-              <a href="#subsystems">ดูระบบย่อยทั้งหมด</a>
-            </Button>
+      <main>
+        <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-10 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
+          <div className="flex flex-col items-start gap-6">
+            <p className="font-mono text-xs uppercase tracking-widest cw-blue">
+              crocwork studio · ซอฟต์แวร์ · AI · ระบบหลังบ้าน
+            </p>
+            <h1 className="font-sans text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl">
+              ระบบที่ผมสร้าง
+              <br />
+              ทำงานได้จริง
+              <br />
+              <span className="cw-blue relative inline-block">
+                ครบ <CountUp to={subsystems.length} /> ระบบ
+                <Scribble className="absolute -bottom-3 left-0 w-full" />
+              </span>
+            </h1>
+            {/* Enterprise ของคนเดียว: ทุกตำแหน่งในทีม คือคนคนเดียวกัน */}
+            <div className="flex w-full items-start gap-3 text-2xl font-black leading-none sm:text-3xl">
+              <span className="shrink-0">ทีมของผม =</span>
+              <MorphingText
+                texts={ROLES}
+                className="vt-live mx-0 h-10 max-w-none text-left text-2xl cw-blue sm:h-12 md:h-12 sm:text-3xl lg:text-3xl"
+              />
+            </div>
+            <p className="max-w-lg text-muted-foreground">
+              ผมทำเองคนเดียวทุกขั้น ตั้งแต่วาดหน้าจอยันเขียนฐานข้อมูล มีโซเชียลแบบ{" "}
+              <LinkPreview
+                href="/go/community"
+                imageSrc="/previews/community.webp"
+                className="cw-blue"
+              >
+                Community
+              </LinkPreview>
+              , เครื่องมือ 121 ชิ้นใน{" "}
+              <LinkPreview
+                href="/go/toolboxes"
+                imageSrc="/previews/toolboxes.webp"
+                className="cw-blue"
+              >
+                Toolboxes
+              </LinkPreview>{" "}
+              และโปรแกรมกราฟิก{" "}
+              <LinkPreview href="/go/canva" imageSrc="/previews/canva.webp" className="cw-blue">
+                Empire Canvas
+              </LinkPreview>{" "}
+              ทั้งหมดใช้บัญชีเดียวกัน สิทธิ์ใครเห็นอะไรเขียนไว้ในฐานข้อมูล แล้วเขียนเทสต์ดักไว้{" "}
+              <CountUp to={PGTAP_TESTS} /> ข้อ เพราะเคยพลาดมาแล้ว
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="#subsystems"
+                className="inline-flex items-center gap-2 bg-foreground px-5 py-3 text-sm font-bold text-background"
+              >
+                ดูผลงาน <span aria-hidden>↓</span>
+              </a>
+              <Link
+                href={cta.href}
+                className="inline-flex items-center border-2 border-foreground px-5 py-3 text-sm font-bold"
+              >
+                {claims ? "เปิดแดชบอร์ด" : "ลองเล่นดู"}
+              </Link>
+            </div>
           </div>
-          <dl className="mt-4 grid w-full max-w-xl grid-cols-3 gap-3">
-            {highlights.map((h) => (
-              <div key={h.label} className="rounded-2xl border bg-card/70 p-4 backdrop-blur">
-                <dt className="text-xs text-muted-foreground">{h.label}</dt>
-                <dd className="font-heading text-2xl font-bold">{h.value}</dd>
-              </div>
-            ))}
-          </dl>
+
+          <HeroVisual />
         </section>
 
-        <section aria-labelledby="subsystems" className="flex scroll-mt-8 flex-col gap-6">
-          <div className="flex flex-col gap-1">
-            <h2 id="subsystems" className="font-heading text-2xl font-bold tracking-tight">
-              ระบบย่อย
-            </h2>
-            <p className="text-muted-foreground">กดการ์ดเพื่อเปิดระบบที่พร้อมใช้งาน</p>
-          </div>
-          <SubsystemGrid />
-        </section>
+        <StatusSection />
+        <DepthSection />
+        <AboutSection />
+        <WorkSection />
+        <SkillsSection />
+        <ServicesSection aside={<StackCard href="#subsystems" />} />
+        <HowSection />
+        <TeamSection />
+        <FaqSection />
+        <ContactSection cta={cta} />
       </main>
+      <BackToTop />
+      <SiteFooter />
     </div>
+  );
+}
+
+/** Dark globe + three phones showing our own apps, drawn in CSS — no screenshots to go stale. */
+function HeroVisual() {
+  return (
+    <div
+      aria-hidden
+      className="vt-live relative mx-auto aspect-square w-full max-w-[28rem] lg:max-w-[34rem]"
+    >
+      <div className="cw-globe cw-spin absolute inset-[6%] rounded-full" />
+
+      <Phone
+        className="left-[2%] top-[26%] -rotate-12"
+        tone="var(--em-coral-500)"
+        title="Empire Canvas"
+      >
+        <div className="grid grid-cols-2 gap-1.5">
+          {[
+            "var(--em-coral-400)",
+            "var(--em-gold-300)",
+            "var(--em-teal-400)",
+            "var(--em-sky-500)",
+          ].map((c) => (
+            <div key={c} className="aspect-square rounded-md" style={{ background: c }} />
+          ))}
+        </div>
+      </Phone>
+      <Phone
+        className="right-[2%] top-[24%] rotate-12"
+        tone="var(--em-violet-600)"
+        title="Community"
+      >
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="flex items-center gap-1.5">
+            <div className="size-4 rounded-full" style={{ background: "var(--em-violet-300)" }} />
+            <div className="h-1.5 flex-1 rounded bg-white/25" />
+          </div>
+        ))}
+        <div
+          className="mt-1 aspect-[4/3] rounded-md"
+          style={{
+            background: "linear-gradient(135deg, var(--em-violet-400), var(--em-fuchsia-400))",
+          }}
+        />
+      </Phone>
+      <Phone
+        className="cw-float left-1/2 top-[12%] z-10 -translate-x-1/2 scale-105"
+        tone="var(--em-blue-600)"
+        title="AI Tarot"
+      >
+        <div
+          className="mx-auto mt-1 grid aspect-[2/3] w-3/4 place-items-center rounded-lg border text-2xl"
+          style={{ borderColor: "var(--em-gold-300)", color: "var(--em-gold-300)" }}
+        >
+          ☾
+        </div>
+        <div
+          className="mx-auto mt-2 h-5 w-4/5 rounded-full"
+          style={{ background: "var(--em-gold-300)" }}
+        />
+      </Phone>
+
+      <div className="absolute right-0 top-[6%] z-20 border bg-card px-3 py-2 shadow-lg">
+        <p className="flex items-center gap-1.5 font-mono text-[0.625rem] uppercase tracking-wider text-success">
+          <span className="size-1.5 bg-success" /> live · {subsystems.length} ระบบ
+        </p>
+        <p className="text-lg font-black">1 บัญชี</p>
+        <p className="text-xs text-muted-foreground">ใช้ได้ทุกระบบ</p>
+      </div>
+      <div className="absolute bottom-[10%] left-0 z-20 border bg-card px-3 py-2 shadow-lg">
+        <p className="font-mono text-[0.625rem] uppercase tracking-wider text-muted-foreground">
+          supabase · rls
+        </p>
+        <p className="text-lg font-black">{PGTAP_TESTS} เทสต์</p>
+        <p className="text-xs text-muted-foreground">ผ่านทุกข้อ</p>
+      </div>
+    </div>
+  );
+}
+
+function Phone({
+  className,
+  tone,
+  title,
+  children,
+}: {
+  className: string;
+  tone: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={`absolute w-[31%] ${className}`}>
+      <PhoneFrame statusBar="overlay" className="w-full sm:w-full md:w-full">
+        <div
+          className="flex size-full flex-col gap-1.5 p-3 pt-[18%] text-[0.6rem] text-white"
+          style={{ background: `linear-gradient(170deg, ${tone}, var(--em-ink-950))` }}
+        >
+          <p className="font-bold">{title}</p>
+          {children}
+        </div>
+      </PhoneFrame>
+    </div>
+  );
+}
+
+/** Pen underline: one uneven stroke so it reads as drawn by hand, not a CSS border. */
+function Scribble({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 300 14" preserveAspectRatio="none" className={className}>
+      <path
+        d="M3 9 C 40 4, 80 12, 120 7 S 200 3, 240 8 S 285 6, 297 4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        className="cw-draw"
+      />
+    </svg>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Ambience } from "@empire/ui";
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -9,8 +10,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="th">
-      <body className="min-h-dvh">{children}</body>
+    // theme-boot.js sets the shared theme class before paint, so React sees a different class
+    <html lang="th" suppressHydrationWarning>
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts -- must run before first paint */}
+        <script src="/theme-boot.js" />
+      </head>
+      <body className="min-h-dvh">
+        {children}
+        <Ambience />
+      </body>
     </html>
   );
 }

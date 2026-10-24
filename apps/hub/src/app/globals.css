@@ -28,3 +28,103 @@
       radial-gradient(40rem 24rem at 60% 110%, oklch(0.76 0.16 32 / 0.12), transparent 60%);
   }
 }
+
+@layer components {
+  /* crocwork.studio hero: blue accent, dark globe with a cyan rim glow behind the phones */
+  .cw-blue {
+    color: var(--em-blue-600);
+  }
+  .cw-btn-blue {
+    background: var(--em-blue-600);
+    color: var(--em-ink-0);
+  }
+  .cw-btn-blue:hover {
+    background: var(--em-blue-700);
+  }
+  .cw-globe {
+    background:
+      radial-gradient(circle at 30% 25%, oklch(0.45 0.08 230), transparent 45%),
+      radial-gradient(circle at 70% 80%, oklch(0.3 0.05 250), transparent 50%), var(--em-ink-975);
+    box-shadow:
+      0 -0.75rem 3rem -0.5rem oklch(0.8 0.14 220 / 0.55),
+      inset 0 0 4rem oklch(0 0 0 / 0.6);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cw-float {
+      animation: cw-float 6s ease-in-out infinite;
+    }
+    .cw-spin {
+      animation: cw-spin 120s linear infinite;
+    }
+  }
+  @keyframes cw-float {
+    50% {
+      translate: 0 -0.5rem;
+    }
+  }
+  @keyframes cw-spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+}
+
+@layer components {
+  /* the headline underline draws itself once, like a pen stroke */
+  @media (prefers-reduced-motion: no-preference) {
+    .cw-draw {
+      stroke-dasharray: 340;
+      stroke-dashoffset: 340;
+      animation: cw-draw 900ms 600ms ease-out forwards;
+    }
+  }
+  @keyframes cw-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+/* anchor links glide instead of jumping; the sticky header never covers a section title */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+html {
+  scroll-padding-top: 4.5rem;
+}
+
+/* mobile menu sheet: drops from the top, links follow one by one */
+@media (prefers-reduced-motion: no-preference) {
+  .em-sheet[open] {
+    animation: em-sheet-in 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .em-sheet[open] .em-sheet-item {
+    animation: em-sheet-item 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+@keyframes em-sheet-in {
+  from {
+    transform: translate3d(0, -24px, 0);
+    opacity: 0;
+  }
+}
+@keyframes em-sheet-item {
+  from {
+    transform: translate3d(0, 12px, 0);
+    opacity: 0;
+  }
+}
+
+/* terminal caret */
+@media (prefers-reduced-motion: no-preference) {
+  .em-cursor {
+    animation: em-blink 1.05s steps(1, end) infinite;
+  }
+}
+@keyframes em-blink {
+  50% {
+    opacity: 0;
+  }
+}
