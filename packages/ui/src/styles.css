@@ -1357,6 +1357,7 @@ html:has(dialog[open]) .vt-top {
 }
 .gf__back {
   position: absolute;
+  z-index: 0;
   inset: 0;
   border-radius: 0.75rem;
   background: linear-gradient(160deg, oklch(1 0 0 / 0.18), transparent 60%), var(--gf-accent);
@@ -1366,6 +1367,7 @@ html:has(dialog[open]) .vt-top {
 }
 .gf__files {
   position: absolute;
+  z-index: 1;
   inset: 1.6rem 0.9rem auto;
   height: 10rem;
 }
@@ -1407,24 +1409,23 @@ html:has(dialog[open]) .vt-top {
 }
 .gf__front {
   position: absolute;
+  z-index: 2;
   inset: 3.4rem 0 0;
   display: flex;
   flex-direction: column;
   padding: 1rem 1.1rem;
   border: 1px solid oklch(1 0 0 / 0.45);
   border-radius: 0.75rem;
-  background: color-mix(in oklab, var(--background) 62%, transparent);
+  background: color-mix(in oklab, var(--background) 96%, transparent);
   backdrop-filter: blur(14px) saturate(1.4);
   -webkit-backdrop-filter: blur(14px) saturate(1.4);
   color: var(--foreground);
   transform-origin: 50% 100%;
-  /* in front of the files on the z axis: inside preserve-3d, DOM order alone does not decide */
-  transform: translateZ(2px);
   transition: transform 0.6s var(--gf-ease);
   box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.5);
 }
 .gf[data-open] .gf__front {
-  transform: translateZ(2px) rotateX(-24deg);
+  transform: rotateX(-24deg);
 }
 .gf__knob {
   position: absolute;
