@@ -34,7 +34,6 @@ export { useTokenColors } from "./lib/token-colors";
 export { CrocReveal } from "./components/croc-reveal";
 export { LanyardBadge } from "./components/lanyard-badge";
 export { PhosphorNotFound } from "./components/phosphor-not-found";
-export { PolaroidCarousel, type Polaroid } from "./components/polaroid-carousel";
 export { BlueprintReveal } from "./components/blueprint-reveal";
 export { GlassFolders, type GlassFolderItem } from "./components/glass-folders";
 export { GlassClock } from "./components/glass-clock";
@@ -51,3 +50,8 @@ export {
   MurmurationWordmark,
   type MurmurationWordmarkProps,
 } from "./components/murmuration-wordmark";
+export {
+  PolaroidLineCarousel,
+  type PolaroidLineCarouselProps,
+  type PolaroidSlide,
+} from "./components/polaroid-line-carousel";

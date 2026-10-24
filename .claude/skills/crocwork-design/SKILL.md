@@ -41,10 +41,11 @@ font pair or corner style per app.
   shader / SVG maths come from `useTokenColors`, never hex literals. `CrocReveal` = poster torn by
   scroll, a crocodile surfaces (palette `--em-croc-*`). `LanyardBadge` = ID card on a Verlet strap
   (drag, flick to spin, tap to flip); faces take any content.
-  Also: `PolaroidCarousel` (real screenshots on a string), `BlueprintReveal` (hover ink over a
-  hairline word), `GlassFolders` (services as folders that fan out), `PhosphorNotFound` (hub 404),
-  `KeyholeIntro` (first-visit preloader, gated by `public/intro-boot.js`; only one preloader per
-  site), `GlassClock` (quartz-tick analog clock).
+  Also (vendored originals, MIT): `PolaroidLineCarousel` (phone screenshots on a string),
+  `WaterRippleCarousel` (desktop screenshots, tap to ripple), `MurmurationWordmark` (flock forms a
+  word), `SkeletonKeyPreloader` (the first-visit intro, via hub `intro-gate.tsx` + `public/intro-boot.js`;
+  one preloader per site). Our own: `BlueprintReveal`, `GlassFolders`, `PhosphorNotFound` (hub 404),
+  `GlassClock`. Props from server components must be serialisable: label templates like `"{n} of {total}"`.
 - Terminals for facts: `$ crocwork status`, real data only, blinking caret (`em-cursor`).
 - Phones: `PhoneFrame` from `@empire/ui` (titanium edge, Dynamic Island, status bar 9:41) over
   paper-cut art (`PaperArt`); pairs fan out on hover. Screens are real screenshots

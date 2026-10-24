@@ -5,7 +5,7 @@ import {
   MeshGhost,
   Meteors,
   PhoneFrame,
-  PolaroidCarousel,
+  PolaroidLineCarousel,
   WaterRippleCarousel,
   ScrollAssemble,
   TearFooter,
@@ -508,13 +508,23 @@ export function ShotsSection() {
           };
         })}
       />
-      <PolaroidCarousel
-        labels={{ prev: "รูปก่อนหน้า", next: "รูปถัดไป", region: "ภาพหน้าจอจริงของระบบ" }}
-        items={SHOTS.map(([src, caption, note]) => ({
-          src,
+      <PolaroidLineCarousel
+        height="560px"
+        cardWidth={240}
+        autoplay={5000}
+        string="var(--em-ink-400)"
+        ariaLabel="ภาพหน้าจอมือถือจริงของระบบ"
+        labels={{ prev: "รูปก่อนหน้า", next: "รูปถัดไป", print: "รูปที่ {n} จาก {total}" }}
+        style={{
+          ["--pl-focus" as string]: "50% 0%",
+          ["--pl-note-font" as string]: "500 22px/1 Caveat, cursive",
+          ["--pl-title-font" as string]: "900 clamp(18px, 2.2vw, 26px)/1.15 var(--font-heading)",
+        }}
+        slides={SHOTS.map(([image, title, caption]) => ({
+          image,
+          title,
           caption,
-          note,
-          alt: `ภาพหน้าจอ ${caption} ${note}`,
+          alt: `ภาพหน้าจอ ${title} ${caption}`,
         }))}
       />
     </section>
