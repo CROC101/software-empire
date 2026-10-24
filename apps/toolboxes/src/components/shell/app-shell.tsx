@@ -1,5 +1,7 @@
 import { Button, cn } from "@empire/ui";
-import { ArrowLeft, House, LayoutGrid, LogIn, LogOut, Star } from "lucide-react";
+import { HubSwitcher } from "@empire/ui";
+import { subsystems } from "@empire/core/subsystems";
+import { House, LayoutGrid, LogIn, LogOut, Star } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router";
 import { env } from "@/lib/env";
 import { signInUrl, signOut, useSession } from "@/lib/session";
@@ -30,11 +32,14 @@ export function AppShell() {
       </a>
       <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-1 px-2 sm:gap-2 sm:px-6">
-          <Button asChild variant="ghost" size="icon">
-            <a href={env.hubUrl} aria-label="กลับ Software Empire Hub">
-              <ArrowLeft aria-hidden />
-            </a>
-          </Button>
+          <HubSwitcher
+            hubUrl={env.hubUrl}
+            apps={subsystems}
+            current="toolboxes"
+            cookieDomain={import.meta.env.VITE_COOKIE_DOMAIN}
+            iconOnly
+            className="size-9 justify-center rounded-md hover:bg-accent"
+          />
           <Link to="/" className="mr-auto rounded-md px-1 font-bold tracking-tight">
             Toolboxes
           </Link>

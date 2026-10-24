@@ -4,6 +4,9 @@ packages:
 
 # postinstall only re-checks a prebuilt binary that the optional deps already ship
 allowBuilds:
+  # CrocByte (Firebase): autoinit defaults and a version banner, neither needed with explicit config
+  '@firebase/util': false
+  protobufjs: false
   unrs-resolver: false
 
 # security exception: Next.js 16.4.3 patches a published advisory but is younger than the

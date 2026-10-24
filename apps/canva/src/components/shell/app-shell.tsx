@@ -9,6 +9,8 @@ import { usePathname, useSearchParams } from '@/lib/router';
 import { Suspense, createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { api } from '@/lib/backend/api';
 import { CORE_HUB_WEB_URL } from '@/lib/backend/core-hub';
+import { HubSwitcher } from '@empire/ui';
+import { subsystems } from '@empire/core/subsystems';
 import { useMe } from '@/lib/backend/session';
 import { isAdminRole } from '@/components/admin/admin-access';
 import { relativeTime } from '@/lib/format';
@@ -173,10 +175,11 @@ function Rail({ open, onToggleSecondary }: { open: boolean; onToggleSecondary: (
           )}
           <NotificationsPopover />
           {/* ปุ่มกลับพอร์ทัลกลาง (ui-design-system.md ข้อ 5.1) — ไปอีก origin จึงใช้ <a> ไม่ใช่ Link */}
-          <a href={CORE_HUB_WEB_URL} aria-label="กลับ Software Empire Hub" className="cv-rail-item">
+          <HubSwitcher hubUrl={CORE_HUB_WEB_URL} apps={subsystems} current="canva"
+            cookieDomain={import.meta.env.VITE_COOKIE_DOMAIN} className="cv-rail-item">
             <ArrowLeft aria-hidden className="size-6 shrink-0" strokeWidth={1.9} />
-            <span className="cv-rail-label">ระบบอื่นใน Software Empire</span>
-          </a>
+            <span className="cv-rail-label">สำรวจระบบอื่นใน hub</span>
+          </HubSwitcher>
           <AccountPopover />
         </div>
       </nav>

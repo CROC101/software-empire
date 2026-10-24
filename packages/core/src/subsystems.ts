@@ -1,3 +1,4 @@
+/** The portfolio: every app in the hub. Shared so each app can link to the others. */
 // shortcut: static list; move to table hub.subsystems when the registry gets health checks (Phase 2)
 // accent = a palette token from @empire/ui, so every tile stays inside the Aurora theme
 export const subsystems = [
@@ -36,6 +37,12 @@ export const subsystems = [
     name: "Empire Canvas",
     summary: "โปรแกรมกราฟิกหลายเลเยอร์บนเว็บ",
     accent: "var(--em-coral-500)",
+  },
+  {
+    slug: "crocbyte",
+    name: "CrocByte",
+    summary: "เว็บรับงานฟรีแลนซ์ของผมเอง ระบบสมาชิก VIP และอันดับลูกค้า",
+    accent: "var(--em-teal-600)",
   },
   {
     slug: "stream",

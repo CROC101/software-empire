@@ -145,3 +145,179 @@
     background: oklch(0.61 0.225 286 / 0.25);
   }
 }
+
+/* theme switch (SunMoonThemeToggle): the toggle animates the new snapshot itself */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ── ambience (components/ambience.tsx): transform + opacity only, contained, never hit-tested ── */
+.em-ambience {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+.em-ambience > span {
+  position: absolute;
+  left: var(--x);
+  top: -10%;
+  will-change: transform, opacity;
+  animation: em-fall var(--t) linear var(--d) infinite;
+}
+.em-ambience > span > i {
+  display: block;
+}
+
+/* rain: thin slanted streaks */
+.em-ambience--rain > span > i {
+  width: 1px;
+  height: calc(70px * var(--s));
+  background: linear-gradient(to bottom, transparent, oklch(0.62 0.12 245 / 0.55));
+  transform: rotate(12deg);
+}
+.em-ambience--rain > span {
+  animation-duration: calc(var(--t) * 0.18);
+}
+
+/* cool season: soft frost flakes that sway */
+.em-ambience--snow > span > i {
+  width: calc(7px * var(--s));
+  height: calc(7px * var(--s));
+  border-radius: 9999px;
+  background: oklch(0.86 0.04 240 / 0.85);
+  box-shadow: 0 0 6px oklch(0.9 0.05 240 / 0.8);
+  animation: em-sway 3.2s ease-in-out var(--d) infinite alternate;
+}
+.em-ambience--snow > span {
+  animation-duration: calc(var(--t) * 1.8);
+}
+
+/* hot season: golden-shower (ดอกคูน) petals tumbling */
+.em-ambience--bloom > span > i {
+  width: calc(11px * var(--s));
+  height: calc(7px * var(--s));
+  border-radius: 80% 10% 80% 10%;
+  background: linear-gradient(135deg, oklch(0.88 0.16 92), oklch(0.78 0.17 75));
+  animation: em-tumble 4s linear var(--d) infinite;
+}
+.em-ambience--bloom > span {
+  animation-duration: calc(var(--t) * 2.2);
+}
+
+/* night sky: a meteor now and then, long idle between passes */
+.em-ambience--space > span {
+  top: var(--y);
+  animation: em-meteor var(--t) cubic-bezier(0.3, 0, 0.7, 1) var(--d) infinite;
+  opacity: 0;
+}
+.em-ambience--space > span > i {
+  width: calc(160px * var(--s));
+  height: 1.5px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    oklch(0.98 0.02 230),
+    oklch(0.75 0.12 240 / 0.6) 30%,
+    transparent
+  );
+  box-shadow: 0 0 8px oklch(0.85 0.1 230 / 0.8);
+  transform: rotate(-35deg);
+  transform-origin: left center;
+}
+
+@keyframes em-fall {
+  to {
+    transform: translate3d(-4vw, 120vh, 0);
+  }
+}
+@keyframes em-sway {
+  from {
+    transform: translate3d(-14px, 0, 0);
+  }
+  to {
+    transform: translate3d(14px, 0, 0);
+  }
+}
+@keyframes em-tumble {
+  to {
+    transform: rotate(360deg) translate3d(10px, 0, 0);
+  }
+}
+@keyframes em-meteor {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  2% {
+    opacity: 1;
+  }
+  12% {
+    opacity: 0;
+    transform: translate3d(-38vw, 27vw, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-38vw, 27vw, 0);
+  }
+}
+.em-ambience--local {
+  position: absolute;
+  z-index: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .em-ambience {
+    display: none;
+  }
+}
+
+/* theme switch: elements marked .vt-live keep moving through the reveal instead of freezing in
+   the old snapshot (they swap colour instantly; everything else reveals with the effect) */
+.vt-live {
+  view-transition-name: match-element;
+  view-transition-class: live;
+}
+::view-transition-old(*.live) {
+  display: none;
+}
+::view-transition-new(*.live) {
+  animation: none;
+}
+/* a sheet or menu is open: named groups would be painted above the top-layer dialog during the
+   swap, so let everything fall back into the root snapshot (the page is dimmed behind it anyway) */
+html:has(dialog[open]) .vt-live,
+html:has(dialog[open]) .vt-top {
+  view-transition-name: none;
+}
+/* sticky / fixed chrome (headers, floating buttons): its own group, always stacked above the
+   live groups so a moving phone never slides over the header mid-swap */
+.vt-top {
+  view-transition-name: match-element;
+  view-transition-class: top;
+}
+::view-transition-group(*.top) {
+  z-index: 2;
+}
+::view-transition-old(*.top) {
+  display: none;
+}
+::view-transition-new(*.top) {
+  animation: none;
+}
+
+/* ambience picker: slides up from the bottom edge */
+@media (prefers-reduced-motion: no-preference) {
+  .em-amb-sheet[open] {
+    animation: em-amb-up 460ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+@keyframes em-amb-up {
+  from {
+    transform: translate3d(0, 40px, 0);
+    opacity: 0;
+  }
+}

@@ -28,6 +28,25 @@
   --em-teal-400: oklch(0.78 0.13 175);
   --em-teal-600: oklch(0.6 0.12 170);
   --em-sky-500: oklch(0.66 0.15 240);
+  /* crocwork.studio blue — from the S-wave logo */
+  --em-blue-500: oklch(0.6 0.2 258);
+  --em-blue-600: oklch(0.5 0.23 264);
+  --em-blue-700: oklch(0.43 0.21 266);
+  /* sun / moon theme toggle skies */
+  --em-sky-night: linear-gradient(
+    180deg,
+    oklch(0.18 0.06 270) 0%,
+    oklch(0.27 0.09 270) 60%,
+    oklch(0.35 0.11 275) 100%
+  );
+  --em-sky-day: linear-gradient(
+    180deg,
+    oklch(0.7 0.15 245) 0%,
+    oklch(0.84 0.08 235) 60%,
+    oklch(0.95 0.03 230) 100%
+  );
+  --em-sun: oklch(0.76 0.17 55);
+  --em-moon: oklch(0.9 0.1 90);
 
   /* status */
   --em-success: oklch(0.6 0.15 160);

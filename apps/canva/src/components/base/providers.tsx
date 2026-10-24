@@ -1,4 +1,6 @@
 
+import { setThemeChoice } from '@empire/core/theme';
+import { env } from '@/lib/env';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { useEffect, useState, type ReactNode } from 'react';
 import { api } from '@/lib/backend/api';
@@ -50,15 +52,7 @@ function AccessibilityPreferences() {
   return null;
 }
 
-/// ใช้ธีมกับทั้งหน้า และจำสำเนาไว้ให้สคริปต์ใน layout ตั้งได้ก่อนวาดเฟรมแรกครั้งหน้า
+/// ใช้ธีมกับทั้งหน้า — เขียน cookie กลาง em-theme ทุกแอปใน hub จึงเปลี่ยนตาม (@empire/core/theme)
 export function applyTheme(theme: Preference['theme']) {
-  const value = theme === 'LIGHT' ? 'light' : theme === 'DARK' ? 'dark' : 'system';
-
-  document.documentElement.dataset.theme = value;
-
-  try {
-    window.localStorage.setItem('cv-canvas:theme', value);
-  } catch {
-    // โหมดส่วนตัวบล็อก storage — ครั้งหน้าจะแวบเป็นธีมตามระบบก่อนแล้วค่อยเปลี่ยน
-  }
+  setThemeChoice(theme === 'LIGHT' ? 'light' : theme === 'DARK' ? 'dark' : 'system', env.supabase.cookieDomain);
 }
