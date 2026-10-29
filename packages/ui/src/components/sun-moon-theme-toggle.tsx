@@ -104,13 +104,40 @@ function fadePage(duration: number) {
 }
 
 /**
- * How the page changes theme. "circle" and "wipe" use the View Transitions API: the browser
- * snapshots the old page and reveals the new one through a growing clip-path, on the compositor.
- * Without that API (or with reduced motion) the swap is instant; "fade" cross-fades colours.
+ * How the page changes theme. "drop", "circle" and "wipe" use the View Transitions API: the
+ * browser snapshots the old page and reveals the new one through a growing clip-path, on the
+ * compositor. "drop" (the default) spreads the new theme from the button like a drop of ink in
+ * water: a liquid edge that wobbles while it grows and settles round as it covers the screen,
+ * while the old page sinks back a little and dims. Without the API (or with reduced motion) the
+ * swap is instant; "fade" cross-fades colours.
  */
-export type ThemeEffect = "circle" | "wipe" | "fade";
+export type ThemeEffect = "drop" | "circle" | "wipe" | "fade";
 
 const REVEAL_MS = 560;
+const DROP_MS = 1100;
+const DROP_POINTS = 72;
+const DROP_FRAMES = 36;
+
+/** Clip-path keyframes for the ink drop; equal point counts, so the browser interpolates them. */
+function dropFrames(x: number, y: number, reach: number): Keyframe[] {
+  return Array.from({ length: DROP_FRAMES + 1 }, (_, f) => {
+    const t = f / DROP_FRAMES;
+    const grow = 1 - (1 - t) ** 3; // bursts out, then settles
+    const wobble = 0.16 * (1 - t) ** 1.6; // liquid at first, round at the end
+    const radius = reach * 1.12 * grow;
+    const pts = Array.from({ length: DROP_POINTS }, (_, i) => {
+      const a = (i / DROP_POINTS) * Math.PI * 2;
+      const w =
+        wobble *
+        (0.55 * Math.sin(3 * a + 6 * t) +
+          0.3 * Math.sin(5 * a - 9 * t + 1.3) +
+          0.15 * Math.sin(8 * a + 13 * t + 0.4));
+      const r = radius * (1 + w);
+      return `${(x + r * Math.cos(a)).toFixed(1)}px ${(y + r * Math.sin(a)).toFixed(1)}px`;
+    });
+    return { offset: t, clipPath: `polygon(${pts.join(",")})` };
+  });
+}
 
 function revealPage(effect: ThemeEffect, from: HTMLElement, swap: () => void, fadeMs: number) {
   if (reducedMotion()) {
@@ -138,6 +165,31 @@ function revealPage(effect: ThemeEffect, from: HTMLElement, swap: () => void, fa
   const y = box.top + box.height / 2;
   // far enough to cover the corner furthest from the button
   const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  if (effect === "drop") {
+    transition.ready
+      .then(() => {
+        const root = document.documentElement;
+        // the old page sinks toward the drop, not toward the middle of the screen
+        root.style.setProperty("--vt-origin", `${String(x)}px ${String(y)}px`);
+        root.animate(dropFrames(x, y, r), {
+          duration: DROP_MS,
+          easing: "linear", // the frames carry their own easing
+          pseudoElement: "::view-transition-new(root)",
+        });
+        // the old page sinks back and dims under the spreading drop
+        root.animate(
+          [
+            { transform: "scale(1)", filter: "brightness(1)" },
+            { transform: "scale(0.985)", filter: "brightness(0.8)" },
+          ],
+          { duration: DROP_MS, easing: SKY_EASE, pseudoElement: "::view-transition-old(root)" },
+        );
+      })
+      .catch(() => undefined);
+    transition.updateCallbackDone.catch(() => undefined);
+    transition.finished.then(restore, restore);
+    return;
+  }
   const clipPath =
     effect === "circle"
       ? [
@@ -165,7 +217,7 @@ const resolvedNow = (): ResolvedTheme => resolve(currentChoice(), osDark());
 
 export function SunMoonThemeToggle({
   cookieDomain,
-  effect = "circle",
+  effect = "drop",
   duration = 1740,
   size = 40,
   className,

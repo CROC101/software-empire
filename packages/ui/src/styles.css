@@ -152,6 +152,9 @@
   animation: none;
   mix-blend-mode: normal;
 }
+::view-transition-old(root) {
+  transform-origin: var(--vt-origin, 50% 50%);
+}
 
 /* ── ambience (components/ambience.tsx): transform + opacity only, contained, never hit-tested ── */
 .em-ambience {
