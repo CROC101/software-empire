@@ -79,3 +79,4 @@ export {
 } from "./components/isometric-hex-chart";
 export { PerspectiveTunnel, type TunnelItem } from "./components/perspective-tunnel";
 export { LaptopPreview, type LaptopStep } from "./components/laptop-preview";
+export { MacBookKeyboard } from "./components/macbook-keyboard";

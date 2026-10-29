@@ -11,6 +11,7 @@ import {
 import * as React from "react";
 import { cn } from "../lib/cn";
 import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
+import { MacBookKeyboard } from "./macbook-keyboard";
 
 /**
  * Laptop preview: a pinned scroll scene with a notebook in the middle. Scrolling opens the lid,
@@ -51,56 +52,7 @@ const Screen = ({ step, active }: { step: LaptopStep; active: boolean }) => (
   />
 );
 
-// keyboard rows as key widths (1 = a letter key); the last row splits the arrow keys
-const ROWS: readonly (readonly number[])[] = [
-  Array.from({ length: 14 }, () => 1),
-  [...Array.from({ length: 13 }, () => 1), 1.5],
-  [1.5, ...Array.from({ length: 13 }, () => 1)],
-  [1.8, ...Array.from({ length: 11 }, () => 1), 1.8],
-  [2.3, ...Array.from({ length: 10 }, () => 1), 2.3],
-  [1, 1, 1, 1.3, 5.4, 1.3, 1, 3],
-];
-const DECK_TILT = 70; // degrees the deck leans toward the viewer from upright
-const KEY = "linear-gradient(180deg, var(--em-ink-800), var(--em-ink-950))";
-
-function Keyboard() {
-  return (
-    <div
-      className="absolute inset-x-[6.5%] top-[6%] flex h-[50%] flex-col gap-[1.6%] rounded-[3px] p-[0.8%]"
-      style={{ background: "var(--em-ink-400)" }}
-    >
-      {ROWS.map((row, r) => (
-        <div key={r} className="flex gap-[0.7%]" style={{ flex: r === 0 ? 0.55 : 1 }}>
-          {row.map((w, k) =>
-            r === ROWS.length - 1 && k === row.length - 1 ? (
-              // arrows: ← (↑ over ↓) →
-              <div key={k} className="flex gap-[6%]" style={{ flex: w }}>
-                <span
-                  className="flex-1 self-end rounded-[2px]"
-                  style={{ background: KEY, height: "48%" }}
-                />
-                <span className="flex flex-1 flex-col gap-[8%]">
-                  <span className="flex-1 rounded-[2px]" style={{ background: KEY }} />
-                  <span className="flex-1 rounded-[2px]" style={{ background: KEY }} />
-                </span>
-                <span
-                  className="flex-1 self-end rounded-[2px]"
-                  style={{ background: KEY, height: "48%" }}
-                />
-              </div>
-            ) : (
-              <span
-                key={k}
-                className="rounded-[2px]"
-                style={{ flex: w, background: KEY, boxShadow: "inset 0 -1px 0 oklch(0 0 0 / 0.5)" }}
-              />
-            ),
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
+const DECK_TILT = 68; // degrees the deck leans toward the viewer from upright
 
 function Laptop({
   steps,
@@ -119,12 +71,12 @@ function Laptop({
   return (
     // one 3D scene, so the lid really folds down onto the keyboard
     <div
-      className="relative w-[min(640px,86vw)] lg:w-[min(580px,42vw)]"
-      style={{ perspective: "2400px", perspectiveOrigin: "50% 30%", transformStyle: "preserve-3d" }}
+      className="relative w-[min(640px,86vw)] lg:w-[min(540px,40vw)]"
+      style={{ perspective: "4200px", perspectiveOrigin: "50% 30%", transformStyle: "preserve-3d" }}
     >
       {/* lid: the screen side, and its aluminium back for when it is shut */}
       <motion.div
-        className="relative mx-auto w-[88%] origin-bottom"
+        className="relative mx-auto w-[97%] origin-bottom"
         style={{ rotateX: lid ?? 6, transformStyle: "preserve-3d" }}
       >
         <div
@@ -177,9 +129,9 @@ function Laptop({
       </motion.div>
 
       {/* deck: tilted toward us, keyboard and trackpad on top, the front lip standing below */}
-      <div className="relative aspect-[100/30] w-full" style={{ transformStyle: "preserve-3d" }}>
+      <div className="relative aspect-[100/27] w-full" style={{ transformStyle: "preserve-3d" }}>
         <div
-          className="absolute inset-x-0 top-0 aspect-[100/60] origin-top rounded-b-[1.4rem]"
+          className="absolute inset-x-0 top-0 aspect-[100/68] origin-top rounded-b-[1.4rem]"
           style={{
             transform: `rotateX(${String(DECK_TILT)}deg)`,
             transformStyle: "preserve-3d",
@@ -187,10 +139,10 @@ function Laptop({
             boxShadow: "inset 0 2px 0 var(--em-ink-400)",
           }}
         >
-          <Keyboard />
+          <MacBookKeyboard className="absolute top-[5%] left-[6%] w-[88%]" />
           <span
             aria-hidden
-            className="absolute bottom-[8%] left-1/2 h-[31%] w-[38%] -translate-x-1/2 rounded-[0.6rem]"
+            className="absolute bottom-[6%] left-1/2 h-[30%] w-[42%] -translate-x-1/2 rounded-[0.6rem]"
             style={{
               background: "linear-gradient(180deg, var(--em-ink-200), var(--em-ink-300))",
               boxShadow: "inset 0 0 0 1px var(--em-ink-400)",
@@ -329,7 +281,7 @@ export function LaptopPreview({
 
   // a spring between scroll and the scene: smoother, and keeps motion off its scroll-timeline path
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0001 });
-  const lid = useTransform(smooth, [0, OPEN], [-108, 6]); // shut on the keys, then up and slightly back
+  const lid = useTransform(smooth, [0, OPEN], [-110, 6]); // shut on the keys, then up and slightly back
   const shade = useTransform(smooth, [OPEN * 0.4, OPEN], [1, 0]);
   const subOpacity = useTransform(smooth, [0, OPEN * 0.5], [1, 0]);
   const bar = smooth;
