@@ -69,12 +69,17 @@ export function ScrollAssemble({
   eyebrow,
   caption,
   items = [],
+  backdrop,
+  titleClassName,
   className,
 }: {
   title: string;
   eyebrow?: ReactNode;
   caption?: ReactNode;
   items?: readonly ReactNode[];
+  /** Scenery behind the stage (absolute, decorative), e.g. a horizon. */
+  backdrop?: ReactNode;
+  titleClassName?: string;
   className?: string;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -94,14 +99,22 @@ export function ScrollAssemble({
     <section ref={ref} className={cn("relative", reduced ? "py-24" : "h-[220vh]", className)}>
       <div
         className={cn(
-          "flex flex-col items-center justify-center gap-10 overflow-hidden px-4 text-center",
+          "relative isolate flex flex-col items-center justify-center gap-10 overflow-hidden px-4 text-center",
           !reduced && "sticky top-0 h-svh",
         )}
       >
+        {backdrop && (
+          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+            {backdrop}
+          </div>
+        )}
         {eyebrow}
         <h2
           aria-label={title}
-          className="text-5xl font-black uppercase leading-none tracking-tighter sm:text-8xl"
+          className={cn(
+            "text-5xl font-black uppercase leading-none tracking-tighter sm:text-8xl",
+            titleClassName,
+          )}
           style={{ perspective: "500px" }}
         >
           {reduced

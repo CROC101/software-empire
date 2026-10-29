@@ -449,27 +449,51 @@ export const APP_ICON: Record<string, typeof Code2> = {
 };
 
 export function WorkReel() {
+  const live = subsystems.filter((s) => appUrl(s.slug)).length;
   return (
     <ScrollAssemble
       title="selected work"
-      eyebrow={<p className={`${EYEBROW} cw-blue`}>portfolio · {subsystems.length} ระบบ</p>}
+      titleClassName="pk-depth"
+      eyebrow={
+        <p className={`${EYEBROW} cw-blue`}>
+          portfolio · {subsystems.length} ระบบ · เปิดแล้ว {live}
+        </p>
+      }
+      backdrop={
+        <>
+          {/* horizon glow, then a grid floor running away from us */}
+          <div className="sw-horizon" />
+          <div className="sw-floor" />
+        </>
+      }
       items={subsystems.map((s) => {
         const Icon = APP_ICON[s.slug] ?? Code2;
-        return (
-          <span key={s.slug} className="flex w-20 flex-col items-center gap-2 text-xs font-medium">
-            <span
-              className="grid size-16 place-items-center rounded-2xl text-[var(--em-ink-0)] shadow-lg"
-              style={{ background: s.accent }}
-            >
+        const open = Boolean(appUrl(s.slug));
+        const tile = (
+          <>
+            <span className="sw-tile" style={{ ["--a" as string]: s.accent }}>
               <Icon className="size-7" aria-hidden />
+              <span
+                aria-hidden
+                className={`sw-dot ${open ? "bg-success" : "bg-[var(--em-gold-300)]"}`}
+              />
             </span>
-            {s.name}
+            <span className="text-xs font-semibold">{s.name}</span>
+          </>
+        );
+        return open ? (
+          <a key={s.slug} href={`/go/${s.slug}`} className="sw-app" aria-label={`เปิด ${s.name}`}>
+            {tile}
+          </a>
+        ) : (
+          <span key={s.slug} className="sw-app" title="กำลังทำ">
+            {tile}
           </span>
         );
       })}
       caption={
         <p className="max-w-md text-muted-foreground">
-          ล็อกอินครั้งเดียว ใช้ได้ทุกระบบ เลื่อนลงไปดูทีละตัว
+          ล็อกอินครั้งเดียว ใช้ได้ทุกระบบ กดไอคอนเพื่อเปิด หรือเลื่อนลงไปดูทีละตัว
         </p>
       }
     />
