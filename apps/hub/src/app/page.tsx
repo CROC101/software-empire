@@ -33,6 +33,7 @@ import {
   TeamSection,
   WorkReel,
   WorkSection,
+  WorkTunnel,
 } from "./sections";
 import { StackCard } from "./stack-card";
 
@@ -174,6 +175,7 @@ export default async function HomePage() {
         <AboutSection />
         <WorkReel />
         <WorkSection />
+        <WorkTunnel />
         <ShotsSection />
         <HiddenWork />
         <SkillsSection />

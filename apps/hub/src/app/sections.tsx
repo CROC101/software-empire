@@ -4,6 +4,7 @@ import {
   LanyardBadge,
   MeshGhost,
   Meteors,
+  PerspectiveTunnel,
   PhoneFrame,
   PolaroidLineCarousel,
   WaterRippleCarousel,
@@ -481,6 +482,42 @@ const SHOTS = [
   ["/previews/m-toolboxes.webp", "Toolboxes", "มือถือ"],
   ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ · มือถือ"],
 ] as const;
+
+// every real screen, desktop and phone, interleaved so the flight alternates shapes
+const TUNNEL = [
+  ["/previews/community.webp", "Community", "เดสก์ท็อป", "community"],
+  ["/previews/m-messages.webp", "Community", "แชตเรียลไทม์", "community"],
+  ["/previews/canva.webp", "Empire Canvas", "เดสก์ท็อป", "canva"],
+  ["/previews/m-toolboxes.webp", "Toolboxes", "มือถือ", "toolboxes"],
+  ["/previews/toolboxes.webp", "Toolboxes", "เดสก์ท็อป", "toolboxes"],
+  ["/previews/m-community.webp", "Community", "ฟีด", "community"],
+  ["/previews/m-canva.webp", "Empire Canvas", "มือถือ", "canva"],
+  ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ", "toolboxes"],
+] as const;
+
+export function WorkTunnel() {
+  return (
+    <PerspectiveTunnel
+      id="fly"
+      eyebrow={<p className={`${EYEBROW} cw-blue mb-4`}>fly-through · {TUNNEL.length} หน้าจอ</p>}
+      title={
+        <>
+          บินเข้าไป
+          <br />
+          <span className="cw-blue">ในงานจริง</span>
+        </>
+      }
+      body="ทุกใบคือหน้าจอจริงจากระบบที่เปิดใช้อยู่ กดใบไหนก็เข้าไปลองได้เลย"
+      prompt="เลื่อนลงเพื่อบินเข้าไป"
+      items={TUNNEL.map(([src, title, caption, slug]) => ({
+        src,
+        title,
+        caption,
+        href: `/go/${slug}`,
+      }))}
+    />
+  );
+}
 
 export function ShotsSection() {
   return (
