@@ -87,3 +87,4 @@ export {
 } from "./components/glass-icon-reveal";
 export { GlowCard } from "./components/glow-card";
 export { ParticleTitle, type ParticleTitleProps } from "./components/particle-title";
+export { TextLoop } from "./components/text-loop";

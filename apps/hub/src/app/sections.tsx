@@ -12,6 +12,7 @@ import {
   WaterRippleCarousel,
   ScrollAssemble,
   TearFooter,
+  TextLoop,
   TidelineCta,
 } from "@empire/ui";
 import {
@@ -28,7 +29,6 @@ import {
   PiggyBank,
   RefreshCw,
   LayoutGrid,
-  MessageCircle,
   MessagesSquare,
   Music,
   Palette,
@@ -1121,7 +1121,13 @@ export function FaqSection() {
       <div>
         <p className={`${EYEBROW} cw-blue`}>faq</p>
         <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">ถามกันบ่อย</h2>
-        <MessageCircle aria-hidden className="mt-10 size-24 cw-blue opacity-70" strokeWidth={1.2} />
+        {/* the topics people actually ask about, one at a time */}
+        <TextLoop
+          staticText="ถามเรื่อง"
+          rotatingTexts={["ราคา", "เวลา", "โค้ด", "ระบบเดิม", "ทำทันไหม"]}
+          className="mt-10 text-3xl font-black tracking-tight sm:text-4xl"
+          staticTextClassName="text-muted-foreground"
+        />
       </div>
       <div className="flex flex-col">
         {FAQ.map(([q, a], i) => (
