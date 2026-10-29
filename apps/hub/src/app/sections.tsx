@@ -1,6 +1,6 @@
 import {
   BlueprintReveal,
-  GlassFolders,
+  IconFolder,
   LanyardBadge,
   MeshGhost,
   Meteors,
@@ -12,8 +12,18 @@ import {
   TidelineCta,
 } from "@empire/ui";
 import {
+  Bug,
   Cat,
   Code2,
+  Cpu,
+  Database,
+  FlaskConical,
+  KeyRound,
+  LayoutDashboard,
+  Link2,
+  MonitorSmartphone,
+  PiggyBank,
+  RefreshCw,
   LayoutGrid,
   MessageCircle,
   MessagesSquare,
@@ -741,11 +751,18 @@ const SERVICES = [
   ],
 ] as const;
 
-const FOLDER_ACCENTS = [
-  "var(--em-blue-600)",
-  "var(--em-violet-600)",
-  "var(--em-teal-600)",
-  "var(--em-coral-500)",
+// one tile per deliverable, in SERVICES order; tile colour per service
+const SERVICE_ICONS = [
+  [MonitorSmartphone, LayoutDashboard, Link2],
+  [Cpu, ShieldCheck, PiggyBank],
+  [Database, KeyRound, FlaskConical],
+  [Bug, RefreshCw, Sparkles],
+] as const;
+const SERVICE_TILES = [
+  "linear-gradient(135deg, var(--em-blue-500), var(--em-blue-700))",
+  "linear-gradient(135deg, var(--em-violet-500), var(--em-violet-700))",
+  "linear-gradient(135deg, var(--em-teal-400), var(--em-teal-600))",
+  "linear-gradient(135deg, var(--em-coral-400), var(--em-coral-500))",
 ];
 
 export function ServicesSection({ aside }: { aside: ReactNode }) {
@@ -765,19 +782,32 @@ export function ServicesSection({ aside }: { aside: ReactNode }) {
         <div className="w-full max-w-md">{aside}</div>
       </div>
 
-      <GlassFolders
-        className="mt-4"
-        hint="ชี้เพื่อเอียง · กดเพื่อเปิดดูว่าได้อะไร"
-        folders={SERVICES.map(([n, title, body, tags, files], i) => ({
-          id: n,
-          label: n,
-          title,
-          body,
-          tags,
-          files,
-          accent: FOLDER_ACCENTS[i % FOLDER_ACCENTS.length] ?? "var(--em-blue-600)",
-        }))}
-      />
+      <div className="mt-12 grid justify-items-center gap-x-8 gap-y-12 md:grid-cols-2">
+        {SERVICES.map(([n, title, body, terms, files], i) => (
+          <div key={n} className="flex w-full max-w-[420px] flex-col gap-3">
+            <p className="flex items-baseline gap-2 text-sm text-muted-foreground">
+              <span className={`${EYEBROW} cw-blue`}>{n}</span>
+              {terms.join(" · ")}
+            </p>
+            <IconFolder
+              title={title}
+              tags={files}
+              body={body}
+              icons={files.map((label, k) => {
+                const Icon = SERVICE_ICONS[i]?.[k] ?? Sparkles;
+                return {
+                  label,
+                  node: <Icon aria-hidden strokeWidth={2.2} />,
+                  background: SERVICE_TILES[i] ?? SERVICE_TILES[0] ?? "",
+                };
+              })}
+            />
+          </div>
+        ))}
+      </div>
+      <p className="mt-6 text-center text-xs text-muted-foreground">
+        ชี้หรือแตะแฟ้มเพื่อกางไอคอน · ชี้ไอคอนเพื่อดูว่าได้อะไร
+      </p>
 
       <TornPanel tone="dark" seed={7} className="mt-10 max-w-2xl">
         <div className="px-9 py-9">

@@ -36,7 +36,7 @@ export { CrocReveal } from "./components/croc-reveal";
 export { LanyardBadge } from "./components/lanyard-badge";
 export { PhosphorNotFound } from "./components/phosphor-not-found";
 export { BlueprintReveal } from "./components/blueprint-reveal";
-export { GlassFolders, type GlassFolderItem } from "./components/glass-folders";
+export { IconFolder, type IconFolderProps, type FolderIcon } from "./components/icon-folder";
 export { GlassClock } from "./components/glass-clock";
 export {
   SkeletonKeyPreloader,
