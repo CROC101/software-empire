@@ -1609,3 +1609,83 @@ html:has(dialog[open]) .vt-top {
 .tpf-word.is-ink span::after {
   content: none;
 }
+
+/* ── GlowCard: border lit where the pointer is ─────────────────────────────── */
+.glow-card {
+  --radius: 12;
+  --border: 2;
+  --size: 220;
+  --border-size: calc(var(--border) * 1px);
+  --spotlight-size: calc(var(--size) * 1px);
+  --hue: calc(var(--base, 220) + (var(--xp, 0) * var(--spread, 0)));
+  position: relative;
+  border: var(--border-size) solid color-mix(in oklab, var(--foreground) 10%, transparent);
+  border-radius: calc(var(--radius) * 1px);
+  background-color: color-mix(in oklab, var(--foreground) 4%, var(--background));
+  background-image: radial-gradient(
+    var(--spotlight-size) var(--spotlight-size) at calc(var(--x, -999) * 1px)
+      calc(var(--y, -999) * 1px),
+    oklch(0.7 0.17 var(--hue) / 0.12),
+    transparent
+  );
+  background-size: calc(100% + 2 * var(--border-size)) calc(100% + 2 * var(--border-size));
+  background-position: 50% 50%;
+  background-attachment: fixed;
+  box-shadow: 0 1rem 2rem -1.2rem color-mix(in oklab, var(--foreground) 35%, transparent);
+}
+.glow-card::before,
+.glow-card::after,
+.glow-card__outer::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: calc(var(--border-size) * -1);
+  border: var(--border-size) solid transparent;
+  border-radius: calc(var(--radius) * 1px);
+  background-attachment: fixed;
+  background-size: calc(100% + 2 * var(--border-size)) calc(100% + 2 * var(--border-size));
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  mask:
+    linear-gradient(transparent, transparent) padding-box,
+    linear-gradient(white, white) border-box;
+  mask-composite: intersect;
+}
+.glow-card::before,
+.glow-card__outer::before {
+  background-image: radial-gradient(
+    calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
+      calc(var(--x, -999) * 1px) calc(var(--y, -999) * 1px),
+    oklch(0.62 0.2 var(--hue)),
+    transparent 100%
+  );
+  filter: brightness(1.6);
+}
+.glow-card::after {
+  background-image: radial-gradient(
+    calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
+      calc(var(--x, -999) * 1px) calc(var(--y, -999) * 1px),
+    oklch(1 0 0 / 0.9),
+    transparent 100%
+  );
+}
+/* a blurred copy of the border glow, so it spills a little past the card */
+.glow-card__outer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius) * 1px);
+  filter: blur(calc(var(--border-size) * 8));
+  will-change: filter;
+}
+.glow-card__outer::before {
+  inset: -10px;
+  border-width: 10px;
+}
+@media (hover: none) {
+  .glow-card::before,
+  .glow-card::after,
+  .glow-card__outer {
+    display: none;
+  }
+}

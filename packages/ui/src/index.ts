@@ -85,3 +85,4 @@ export {
   type GlassIconRevealProps,
   type GlassTuning,
 } from "./components/glass-icon-reveal";
+export { GlowCard } from "./components/glow-card";

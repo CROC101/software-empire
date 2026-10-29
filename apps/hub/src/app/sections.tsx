@@ -1,5 +1,6 @@
 import {
   BlueprintReveal,
+  GlowCard,
   IconFolder,
   LanyardBadge,
   LaptopPreview,
@@ -1010,29 +1011,45 @@ export function HowSection() {
 
 /* ── team: one person and the robots ────────────────────────── */
 
-const TEAM: { icon: typeof Code2; role: string; name: string; body: string }[] = [
+// hue: each card glows in its own palette colour (blue, violet, teal, coral)
+const TEAM: {
+  icon: typeof Code2;
+  role: string;
+  name: string;
+  body: string;
+  hue: number;
+  tone: string;
+}[] = [
   {
     icon: Code2,
     role: "founder · ทุกตำแหน่ง",
     name: "ผม",
+    hue: 250,
+    tone: "var(--em-blue-500)",
     body: "PM, ออกแบบหน้าจอ, เขียนโค้ด, ฐานข้อมูล, ทดสอบ, ขึ้นระบบ คุยงานกับผม คือคุยกับคนที่ลงมือทำ",
   },
   {
     icon: Sparkles,
     role: "ผู้ช่วย",
     name: "AI ในทีม",
+    hue: 290,
+    tone: "var(--em-violet-500)",
     body: "ช่วยร่างโค้ดกับเทสต์ ผมอ่านและตัดสินใจทุกบรรทัดเอง งานไหนใช้ AI ผมบอกตรง ๆ",
   },
   {
     icon: ShieldCheck,
     role: "ยาม",
     name: `${String(PGTAP_TESTS)} เทสต์`,
+    hue: 175,
+    tone: "var(--em-teal-600)",
     body: "ยามหน้าประตูฐานข้อมูล ถ้ากฎสิทธิ์ข้อไหนพัง ระบบไม่ยอมให้ขึ้นจริง",
   },
   {
     icon: Cat,
     role: "มาสคอต",
     name: "แมว Community",
+    hue: 30,
+    tone: "var(--em-coral-500)",
     body: "ไม่ได้ช่วยอะไรเลย แต่หน้าตาน่ารักเลยได้เป็นโลโก้",
   },
 ];
@@ -1053,14 +1070,16 @@ export function TeamSection() {
         </p>
       </div>
       <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {TEAM.map(({ icon: Icon, role, name, body }) => (
-          <li key={name} className="flex flex-col">
-            <div className="grid aspect-[4/5] place-items-center bg-muted">
-              <Icon aria-hidden className="size-16 cw-blue" strokeWidth={1.3} />
-            </div>
-            <p className="mt-4 font-mono text-[0.7rem] uppercase text-muted-foreground">{role}</p>
-            <p className="text-lg font-black">{name}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{body}</p>
+        {TEAM.map(({ icon: Icon, role, name, body, hue, tone }) => (
+          <li key={name} className="flex">
+            <GlowCard hue={hue} className="flex w-full flex-col p-5">
+              <div className="grid aspect-[5/4] place-items-center">
+                <Icon aria-hidden className="size-16" strokeWidth={1.3} style={{ color: tone }} />
+              </div>
+              <p className="mt-4 font-mono text-[0.7rem] uppercase text-muted-foreground">{role}</p>
+              <p className="text-lg font-black">{name}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{body}</p>
+            </GlowCard>
           </li>
         ))}
       </ul>
