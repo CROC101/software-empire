@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
+import { motion, useMotionValue, useTransform, type MotionValue } from "motion/react";
 import { cn } from "../lib/cn";
+import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -109,24 +110,32 @@ export function PhoneFrame({
 /**
  * Hero whose phone starts tilted back, straightens as the section scrolls through, and climbs
  * over the headline (`titleComponent` renders behind it). Tune duration with `className="h-[…]"`.
- * Reduced motion: flat, static, no scroll listener.
+ * Reduced motion: flat, static, no scroll listener (so a progress-driven screen stays at 0).
  */
 export function PhoneScrollHero({
   titleComponent,
   children,
   overlap = 20,
   tilt = 22,
+  pinned = false,
+  phoneClassName,
   className,
 }: {
-  titleComponent: ReactNode;
-  children?: ReactNode;
+  /** The headline, behind the phone; a function gets the scroll progress like `children`. */
+  titleComponent: ReactNode | ((progress: MotionValue<number>) => ReactNode);
+  /** The screen; a function gets the scroll progress (0 to 1) to drive what is on it. */
+  children?: ReactNode | ((progress: MotionValue<number>) => ReactNode);
   /** how far the phone climbs into the title, % of its own height */
   overlap?: number;
   /** starting backward tilt, deg */
   tilt?: number;
+  /** Pin the scene to the screen (sticky) for the whole scroll, instead of letting it pass by. */
+  pinned?: boolean;
+  /** Extra classes for the phone, e.g. its width. */
+  phoneClassName?: string;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionAfterMount();
   const sectionRef = useRef<HTMLElement>(null);
   const progress = useMotionValue(0);
 
@@ -160,29 +169,46 @@ export function PhoneScrollHero({
   const scale = useTransform(progress, [0, 1], [0.94, 1]);
   const titleY = useTransform(progress, [0, 1], [0, -24]);
   const phoneY = useTransform(progress, [0, 1], ["0%", `-${String(overlap)}%`]);
-  const still = Boolean(reduced);
+  const still = reduced;
 
+  const pin = pinned && !still;
   return (
     <section
       ref={sectionRef}
       className={cn(
-        "relative flex h-[60rem] w-full items-center justify-center overflow-hidden p-2 md:h-[80rem] md:p-8",
+        pin
+          ? "relative h-[280vh] w-full"
+          : "relative flex h-[60rem] w-full items-center justify-center overflow-hidden p-2 md:h-[80rem] md:p-8",
         className,
       )}
     >
-      <div className="w-full" style={{ perspective: "1200px" }}>
-        <motion.div
-          style={{ y: still ? 0 : titleY }}
-          className="relative z-0 mx-auto max-w-5xl px-4 text-center"
-        >
-          {titleComponent}
-        </motion.div>
-        <motion.div
-          style={{ y: still ? 0 : phoneY, rotateX: still ? 0 : rotateX, scale: still ? 1 : scale }}
-          className="relative z-10 -mt-6 md:-mt-12"
-        >
-          <PhoneFrame>{children}</PhoneFrame>
-        </motion.div>
+      <div
+        className={
+          pin
+            ? "sticky top-0 flex h-svh items-center justify-center overflow-hidden px-2 pt-14"
+            : "contents"
+        }
+      >
+        <div className="w-full" style={{ perspective: "1200px" }}>
+          <motion.div
+            style={{ y: still ? 0 : titleY }}
+            className="relative z-0 mx-auto max-w-5xl px-4 text-center"
+          >
+            {typeof titleComponent === "function" ? titleComponent(progress) : titleComponent}
+          </motion.div>
+          <motion.div
+            style={{
+              y: still ? 0 : phoneY,
+              rotateX: still ? 0 : rotateX,
+              scale: still ? 1 : scale,
+            }}
+            className="relative z-10 -mt-6 md:-mt-12"
+          >
+            <PhoneFrame className={phoneClassName}>
+              {typeof children === "function" ? children(progress) : children}
+            </PhoneFrame>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
