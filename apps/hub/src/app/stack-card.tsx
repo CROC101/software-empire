@@ -190,11 +190,11 @@ function StackDiagram() {
       <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-2xl border bg-background p-2 shadow-xl">
         <div className="rounded-xl border p-2">
           <Image
-            src="/crocwork-logo.jpg"
+            src="/crocwork-logo.webp"
             alt=""
-            width={36}
+            width={31}
             height={36}
-            className="size-6 rounded-md sm:size-9"
+            className="h-6 w-auto sm:h-9"
           />
         </div>
         <motion.div

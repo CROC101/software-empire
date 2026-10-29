@@ -661,7 +661,7 @@ export function LaptopSection() {
         </>
       }
       subtitle="เลื่อนลงเพื่อเปิดฝา แล้วกดเลือกระบบที่อยากดู"
-      logo={<Image src="/crocwork-logo.jpg" alt="" width={48} height={48} />}
+      logo={<Image src="/crocwork-logo.webp" alt="" width={42} height={48} />}
       steps={LAPTOP}
       pickLabel="เลือกหน้าจอ"
     />
@@ -770,11 +770,11 @@ export function AboutSection() {
           front={
             <div className="flex h-full flex-col p-6 pt-10">
               <Image
-                src="/crocwork-logo.jpg"
+                src="/crocwork-logo.webp"
                 alt=""
-                width={56}
+                width={48}
                 height={56}
-                className="rounded-xl"
+                className="h-14 w-auto"
               />
               <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] cw-blue">
                 solo studio · since 2569
@@ -1281,7 +1281,7 @@ export function SiteFooter() {
       brand="crocwork."
       ink
       name="crocwork.studio"
-      logo={<Image src="/crocwork-logo.jpg" alt="" width={44} height={44} className="rounded-xl" />}
+      logo={<Image src="/crocwork-logo.webp" alt="" width={38} height={44} />}
       logoHref="/"
       socials={[{ icon: "github", label: "GitHub", href: GITHUB }]}
       email={process.env.NEXT_PUBLIC_CONTACT_EMAIL}

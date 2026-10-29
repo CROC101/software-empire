@@ -97,11 +97,12 @@ export default async function HomePage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-extrabold">
             <Image
-              src="/crocwork-logo.jpg"
+              src="/crocwork-logo.webp"
               alt=""
-              width={32}
+              width={28}
               height={32}
-              className="size-8 rounded-md"
+              priority
+              className="h-8 w-auto drop-shadow-[0_2px_6px_color-mix(in_oklab,var(--em-blue-500)_35%,transparent)]"
             />
             crocwork.studio
           </Link>
