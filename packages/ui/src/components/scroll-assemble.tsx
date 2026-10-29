@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useRef, type ReactNode } from "react";
 import { cn } from "../lib/cn";
+import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 
 /**
  * A pinned scroll interlude: a headline whose letters fly in from a fan and fold into place,
@@ -77,7 +78,7 @@ export function ScrollAssemble({
   className?: string;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionAfterMount();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const chars = graphemes(title);
   const mid = Math.floor(chars.length / 2);
