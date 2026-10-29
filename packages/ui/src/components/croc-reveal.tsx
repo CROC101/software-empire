@@ -410,6 +410,16 @@ function useReducedMotion() {
 
 type Frame = { p: number; look: Pt; blink: number; squint: number };
 
+// water running off the bottom of the word, under a letter's curve or leg (8 letters, 105 wide
+// each, centred on CX): [x from the centre, length]
+const DRIPS: readonly (readonly [number, number])[] = [
+  [-362, 20],
+  [-157, 34],
+  [30, 16],
+  [157, 26],
+  [342, 38],
+];
+
 export function CrocReveal({
   word,
   tagline,
@@ -570,21 +580,50 @@ export function CrocReveal({
           {tagline}
         </text>
       )}
-      <text
-        x={CX}
-        y={404}
-        textAnchor="middle"
-        textLength={840}
-        lengthAdjust="spacingAndGlyphs"
-        style={{
-          fill: "var(--em-blue-600)",
-          fontFamily: "inherit",
-          fontSize: 250,
-          fontWeight: 900,
-        }}
-      >
-        {word}
-      </text>
+      {/* the word as water: depth, a sky-to-deep body, ripples, a surface gloss, drips */}
+      {(
+        [
+          ["translate(4 7)", "var(--em-blue-700)", 0.35],
+          ["", `url(#${id}-word-water)`, 1],
+          ["", `url(#${id}-word-ripples)`, 1],
+          ["", `url(#${id}-word-gloss)`, 1],
+        ] as const
+      ).map(([transform, paint, opacity], i) => (
+        <text
+          key={i}
+          x={CX}
+          y={404}
+          textAnchor="middle"
+          textLength={840}
+          lengthAdjust="spacingAndGlyphs"
+          transform={transform || undefined}
+          opacity={opacity}
+          aria-hidden={i > 0 || undefined}
+          style={{ fill: paint, fontFamily: "inherit", fontSize: 250, fontWeight: 900 }}
+        >
+          {word}
+        </text>
+      ))}
+      {DRIPS.map(([dx, len], i) => {
+        const x = CX + dx;
+        return (
+          <g key={i}>
+            {/* a paint-style drip: flares out of the letter, a full stem, a round end */}
+            <path
+              d={`M${String(x - 13)} 392 Q${String(x - 8)} 397 ${String(x - 7.5)} 408 L${String(x - 7.5)} ${String(394 + len)} A7.5 7.5 0 0 0 ${String(x + 7.5)} ${String(394 + len)} L${String(x + 7.5)} 408 Q${String(x + 8)} 397 ${String(x + 13)} 392 Z`}
+              style={fill(`url(#${id}-word-water)`)}
+            />
+            <ellipse
+              cx={x - 3}
+              cy={392 + len}
+              rx={1.8}
+              ry={3.2}
+              style={fill("var(--em-ink-0)")}
+              opacity={0.7}
+            />
+          </g>
+        );
+      })}
     </>
   );
 
@@ -647,6 +686,57 @@ export function CrocReveal({
             <linearGradient id={`${id}-curl-bottom`} x1="0" y1="1" x2="0" y2="0">
               <stop offset="0" style={stop("var(--em-ink-0)")} />
               <stop offset="1" style={stop("var(--em-ink-200)")} />
+            </linearGradient>
+            {/* the word's water: clear sky at the top, deep blue at the bottom */}
+            <linearGradient
+              id={`${id}-word-water`}
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="210"
+              x2="0"
+              y2="420"
+            >
+              <stop offset="0" style={stop("var(--em-sky-500)")} />
+              <stop offset="0.45" style={stop("var(--em-blue-500)")} />
+              <stop offset="1" style={stop("var(--em-blue-700)")} />
+            </linearGradient>
+            {/* ripples running across the letters */}
+            <pattern
+              id={`${id}-word-ripples`}
+              patternUnits="userSpaceOnUse"
+              width="140"
+              height="36"
+            >
+              <path
+                d="M0 18 Q17.5 8 35 18 T70 18 T105 18 T140 18"
+                fill="none"
+                style={{ stroke: "var(--em-ink-0)" }}
+                strokeWidth="3"
+                strokeLinecap="round"
+                opacity="0.26"
+              />
+              <path
+                d="M-35 33 Q-17.5 26 0 33 T35 33 T70 33 T105 33 T140 33 T175 33"
+                fill="none"
+                style={{ stroke: "var(--em-ink-0)" }}
+                strokeWidth="1.4"
+                opacity="0.14"
+              />
+            </pattern>
+            {/* the surface catching the light on the top of each letter */}
+            <linearGradient
+              id={`${id}-word-gloss`}
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="215"
+              x2="0"
+              y2="410"
+            >
+              <stop offset="0" style={stop("var(--em-ink-0)", 0.6)} />
+              <stop offset="0.3" style={stop("var(--em-ink-0)", 0.12)} />
+              <stop offset="0.32" style={stop("var(--em-ink-0)", 0)} />
+              <stop offset="0.85" style={stop("var(--em-ink-0)", 0)} />
+              <stop offset="1" style={stop("var(--em-ink-0)", 0.18)} />
             </linearGradient>
             <filter id={`${id}-soft`} x="-20%" y="-50%" width="140%" height="200%">
               <feGaussianBlur stdDeviation="8" />
