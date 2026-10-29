@@ -147,7 +147,7 @@ export function MacBookKeyboard({ className }: { className?: string }) {
         style={{ background: "var(--em-ink-800)" }}
       >
         {ROWS.map((row, r) => (
-          <div key={r} className="flex h-[6.1cqw] gap-[0.6cqw]">
+          <div key={r} className="flex h-[6.9cqw] gap-[0.6cqw]">
             {row.map((k, i) => (
               <Cap key={i} k={k} />
             ))}

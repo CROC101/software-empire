@@ -52,7 +52,7 @@ const Screen = ({ step, active }: { step: LaptopStep; active: boolean }) => (
   />
 );
 
-const DECK_TILT = 68; // degrees the deck leans toward the viewer from upright
+const DECK_TILT = 63; // degrees the deck leans toward the viewer from upright
 
 function Laptop({
   steps,
@@ -71,7 +71,7 @@ function Laptop({
   return (
     // one 3D scene, so the lid really folds down onto the keyboard
     <div
-      className="relative w-[min(640px,86vw)] lg:w-[min(540px,40vw)]"
+      className="relative w-[min(640px,86vw)] lg:w-[min(520px,38vw)]"
       style={{
         perspective: "12000px",
         perspectiveOrigin: "50% 30%",
@@ -133,9 +133,9 @@ function Laptop({
       </motion.div>
 
       {/* deck: tilted toward us, keyboard and trackpad on top, the front lip standing below */}
-      <div className="relative aspect-[100/27] w-full" style={{ transformStyle: "preserve-3d" }}>
+      <div className="relative aspect-[100/34] w-full" style={{ transformStyle: "preserve-3d" }}>
         <div
-          className="absolute inset-x-0 top-0 aspect-[100/68] origin-top rounded-b-[1.4rem]"
+          className="absolute inset-x-0 top-0 aspect-[100/76] origin-top rounded-b-[1.4rem]"
           style={{
             transform: `rotateX(${String(DECK_TILT)}deg)`,
             transformStyle: "preserve-3d",
@@ -143,10 +143,10 @@ function Laptop({
             boxShadow: "inset 0 2px 0 var(--em-ink-400)",
           }}
         >
-          <MacBookKeyboard className="absolute top-[5%] left-[6%] w-[88%]" />
+          <MacBookKeyboard className="absolute top-[4%] left-[3%] w-[94%]" />
           <span
             aria-hidden
-            className="absolute bottom-[6%] left-1/2 h-[30%] w-[42%] -translate-x-1/2 rounded-[0.6rem]"
+            className="absolute bottom-[5%] left-1/2 h-[25%] w-[40%] -translate-x-1/2 rounded-[0.6rem]"
             style={{
               background: "linear-gradient(180deg, var(--em-ink-200), var(--em-ink-300))",
               boxShadow: "inset 0 0 0 1px var(--em-ink-400)",
@@ -285,7 +285,7 @@ export function LaptopPreview({
 
   // a spring between scroll and the scene: smoother, and keeps motion off its scroll-timeline path
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0001 });
-  const lid = useTransform(smooth, [0, OPEN], [-110, 6]); // shut on the keys, then up and slightly back
+  const lid = useTransform(smooth, [0, OPEN], [-115, 6]); // shut on the keys, then up and slightly back
   const shade = useTransform(smooth, [OPEN * 0.4, OPEN], [1, 0]);
   const subOpacity = useTransform(smooth, [0, OPEN * 0.5], [1, 0]);
   const bar = smooth;
