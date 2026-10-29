@@ -80,3 +80,8 @@ export {
 export { PerspectiveTunnel, type TunnelItem } from "./components/perspective-tunnel";
 export { LaptopPreview, type LaptopStep } from "./components/laptop-preview";
 export { MacBookKeyboard } from "./components/macbook-keyboard";
+export {
+  GlassIconReveal,
+  type GlassIconRevealProps,
+  type GlassTuning,
+} from "./components/glass-icon-reveal";

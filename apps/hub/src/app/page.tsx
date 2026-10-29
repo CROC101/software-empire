@@ -18,6 +18,7 @@ import { IntroGate } from "./intro-gate";
 import { ActivitySkyline } from "./activity-skyline";
 import { CodebaseHexes } from "./codebase-hexes";
 import { PocketSection } from "./pocket-section";
+import { SignOff } from "./sign-off";
 import { HiddenWork } from "./hidden-work";
 import { CrocPoster } from "./croc-poster";
 import {
@@ -191,6 +192,7 @@ export default async function HomePage() {
         <FaqSection />
         <CrocPoster />
         <ContactSection cta={cta} />
+        <SignOff />
       </main>
       <BackToTop />
       <SiteFooter />
