@@ -70,3 +70,10 @@ export {
   type ContributionSkylineProps,
   type ContributionDay,
 } from "./components/contribution-skyline";
+export {
+  IsometricHexChart,
+  spiral,
+  type IsometricHexChartProps,
+  type HexDatum,
+  type HexChartLabels,
+} from "./components/isometric-hex-chart";

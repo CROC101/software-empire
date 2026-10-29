@@ -16,6 +16,7 @@ import { BackToTop, NavSpy } from "./nav-spy";
 import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
 import { ActivitySkyline } from "./activity-skyline";
+import { CodebaseHexes } from "./codebase-hexes";
 import { HiddenWork } from "./hidden-work";
 import { CrocPoster } from "./croc-poster";
 import {
@@ -177,6 +178,7 @@ export default async function HomePage() {
         <HiddenWork />
         <SkillsSection />
         <ActivitySkyline />
+        <CodebaseHexes />
         <ServicesSection aside={<StackCard href="#subsystems" />} />
         <HowSection />
         <TeamSection />

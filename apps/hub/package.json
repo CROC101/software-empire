@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -p .",
     "smoke": "node --env-file=.env.local e2e/auth-smoke.ts",
-    "contributions": "node scripts/contributions.mjs"
+    "contributions": "node scripts/contributions.mjs",
+    "codebase": "node scripts/codebase.mjs"
   },
   "dependencies": {
     "@empire/core": "workspace:*",

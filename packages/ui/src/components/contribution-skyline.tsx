@@ -368,7 +368,7 @@ const MUTED = "var(--muted-foreground, #737373)";
 
 // any CSS colour → sRGB, by letting the browser paint it (oklch, color-mix, names…)
 let probe: CanvasRenderingContext2D | null = null;
-const toRGB = (color: string, fallback: RGB | null): RGB | null => {
+export const toRGB = (color: string, fallback: RGB | null): RGB | null => {
   if (!probe) {
     const c = document.createElement("canvas");
     c.width = c.height = 1;
@@ -384,10 +384,10 @@ const toRGB = (color: string, fallback: RGB | null): RGB | null => {
   return [d[0] ?? 0, d[1] ?? 0, d[2] ?? 0];
 };
 
-const rgbString = (r: number, g: number, b: number) =>
+export const rgbString = (r: number, g: number, b: number) =>
   `rgb(${String(Math.round(r))},${String(Math.round(g))},${String(Math.round(b))})`;
 
-const at = (p: Float32Array, i: number) => p[i] ?? 0;
+export const at = (p: Float32Array, i: number) => p[i] ?? 0;
 
 const pointInQuad = (p: Float32Array, o: number, x: number, y: number): boolean => {
   let sign = 0;
