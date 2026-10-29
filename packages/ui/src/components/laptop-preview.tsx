@@ -72,11 +72,15 @@ function Laptop({
     // one 3D scene, so the lid really folds down onto the keyboard
     <div
       className="relative w-[min(640px,86vw)] lg:w-[min(540px,40vw)]"
-      style={{ perspective: "4200px", perspectiveOrigin: "50% 30%", transformStyle: "preserve-3d" }}
+      style={{
+        perspective: "12000px",
+        perspectiveOrigin: "50% 30%",
+        transformStyle: "preserve-3d",
+      }}
     >
       {/* lid: the screen side, and its aluminium back for when it is shut */}
       <motion.div
-        className="relative mx-auto w-[97%] origin-bottom"
+        className="relative mx-auto w-full origin-bottom"
         style={{ rotateX: lid ?? 6, transformStyle: "preserve-3d" }}
       >
         <div
