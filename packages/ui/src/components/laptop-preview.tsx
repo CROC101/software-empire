@@ -2,6 +2,7 @@
 
 import {
   motion,
+  useMotionValue,
   useMotionValueEvent,
   useScroll,
   useSpring,
@@ -55,9 +56,10 @@ const Screen = ({ step, active }: { step: LaptopStep; active: boolean }) => (
 
 // MacBook Pro 14" proportions, as fractions of the body width (W): the lid is as tall as the
 // deck is deep, so it folds flat onto the keys.
-const LID = 0.66; // lid height and deck depth, in W
+const LID = 0.64; // lid height (16:10 screen + bezels) = deck depth, in W
 const DECK_TILT = 66; // degrees the deck leans toward the viewer from upright (camera above)
-const GRILLE = "radial-gradient(circle, var(--em-ink-500) 0.9px, transparent 1.1px) 0 0 / 5px 5px";
+const GRILLE =
+  "radial-gradient(circle, var(--em-ink-400) 0.55px, transparent 0.8px) 0 0 / 3.5px 3.5px";
 
 function Laptop({
   steps,
@@ -74,12 +76,16 @@ function Laptop({
 }) {
   const aluminium =
     "linear-gradient(180deg, var(--em-ink-50), var(--em-ink-200) 55%, var(--em-ink-300))";
+  // the trackpad shows as the screen wakes: with the lid shut it would peek past the lid's edge
+  const still = useMotionValue(0);
+  const padOpacity = useTransform(shade ?? still, (v) => 1 - v);
   return (
     // one 3D scene, so the lid really folds down onto the keyboard; real perspective, so the
     // deck widens toward us like a photo taken from above
     <div
-      className="relative mb-[10%] w-[min(640px,88vw,calc((100svh-26rem)/1.05))] lg:mb-0 lg:w-[min(680px,48vw,calc((100svh-18rem)/1.05))]"
-      style={{ perspective: "2600px", perspectiveOrigin: "50% 15%", transformStyle: "preserve-3d" }}
+      className="relative mb-[5%] w-[min(640px,88vw,max(16rem,calc((100svh-26rem)/1.05)))] lg:mb-0 lg:w-[min(680px,48vw,max(24rem,calc((100svh-18rem)/1.05)))]"
+      // a long lens: the base widens toward us only a little, like a product photo
+      style={{ perspective: "6400px", perspectiveOrigin: "50% 20%", transformStyle: "preserve-3d" }}
     >
       {/* lid: upright when open (0deg, no 3D on the screen, so it stays sharp) */}
       <motion.div
@@ -171,7 +177,9 @@ function Laptop({
             transform: `rotateX(${String(DECK_TILT)}deg)`,
             transformStyle: "preserve-3d",
             background: aluminium,
-            boxShadow: "inset 0 1px 0 oklch(1 0 0 / 0.8), inset 0 -2px 0 var(--em-ink-400)",
+            // lit top, and the chamfered front edge catching the light
+            boxShadow:
+              "inset 0 1px 0 oklch(1 0 0 / 0.8), inset 0 -3px 0 var(--em-ink-300), inset 0 -4px 0 oklch(1 0 0 / 0.6)",
           }}
         >
           {[3, 89].map((left) => (
@@ -179,7 +187,7 @@ function Laptop({
               key={left}
               aria-hidden
               className="absolute top-[5%] h-[58%] w-[8%]"
-              style={{ left: `${String(left)}%`, background: GRILLE, opacity: 0.7 }}
+              style={{ left: `${String(left)}%`, background: GRILLE, opacity: 0.55 }}
             />
           ))}
           <div
@@ -191,35 +199,28 @@ function Laptop({
           >
             <MacBookKeyboard className="w-full" />
           </div>
-          <span
+          <motion.span
             aria-hidden
             className="absolute bottom-[5%] left-1/2 h-[27%] w-[38%] -translate-x-1/2 rounded-[3%_5%]"
             style={{
+              opacity: padOpacity,
               background: "linear-gradient(180deg, var(--em-ink-100), var(--em-ink-200))",
               boxShadow: "inset 0 0 0 1px var(--em-ink-300), inset 0 1px 2px oklch(0 0 0 / 0.12)",
             }}
           />
-          {/* front edge, with the thumb notch for lifting the lid */}
-          <div
+          {/* thumb notch in the front edge, for lifting the lid */}
+          <span
             aria-hidden
-            className="absolute inset-x-[0.5%] top-full h-[5%] origin-top rounded-b-[40%_100%]"
-            style={{
-              transform: `rotateX(${String(-DECK_TILT - 18)}deg)`,
-              background: "linear-gradient(180deg, var(--em-ink-200), var(--em-ink-500))",
-            }}
-          >
-            <span
-              className="absolute top-0 left-1/2 h-[55%] w-[12%] -translate-x-1/2 rounded-b-[50%]"
-              style={{ background: "var(--em-ink-400)" }}
-            />
-          </div>
+            className="absolute bottom-0 left-1/2 h-[2.2%] w-[11%] -translate-x-1/2 rounded-t-[50%]"
+            style={{ background: "linear-gradient(180deg, var(--em-ink-300), var(--em-ink-400))" }}
+          />
         </div>
       </div>
       {/* contact shadow on the table */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-[2%] -bottom-4 h-8 rounded-[50%] blur-2xl"
-        style={{ background: "oklch(0 0 0 / 0.4)" }}
+        className="pointer-events-none absolute inset-x-[5%] -bottom-2 h-5 rounded-[50%] blur-xl"
+        style={{ background: "oklch(0 0 0 / 0.3)" }}
       />
     </div>
   );
@@ -337,7 +338,7 @@ export function LaptopPreview({
 
   // a spring between scroll and the scene: smoother, and keeps motion off its scroll-timeline path
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0001 });
-  const lid = useTransform(smooth, [0, OPEN], [-117, 0]); // shut on the keys, then upright (flat = sharp)
+  const lid = useTransform(smooth, [0, OPEN], [-113, 0]); // shut just above the keys (deck plane is -114deg), then upright (flat = sharp)
   const shade = useTransform(smooth, [OPEN * 0.4, OPEN], [1, 0]);
   const subOpacity = useTransform(smooth, [0, OPEN * 0.5], [1, 0]);
 
