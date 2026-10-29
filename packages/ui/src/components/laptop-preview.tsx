@@ -53,7 +53,11 @@ const Screen = ({ step, active }: { step: LaptopStep; active: boolean }) => (
   />
 );
 
-const DECK_TILT = 63; // degrees the deck leans toward the viewer from upright
+// MacBook Pro 14" proportions, as fractions of the body width (W): the lid is as tall as the
+// deck is deep, so it folds flat onto the keys.
+const LID = 0.66; // lid height and deck depth, in W
+const DECK_TILT = 66; // degrees the deck leans toward the viewer from upright (camera above)
+const GRILLE = "radial-gradient(circle, var(--em-ink-500) 0.9px, transparent 1.1px) 0 0 / 5px 5px";
 
 function Laptop({
   steps,
@@ -68,36 +72,31 @@ function Laptop({
   shade?: MotionValue<number>;
   logo?: React.ReactNode;
 }) {
-  const aluminium = "linear-gradient(180deg, var(--em-ink-100), var(--em-ink-300))";
+  const aluminium =
+    "linear-gradient(180deg, var(--em-ink-50), var(--em-ink-200) 55%, var(--em-ink-300))";
   return (
-    // one 3D scene, so the lid really folds down onto the keyboard
+    // one 3D scene, so the lid really folds down onto the keyboard; real perspective, so the
+    // deck widens toward us like a photo taken from above
     <div
-      className="relative w-[min(640px,86vw)] lg:w-[min(520px,38vw)]"
-      style={{
-        perspective: "12000px",
-        perspectiveOrigin: "50% 30%",
-        transformStyle: "preserve-3d",
-      }}
+      className="relative mb-[10%] w-[min(640px,88vw,calc((100svh-26rem)/1.05))] lg:mb-0 lg:w-[min(680px,48vw,calc((100svh-18rem)/1.05))]"
+      style={{ perspective: "2600px", perspectiveOrigin: "50% 15%", transformStyle: "preserve-3d" }}
     >
-      {/* lid: the screen side, and its aluminium back for when it is shut */}
+      {/* lid: upright when open (0deg, no 3D on the screen, so it stays sharp) */}
       <motion.div
         className="relative mx-auto w-full origin-bottom"
-        style={{ rotateX: lid ?? 6, transformStyle: "preserve-3d" }}
+        style={{ rotateX: lid ?? 0, transformStyle: "preserve-3d" }}
       >
         <div
-          className="relative rounded-t-[1.1rem] p-[1.6%] pb-[2.4%]"
+          className="relative rounded-t-[3.2%_4.8%] p-[1.4%] pb-[2%]"
           style={{
             backfaceVisibility: "hidden",
-            background: "var(--em-ink-950)",
-            boxShadow: "0 0 0 2px var(--em-ink-300)",
+            background: "var(--em-ink-975)",
+            // the aluminium rim around the black bezel
+            boxShadow:
+              "0 0 0 1.5px var(--em-ink-300), 0 0 0 2.5px var(--em-ink-400), 0 18px 40px -18px oklch(0 0 0 / 0.5)",
           }}
         >
-          <span
-            aria-hidden
-            className="absolute top-[0.6%] left-1/2 size-[0.55%] min-h-1 min-w-1 -translate-x-1/2 rounded-full"
-            style={{ background: "var(--em-ink-700)" }}
-          />
-          <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-black">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-t-[1.6%_2.5%] bg-black">
             {steps.map((s, i) => {
               // only the current screen and its neighbours are in the DOM, so 100 apps load 3 images
               const d = Math.abs(i - Math.max(0, active));
@@ -109,7 +108,7 @@ function Laptop({
               aria-hidden
               className="pointer-events-none absolute inset-0"
               style={{
-                background: "linear-gradient(115deg, rgb(255 255 255 / 0.10) 0%, transparent 38%)",
+                background: "linear-gradient(115deg, rgb(255 255 255 / 0.09) 0%, transparent 34%)",
               }}
             />
             {shade && (
@@ -120,52 +119,97 @@ function Laptop({
               />
             )}
           </div>
+          {/* the notch, with its camera */}
+          <span
+            aria-hidden
+            className="absolute top-[1.4%] left-1/2 grid h-[3.4%] w-[9%] -translate-x-1/2 place-items-center rounded-b-[30%_60%]"
+            style={{ background: "var(--em-ink-975)" }}
+          >
+            <span
+              className="size-[18%] min-h-[3px] min-w-[3px] rounded-full"
+              style={{
+                background: "radial-gradient(circle, var(--em-ink-600), var(--em-ink-900))",
+              }}
+            />
+          </span>
         </div>
+        {/* the back of the lid, seen while it is shut */}
         <div
           aria-hidden
-          className="absolute inset-0 grid place-items-center rounded-t-[1.1rem]"
+          className="absolute inset-0 grid place-items-center rounded-t-[3.2%_4.8%]"
           style={{
             transform: "rotateX(180deg)",
             backfaceVisibility: "hidden",
             background: aluminium,
           }}
         >
-          <span className="grid size-[9%] place-items-center overflow-hidden rounded-full opacity-80 [&>*]:h-full [&>*]:w-full">
+          <span className="grid h-[16%] place-items-center opacity-80 [&>*]:h-full [&>*]:w-auto">
             {logo}
           </span>
         </div>
       </motion.div>
 
-      {/* deck: tilted toward us, keyboard and trackpad on top, the front lip standing below */}
-      <div className="relative aspect-[100/34] w-full" style={{ transformStyle: "preserve-3d" }}>
+      {/* hinge: the dark band where the lid meets the body */}
+      <div
+        aria-hidden
+        className="relative mx-auto aspect-[100/1.3] w-[96%] rounded-b-sm"
+        style={{ background: "linear-gradient(180deg, var(--em-ink-800), var(--em-ink-600))" }}
+      />
+
+      {/* deck: tilted toward us; keyboard, speaker grilles and trackpad sized like the real one */}
+      <div
+        className="relative w-full"
+        style={{
+          aspectRatio: `100 / ${String(Math.round(LID * 100 * Math.cos((DECK_TILT * Math.PI) / 180) + 3))}`,
+          transformStyle: "preserve-3d",
+        }}
+      >
         <div
-          className="absolute inset-x-0 top-0 aspect-[100/76] origin-top rounded-b-[1.4rem]"
+          className="absolute inset-x-0 top-0 origin-top rounded-b-[4%_10%]"
           style={{
+            aspectRatio: `100 / ${String(LID * 100)}`,
             transform: `rotateX(${String(DECK_TILT)}deg)`,
             transformStyle: "preserve-3d",
             background: aluminium,
-            boxShadow: "inset 0 2px 0 var(--em-ink-400)",
+            boxShadow: "inset 0 1px 0 oklch(1 0 0 / 0.8), inset 0 -2px 0 var(--em-ink-400)",
           }}
         >
-          <MacBookKeyboard className="absolute top-[4%] left-[3%] w-[94%]" />
+          {[3, 89].map((left) => (
+            <span
+              key={left}
+              aria-hidden
+              className="absolute top-[5%] h-[58%] w-[8%]"
+              style={{ left: `${String(left)}%`, background: GRILLE, opacity: 0.7 }}
+            />
+          ))}
+          <div
+            className="absolute top-[4%] left-[12%] w-[76%] rounded-[1.2%] p-[0.5%]"
+            style={{
+              background: "var(--em-ink-300)",
+              boxShadow: "inset 0 1px 3px oklch(0 0 0 / 0.35)",
+            }}
+          >
+            <MacBookKeyboard className="w-full" />
+          </div>
           <span
             aria-hidden
-            className="absolute bottom-[5%] left-1/2 h-[25%] w-[40%] -translate-x-1/2 rounded-[0.6rem]"
+            className="absolute bottom-[5%] left-1/2 h-[27%] w-[38%] -translate-x-1/2 rounded-[3%_5%]"
             style={{
-              background: "linear-gradient(180deg, var(--em-ink-200), var(--em-ink-300))",
-              boxShadow: "inset 0 0 0 1px var(--em-ink-400)",
+              background: "linear-gradient(180deg, var(--em-ink-100), var(--em-ink-200))",
+              boxShadow: "inset 0 0 0 1px var(--em-ink-300), inset 0 1px 2px oklch(0 0 0 / 0.12)",
             }}
           />
+          {/* front edge, with the thumb notch for lifting the lid */}
           <div
             aria-hidden
-            className="absolute inset-x-[1%] top-full h-[4.5%] origin-top rounded-b-[45%_100%]"
+            className="absolute inset-x-[0.5%] top-full h-[5%] origin-top rounded-b-[40%_100%]"
             style={{
-              transform: `rotateX(${String(-DECK_TILT - 10)}deg)`,
-              background: "linear-gradient(180deg, var(--em-ink-300), var(--em-ink-500))",
+              transform: `rotateX(${String(-DECK_TILT - 18)}deg)`,
+              background: "linear-gradient(180deg, var(--em-ink-200), var(--em-ink-500))",
             }}
           >
             <span
-              className="absolute top-0 left-1/2 h-[45%] w-[14%] -translate-x-1/2 rounded-b-md"
+              className="absolute top-0 left-1/2 h-[55%] w-[12%] -translate-x-1/2 rounded-b-[50%]"
               style={{ background: "var(--em-ink-400)" }}
             />
           </div>
@@ -174,8 +218,8 @@ function Laptop({
       {/* contact shadow on the table */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-[4%] -bottom-3 h-6 rounded-[50%] blur-xl"
-        style={{ background: "oklch(0 0 0 / 0.35)" }}
+        className="pointer-events-none absolute inset-x-[2%] -bottom-4 h-8 rounded-[50%] blur-2xl"
+        style={{ background: "oklch(0 0 0 / 0.4)" }}
       />
     </div>
   );
@@ -293,7 +337,7 @@ export function LaptopPreview({
 
   // a spring between scroll and the scene: smoother, and keeps motion off its scroll-timeline path
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0001 });
-  const lid = useTransform(smooth, [0, OPEN], [-115, 6]); // shut on the keys, then up and slightly back
+  const lid = useTransform(smooth, [0, OPEN], [-117, 0]); // shut on the keys, then upright (flat = sharp)
   const shade = useTransform(smooth, [OPEN * 0.4, OPEN], [1, 0]);
   const subOpacity = useTransform(smooth, [0, OPEN * 0.5], [1, 0]);
 
