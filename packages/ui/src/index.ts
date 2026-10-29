@@ -94,3 +94,9 @@ export {
   type LiquidNavItem,
   type LauncherApp,
 } from "./components/liquid-glass-nav";
+export {
+  ClothingRail,
+  type RailGarment,
+  type GarmentKind,
+  type ClothingRailLabels,
+} from "./components/clothing-rail";

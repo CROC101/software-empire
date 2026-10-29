@@ -23,6 +23,7 @@ import { ActivitySkyline } from "./activity-skyline";
 import { CodebaseHexes } from "./codebase-hexes";
 import { PocketSection } from "./pocket-section";
 import { SignOff } from "./sign-off";
+import { Wardrobe } from "./wardrobe";
 import { HiddenWork } from "./hidden-work";
 import { CrocPoster } from "./croc-poster";
 import {
@@ -220,6 +221,7 @@ export default async function HomePage() {
         <ServicesSection aside={<StackCard href="#subsystems" />} />
         <HowSection />
         <TeamSection />
+        <Wardrobe />
         <FaqSection />
         <CrocPoster />
         <ContactSection cta={cta} />

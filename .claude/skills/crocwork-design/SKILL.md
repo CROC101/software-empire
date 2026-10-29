@@ -44,7 +44,7 @@ font pair or corner style per app.
   Also (vendored originals, MIT): `PolaroidLineCarousel` (phone screenshots on a string),
   `WaterRippleCarousel` (desktop screenshots, tap to ripple), `MurmurationWordmark` (flock forms a
   word), `SkeletonKeyPreloader` (the first-visit intro, via hub `intro-gate.tsx` + `public/intro-boot.js`;
-  one preloader per site). `IconFolder` (glass folder, icon tiles fan out; hub services). `PerspectiveTunnel` (cards fly past the camera, sticky + native scroll), `LaptopPreview` (lid opens on scroll, 16:10 screenshots + step cards). `GlassIconReveal` (WebGL2 glass droplet reveals a logo; hub sign-off above the footer, mark in `public/crocwork-mark.webp`). Branch on reduced motion only via `useReducedMotionAfterMount` (lib) or hydration breaks. Our own: `BlueprintReveal`, `PhosphorNotFound` (hub 404),
+  one preloader per site). `IconFolder` (glass folder, icon tiles fan out; hub services). `PerspectiveTunnel` (cards fly past the camera, sticky + native scroll), `LaptopPreview` (lid opens on scroll, 16:10 screenshots + step cards). `ClothingRail` (garments on a rail, turn / lift / spin; hub "wardrobe" of roles). `GlassIconReveal` (WebGL2 glass droplet reveals a logo; hub sign-off above the footer, mark in `public/crocwork-mark.webp`). Branch on reduced motion only via `useReducedMotionAfterMount` (lib) or hydration breaks. Our own: `BlueprintReveal`, `PhosphorNotFound` (hub 404),
   `GlassClock`. Props from server components must be serialisable: label templates like `"{n} of {total}"`.
 - Terminals for facts: `$ crocwork status`, real data only, blinking caret (`em-cursor`).
 - Phones: `PhoneFrame` from `@empire/ui` (titanium edge, Dynamic Island, status bar 9:41) over
