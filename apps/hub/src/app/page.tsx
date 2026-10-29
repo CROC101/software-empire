@@ -1,18 +1,22 @@
 import {
   AmbienceButton,
+  AppLauncher,
   CrocReveal,
+  LiquidGlassNav,
   LinkPreview,
   MorphingText,
   PhoneFrame,
   SunMoonThemeToggle,
 } from "@empire/ui";
+import { Briefcase, Code2, HelpCircle, LayoutGrid, UserRound, Workflow } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getClaims } from "@/lib/supabase/server";
+import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
 import { CountUp } from "./count-up";
 import { MobileMenu } from "./mobile-menu";
-import { BackToTop, NavSpy } from "./nav-spy";
+import { BackToTop } from "./nav-spy";
 import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
 import { ActivitySkyline } from "./activity-skyline";
@@ -37,6 +41,7 @@ import {
   WorkReel,
   WorkSection,
   WorkTunnel,
+  APP_ICON,
 } from "./sections";
 import { StackCard } from "./stack-card";
 
@@ -52,12 +57,29 @@ const ROLES = [
 ];
 
 const NAV = [
-  { href: "#about", label: "เกี่ยวกับ" },
-  { href: "#subsystems", label: "ผลงาน" },
-  { href: "#services", label: "รับทำอะไร" },
-  { href: "#how", label: "ทำงานยังไง" },
-  { href: "#faq", label: "คำถาม" },
+  { href: "#about", label: "เกี่ยวกับ", icon: <UserRound aria-hidden /> },
+  { href: "#subsystems", label: "ผลงาน", icon: <LayoutGrid aria-hidden /> },
+  { href: "#services", label: "รับทำอะไร", icon: <Briefcase aria-hidden /> },
+  { href: "#how", label: "ทำงานยังไง", icon: <Workflow aria-hidden /> },
+  { href: "#faq", label: "คำถาม", icon: <HelpCircle aria-hidden /> },
 ];
+
+// the nine-dot grid: every subsystem, open ones link through /go, the rest show as coming soon
+const LAUNCHER = {
+  label: "แอปทั้งหมด",
+  soonLabel: "เร็ว ๆ นี้",
+  apps: subsystems.map((s) => {
+    const Icon = APP_ICON[s.slug] ?? Code2;
+    return {
+      slug: s.slug,
+      name: s.name,
+      href: `/go/${s.slug}`,
+      icon: <Icon aria-hidden />,
+      accent: s.accent,
+      soon: !appUrl(s.slug),
+    };
+  }),
+};
 
 export default async function HomePage() {
   const claims = await getClaims();
@@ -81,8 +103,13 @@ export default async function HomePage() {
             />
             crocwork.studio
           </Link>
-          <nav aria-label="เมนูหลัก" className="flex items-center gap-1 sm:gap-6">
-            <NavSpy items={NAV} />
+          <div className="flex items-center gap-1 sm:gap-4">
+            <LiquidGlassNav
+              label="ส่วนต่าง ๆ ของหน้า"
+              items={NAV}
+              launcher={LAUNCHER}
+              className="hidden lg:block"
+            />
             <span className="hidden items-center gap-2 lg:flex">
               <AmbienceButton cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
               <SunMoonThemeToggle cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
@@ -93,8 +120,9 @@ export default async function HomePage() {
             >
               {cta.label} <span aria-hidden>→</span>
             </Link>
+            <AppLauncher {...LAUNCHER} className="lg:hidden" />
             <MobileMenu items={NAV} cta={cta} />
-          </nav>
+          </div>
         </div>
       </header>
 

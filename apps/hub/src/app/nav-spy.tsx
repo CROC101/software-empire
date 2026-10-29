@@ -1,55 +1,7 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
-import { motion } from "motion/react";
 import { useEffect, useState } from "react";
-
-/** Header links; the underline glides (spring) to whichever section is on screen. */
-export function NavSpy({ items }: { items: readonly { href: string; label: string }[] }) {
-  const [active, setActive] = useState<string | null>(null);
-
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(`#${e.target.id}`);
-      },
-      // current = the section crossing the band 35–45% down the screen
-      { rootMargin: "-35% 0px -55% 0px" },
-    );
-    for (const { href } of items) {
-      const el = document.getElementById(href.slice(1));
-      if (el) io.observe(el);
-    }
-    return () => io.disconnect();
-  }, [items]);
-
-  return (
-    <ul className="hidden items-center gap-6 lg:flex">
-      {items.map((item) => (
-        <li key={item.href} className="relative">
-          <a
-            href={item.href}
-            aria-current={active === item.href ? "location" : undefined}
-            className={`block py-1 text-sm transition-colors duration-300 ${
-              active === item.href
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {item.label}
-          </a>
-          {active === item.href && (
-            <motion.span
-              layoutId="nav-underline"
-              className="absolute inset-x-0 -bottom-0.5 h-0.5 bg-[var(--em-blue-600)]"
-              transition={{ type: "spring", stiffness: 380, damping: 34 }}
-            />
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 /** Round button bottom-right, shown once the hero has scrolled away. */
 export function BackToTop() {

@@ -354,7 +354,7 @@ function Phones({
 
 /* ── work reel: a pinned scroll interlude before the case studies ── */
 
-const APP_ICON: Record<string, typeof Code2> = {
+export const APP_ICON: Record<string, typeof Code2> = {
   community: MessagesSquare,
   commerce: Store,
   toolboxes: Wrench,

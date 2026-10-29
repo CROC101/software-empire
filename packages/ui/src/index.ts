@@ -88,3 +88,9 @@ export {
 export { GlowCard } from "./components/glow-card";
 export { ParticleTitle, type ParticleTitleProps } from "./components/particle-title";
 export { TextLoop } from "./components/text-loop";
+export {
+  LiquidGlassNav,
+  AppLauncher,
+  type LiquidNavItem,
+  type LauncherApp,
+} from "./components/liquid-glass-nav";

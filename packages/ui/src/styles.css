@@ -1689,3 +1689,204 @@ html:has(dialog[open]) .vt-top {
     display: none;
   }
 }
+
+/* ── LiquidGlassNav: frosted capsule, glass droplet on the current link ────── */
+.lgn {
+  --lgn-glass: color-mix(in oklab, var(--background) 62%, transparent);
+  --lgn-edge: color-mix(in oklab, white 70%, transparent);
+  position: relative;
+}
+.lgn-list {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  background: var(--lgn-glass);
+  border: 1px solid var(--lgn-edge);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 80%, transparent),
+    0 8px 24px -10px color-mix(in oklab, var(--em-blue-700) 30%, transparent),
+    0 2px 6px -2px color-mix(in oklab, var(--foreground) 12%, transparent);
+  backdrop-filter: blur(14px) saturate(1.6);
+}
+.dark .lgn {
+  --lgn-edge: color-mix(in oklab, white 14%, transparent);
+}
+.lgn-link {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  transition: color 0.3s ease;
+}
+.lgn-link:hover,
+.lgn-link[aria-current] {
+  color: var(--foreground);
+}
+.lgn-link:focus-visible {
+  outline: 2px solid var(--em-blue-500);
+  outline-offset: 2px;
+}
+/* hover: a thin iridescent glint along the top edge */
+.lgn-glint {
+  position: absolute;
+  top: 1px;
+  left: 22%;
+  right: 22%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.8 0.12 330),
+    oklch(0.82 0.12 230),
+    oklch(0.85 0.12 160),
+    transparent
+  );
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lgn-link:hover .lgn-glint {
+  opacity: 1;
+  transform: none;
+}
+.lgn-link[aria-current] .lgn-glint {
+  opacity: 0;
+}
+/* the droplet: clear glass, blue rim at rest, a rainbow rim while it travels */
+.lgn-drop {
+  position: absolute;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  left: 0;
+  z-index: 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, white 18%, transparent);
+  box-shadow:
+    inset 0 1px 2px color-mix(in oklab, white 85%, transparent),
+    inset 0 -2px 6px color-mix(in oklab, var(--em-blue-500) 14%, transparent),
+    0 4px 14px -4px color-mix(in oklab, var(--em-blue-600) 35%, transparent);
+  pointer-events: none;
+  will-change: transform, width;
+}
+.lgn-rim {
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+.lgn-rim--blue {
+  background: linear-gradient(
+    180deg,
+    var(--em-sky-500),
+    var(--em-blue-500) 55%,
+    color-mix(in oklab, var(--em-blue-600) 70%, white)
+  );
+}
+.lgn-rim--rainbow {
+  background: conic-gradient(
+    from 200deg,
+    oklch(0.78 0.14 330),
+    oklch(0.75 0.15 290),
+    oklch(0.72 0.15 240),
+    oklch(0.8 0.13 190),
+    oklch(0.85 0.13 150),
+    oklch(0.8 0.12 60),
+    oklch(0.78 0.14 330)
+  );
+}
+.lgn-shine {
+  position: absolute;
+  inset: 2px 12% auto;
+  height: 40%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, color-mix(in oklab, white 55%, transparent), transparent);
+}
+/* the nine-dot launcher and its panel */
+.lgn-launch {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+.lgn-launch:hover,
+.lgn-launch:focus-visible {
+  color: var(--foreground);
+  background: color-mix(in oklab, var(--foreground) 7%, transparent);
+}
+.lgn-apps {
+  position: fixed;
+  inset: 4.5rem 1rem auto auto;
+  margin: 0;
+  width: min(20rem, calc(100vw - 2rem));
+  padding: 0.9rem;
+  border-radius: 1.4rem;
+  border: 1px solid var(--lgn-edge, color-mix(in oklab, white 60%, transparent));
+  background: color-mix(in oklab, var(--background) 78%, transparent);
+  color: var(--foreground);
+  box-shadow: 0 24px 60px -20px color-mix(in oklab, var(--em-blue-700) 40%, transparent);
+  backdrop-filter: blur(20px) saturate(1.6);
+}
+.lgn-apps:popover-open {
+  animation: lgn-pop 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.lgn-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.65rem 0.25rem;
+  border-radius: 1rem;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+a.lgn-app:hover,
+a.lgn-app:focus-visible {
+  background: color-mix(in oklab, var(--foreground) 6%, transparent);
+}
+@keyframes lgn-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lgn-apps:popover-open {
+    animation: none;
+  }
+}
+/* icons only where the header is tight; the label stays for screen readers */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .lgn-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
