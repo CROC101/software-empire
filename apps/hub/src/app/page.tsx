@@ -198,23 +198,30 @@ export default async function HomePage() {
       </header>
 
       <main>
-        <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-10 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
+        <section className="relative isolate mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-10 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
+          {/* soft aurora behind the hero, in the menu's water colours */}
+          <div aria-hidden className="hero-aurora pointer-events-none absolute inset-0 -z-10" />
           <div className="flex flex-col items-start gap-6">
-            <p className="font-mono text-xs uppercase tracking-widest cw-blue">
-              crocwork studio · ซอฟต์แวร์ · AI · ระบบหลังบ้าน
+            {/* glass chip, the same material as the water menu */}
+            <p className="cw-glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-widest">
+              <span className="st-live" aria-hidden />
+              <span className="cw-blue font-semibold">crocwork studio</span>
+              <span className="text-muted-foreground">ซอฟต์แวร์ · AI · ระบบหลังบ้าน</span>
             </p>
-            <h1 className="font-sans text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl">
+            <h1 className="pk-depth font-sans text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl">
               ระบบที่ผมสร้าง
               <br />
               ทำงานได้จริง
               <br />
-              <span className="cw-blue relative inline-block">
-                ครบ <CountUp to={subsystems.length} /> ระบบ
-                <Scribble className="absolute -bottom-3 left-0 w-full" />
+              <span className="relative inline-block">
+                <span className="pk-depth-blue">
+                  ครบ <CountUp to={subsystems.length} /> ระบบ
+                </span>
+                <Scribble className="absolute -bottom-3 left-0 w-full cw-blue" />
               </span>
             </h1>
             {/* Enterprise ของคนเดียว: ทุกตำแหน่งในทีม คือคนคนเดียวกัน */}
-            <div className="flex w-full items-start gap-3 text-2xl font-black leading-none sm:text-3xl">
+            <div className="cw-glass flex w-full max-w-lg items-center gap-3 rounded-2xl px-4 py-3 text-2xl font-black leading-none sm:text-3xl">
               <span className="shrink-0">ทีมของผม =</span>
               <MorphingText
                 texts={ROLES}
@@ -248,17 +255,29 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-3">
               <a
                 href="#subsystems"
-                className="inline-flex items-center gap-2 bg-foreground px-5 py-3 text-sm font-bold text-background"
+                className="cw-btn-blue inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold shadow-[0_14px_30px_-12px_color-mix(in_oklab,var(--em-blue-600)_70%,transparent)] transition-transform hover:-translate-y-0.5"
               >
                 ดูผลงาน <span aria-hidden>↓</span>
               </a>
               <Link
                 href={cta.href}
-                className="inline-flex items-center border-2 border-foreground px-5 py-3 text-sm font-bold"
+                className="cw-glass inline-flex items-center rounded-xl px-5 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5"
               >
                 {claims ? "เปิดแดชบอร์ด" : "ลองเล่นดู"}
               </Link>
             </div>
+            {/* true numbers only */}
+            <ul className="flex flex-wrap gap-2 text-xs font-semibold text-muted-foreground">
+              {[
+                `${String(subsystems.filter((x) => appUrl(x.slug)).length)} ระบบเปิดใช้แล้ว`,
+                `${String(PGTAP_TESTS)} เทสต์ฐานข้อมูล`,
+                "ล็อกอินครั้งเดียว ใช้ได้ทุกระบบ",
+              ].map((t) => (
+                <li key={t} className="cw-glass rounded-full px-3 py-1">
+                  {t}
+                </li>
+              ))}
+            </ul>
           </div>
 
           <HeroVisual />

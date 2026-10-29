@@ -301,3 +301,127 @@ a.sw-app:focus-visible .sw-tile {
   border-radius: 999px;
   box-shadow: 0 0 0 2.5px var(--background);
 }
+
+/* status band: blueprint grid, glass stat cards, a glowing terminal */
+.st-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(70% 80% at 60% 50%, #000, transparent);
+}
+.st-card {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.09);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.02));
+  backdrop-filter: blur(8px);
+}
+.st-num {
+  background: linear-gradient(
+    180deg,
+    var(--em-ink-0),
+    color-mix(in oklab, var(--em-sky-500) 70%, var(--em-ink-0))
+  );
+  background-clip: text;
+  color: transparent;
+}
+.st-term {
+  position: relative;
+  border-radius: 0.85rem;
+  background: color-mix(in oklab, var(--em-ink-950) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.08),
+    0 30px 80px -30px color-mix(in oklab, var(--em-blue-500) 55%, transparent);
+}
+/* a gradient hairline round the window */
+.st-term::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--em-blue-500),
+    transparent 40%,
+    transparent 60%,
+    var(--em-violet-500)
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.st-pill {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+}
+.st-pill--on {
+  color: var(--em-success-dark);
+  background: color-mix(in oklab, var(--em-success) 16%, transparent);
+}
+.st-pill--wip {
+  color: var(--em-gold-300);
+  background: color-mix(in oklab, var(--em-gold-500) 14%, transparent);
+}
+.st-live {
+  position: relative;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--em-success-dark);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .st-live::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: st-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+@keyframes st-ping {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* glass, the same material as the water menu: frosted, a bright rim, a blue shadow */
+.cw-glass {
+  border: 1px solid color-mix(in oklab, var(--foreground) 9%, transparent);
+  background: color-mix(in oklab, var(--background) 62%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
+    0 10px 30px -14px color-mix(in oklab, var(--em-blue-700) 35%, transparent);
+  backdrop-filter: blur(14px) saturate(1.5);
+}
+.hero-aurora {
+  background:
+    radial-gradient(
+      40% 45% at 78% 40%,
+      color-mix(in oklab, var(--em-blue-500) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      30% 35% at 60% 75%,
+      color-mix(in oklab, var(--em-violet-500) 12%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      28% 30% at 12% 20%,
+      color-mix(in oklab, var(--em-sky-500) 10%, transparent),
+      transparent 70%
+    );
+  filter: blur(10px);
+}

@@ -260,13 +260,26 @@ export function StatusSection() {
     <>
       <TornEdge color="var(--em-ink-975)" />
       <section id="status" className={`${DARK} relative scroll-mt-16 overflow-hidden`}>
+        {/* a faint blueprint grid, and a glow the terminal sits in */}
+        <div aria-hidden className="st-grid pointer-events-none absolute inset-0" />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 right-[-10%] size-[44rem] -translate-y-1/2 rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(closest-side, color-mix(in oklab, var(--em-blue-500) 28%, transparent), color-mix(in oklab, var(--em-violet-500) 10%, transparent) 60%, transparent)",
+          }}
+        />
         <Meteors />
         <div
           data-tide
           className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:items-center"
         >
           <div className="flex flex-col gap-6">
-            <p className={`${EYEBROW} text-[var(--em-ink-400)]`}>status · live</p>
+            <p className={`${EYEBROW} flex items-center gap-2 text-[var(--em-ink-400)]`}>
+              <span className="st-live" aria-hidden />
+              status · live
+            </p>
             <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
               ระบบที่ผมทำ
               <br />
@@ -275,26 +288,26 @@ export function StatusSection() {
             <p className="max-w-md text-[var(--em-ink-300)]">
               คนที่คุยงานกับคุณ คือคนที่เขียนโค้ดเอง ตัวเลขข้าง ๆ ไม่ได้แต่ง ดึงจากระบบกับ repo จริง
             </p>
-            <dl className="mt-4 grid grid-cols-3 gap-6">
+            <dl className="mt-4 grid grid-cols-3 gap-3 sm:gap-4">
               {[
                 [String(live.length), "ระบบที่เปิดให้ใช้แล้ว"],
                 [String(PGTAP_TESTS), "เทสต์ความปลอดภัยที่ผ่าน"],
                 [`${String(COMMUNITY_ROUNDS)} รอบ`, "ที่ใช้ทำ Community จนจบ"],
               ].map(([value, label]) => (
-                <div key={label}>
-                  <dd className="text-4xl font-black">{value}</dd>
-                  <dt className="mt-1 text-xs text-[var(--em-ink-400)]">{label}</dt>
+                <div key={label} className="st-card flex flex-col-reverse">
+                  <dt className="mt-1 text-xs leading-snug text-[var(--em-ink-400)]">{label}</dt>
+                  <dd className="st-num text-3xl font-black sm:text-4xl">{value}</dd>
                 </div>
               ))}
             </dl>
           </div>
 
-          <div className="border border-[var(--em-ink-800)] bg-[var(--em-ink-950)] font-mono text-[0.8rem] shadow-2xl">
-            <div className="flex items-center gap-2 border-b border-[var(--em-ink-800)] px-4 py-2.5 text-xs text-[var(--em-ink-400)]">
-              <span className="size-2.5 rounded-full bg-[var(--em-ink-700)]" />
-              <span className="size-2.5 rounded-full bg-[var(--em-ink-700)]" />
-              <span className="size-2.5 rounded-full bg-[var(--em-ink-700)]" />
-              <span className="ml-2">crocwork@studio ~</span>
+          <div className="st-term font-mono text-[0.8rem]">
+            <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5 text-xs text-[var(--em-ink-400)]">
+              <span className="size-3 rounded-full bg-[var(--em-coral-500)]" />
+              <span className="size-3 rounded-full bg-[var(--em-gold-300)]" />
+              <span className="size-3 rounded-full bg-[var(--em-success)]" />
+              <span className="mx-auto pr-12">crocwork@studio — zsh</span>
             </div>
             <div className="flex flex-col gap-1 p-5">
               <p>$ crocwork status</p>
@@ -302,10 +315,14 @@ export function StatusSection() {
               {subsystems.map((s) => {
                 const on = Boolean(appUrl(s.slug));
                 return (
-                  <p key={s.slug} className="grid grid-cols-[9rem_1fr] gap-2">
+                  <p key={s.slug} className="grid grid-cols-[9rem_1fr] items-center gap-2">
                     <span>{s.slug}</span>
-                    <span className={on ? "text-success" : "text-warning"}>
-                      {on ? "● เปิดใช้แล้ว" : "◐ กำลังทำ"}
+                    <span className={`st-pill ${on ? "st-pill--on" : "st-pill--wip"}`}>
+                      <span
+                        aria-hidden
+                        className={on ? "st-live" : "size-1.5 rounded-full bg-current"}
+                      />
+                      {on ? "เปิดใช้แล้ว" : "กำลังทำ"}
                     </span>
                   </p>
                 );
