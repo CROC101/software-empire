@@ -573,6 +573,7 @@ export function LaptopSection() {
         </>
       }
       subtitle="เลื่อนลงเพื่อเปิดฝา"
+      logo={<Image src="/crocwork-logo.jpg" alt="" width={48} height={48} />}
       steps={LAPTOP}
     />
   );

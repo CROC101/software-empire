@@ -51,72 +51,172 @@ const Screen = ({ step, active }: { step: LaptopStep; active: boolean }) => (
   />
 );
 
+// keyboard rows as key widths (1 = a letter key); the last row splits the arrow keys
+const ROWS: readonly (readonly number[])[] = [
+  Array.from({ length: 14 }, () => 1),
+  [...Array.from({ length: 13 }, () => 1), 1.5],
+  [1.5, ...Array.from({ length: 13 }, () => 1)],
+  [1.8, ...Array.from({ length: 11 }, () => 1), 1.8],
+  [2.3, ...Array.from({ length: 10 }, () => 1), 2.3],
+  [1, 1, 1, 1.3, 5.4, 1.3, 1, 3],
+];
+const DECK_TILT = 70; // degrees the deck leans toward the viewer from upright
+const KEY = "linear-gradient(180deg, var(--em-ink-800), var(--em-ink-950))";
+
+function Keyboard() {
+  return (
+    <div
+      className="absolute inset-x-[6.5%] top-[6%] flex h-[50%] flex-col gap-[1.6%] rounded-[3px] p-[0.8%]"
+      style={{ background: "var(--em-ink-400)" }}
+    >
+      {ROWS.map((row, r) => (
+        <div key={r} className="flex gap-[0.7%]" style={{ flex: r === 0 ? 0.55 : 1 }}>
+          {row.map((w, k) =>
+            r === ROWS.length - 1 && k === row.length - 1 ? (
+              // arrows: ← (↑ over ↓) →
+              <div key={k} className="flex gap-[6%]" style={{ flex: w }}>
+                <span
+                  className="flex-1 self-end rounded-[2px]"
+                  style={{ background: KEY, height: "48%" }}
+                />
+                <span className="flex flex-1 flex-col gap-[8%]">
+                  <span className="flex-1 rounded-[2px]" style={{ background: KEY }} />
+                  <span className="flex-1 rounded-[2px]" style={{ background: KEY }} />
+                </span>
+                <span
+                  className="flex-1 self-end rounded-[2px]"
+                  style={{ background: KEY, height: "48%" }}
+                />
+              </div>
+            ) : (
+              <span
+                key={k}
+                className="rounded-[2px]"
+                style={{ flex: w, background: KEY, boxShadow: "inset 0 -1px 0 oklch(0 0 0 / 0.5)" }}
+              />
+            ),
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Laptop({
   steps,
   active,
   lid,
   shade,
+  logo,
 }: {
   steps: readonly LaptopStep[];
   active: number;
   lid?: MotionValue<number>;
   shade?: MotionValue<number>;
+  logo?: React.ReactNode;
 }) {
+  const aluminium = "linear-gradient(180deg, var(--em-ink-100), var(--em-ink-300))";
   return (
+    // one 3D scene, so the lid really folds down onto the keyboard
     <div
-      className="relative w-[min(860px,88vw)] lg:w-[min(780px,58vw)]"
-      style={{ perspective: "2200px" }}
+      className="relative w-[min(640px,86vw)] lg:w-[min(580px,42vw)]"
+      style={{ perspective: "2400px", perspectiveOrigin: "50% 30%", transformStyle: "preserve-3d" }}
     >
-      {/* lid: aluminium edge, black bezel, the screen */}
+      {/* lid: the screen side, and its aluminium back for when it is shut */}
       <motion.div
-        className="relative mx-auto w-[88%] origin-bottom rounded-t-[1.1rem] p-[1.6%] pb-[2.4%] shadow-2xl"
-        style={{
-          rotateX: lid,
-          background: "var(--em-ink-950)",
-          boxShadow: "0 0 0 2px var(--em-ink-300), 0 40px 80px -30px oklch(0 0 0 / 0.5)",
-        }}
+        className="relative mx-auto w-[88%] origin-bottom"
+        style={{ rotateX: lid ?? 6, transformStyle: "preserve-3d" }}
       >
-        <span
-          aria-hidden
-          className="absolute top-[0.6%] left-1/2 size-[0.55%] min-h-1 min-w-1 -translate-x-1/2 rounded-full"
-          style={{ background: "var(--em-ink-700)" }}
-        />
-        <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-black">
-          {steps.map((s, i) => (
-            <Screen key={s.src} step={s} active={i === Math.max(0, active)} />
-          ))}
-          {/* glass glare, and the dark of a screen still waking up */}
+        <div
+          className="relative rounded-t-[1.1rem] p-[1.6%] pb-[2.4%]"
+          style={{
+            backfaceVisibility: "hidden",
+            background: "var(--em-ink-950)",
+            boxShadow: "0 0 0 2px var(--em-ink-300)",
+          }}
+        >
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background: "linear-gradient(115deg, rgb(255 255 255 / 0.10) 0%, transparent 38%)",
-            }}
+            className="absolute top-[0.6%] left-1/2 size-[0.55%] min-h-1 min-w-1 -translate-x-1/2 rounded-full"
+            style={{ background: "var(--em-ink-700)" }}
           />
-          {shade && (
-            <motion.span
+          <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-black">
+            {steps.map((s, i) => (
+              <Screen key={s.src} step={s} active={i === Math.max(0, active)} />
+            ))}
+            {/* glass glare, and the dark of a screen still waking up */}
+            <span
               aria-hidden
-              className="pointer-events-none absolute inset-0 bg-black"
-              style={{ opacity: shade }}
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background: "linear-gradient(115deg, rgb(255 255 255 / 0.10) 0%, transparent 38%)",
+              }}
             />
-          )}
+            {shade && (
+              <motion.span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-black"
+                style={{ opacity: shade }}
+              />
+            )}
+          </div>
+        </div>
+        <div
+          aria-hidden
+          className="absolute inset-0 grid place-items-center rounded-t-[1.1rem]"
+          style={{
+            transform: "rotateX(180deg)",
+            backfaceVisibility: "hidden",
+            background: aluminium,
+          }}
+        >
+          <span className="grid size-[9%] place-items-center overflow-hidden rounded-full opacity-80 [&>*]:h-full [&>*]:w-full">
+            {logo}
+          </span>
         </div>
       </motion.div>
-      {/* base: a thin deck wider than the lid, a thumb notch in the front lip */}
-      <div
-        className="relative mx-auto h-[clamp(10px,1.8vw,16px)] w-full rounded-t-[3px] rounded-b-[45%_100%]"
-        style={{
-          background:
-            "linear-gradient(180deg, var(--em-ink-200), var(--em-ink-300) 45%, var(--em-ink-500))",
-          boxShadow: "0 18px 30px -16px oklch(0 0 0 / 0.55)",
-        }}
-      >
-        <span
-          aria-hidden
-          className="absolute top-0 left-1/2 h-[45%] w-[14%] -translate-x-1/2 rounded-b-md"
-          style={{ background: "var(--em-ink-400)" }}
-        />
+
+      {/* deck: tilted toward us, keyboard and trackpad on top, the front lip standing below */}
+      <div className="relative aspect-[100/30] w-full" style={{ transformStyle: "preserve-3d" }}>
+        <div
+          className="absolute inset-x-0 top-0 aspect-[100/60] origin-top rounded-b-[1.4rem]"
+          style={{
+            transform: `rotateX(${String(DECK_TILT)}deg)`,
+            transformStyle: "preserve-3d",
+            background: aluminium,
+            boxShadow: "inset 0 2px 0 var(--em-ink-400)",
+          }}
+        >
+          <Keyboard />
+          <span
+            aria-hidden
+            className="absolute bottom-[8%] left-1/2 h-[31%] w-[38%] -translate-x-1/2 rounded-[0.6rem]"
+            style={{
+              background: "linear-gradient(180deg, var(--em-ink-200), var(--em-ink-300))",
+              boxShadow: "inset 0 0 0 1px var(--em-ink-400)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-[1%] top-full h-[4.5%] origin-top rounded-b-[45%_100%]"
+            style={{
+              transform: `rotateX(${String(-DECK_TILT - 10)}deg)`,
+              background: "linear-gradient(180deg, var(--em-ink-300), var(--em-ink-500))",
+            }}
+          >
+            <span
+              className="absolute top-0 left-1/2 h-[45%] w-[14%] -translate-x-1/2 rounded-b-md"
+              style={{ background: "var(--em-ink-400)" }}
+            />
+          </div>
+        </div>
       </div>
+      {/* contact shadow on the table */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-[4%] -bottom-3 h-6 rounded-[50%] blur-xl"
+        style={{ background: "oklch(0 0 0 / 0.35)" }}
+      />
     </div>
   );
 }
@@ -200,6 +300,7 @@ export function LaptopPreview({
   eyebrow,
   title,
   subtitle,
+  logo,
   id,
   className,
 }: {
@@ -208,6 +309,8 @@ export function LaptopPreview({
   title: React.ReactNode;
   /** Fades once the lid starts opening, e.g. "เลื่อนลงเพื่อเปิดฝา". */
   subtitle?: string;
+  /** Small mark on the back of the lid. */
+  logo?: React.ReactNode;
   id?: string;
   className?: string;
 }) {
@@ -226,7 +329,7 @@ export function LaptopPreview({
 
   // a spring between scroll and the scene: smoother, and keeps motion off its scroll-timeline path
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0001 });
-  const lid = useTransform(smooth, [0, OPEN], [78, 0]);
+  const lid = useTransform(smooth, [0, OPEN], [-108, 6]); // shut on the keys, then up and slightly back
   const shade = useTransform(smooth, [OPEN * 0.4, OPEN], [1, 0]);
   const subOpacity = useTransform(smooth, [0, OPEN * 0.5], [1, 0]);
   const bar = smooth;
@@ -243,7 +346,7 @@ export function LaptopPreview({
       <section id={id} ref={ref} className={cn("mx-auto max-w-6xl px-4 py-24 sm:px-6", className)}>
         {head}
         <div className="mt-10 flex justify-center">
-          <Laptop steps={steps} active={0} />
+          <Laptop steps={steps} active={0} logo={logo} />
         </div>
         <div className="mt-10 grid justify-items-center gap-4 sm:grid-cols-2">
           {steps.map((s, i) => (
@@ -279,7 +382,7 @@ export function LaptopPreview({
 
         <div className="relative grid w-full max-w-6xl justify-items-center gap-6 lg:grid-cols-[1fr_24rem] lg:items-end lg:gap-10">
           <div className="flex justify-center">
-            <Laptop steps={steps} active={active} lid={lid} shade={shade} />
+            <Laptop steps={steps} active={active} lid={lid} shade={shade} logo={logo} />
           </div>
           {/* cards: beside the laptop on wide screens, under it on narrow ones */}
           <div className="relative h-[13.5rem] w-full max-w-sm">
