@@ -28,7 +28,7 @@ font pair or corner style per app.
 
 - Sticky header: logo + name left, nav centre/right, theme toggle + ambience button + solid
   blue CTA (`→`). Below `lg`: hamburger `<dialog>` sheet (`apps/hub/src/app/mobile-menu.tsx`).
-  Desktop nav is `LiquidGlassNav` (glass droplet follows the section on screen, nine-dot `AppLauncher` for the subsystems; the launcher stands alone on mobile).
+  Desktop nav is `NimbusNavbar` (WebGL water pill, the drop follows the section on screen; hub wrapper `site-nav.tsx`) with the nine-dot `AppLauncher` at its end; the launcher stands alone on mobile.
 - Section opener: mono eyebrow (`font-mono text-xs uppercase tracking-[0.2em]`) → huge black
   headline, second line in blue → muted paragraph.
 - Rhythm: light → dark (`--em-ink-975`) → light → blue. Bands meet with a **torn edge**

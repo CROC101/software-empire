@@ -88,15 +88,11 @@ export {
 export { GlowCard } from "./components/glow-card";
 export { ParticleTitle, type ParticleTitleProps } from "./components/particle-title";
 export { TextLoop } from "./components/text-loop";
-export {
-  LiquidGlassNav,
-  AppLauncher,
-  type LiquidNavItem,
-  type LauncherApp,
-} from "./components/liquid-glass-nav";
+export { AppLauncher, type LauncherApp } from "./components/app-launcher";
 export {
   ClothingRail,
   type RailGarment,
   type GarmentKind,
   type ClothingRailLabels,
 } from "./components/clothing-rail";
+export { NimbusNavbar, type NimbusNavItem, type NimbusFx } from "./components/nimbus-navbar";

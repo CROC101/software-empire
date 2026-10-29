@@ -2,13 +2,12 @@ import {
   AmbienceButton,
   AppLauncher,
   CrocReveal,
-  LiquidGlassNav,
   LinkPreview,
   MorphingText,
   PhoneFrame,
   SunMoonThemeToggle,
 } from "@empire/ui";
-import { Briefcase, Code2, HelpCircle, LayoutGrid, UserRound, Workflow } from "lucide-react";
+import { Code2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getClaims } from "@/lib/supabase/server";
@@ -23,6 +22,7 @@ import { ActivitySkyline } from "./activity-skyline";
 import { CodebaseHexes } from "./codebase-hexes";
 import { PocketSection } from "./pocket-section";
 import { SignOff } from "./sign-off";
+import { SiteNav } from "./site-nav";
 import { Wardrobe } from "./wardrobe";
 import { HiddenWork } from "./hidden-work";
 import { CrocPoster } from "./croc-poster";
@@ -58,11 +58,11 @@ const ROLES = [
 ];
 
 const NAV = [
-  { href: "#about", label: "เกี่ยวกับ", icon: <UserRound aria-hidden /> },
-  { href: "#subsystems", label: "ผลงาน", icon: <LayoutGrid aria-hidden /> },
-  { href: "#services", label: "รับทำอะไร", icon: <Briefcase aria-hidden /> },
-  { href: "#how", label: "ทำงานยังไง", icon: <Workflow aria-hidden /> },
-  { href: "#faq", label: "คำถาม", icon: <HelpCircle aria-hidden /> },
+  { href: "#about", label: "เกี่ยวกับ" },
+  { href: "#subsystems", label: "ผลงาน" },
+  { href: "#services", label: "รับทำอะไร" },
+  { href: "#how", label: "ทำงานยังไง" },
+  { href: "#faq", label: "คำถาม" },
 ];
 
 // the nine-dot grid: every subsystem, open ones link through /go, the rest show as coming soon
@@ -105,12 +105,10 @@ export default async function HomePage() {
             crocwork.studio
           </Link>
           <div className="flex items-center gap-1 sm:gap-4">
-            <LiquidGlassNav
-              label="ส่วนต่าง ๆ ของหน้า"
-              items={NAV}
-              launcher={LAUNCHER}
-              className="hidden lg:block"
-            />
+            {/* the water pill; its own CSS sets display, so the breakpoint lives on a wrapper */}
+            <span className="site-nav hidden lg:block">
+              <SiteNav launcher={LAUNCHER} />
+            </span>
             <span className="hidden items-center gap-2 lg:flex">
               <AmbienceButton cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
               <SunMoonThemeToggle cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
