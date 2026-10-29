@@ -145,27 +145,107 @@ export function TornPanel({
   );
 }
 
-/** Paper-cut landscape (layered hills under a moon) torn out as a backdrop for the phones. */
+/**
+ * Paper-cut night landscape torn out as a backdrop for the phones: a deep sky with a moon cut
+ * from stacked rings, a few stars and paper clouds, then five ridges stepping from haze to ink.
+ * Every sheet has a lit top edge and a shadow, with a faint paper grain over all. Pure vector,
+ * so it stays sharp at any size; the hue picks each app's colour, the seed varies the hills.
+ */
 function PaperArt({ hue, seed }: { hue: number; seed: number }) {
-  const layer = (n: number) =>
-    `oklch(${String(0.86 - n * 0.09)} ${String(0.07 + n * 0.02)} ${String(hue + n * 8)})`;
+  const c = (l: number, ch: number, dh = 0) =>
+    `oklch(${String(l)} ${String(ch)} ${String(hue + dh)})`;
+  const rnd = (k: number) => (((seed * 9301 + k * 49297) % 233280) / 233280) * 2 - 1; // -1…1
+  // out by the left edge: the back phone stands lower there, so the moon peeks past it
+  const moon = { x: 44, y: 70 };
+  // back to front: a ridge line, its sheet colour
+  const ridges = [0, 1, 2, 3, 4].map((n) => {
+    const base = 150 + n * 30;
+    const a = base - 26 + rnd(n) * 14;
+    const b = base + 8 + rnd(n + 5) * 12;
+    const m = base - 18 + rnd(n + 9) * 16;
+    const line = `M-10 ${String(a + 10)} C 60 ${String(a - 24)}, 120 ${String(b + 18)}, 200 ${String(m)} S 330 ${String(b - 28)}, 410 ${String(a)}`;
+    return { line, fill: c(0.74 - n * 0.1, 0.1 + n * 0.012, n * 6) };
+  });
+  const id = `pa${String(seed)}`;
   return (
     <div
       aria-hidden
-      className="absolute inset-x-0 bottom-4 top-14 overflow-hidden"
+      // wider than the phones (inside the page gutter) so the scene shows around them
+      className="absolute -inset-x-3 bottom-2 top-8 overflow-hidden sm:-inset-x-12"
       style={{ clipPath: tornPolygon(seed) }}
     >
       <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="size-full">
-        <rect width="400" height="300" fill={layer(0)} />
-        <circle cx="300" cy="90" r="44" fill="oklch(0.95 0.04 90)" opacity="0.85" />
-        {[0, 1, 2, 3].map((n) => (
-          <path
-            key={n}
-            d={`M0 ${String(150 + n * 38)} C 80 ${String(120 + n * 40)}, 150 ${String(190 + n * 30)}, 230 ${String(160 + n * 36)} S 360 ${String(130 + n * 40)}, 400 ${String(165 + n * 34)} V300 H0 Z`}
-            fill={layer(n + 1)}
-            style={{ filter: "drop-shadow(0 -2px 2px oklch(0 0 0 / 0.18))" }}
+        <defs>
+          <linearGradient id={`${id}-sky`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor={c(0.3, 0.13, -10)} />
+            <stop offset="0.65" stopColor={c(0.55, 0.15)} />
+            <stop offset="1" stopColor={c(0.78, 0.09, 12)} />
+          </linearGradient>
+          <filter id={`${id}-sheet`} x="-5%" y="-20%" width="110%" height="140%">
+            <feDropShadow dx="0" dy="-3" stdDeviation="3" floodColor="#000" floodOpacity="0.28" />
+          </filter>
+          <filter id={`${id}-grain`}>
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={seed} />
+            <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0" />
+            <feComposite in2="SourceGraphic" operator="in" />
+          </filter>
+        </defs>
+
+        <rect width="400" height="300" fill={`url(#${id}-sky)`} />
+        {[...Array<number>(14).keys()].map((i) => (
+          <circle
+            key={i}
+            cx={(i * 67 + seed * 31) % 400}
+            cy={(i * 29 + seed * 13) % 120}
+            r={i % 4 === 0 ? 1.4 : 0.8}
+            fill="oklch(0.98 0.02 90)"
+            opacity={0.55 + (i % 3) * 0.15}
           />
         ))}
+        {/* moon: rings of paper, largest and faintest first */}
+        {[46, 35, 26].map((r, i) => (
+          <circle
+            key={r}
+            cx={moon.x}
+            cy={moon.y}
+            r={r}
+            fill={i === 2 ? "oklch(0.97 0.035 92)" : c(0.86 - i * 0.04, 0.05, 20)}
+            opacity={i === 2 ? 1 : 0.28 + i * 0.18}
+            filter={i === 2 ? `url(#${id}-sheet)` : undefined}
+          />
+        ))}
+        {/* two paper clouds drifting across the moon */}
+        {[
+          [moon.x - 46, moon.y + 22, 1],
+          [moon.x + 30, moon.y + 44, 0.8],
+        ].map(([x = 0, y = 0, k = 1], i) => (
+          <path
+            key={i}
+            d={`M${String(x)} ${String(y)} q ${String(10 * k)} ${String(-14 * k)} ${String(24 * k)} ${String(-6 * k)} q ${String(12 * k)} ${String(-12 * k)} ${String(26 * k)} 0 q ${String(14 * k)} 0 ${String(14 * k)} ${String(8 * k)} z`}
+            fill="oklch(0.96 0.02 250)"
+            opacity="0.92"
+            filter={`url(#${id}-sheet)`}
+          />
+        ))}
+        {ridges.map((r, n) => (
+          <g key={n} filter={`url(#${id}-sheet)`}>
+            <path d={`${r.line} V310 H-10 Z`} fill={r.fill} />
+            {/* the cut edge catches the light */}
+            <path
+              d={r.line}
+              fill="none"
+              stroke="oklch(1 0 0 / 0.45)"
+              strokeWidth={n < 2 ? 1 : 1.4}
+            />
+          </g>
+        ))}
+        <rect
+          width="400"
+          height="300"
+          filter={`url(#${id}-grain)`}
+          opacity="0.07"
+          style={{ mixBlendMode: "overlay" }}
+        />
       </svg>
     </div>
   );
@@ -275,7 +355,7 @@ const WORK: {
       "ทำเป็น 7 รอบ รอบละเรื่อง ทุกรอบมีเทสต์ฝั่งฐานข้อมูลก่อนค่อยทำหน้าจอ ใครบล็อกใคร ใครเห็นโพสต์ไหน ตัดสินที่ฐานข้อมูลทั้งหมด",
     shots: ["/previews/m-community.webp", "/previews/m-messages.webp"],
     label: "แชตเรียลไทม์ · โทร P2P",
-    hue: 300,
+    hue: 292,
   },
   {
     slug: "toolboxes",
@@ -286,7 +366,7 @@ const WORK: {
       "JSON, QR, รหัสผ่าน, ภาษี, เกรดเฉลี่ย งานหนักย้ายไปทำใน Web Worker หน้าจอเลยไม่ค้าง และข้อมูลไม่ออกจากเครื่องคุณ",
     shots: ["/previews/m-toolboxes.webp", "/previews/m-tools.webp"],
     label: "ทำงานในเครื่อง · ไม่ส่งข้อมูลออก",
-    hue: 245,
+    hue: 262,
   },
   {
     slug: "canva",
@@ -297,7 +377,7 @@ const WORK: {
       "ย้ายมาจากโปรเจกต์เดิมที่เคยทำ แล้วเปลี่ยนหลังบ้านมาใช้ Supabase ทั้งก้อน ไฟล์งานอยู่ในที่เก็บส่วนตัวของแต่ละคน",
     shots: ["/previews/m-canva.webp"],
     label: "หลายเลเยอร์ · บันทึกอัตโนมัติ",
-    hue: 30,
+    hue: 215,
   },
 ];
 
