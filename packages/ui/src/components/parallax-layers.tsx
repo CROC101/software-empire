@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { cn } from "../lib/cn";
+import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 
 export type ParallaxLayer = {
   /** how far the layer sinks while the section scrolls past, % of its height (0 = pinned to page) */
@@ -27,7 +28,7 @@ export function ParallaxLayers({
   children?: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionAfterMount();
   // 0 when the header top hits the viewport top, 1 when its bottom does
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 

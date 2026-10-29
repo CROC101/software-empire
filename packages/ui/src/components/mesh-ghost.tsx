@@ -1,9 +1,10 @@
 "use client";
 
 import { MeshGradient } from "@paper-design/shaders-react";
-import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/cn";
+import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 import { useTokenColors } from "../lib/token-colors";
 
 /**
@@ -36,7 +37,7 @@ const MAX_LOOK = 8; // how far the eyes travel, in viewBox units
 
 export function MeshGhost({ className }: { className?: string }) {
   const box = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionAfterMount();
   const colors = useTokenColors(TOKENS);
   const [visible, setVisible] = useState(true);
 

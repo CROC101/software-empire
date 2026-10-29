@@ -130,7 +130,9 @@ export function PerspectiveTunnel({
   const ref = React.useRef<HTMLElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
   const reduced = useReducedMotionAfterMount();
-  const [stage, setStage] = React.useState<Stage>({ width: 1280, height: 800, mobile: false });
+  // null until measured: the cards are positioned from the real stage, so they never render on
+  // the server (its guessed size would not match the client and hydration would fail)
+  const [stage, setStage] = React.useState<Stage | null>(null);
 
   React.useEffect(() => {
     const el = stageRef.current;
@@ -208,7 +210,7 @@ export function PerspectiveTunnel({
       <div
         ref={stageRef}
         className="sticky top-0 flex h-svh items-center justify-center overflow-hidden"
-        style={{ perspective: stage.mobile ? "900px" : "1200px", transformStyle: "preserve-3d" }}
+        style={{ perspective: stage?.mobile ? "900px" : "1200px", transformStyle: "preserve-3d" }}
       >
         {/* dot grid and a blue glow, faded out at the edges */}
         <div
@@ -261,17 +263,18 @@ export function PerspectiveTunnel({
           className="pointer-events-none absolute inset-0"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {items.map((item, i) => (
-            <TunnelCard
-              key={item.src}
-              item={item}
-              index={i}
-              total={items.length}
-              progress={progress}
-              pointer={pointer}
-              stage={stage}
-            />
-          ))}
+          {stage &&
+            items.map((item, i) => (
+              <TunnelCard
+                key={item.src}
+                item={item}
+                index={i}
+                total={items.length}
+                progress={progress}
+                pointer={pointer}
+                stage={stage}
+              />
+            ))}
         </div>
       </div>
     </section>

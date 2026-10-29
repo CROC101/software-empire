@@ -13,8 +13,9 @@ import {
   type KeyboardEvent,
   type Ref,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { cn } from "../lib/cn";
+import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 
 /**
  * One-time-code input: one box per character, paste / SMS autofill fill every box,
@@ -288,7 +289,7 @@ export function OtpInput({
   className,
   ref,
 }: OtpInputProps) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionAfterMount();
   const statusId = useId();
   const { chars, value, focusedIndex, getCellProps, focusAt, clear } = useOtpInput({
     length,
