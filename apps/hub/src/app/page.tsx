@@ -8,7 +8,27 @@ import {
   PhoneFrame,
   SunMoonThemeToggle,
 } from "@empire/ui";
-import { Code2 } from "lucide-react";
+import {
+  ArrowUp,
+  Blocks,
+  BriefcaseBusiness,
+  Code2,
+  Cpu,
+  GitBranch,
+  Hexagon,
+  Laptop,
+  ListChecks,
+  LogIn,
+  Mail,
+  MessageCircleQuestion,
+  MonitorSmartphone,
+  Shirt,
+  Smartphone,
+  Sparkles,
+  Terminal,
+  User,
+  Users,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getClaims } from "@/lib/supabase/server";
@@ -68,8 +88,55 @@ const NAV = [
 
 // the nine-dot grid: every subsystem, open ones link through /go, the rest show as coming soon
 const LAUNCHER = {
-  label: "แอปทั้งหมด",
+  label: "ทางลัด",
   soonLabel: "เร็ว ๆ นี้",
+  labels: {
+    search: "ค้นหาส่วน ระบบ หรือลิงก์…",
+    sections: "ไปที่ส่วน",
+    apps: "ระบบทั้งหมด",
+    links: "ลิงก์",
+    empty: "ไม่เจอที่ค้นหา",
+  },
+  // every part of the portfolio, in page order; keywords catch the words people type
+  sections: [
+    { href: "#status", label: "สถานะระบบ", icon: <Terminal />, keywords: "status live" },
+    { href: "#about", label: "เกี่ยวกับผม", icon: <User />, keywords: "about" },
+    { href: "#subsystems", label: "ผลงาน 8 ระบบ", icon: <Blocks />, keywords: "work portfolio" },
+    { href: "#fly", label: "บินเข้าไปในงาน", icon: <Sparkles />, keywords: "tunnel" },
+    { href: "#screens", label: "หน้าจอจริง", icon: <MonitorSmartphone />, keywords: "screens" },
+    { href: "#laptop", label: "บนโน้ตบุ๊ก", icon: <Laptop />, keywords: "notebook desktop" },
+    { href: "#pocket", label: "บนมือถือ", icon: <Smartphone />, keywords: "mobile phone" },
+    { href: "#skills", label: "ของที่ใช้ทุกวัน", icon: <Cpu />, keywords: "skills stack" },
+    {
+      href: "#activity",
+      label: "กิจกรรม GitHub",
+      icon: <GitBranch />,
+      keywords: "activity commit",
+    },
+    { href: "#codebase", label: "โค้ดใน repo", icon: <Hexagon />, keywords: "codebase lines" },
+    {
+      href: "#services",
+      label: "รับทำอะไร",
+      icon: <BriefcaseBusiness />,
+      keywords: "services ราคา price",
+    },
+    { href: "#how", label: "ทำงานยังไง", icon: <ListChecks />, keywords: "process ขั้นตอน" },
+    { href: "#team", label: "ทีม", icon: <Users />, keywords: "team" },
+    { href: "#wardrobe", label: "7 บทบาท", icon: <Shirt />, keywords: "roles wardrobe" },
+    { href: "#faq", label: "คำถามที่พบบ่อย", icon: <MessageCircleQuestion />, keywords: "faq ถาม" },
+    { href: "#contact", label: "ติดต่อ", icon: <Mail />, keywords: "contact email อีเมล" },
+  ],
+  links: [
+    { href: "#contact", label: "คุยงานกับผม", icon: <Mail />, keywords: "hire จ้าง" },
+    {
+      href: "https://github.com/CROC101/software-empire",
+      label: "ซอร์สโค้ดบน GitHub",
+      icon: <GitBranch />,
+      keywords: "source code repo",
+    },
+    { href: "/login", label: "เข้าสู่ระบบ", icon: <LogIn />, keywords: "login sign in" },
+    { href: "#top", label: "กลับขึ้นบนสุด", icon: <ArrowUp />, keywords: "top" },
+  ],
   apps: subsystems.map((s) => {
     const Icon = APP_ICON[s.slug] ?? Code2;
     return {

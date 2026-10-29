@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  AppLauncher,
-  NimbusNavbar,
-  useTokenColors,
-  type LauncherApp,
-  type NimbusFx,
-} from "@empire/ui";
+import { AppLauncher, NimbusNavbar, useTokenColors, type NimbusFx } from "@empire/ui";
 import { Briefcase, HelpCircle, LayoutGrid, UserRound, Workflow } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -27,7 +21,7 @@ export function SiteNav({
   launcher,
   className,
 }: {
-  launcher: { label: string; soonLabel: string; apps: LauncherApp[] };
+  launcher: React.ComponentProps<typeof AppLauncher>;
   className?: string;
 }) {
   const [active, setActive] = useState(0);

@@ -1849,8 +1849,11 @@ html:has(dialog[open]) .vt-top {
   position: fixed;
   inset: 4.5rem 1rem auto auto;
   margin: 0;
-  width: min(20rem, calc(100vw - 2rem));
-  padding: 0.9rem;
+  width: min(26rem, calc(100vw - 2rem));
+  max-height: min(36rem, calc(100svh - 6rem));
+  padding: 0.75rem;
+  flex-direction: column;
+  gap: 0.6rem;
   border-radius: 1.4rem;
   border: 1px solid var(--lgn-edge, color-mix(in oklab, white 60%, transparent));
   background: color-mix(in oklab, var(--background) 78%, transparent);
@@ -1859,7 +1862,68 @@ html:has(dialog[open]) .vt-top {
   backdrop-filter: blur(20px) saturate(1.6);
 }
 .lgn-apps:popover-open {
+  display: flex;
   animation: lgn-pop 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.lgn-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.9rem;
+  border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+  background: color-mix(in oklab, var(--background) 70%, transparent);
+}
+.lgn-search:focus-within {
+  border-color: color-mix(in oklab, var(--em-blue-500) 60%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--em-blue-500) 18%, transparent);
+}
+.lgn-kbd {
+  font: 600 10px/1 var(--font-mono, monospace);
+  padding: 0.25rem 0.4rem;
+  border-radius: 0.4rem;
+  border: 1px solid color-mix(in oklab, var(--foreground) 14%, transparent);
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+@media (pointer: coarse) {
+  .lgn-kbd {
+    display: none;
+  }
+}
+.lgn-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 0.15rem 0.15rem;
+  scrollbar-width: thin;
+}
+.lgn-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+.lgn-row:hover,
+.lgn-row:focus-visible {
+  background: color-mix(in oklab, var(--em-blue-500) 10%, transparent);
+}
+.lgn-ico {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.55rem;
+  color: var(--em-blue-600);
+  background: color-mix(in oklab, var(--em-blue-500) 12%, transparent);
+}
+.lgn-ico svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 .lgn-app {
   display: flex;
