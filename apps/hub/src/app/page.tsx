@@ -2,7 +2,7 @@ import {
   AmbienceButton,
   AppLauncher,
   CrocReveal,
-  DepthScroll,
+  TideReveal,
   LinkPreview,
   MorphingText,
   PhoneFrame,
@@ -226,7 +226,7 @@ export default async function HomePage() {
         <ContactSection cta={cta} />
         <SignOff />
       </main>
-      <DepthScroll />
+      <TideReveal />
       <BackToTop />
       <SiteFooter />
     </div>

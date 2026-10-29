@@ -84,7 +84,7 @@ const ROLES: {
 export function Wardrobe() {
   const colors = useTokenColors(ROLES.map((r) => r.token));
   return (
-    <section data-depth id="wardrobe" aria-label="บทบาทที่ผมทำ" className="scroll-mt-16 pb-16">
+    <section data-tide id="wardrobe" aria-label="บทบาทที่ผมทำ" className="scroll-mt-16 pb-16">
       {colors && (
         <ClothingRail
           className="mx-auto max-w-6xl"

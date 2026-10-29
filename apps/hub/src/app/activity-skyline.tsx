@@ -14,7 +14,7 @@ export function ActivitySkyline() {
   const [b1 = "", b2 = "", b3 = "", b4 = ""] = blues ?? [];
   const total = contributions.days.reduce((s, d) => s + d.count, 0);
   return (
-    <section data-depth id="activity" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
+    <section data-tide id="activity" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
       <div className="mb-8 grid gap-6 border-t pt-12 lg:grid-cols-[1.4fr_1fr] lg:items-end">
         <div>
           <p className={`${EYEBROW} cw-blue`}>activity</p>
