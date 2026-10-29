@@ -2091,3 +2091,28 @@ a.lgn-app:focus-visible {
     transition: none;
   }
 }
+
+/* LaptopPreview: time left on the current screen while it plays on its own */
+.lp-timer {
+  animation: lp-timer var(--lp-time, 4500ms) linear both;
+}
+@keyframes lp-timer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ScreenRail: the row fades out at both ends instead of cutting a pill in half */
+.screen-rail {
+  padding-inline: 1.25rem;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 1.25rem,
+    #000 calc(100% - 1.25rem),
+    transparent
+  );
+}

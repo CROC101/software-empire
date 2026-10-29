@@ -8,7 +8,7 @@ import {
   type NimbusFx,
 } from "@empire/ui";
 import { Briefcase, HelpCircle, LayoutGrid, UserRound, Workflow } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // each link plays its own little scene when tapped
 const NAV: { href: string; label: string; icon: React.ReactNode; fx: NimbusFx }[] = [
@@ -31,6 +31,9 @@ export function SiteNav({
   className?: string;
 }) {
   const [active, setActive] = useState(0);
+  // after a tap the page glides past the sections in between; hold the spy until it lands,
+  // or the drop would chase every section it passes and stutter
+  const lockedUntil = useRef(0);
   const bg = useTokenColors(["--background"])?.[0];
   const dark = bg ? parseInt(bg.slice(1, 3), 16) < 128 : false;
 
@@ -39,7 +42,7 @@ export function SiteNav({
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          if (!e.isIntersecting) continue;
+          if (!e.isIntersecting || performance.now() < lockedUntil.current) continue;
           const i = NAV.findIndex((n) => n.href === `#${e.target.id}`);
           if (i >= 0) setActive(i);
         }
@@ -50,8 +53,14 @@ export function SiteNav({
       const el = document.getElementById(href.slice(1));
       if (el) io.observe(el);
     }
+    // the glide has landed: let the spy follow the page again
+    const release = () => {
+      lockedUntil.current = 0;
+    };
+    window.addEventListener("scrollend", release);
     return () => {
       io.disconnect();
+      window.removeEventListener("scrollend", release);
     };
   }, []);
 
@@ -61,6 +70,8 @@ export function SiteNav({
       items={NAV}
       active={active}
       onChange={(i) => {
+        // long glides on long pages; scrollend releases it sooner (and in browsers without it, this does)
+        lockedUntil.current = performance.now() + 2500;
         setActive(i);
       }}
       tone={dark ? "dark" : "light"}

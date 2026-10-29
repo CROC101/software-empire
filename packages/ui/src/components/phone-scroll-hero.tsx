@@ -118,6 +118,7 @@ export function PhoneScrollHero({
   overlap = 20,
   tilt = 22,
   pinned = false,
+  footer,
   phoneClassName,
   className,
 }: {
@@ -131,6 +132,8 @@ export function PhoneScrollHero({
   tilt?: number;
   /** Pin the scene to the screen (sticky) for the whole scroll, instead of letting it pass by. */
   pinned?: boolean;
+  /** Under the phone, riding with it, e.g. a row of screen buttons. */
+  footer?: ReactNode;
   /** Extra classes for the phone, e.g. its width. */
   phoneClassName?: string;
   className?: string;
@@ -207,6 +210,7 @@ export function PhoneScrollHero({
             <PhoneFrame className={phoneClassName}>
               {typeof children === "function" ? children(progress) : children}
             </PhoneFrame>
+            {footer}
           </motion.div>
         </div>
       </div>

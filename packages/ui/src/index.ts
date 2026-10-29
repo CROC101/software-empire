@@ -79,6 +79,7 @@ export {
 } from "./components/isometric-hex-chart";
 export { PerspectiveTunnel, type TunnelItem } from "./components/perspective-tunnel";
 export { LaptopPreview, type LaptopStep } from "./components/laptop-preview";
+export { ScreenRail, useAutoplay, type RailItem } from "./components/screen-rail";
 export { MacBookKeyboard } from "./components/macbook-keyboard";
 export {
   GlassIconReveal,
@@ -96,3 +97,4 @@ export {
   type ClothingRailLabels,
 } from "./components/clothing-rail";
 export { NimbusNavbar, type NimbusNavItem, type NimbusFx } from "./components/nimbus-navbar";
+export { useReducedMotionAfterMount } from "./lib/use-reduced-motion";

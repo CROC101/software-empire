@@ -573,9 +573,10 @@ export function LaptopSection() {
           เปิดบนโน้ตบุ๊ก <span className="cw-blue">หน้าตาแบบนี้</span>
         </>
       }
-      subtitle="เลื่อนลงเพื่อเปิดฝา"
+      subtitle="เลื่อนลงเพื่อเปิดฝา แล้วกดเลือกระบบที่อยากดู"
       logo={<Image src="/crocwork-logo.jpg" alt="" width={48} height={48} />}
       steps={LAPTOP}
+      pickLabel="เลือกหน้าจอ"
     />
   );
 }

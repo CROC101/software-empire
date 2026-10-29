@@ -12,13 +12,14 @@ import * as React from "react";
 import { cn } from "../lib/cn";
 import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 import { MacBookKeyboard } from "./macbook-keyboard";
+import { ScreenRail, useAutoplay } from "./screen-rail";
 
 /**
- * Laptop preview: a pinned scroll scene with a notebook in the middle. Scrolling opens the lid,
- * then walks through the steps: each one puts its screenshot on the laptop screen and brings its
- * card forward (number, title, line, a progress tick per step). Native scrolling only: a tall
- * section with a sticky stage, progress read from the scroll position. Transforms and opacity
- * only. Reduced motion shows the laptop open on the first screen with every card listed.
+ * Laptop preview: a pinned scroll scene with a notebook in the middle. Scrolling opens the lid;
+ * then the screens play on their own (a timer line on the card) and a rail of buttons picks any
+ * of them. The scroll length does not grow with the number of screens, so 100 apps scroll as
+ * far as 4. Native scrolling only: a tall section with a sticky stage. Transforms and opacity
+ * only. Reduced motion shows the laptop open with the rail and no autoplay.
  *
  * After "MacBook Neo" frame-sequence hero (21st.dev, MIT): the 941 product frames are replaced
  * by a CSS laptop showing real 16:10 screenshots; cards, ticks and progress bar kept.
@@ -97,9 +98,12 @@ function Laptop({
             style={{ background: "var(--em-ink-700)" }}
           />
           <div className="relative aspect-[16/10] overflow-hidden rounded-[0.35rem] bg-black">
-            {steps.map((s, i) => (
-              <Screen key={s.src} step={s} active={i === Math.max(0, active)} />
-            ))}
+            {steps.map((s, i) => {
+              // only the current screen and its neighbours are in the DOM, so 100 apps load 3 images
+              const d = Math.abs(i - Math.max(0, active));
+              if (d > 1 && d < steps.length - 1) return null;
+              return <Screen key={s.src} step={s} active={i === Math.max(0, active)} />;
+            })}
             {/* glass glare, and the dark of a screen still waking up */}
             <span
               aria-hidden
@@ -242,21 +246,14 @@ function StepCard({
   );
 }
 
-function Tick({ progress, from, to }: { progress: MotionValue<number>; from: number; to: number }) {
-  const scaleX = useTransform(progress, [from, to], [0, 1]);
-  return (
-    <i className="block h-[3px] flex-1 overflow-hidden rounded-full bg-[color-mix(in_oklab,var(--foreground)_12%,transparent)]">
-      <motion.span className="block h-full origin-left bg-current" style={{ scaleX }} />
-    </i>
-  );
-}
-
 export function LaptopPreview({
   steps,
   eyebrow,
   title,
   subtitle,
   logo,
+  pickLabel,
+  interval = 4500,
   id,
   className,
 }: {
@@ -267,6 +264,10 @@ export function LaptopPreview({
   subtitle?: string;
   /** Small mark on the back of the lid. */
   logo?: React.ReactNode;
+  /** Accessible name of the row of screen buttons, e.g. "เลือกหน้าจอ". */
+  pickLabel: string;
+  /** ms each screen stays up while it plays on its own */
+  interval?: number;
   id?: string;
   className?: string;
 }) {
@@ -274,29 +275,42 @@ export function LaptopPreview({
   const reduced = useReducedMotionAfterMount();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const n = steps.length;
-  const span = (1 - OPEN) / Math.max(1, n);
-  const range = (i: number): [number, number] => [OPEN + i * span, OPEN + (i + 1) * span];
 
-  const [active, setActive] = React.useState(-1);
+  // the scroll only opens the lid (so the section is as long for 4 screens as for 100);
+  // the screens then play on their own, or the visitor picks one from the rail
+  const [active, setActive] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [paused, setPaused] = React.useState(false);
   useMotionValueEvent(scrollYProgress, "change", (p) => {
-    const i = p < OPEN ? -1 : Math.min(n - 1, Math.floor((p - OPEN) / span));
-    setActive((cur) => (cur === i ? cur : i));
+    const next = p >= OPEN && p < 0.995;
+    setOpen((cur) => (cur === next ? cur : next));
   });
+  useAutoplay(n, active, setActive, open && !paused && !reduced, interval);
+  const pick = (i: number) => {
+    setActive(i);
+    setPaused(true);
+  };
 
   // a spring between scroll and the scene: smoother, and keeps motion off its scroll-timeline path
   const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0001 });
   const lid = useTransform(smooth, [0, OPEN], [-115, 6]); // shut on the keys, then up and slightly back
   const shade = useTransform(smooth, [OPEN * 0.4, OPEN], [1, 0]);
   const subOpacity = useTransform(smooth, [0, OPEN * 0.5], [1, 0]);
-  const bar = smooth;
-  // the progress pill only shows while the scene is pinned, never as a line across the page
-  const barOpacity = useTransform(smooth, [0, 0.03, 0.96, 1], [0, 1, 1, 0]);
 
+  const step = steps[active];
   const head = (
     <div className="flex flex-col items-center text-center">
       {eyebrow}
       <h2 className="text-4xl font-black tracking-tight sm:text-6xl">{title}</h2>
     </div>
+  );
+  const rail = (
+    <ScreenRail
+      label={pickLabel}
+      active={active}
+      onPick={pick}
+      items={steps.map((s) => ({ key: s.src, label: s.title, icon: s.icon, color: s.color }))}
+    />
   );
 
   if (reduced) {
@@ -304,26 +318,27 @@ export function LaptopPreview({
       <section id={id} ref={ref} className={cn("mx-auto max-w-6xl px-4 py-24 sm:px-6", className)}>
         {head}
         <div className="mt-10 flex justify-center">
-          <Laptop steps={steps} active={0} logo={logo} />
+          <Laptop steps={steps} active={active} logo={logo} />
         </div>
-        <div className="mt-10 grid justify-items-center gap-4 sm:grid-cols-2">
-          {steps.map((s, i) => (
-            <StepCard key={s.src} step={s} index={i} total={n} state="static" ticks={<span />} />
-          ))}
-        </div>
+        <div className="mx-auto mt-6 flex max-w-3xl justify-center">{rail}</div>
+        {step && (
+          <div className="mt-6 flex justify-center">
+            <StepCard step={step} index={active} total={n} state="static" ticks={<span />} />
+          </div>
+        )}
       </section>
     );
   }
 
   return (
-    <section id={id} ref={ref} className={cn("relative h-[480vh]", className)}>
-      <div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-6 overflow-hidden px-4 pt-16 pb-10 lg:gap-10">
-        {/* soft glow under the laptop, in the active step's colour */}
+    <section id={id} ref={ref} className={cn("relative h-[220vh]", className)}>
+      <div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-5 overflow-hidden px-4 pt-14 pb-6 lg:gap-8">
+        {/* soft glow under the laptop, in the current screen's colour */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-1/3 mx-auto h-[50vh] max-w-4xl rounded-full blur-3xl transition-[background] duration-700"
           style={{
-            background: `radial-gradient(closest-side, color-mix(in oklab, ${steps[Math.max(0, active)]?.color ?? "var(--em-blue-500)"} 22%, transparent), transparent)`,
+            background: `radial-gradient(closest-side, color-mix(in oklab, ${step?.color ?? "var(--em-blue-500)"} 22%, transparent), transparent)`,
           }}
         />
         <div className="relative">
@@ -338,45 +353,47 @@ export function LaptopPreview({
           )}
         </div>
 
-        <div className="relative grid w-full max-w-6xl justify-items-center gap-6 lg:grid-cols-[1fr_24rem] lg:items-end lg:gap-10">
+        <div
+          className="relative grid w-full max-w-6xl justify-items-center gap-5 lg:grid-cols-[1fr_24rem] lg:items-end lg:gap-10"
+          onPointerEnter={() => {
+            setPaused(true);
+          }}
+          onPointerLeave={() => {
+            setPaused(false);
+          }}
+        >
           <div className="flex justify-center">
             <Laptop steps={steps} active={active} lid={lid} shade={shade} logo={logo} />
           </div>
-          {/* cards: beside the laptop on wide screens, under it on narrow ones */}
-          <div className="relative h-[13.5rem] w-full max-w-sm">
-            {steps.map((s, i) => (
+          <div className="flex w-full max-w-sm flex-col gap-3">
+            {step && (
               <StepCard
-                key={s.src}
-                step={s}
-                index={i}
+                key={active}
+                step={step}
+                index={active}
                 total={n}
-                state={i === active ? "active" : i < active ? "prev" : "next"}
+                state="static"
                 ticks={
-                  <span className="flex flex-1 gap-1.5" style={{ color: s.color }}>
-                    {steps.map((_, j) => {
-                      const [a, b] = range(j);
-                      return <Tick key={j} progress={smooth} from={a} to={b} />;
-                    })}
+                  // time left on this screen while it plays on its own
+                  <span className="block h-[3px] flex-1 overflow-hidden rounded-full bg-[color-mix(in_oklab,var(--foreground)_12%,transparent)]">
+                    <span
+                      key={`${String(active)}-${String(open && !paused)}`}
+                      className="lp-timer block h-full origin-left rounded-full"
+                      style={
+                        {
+                          background: step.color,
+                          "--lp-time": `${String(interval)}ms`,
+                          animationPlayState: open && !paused ? "running" : "paused",
+                        } as React.CSSProperties
+                      }
+                    />
                   </span>
                 }
               />
-            ))}
+            )}
+            {rail}
           </div>
         </div>
-
-        <motion.span
-          aria-hidden
-          className="absolute bottom-5 left-1/2 h-1 w-28 -translate-x-1/2 overflow-hidden rounded-full"
-          style={{
-            opacity: barOpacity,
-            background: "color-mix(in oklab, var(--foreground) 12%, transparent)",
-          }}
-        >
-          <motion.span
-            className="block h-full w-full origin-left rounded-full"
-            style={{ scaleX: bar, background: "var(--em-blue-500)" }}
-          />
-        </motion.span>
       </div>
     </section>
   );
