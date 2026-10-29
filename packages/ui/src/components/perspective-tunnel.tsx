@@ -3,7 +3,6 @@
 import {
   motion,
   useMotionValue,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
@@ -11,6 +10,7 @@ import {
 } from "motion/react";
 import * as React from "react";
 import { cn } from "../lib/cn";
+import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 
 /**
  * Perspective tunnel: a pinned scroll interlude where cards fly out of the distance past the
@@ -129,7 +129,7 @@ export function PerspectiveTunnel({
 }) {
   const ref = React.useRef<HTMLElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionAfterMount();
   const [stage, setStage] = React.useState<Stage>({ width: 1280, height: 800, mobile: false });
 
   React.useEffect(() => {

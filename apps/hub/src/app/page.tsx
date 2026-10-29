@@ -24,6 +24,7 @@ import {
   ContactSection,
   FaqSection,
   HowSection,
+  LaptopSection,
   PGTAP_TESTS,
   ServicesSection,
   ShotsSection,
@@ -177,6 +178,7 @@ export default async function HomePage() {
         <WorkSection />
         <WorkTunnel />
         <ShotsSection />
+        <LaptopSection />
         <HiddenWork />
         <SkillsSection />
         <ActivitySkyline />

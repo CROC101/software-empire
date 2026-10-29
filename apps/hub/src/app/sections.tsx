@@ -2,6 +2,7 @@ import {
   BlueprintReveal,
   IconFolder,
   LanyardBadge,
+  LaptopPreview,
   MeshGhost,
   Meteors,
   PerspectiveTunnel,
@@ -515,6 +516,64 @@ export function WorkTunnel() {
         caption,
         href: `/go/${slug}`,
       }))}
+    />
+  );
+}
+
+// the same four screens as they look on a notebook, lid opening as you scroll in
+const LAPTOP = [
+  {
+    src: "/previews/hub.webp",
+    title: "Hub",
+    description: "หน้าแรกของทุกระบบ ล็อกอินที่นี่ครั้งเดียว ใช้ได้ทุกแอป",
+    label: "crocwork.studio",
+    icon: <LayoutGrid aria-hidden />,
+    color: "var(--em-blue-500)",
+  },
+  {
+    src: "/previews/community.webp",
+    title: "Community",
+    description: "โซเชียลเต็มรูปแบบ ฟีด รีลส์ สตอรี่ และแชตเรียลไทม์",
+    label: "Community",
+    icon: <MessagesSquare aria-hidden />,
+    color: "var(--em-violet-500)",
+    href: "/go/community",
+    cta: "เปิดดู",
+  },
+  {
+    src: "/previews/canva.webp",
+    title: "Empire Canvas",
+    description: "โปรแกรมกราฟิกหลายเลเยอร์บนเว็บ",
+    label: "Canvas",
+    icon: <Palette aria-hidden />,
+    color: "var(--em-coral-500)",
+    href: "/go/canva",
+    cta: "เปิดดู",
+  },
+  {
+    src: "/previews/toolboxes.webp",
+    title: "Toolboxes",
+    description: "เครื่องมือนักพัฒนาและ MCP Inspector ในเบราว์เซอร์",
+    label: "Toolboxes",
+    icon: <Wrench aria-hidden />,
+    color: "var(--em-teal-600)",
+    href: "/go/toolboxes",
+    cta: "เปิดดู",
+  },
+];
+
+export function LaptopSection() {
+  return (
+    <LaptopPreview
+      id="laptop"
+      eyebrow={<p className={`${EYEBROW} cw-blue mb-3`}>on a notebook</p>}
+      title={
+        <>
+          เปิดบนโน้ตบุ๊ก <span className="cw-blue">หน้าตาแบบนี้</span>
+        </>
+      }
+      subtitle="เลื่อนลงเพื่อเปิดฝา"
+      steps={LAPTOP}
     />
   );
 }

@@ -78,3 +78,4 @@ export {
   type HexChartLabels,
 } from "./components/isometric-hex-chart";
 export { PerspectiveTunnel, type TunnelItem } from "./components/perspective-tunnel";
+export { LaptopPreview, type LaptopStep } from "./components/laptop-preview";
