@@ -120,11 +120,28 @@ try {
 
 /* ── ambience: seasonal / space particles, shared by every app like the theme ── */
 
-export type Ambience = "auto" | "space" | "rain" | "snow" | "bloom" | "off";
+export type Festival = "halloween" | "loykrathong" | "christmas" | "newyear" | "songkran";
+export type Ambience = "auto" | "space" | "rain" | "snow" | "bloom" | Festival | "off";
+/** What the sky actually shows: a season or a festival. */
 export type Season = Exclude<Ambience, "auto" | "off">;
 
 export const AMBIENCE_COOKIE = "em-ambience";
-export const AMBIENCES: readonly Ambience[] = ["auto", "space", "rain", "snow", "bloom", "off"];
+export const FESTIVALS: readonly Festival[] = [
+  "halloween",
+  "loykrathong",
+  "christmas",
+  "newyear",
+  "songkran",
+];
+export const AMBIENCES: readonly Ambience[] = [
+  "auto",
+  "space",
+  "rain",
+  "snow",
+  "bloom",
+  ...FESTIVALS,
+  "off",
+];
 
 export function readAmbience(cookie: string): Ambience {
   const match = new RegExp(`(?:^|;\\s*)${AMBIENCE_COOKIE}=([^;]*)`).exec(cookie);
@@ -136,6 +153,19 @@ export function readAmbience(cookie: string): Ambience {
  * Thai calendar, roughly: hot season Mar–May (golden-shower petals), rains Jun–Oct,
  * cool season Nov–Feb (frost). "auto" in dark mode is always space: meteors at night.
  */
+/**
+ * Festival windows (month 0-based, day of month), Thai and international. Loy Krathong follows
+ * the lunar calendar (late Nov most years), so its window covers the second half of November.
+ */
+export function festivalFor(month: number, day: number): Festival | null {
+  if (month === 9 && day >= 15) return "halloween";
+  if (month === 10 && day >= 10) return "loykrathong";
+  if (month === 11 && day >= 15 && day < 28) return "christmas";
+  if ((month === 11 && day >= 28) || (month === 0 && day <= 5)) return "newyear";
+  if (month === 3 && day >= 10 && day <= 18) return "songkran";
+  return null;
+}
+
 export function seasonFor(month: number, dark: boolean): Season {
   if (dark) return "space";
   if (month >= 2 && month <= 4) return "bloom";

@@ -230,6 +230,144 @@
   transform-origin: left center;
 }
 
+/* festivals ─────────────────────────────────────────────────────────────── */
+/* halloween: bats flitting across, wings beating */
+.em-bat-shape,
+.em-ambience--halloween > span > i {
+  clip-path: polygon(
+    0% 30%,
+    18% 18%,
+    30% 40%,
+    42% 20%,
+    46% 0%,
+    50% 14%,
+    54% 0%,
+    58% 20%,
+    70% 40%,
+    82% 18%,
+    100% 30%,
+    86% 55%,
+    74% 48%,
+    62% 80%,
+    50% 62%,
+    38% 80%,
+    26% 48%,
+    14% 55%
+  );
+}
+.em-ambience--halloween > span {
+  top: var(--y);
+  left: -6%;
+  animation: em-bat var(--t) ease-in-out var(--d) infinite;
+}
+.em-ambience--halloween > span > i {
+  width: calc(30px * var(--s));
+  height: calc(14px * var(--s));
+  background: oklch(0.2 0.05 295);
+  filter: drop-shadow(0 0 6px oklch(0.7 0.16 50 / 0.7));
+  animation: em-flap 0.22s ease-in-out infinite alternate;
+}
+@keyframes em-bat {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(55vw, -6vh, 0);
+  }
+  100% {
+    transform: translate3d(115vw, 4vh, 0);
+  }
+}
+@keyframes em-flap {
+  to {
+    transform: scaleY(0.35);
+  }
+}
+
+/* loy krathong: khom loy lanterns drifting up, glowing */
+.em-ambience--loykrathong > span {
+  top: auto;
+  bottom: -8%;
+  animation: em-rise calc(var(--t) * 2.4) linear var(--d) infinite;
+}
+.em-ambience--loykrathong > span > i {
+  width: calc(14px * var(--s));
+  height: calc(18px * var(--s));
+  border-radius: 45% 45% 20% 20%;
+  background: radial-gradient(
+    circle at 50% 75%,
+    oklch(0.97 0.08 95),
+    oklch(0.8 0.16 65) 60%,
+    oklch(0.62 0.17 45)
+  );
+  box-shadow: 0 0 14px oklch(0.8 0.17 65 / 0.75);
+  animation: em-sway 3.4s ease-in-out var(--d) infinite alternate;
+}
+@keyframes em-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(3vw, -118vh, 0) scale(0.55);
+  }
+}
+
+/* christmas: the frost flakes, whiter and slower */
+.em-ambience--christmas > span > i {
+  width: calc(8px * var(--s));
+  height: calc(8px * var(--s));
+  border-radius: 9999px;
+  background: oklch(0.98 0.01 240 / 0.95);
+  box-shadow: 0 0 8px oklch(0.95 0.03 240 / 0.9);
+  animation: em-sway 3.6s ease-in-out var(--d) infinite alternate;
+}
+.em-ambience--christmas > span {
+  animation-duration: calc(var(--t) * 2);
+}
+
+/* new year: confetti in the studio colours (and a little gold), tumbling */
+.em-ambience--newyear > span > i {
+  width: calc(10px * var(--s));
+  height: calc(5px * var(--s));
+  border-radius: 1px;
+  background: var(--em-blue-500);
+  animation: em-tumble 1.6s linear var(--d) infinite;
+}
+.em-ambience--newyear > span:nth-child(4n + 1) > i {
+  background: var(--em-violet-400);
+}
+.em-ambience--newyear > span:nth-child(4n + 2) > i {
+  background: var(--em-gold-300);
+}
+.em-ambience--newyear > span:nth-child(4n + 3) > i {
+  background: var(--em-sky-500);
+}
+.em-ambience--newyear > span {
+  animation-duration: calc(var(--t) * 1.4);
+}
+
+/* songkran: cool water drops */
+.em-ambience--songkran > span > i {
+  width: calc(9px * var(--s));
+  height: calc(9px * var(--s));
+  border-radius: 0 50% 50% 50%;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, oklch(0.95 0.04 220), oklch(0.7 0.13 235));
+  box-shadow: inset -1px -1px 2px oklch(1 0 0 / 0.7);
+  opacity: 0.85;
+}
+.em-ambience--songkran > span {
+  animation-duration: calc(var(--t) * 0.5);
+}
+
 @keyframes em-fall {
   to {
     transform: translate3d(-4vw, 120vh, 0);

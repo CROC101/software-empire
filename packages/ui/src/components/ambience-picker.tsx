@@ -1,7 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Check, GalleryHorizontalEnd, LayoutGrid, List, Sparkle, Star, X } from "lucide-react";
+import {
+  Check,
+  GalleryHorizontalEnd,
+  LayoutGrid,
+  List,
+  PartyPopper,
+  Sparkle,
+  Star,
+  X,
+} from "lucide-react";
 import {
   currentAmbience,
   setAmbience,
@@ -24,7 +33,7 @@ type Option = {
   /** thumbnail sky */
   sky: string;
   /** dots drawn on the thumbnail (stars, drops, flakes, petals) */
-  bits: "stars" | "drops" | "flakes" | "petals" | "none";
+  bits: "stars" | "drops" | "flakes" | "petals" | "bats" | "lanterns" | "confetti" | "none";
 };
 
 const SECTIONS: { title: string; note: string; icon: typeof Star; options: Option[] }[] = [
@@ -36,7 +45,7 @@ const SECTIONS: { title: string; note: string; icon: typeof Star; options: Optio
       {
         id: "auto",
         title: "ตามฤดูกาลจริง",
-        body: "หน้าร้อนดอกคูน หน้าฝนฝนตก หน้าหนาวละอองหนาว กลางคืนเป็นอวกาศ",
+        body: "เทศกาลตามวันที่ นอกนั้นหน้าร้อนดอกคูน หน้าฝนฝนตก หน้าหนาวละอองหนาว กลางคืนเป็นอวกาศ",
         sky: "linear-gradient(180deg, oklch(0.32 0.1 285), oklch(0.62 0.12 300) 60%, oklch(0.85 0.08 330))",
         bits: "stars",
       },
@@ -74,6 +83,48 @@ const SECTIONS: { title: string; note: string; icon: typeof Star; options: Optio
         body: "ฟ้าอุ่น กลีบทองร่วงหน้าร้อน",
         sky: "linear-gradient(180deg, oklch(0.42 0.1 300), oklch(0.75 0.12 60) 70%, oklch(0.9 0.1 85))",
         bits: "petals",
+      },
+    ],
+  },
+  {
+    title: "เทศกาล",
+    note: "ไทยและสากล มาสคอตแต่งตัวตามเทศกาลด้วย · ตามฤดูกาลจะเปลี่ยนให้เองตามวันที่",
+    icon: PartyPopper,
+    options: [
+      {
+        id: "halloween",
+        title: "ฮาโลวีน",
+        body: "ค้างคาวบินผ่าน มาสคอตใส่หมวกแม่มด",
+        sky: "linear-gradient(180deg, oklch(0.18 0.06 295), oklch(0.32 0.12 300) 65%, oklch(0.62 0.16 45))",
+        bits: "bats",
+      },
+      {
+        id: "loykrathong",
+        title: "ลอยกระทง",
+        body: "โคมลอยขึ้นฟ้า มาสคอตถือกระทง",
+        sky: "linear-gradient(180deg, oklch(0.2 0.07 265), oklch(0.34 0.1 270) 70%, oklch(0.5 0.1 250))",
+        bits: "lanterns",
+      },
+      {
+        id: "christmas",
+        title: "คริสต์มาส",
+        body: "หิมะโปรย มาสคอตใส่หมวกซานต้า",
+        sky: "linear-gradient(180deg, oklch(0.3 0.08 255), oklch(0.55 0.1 245) 65%, oklch(0.9 0.03 240))",
+        bits: "flakes",
+      },
+      {
+        id: "newyear",
+        title: "ปีใหม่",
+        body: "กระดาษสีโปรย มาสคอตใส่หมวกปาร์ตี้",
+        sky: "linear-gradient(180deg, oklch(0.2 0.08 280), oklch(0.38 0.14 290) 70%, oklch(0.6 0.14 300))",
+        bits: "confetti",
+      },
+      {
+        id: "songkran",
+        title: "สงกรานต์",
+        body: "ละอองน้ำเย็น ๆ มาสคอตทัดดอกไม้",
+        sky: "linear-gradient(180deg, oklch(0.5 0.13 235), oklch(0.75 0.1 220) 65%, oklch(0.93 0.04 210))",
+        bits: "drops",
       },
     ],
   },
@@ -123,6 +174,10 @@ function Thumb({ option, className }: { option: Option; className?: string }) {
               option.bits === "flakes" &&
                 "size-1.5 rounded-full bg-white/90 shadow-[0_0_4px_white]",
               option.bits === "petals" && "h-1.5 w-2.5 rounded-[80%_10%] bg-[oklch(0.86_0.15_88)]",
+              option.bits === "bats" && "em-bat-shape h-1.5 w-3.5 bg-[oklch(0.12_0.03_290)]",
+              option.bits === "lanterns" &&
+                "h-2.5 w-2 rounded-t-full rounded-b-sm bg-[oklch(0.85_0.15_75)] shadow-[0_0_6px_oklch(0.8_0.17_70)]",
+              option.bits === "confetti" && "h-1 w-2 rotate-45 bg-[oklch(0.85_0.14_85)]",
             )}
             style={{
               left: `${String(10 + ((i * 37) % 80))}%`,

@@ -57,4 +57,17 @@ describe("shared ambience", () => {
     expect(seasonFor(11, false)).toBe("snow"); // December
     expect(seasonFor(3, true)).toBe("space");
   });
+
+  it("knows the festivals, Thai and international, by date", async () => {
+    const { festivalFor, readAmbience } = await import("./theme");
+    expect(festivalFor(9, 29)).toBe("halloween");
+    expect(festivalFor(9, 14)).toBe(null);
+    expect(festivalFor(10, 24)).toBe("loykrathong");
+    expect(festivalFor(11, 24)).toBe("christmas");
+    expect(festivalFor(11, 31)).toBe("newyear");
+    expect(festivalFor(0, 2)).toBe("newyear");
+    expect(festivalFor(3, 13)).toBe("songkran");
+    expect(festivalFor(6, 1)).toBe(null);
+    expect(readAmbience("em-ambience=halloween")).toBe("halloween");
+  });
 });

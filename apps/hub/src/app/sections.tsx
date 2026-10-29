@@ -5,6 +5,7 @@ import {
   LanyardBadge,
   LaptopPreview,
   MeshGhost,
+  MeshMascot,
   Meteors,
   PerspectiveTunnel,
   PhoneFrame,
@@ -32,7 +33,6 @@ import {
   MessagesSquare,
   Music,
   Palette,
-  Plane,
   ShieldCheck,
   Sparkles,
   Store,
@@ -1042,9 +1042,10 @@ export function HowSection() {
       <TornEdge color="var(--em-ink-975)" />
       <section id="how" className={`${DARK} relative scroll-mt-16 overflow-hidden`}>
         <Meteors count={5} />
-        <Plane
-          aria-hidden
-          className="vt-live cw-float absolute right-[12%] top-20 size-20 -rotate-12 text-[var(--em-blue-500)] opacity-80"
+        {/* the night owl keeps watch over the plan; it dresses up for festivals like the ghost */}
+        <MeshMascot
+          kind="owl"
+          className="absolute right-[8%] top-14 hidden w-24 sm:block lg:right-[12%] lg:w-28"
         />
         <div data-tide className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:items-end">

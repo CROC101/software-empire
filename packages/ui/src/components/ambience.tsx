@@ -1,12 +1,25 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore, type CSSProperties } from "react";
-import { CloudRain, Flower2, Orbit, Snowflake, Sparkles, X } from "lucide-react";
+import {
+  CloudRain,
+  Droplets,
+  Flame,
+  Flower2,
+  Ghost,
+  Orbit,
+  PartyPopper,
+  Snowflake,
+  Sparkles,
+  TreePine,
+  X,
+} from "lucide-react";
 import {
   currentAmbience,
   osDark,
   currentChoice,
   resolve,
+  festivalFor,
   seasonFor,
   subscribeTheme,
   type Ambience as AmbienceChoice,
@@ -24,7 +37,17 @@ import { AmbiencePicker } from "./ambience-picker";
  * on their own; reduced motion renders nothing.
  */
 
-const COUNT: Record<Season, number> = { space: 5, rain: 40, snow: 34, bloom: 18 };
+const COUNT: Record<Season, number> = {
+  space: 5,
+  rain: 40,
+  snow: 34,
+  bloom: 18,
+  halloween: 12,
+  loykrathong: 16,
+  christmas: 34,
+  newyear: 30,
+  songkran: 28,
+};
 
 // deterministic scatter: same markup on server and client
 const at = (i: number, a: number, b: number) => (((i * a) % b) + b) % b;
@@ -55,11 +78,16 @@ export function useAmbience(): { choice: AmbienceChoice; season: Season | null }
     () => resolve(currentChoice(), osDark()) === "dark",
     () => false,
   );
-  // month read after mount so the server render never guesses a different season
-  const [month, setMonth] = useState<number | null>(null);
-  useEffect(() => setMonth(new Date().getMonth()), []);
-  if (choice === "off" || month === null) return { choice, season: null };
-  return { choice, season: choice === "auto" ? seasonFor(month, dark) : choice };
+  // date read after mount so the server render never guesses a different season
+  const [date, setDate] = useState<[number, number] | null>(null);
+  useEffect(() => {
+    const d = new Date();
+    setDate([d.getMonth(), d.getDate()]);
+  }, []);
+  if (choice === "off" || date === null) return { choice, season: null };
+  if (choice !== "auto") return { choice, season: choice };
+  // a festival wins over the season, day or night
+  return { choice, season: festivalFor(date[0], date[1]) ?? seasonFor(date[0], dark) };
 }
 
 export function Ambience() {
@@ -87,7 +115,7 @@ export function Ambience() {
               "--x": `${String(at(i, 37, 100))}%`,
               "--y": `${String(at(i, 23, 60))}%`,
               "--d": `${String(at(i, 53, 97) / 10)}s`,
-              "--t": `${String(season === "space" ? 7 + at(i, 3, 6) : 5 + at(i, 7, 9))}s`,
+              "--t": `${String(season === "space" || season === "halloween" ? 7 + at(i, 3, 6) : 5 + at(i, 7, 9))}s`,
               "--s": String(0.55 + at(i, 13, 10) / 20),
             } as CSSProperties
           }
@@ -129,6 +157,11 @@ export const LABEL: Record<AmbienceChoice, string> = {
   rain: "ฝน",
   snow: "หนาว",
   bloom: "ดอกคูน",
+  halloween: "ฮาโลวีน",
+  loykrathong: "ลอยกระทง",
+  christmas: "คริสต์มาส",
+  newyear: "ปีใหม่",
+  songkran: "สงกรานต์",
   off: "ปิด",
 };
 export const ICON = {
@@ -137,6 +170,11 @@ export const ICON = {
   rain: CloudRain,
   snow: Snowflake,
   bloom: Flower2,
+  halloween: Ghost,
+  loykrathong: Flame,
+  christmas: TreePine,
+  newyear: PartyPopper,
+  songkran: Droplets,
   off: X,
 };
 
