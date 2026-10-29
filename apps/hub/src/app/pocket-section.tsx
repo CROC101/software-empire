@@ -1,7 +1,7 @@
 "use client";
 
 import { PhoneScrollHero, ScreenRail, useAutoplay, useReducedMotionAfterMount } from "@empire/ui";
-import { useMotionValueEvent, type MotionValue } from "motion/react";
+import { motion, useMotionValueEvent, useTransform, type MotionValue } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -40,6 +40,77 @@ function Feed({ active }: { active: number }) {
           />
         );
       })}
+    </div>
+  );
+}
+
+// what each app does on a phone, floating at different depths around it (true facts only)
+const CHIPS = [
+  // tops are below the headline, beside the phone
+  { text: "Community · แชตเรียลไทม์", side: "left", top: "calc(100% + 5rem)", depth: 1 },
+  { text: "Toolboxes · 121 เครื่องมือ", side: "right", top: "calc(100% + 9rem)", depth: 2 },
+  { text: "Empire Canvas · หลายเลเยอร์", side: "left", top: "calc(100% + 15rem)", depth: 3 },
+  { text: "ธีมสว่าง · มืด ตามเครื่อง", side: "right", top: "calc(100% + 19rem)", depth: 1 },
+] as const;
+
+/**
+ * The headline with depth: the words stand out of the page (a stacked, extruded shadow), two
+ * outline echoes stretch away behind them and drift slower than the page, and glass chips float
+ * around the phone at their own depths. Transforms only, on the scene's own progress.
+ */
+function DepthTitle({ progress }: { progress: MotionValue<number> }) {
+  const far = useTransform(progress, [0, 1], [-34, -150]);
+  const chipY = [
+    useTransform(progress, [0, 1], [30, -40]),
+    useTransform(progress, [0, 1], [50, -80]),
+    useTransform(progress, [0, 1], [80, -130]),
+  ];
+  const words = (
+    <>
+      บนมือถือ
+      <br />
+      หน้าตาแบบนี้
+    </>
+  );
+  const size = "text-5xl leading-[0.95] font-black tracking-tight sm:text-7xl md:text-8xl";
+  return (
+    <div className="relative">
+      {/* echoes: the same words, outlined, receding behind */}
+      {/* echo: the same words, outlined and larger, far behind, drifting slower than the page */}
+      <motion.p
+        aria-hidden
+        style={{ y: far, scale: 1.45 }}
+        className={`pointer-events-none absolute inset-x-0 top-3 -z-10 select-none text-transparent ${size}`}
+      >
+        <span
+          style={{
+            WebkitTextStroke: "1.5px color-mix(in oklab, var(--em-blue-500) 14%, transparent)",
+          }}
+        >
+          {words}
+        </span>
+      </motion.p>
+      <h2 className={`pk-depth mt-3 ${size}`}>
+        บนมือถือ
+        <br />
+        <span className="pk-depth-blue">หน้าตาแบบนี้</span>
+      </h2>
+      {CHIPS.map((c, i) => (
+        <motion.span
+          key={c.text}
+          aria-hidden
+          style={{ y: chipY[c.depth - 1], top: c.top }}
+          className={`absolute hidden items-center gap-2 rounded-full border bg-background/70 px-3.5 py-2 text-sm font-semibold whitespace-nowrap shadow-[0_12px_30px_-12px_color-mix(in_oklab,var(--em-blue-700)_45%,transparent)] backdrop-blur-md md:inline-flex ${
+            c.side === "left" ? "right-[calc(50%+9.5rem)]" : "left-[calc(50%+9.5rem)]"
+          }`}
+        >
+          <span
+            className="size-2 rounded-full"
+            style={{ background: i % 2 ? "var(--em-violet-500)" : "var(--em-blue-500)" }}
+          />
+          {c.text}
+        </motion.span>
+      ))}
     </div>
   );
 }
@@ -86,11 +157,7 @@ export function PocketSection() {
               }}
             />
             <p className={`${EYEBROW} cw-blue`}>in your pocket</p>
-            <h2 className="mt-3 text-4xl leading-[0.95] font-black tracking-tight sm:text-6xl md:text-7xl">
-              บนมือถือ
-              <br />
-              <span className="cw-blue">หน้าตาแบบนี้</span>
-            </h2>
+            <DepthTitle progress={progress} />
             <Watch progress={progress} onLive={setLive} />
           </>
         )}

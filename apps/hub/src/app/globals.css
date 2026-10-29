@@ -182,3 +182,28 @@ html.em-intro .intro-cover {
     white-space: nowrap;
   }
 }
+
+/* pocket headline: letters stand out of the page, a stacked shadow cut in the ink colours */
+.pk-depth {
+  color: var(--foreground);
+  text-shadow:
+    1px 1px 0 color-mix(in oklab, var(--em-blue-700) 35%, var(--background)),
+    2px 2px 0 color-mix(in oklab, var(--em-blue-700) 30%, var(--background)),
+    3px 3px 0 color-mix(in oklab, var(--em-blue-700) 25%, var(--background)),
+    4px 4px 0 color-mix(in oklab, var(--em-blue-700) 20%, var(--background)),
+    6px 10px 24px color-mix(in oklab, var(--em-blue-700) 30%, transparent);
+}
+.pk-depth-blue {
+  background: linear-gradient(
+    180deg,
+    var(--em-sky-500),
+    var(--em-blue-600) 55%,
+    var(--em-violet-600)
+  );
+  background-clip: text;
+  color: transparent;
+  /* the gradient fill hides the parent's shadow; give the blue line its own, in front-to-back order */
+  filter: drop-shadow(2px 2px 0 color-mix(in oklab, var(--em-blue-700) 55%, var(--background)))
+    drop-shadow(4px 8px 12px color-mix(in oklab, var(--em-blue-700) 28%, transparent));
+  text-shadow: none;
+}
