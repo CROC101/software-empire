@@ -289,6 +289,8 @@ export function LaptopPreview({
   const shade = useTransform(smooth, [OPEN * 0.4, OPEN], [1, 0]);
   const subOpacity = useTransform(smooth, [0, OPEN * 0.5], [1, 0]);
   const bar = smooth;
+  // the progress pill only shows while the scene is pinned, never as a line across the page
+  const barOpacity = useTransform(smooth, [0, 0.03, 0.96, 1], [0, 1, 1, 0]);
 
   const head = (
     <div className="flex flex-col items-center text-center">
@@ -364,9 +366,17 @@ export function LaptopPreview({
 
         <motion.span
           aria-hidden
-          className="absolute bottom-0 left-0 h-[3px] w-full origin-left"
-          style={{ scaleX: bar, background: "var(--em-blue-500)" }}
-        />
+          className="absolute bottom-5 left-1/2 h-1 w-28 -translate-x-1/2 overflow-hidden rounded-full"
+          style={{
+            opacity: barOpacity,
+            background: "color-mix(in oklab, var(--foreground) 12%, transparent)",
+          }}
+        >
+          <motion.span
+            className="block h-full w-full origin-left rounded-full"
+            style={{ scaleX: bar, background: "var(--em-blue-500)" }}
+          />
+        </motion.span>
       </div>
     </section>
   );
