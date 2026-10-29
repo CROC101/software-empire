@@ -98,3 +98,4 @@ export {
 } from "./components/clothing-rail";
 export { NimbusNavbar, type NimbusNavItem, type NimbusFx } from "./components/nimbus-navbar";
 export { useReducedMotionAfterMount } from "./lib/use-reduced-motion";
+export { DepthScroll } from "./components/depth-scroll";

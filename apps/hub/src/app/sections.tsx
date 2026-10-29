@@ -181,7 +181,10 @@ export function StatusSection() {
       <TornEdge color="var(--em-ink-975)" />
       <section id="status" className={`${DARK} relative scroll-mt-16 overflow-hidden`}>
         <Meteors />
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:items-center">
+        <div
+          data-depth
+          className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:items-center"
+        >
           <div className="flex flex-col gap-6">
             <p className={`${EYEBROW} text-[var(--em-ink-400)]`}>status · live</p>
             <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
@@ -397,7 +400,11 @@ export function WorkSection() {
   const others = subsystems.filter((s) => !WORK.some((w) => w.slug === s.slug));
   const live = subsystems.filter((s) => appUrl(s.slug)).length;
   return (
-    <section id="subsystems" className="mx-auto max-w-6xl scroll-mt-16 px-4 py-24 sm:px-6">
+    <section
+      data-depth
+      id="subsystems"
+      className="mx-auto max-w-6xl scroll-mt-16 px-4 py-24 sm:px-6"
+    >
       <div className="grid gap-6 border-b pb-12 lg:grid-cols-[1.4fr_1fr] lg:items-end">
         <div>
           <p className={`${EYEBROW} cw-blue`}>work</p>
@@ -583,7 +590,7 @@ export function LaptopSection() {
 
 export function ShotsSection() {
   return (
-    <section id="screens" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
+    <section data-depth id="screens" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-t pt-12">
         <div>
           <p className={`${EYEBROW} cw-blue`}>screens</p>
@@ -655,7 +662,7 @@ const ROAD = [
 export function AboutSection() {
   const live = subsystems.filter((s) => appUrl(s.slug)).length;
   return (
-    <section id="about" className="mx-auto max-w-6xl scroll-mt-16 px-4 py-24 sm:px-6">
+    <section data-depth id="about" className="mx-auto max-w-6xl scroll-mt-16 px-4 py-24 sm:px-6">
       <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr]">
         <div>
           <p className={`${EYEBROW} cw-blue`}>about</p>
@@ -784,7 +791,7 @@ const WAYS = [
 
 export function SkillsSection() {
   return (
-    <section id="skills" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
+    <section data-depth id="skills" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
       <p className={`${EYEBROW} cw-blue`}>skills</p>
       <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
         ของที่ใช้ <span className="cw-blue">ทุกวัน</span>
@@ -866,7 +873,7 @@ const SERVICE_TILES = [
 
 export function ServicesSection({ aside }: { aside: ReactNode }) {
   return (
-    <section id="services" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
+    <section data-depth id="services" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
       <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center">
         <div>
           <p className={`${EYEBROW} cw-blue`}>services</p>
@@ -959,7 +966,7 @@ export function HowSection() {
           aria-hidden
           className="vt-live cw-float absolute right-[12%] top-20 size-20 -rotate-12 text-[var(--em-blue-500)] opacity-80"
         />
-        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+        <div data-depth className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
             <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
               ผมถือว่างานจบ
@@ -1057,7 +1064,7 @@ const TEAM: {
 
 export function TeamSection() {
   return (
-    <section id="team" className="mx-auto max-w-6xl scroll-mt-16 px-4 py-24 sm:px-6">
+    <section data-depth id="team" className="mx-auto max-w-6xl scroll-mt-16 px-4 py-24 sm:px-6">
       <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end">
         <div>
           <p className={`${EYEBROW} cw-blue`}>team</p>
@@ -1116,6 +1123,7 @@ const FAQ = [
 export function FaqSection() {
   return (
     <section
+      data-depth
       id="faq"
       className="mx-auto grid max-w-6xl scroll-mt-16 gap-12 px-4 pb-24 sm:px-6 lg:grid-cols-[1fr_2fr]"
     >

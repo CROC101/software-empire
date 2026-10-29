@@ -71,6 +71,11 @@ font pair or corner style per app.
 - Animate **transform and opacity only**; CSS keyframes or `motion/react` (already installed —
   never add framer-motion, gsap or lenis; never hijack scrolling).
 - Always honour `prefers-reduced-motion` (static fallback, ambience off).
+- Page depth: `<DepthScroll/>` (`@empire/ui`, mounted once in hub `page.tsx`) lifts every direct
+  child of a `data-depth` element out of the page in 3D as it scrolls in. Mark ordinary sections
+  (or the inner container of a full-bleed band, so the band itself never moves); never mark pinned
+  / sticky scenes. Long lists of screens use `ScreenRail` + `useAutoplay` (scroll length fixed,
+  whatever the count) instead of one scroll step per item.
 - Anything that keeps moving gets `vt-live`; sticky/fixed chrome gets `vt-top` — otherwise it
   freezes or stacks wrongly during the theme-switch view transition. Both are suppressed while a
   `<dialog>` is open (styles.css handles it).
