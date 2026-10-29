@@ -7,8 +7,8 @@ import "@fontsource/fleur-de-leah/400.css";
 import { ComebackPoster, useTokenColors } from "@empire/ui";
 
 const TOKENS = [
-  "--em-ink-50", // paper
-  "--em-ink-975", // ink
+  "--background", // paper: follows the theme
+  "--foreground", // ink
   "--em-blue-500", // poppies: a field of blue
   "--em-croc-800", // the ground, the croc's own green
   "--em-ink-300", // haze
@@ -25,7 +25,7 @@ const TOKENS = [
  */
 export function CrocPoster() {
   const c = useTokenColors(TOKENS);
-  if (!c) return <div className="bg-[var(--em-ink-50)]" style={{ height: "min(100svh, 860px)" }} />;
+  if (!c) return <div className="bg-background" style={{ height: "min(100svh, 860px)" }} />;
   const [
     paper = "",
     ink = "",

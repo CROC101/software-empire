@@ -547,7 +547,7 @@ const LAPTOP = [
     description: "โปรแกรมกราฟิกหลายเลเยอร์บนเว็บ",
     label: "Canvas",
     icon: <Palette aria-hidden />,
-    color: "var(--em-coral-500)",
+    color: "var(--em-sky-500)",
     href: "/go/canva",
     cta: "เปิดดู",
   },
@@ -557,7 +557,7 @@ const LAPTOP = [
     description: "เครื่องมือนักพัฒนาและ MCP Inspector ในเบราว์เซอร์",
     label: "Toolboxes",
     icon: <Wrench aria-hidden />,
-    color: "var(--em-teal-600)",
+    color: "var(--em-blue-700)",
     href: "/go/toolboxes",
     cta: "เปิดดู",
   },
@@ -859,8 +859,8 @@ const SERVICE_ICONS = [
 const SERVICE_TILES = [
   "linear-gradient(135deg, var(--em-blue-500), var(--em-blue-700))",
   "linear-gradient(135deg, var(--em-violet-500), var(--em-violet-700))",
-  "linear-gradient(135deg, var(--em-teal-400), var(--em-teal-600))",
-  "linear-gradient(135deg, var(--em-coral-400), var(--em-coral-500))",
+  "linear-gradient(135deg, var(--em-sky-500), var(--em-blue-600))",
+  "linear-gradient(135deg, var(--em-ink-700), var(--em-ink-950))",
 ];
 
 export function ServicesSection({ aside }: { aside: ReactNode }) {
@@ -1011,7 +1011,7 @@ export function HowSection() {
 
 /* ── team: one person and the robots ────────────────────────── */
 
-// hue: each card glows in its own palette colour (blue, violet, teal, coral)
+// hue: each card glows in its own shade of the cool family (blue, violet, sky, indigo)
 const TEAM: {
   icon: typeof Code2;
   role: string;
@@ -1040,16 +1040,16 @@ const TEAM: {
     icon: ShieldCheck,
     role: "ยาม",
     name: `${String(PGTAP_TESTS)} เทสต์`,
-    hue: 175,
-    tone: "var(--em-teal-600)",
+    hue: 225,
+    tone: "var(--em-sky-500)",
     body: "ยามหน้าประตูฐานข้อมูล ถ้ากฎสิทธิ์ข้อไหนพัง ระบบไม่ยอมให้ขึ้นจริง",
   },
   {
     icon: Cat,
     role: "มาสคอต",
     name: "แมว Community",
-    hue: 30,
-    tone: "var(--em-coral-500)",
+    hue: 265,
+    tone: "var(--em-blue-700)",
     body: "ไม่ได้ช่วยอะไรเลย แต่หน้าตาน่ารักเลยได้เป็นโลโก้",
   },
 ];

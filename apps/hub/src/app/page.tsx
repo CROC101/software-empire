@@ -242,15 +242,15 @@ function HeroVisual() {
 
       <Phone
         className="left-[2%] top-[26%] -rotate-12"
-        tone="var(--em-coral-500)"
+        tone="var(--em-sky-500)"
         title="Empire Canvas"
       >
         <div className="grid grid-cols-2 gap-1.5">
           {[
-            "var(--em-coral-400)",
-            "var(--em-gold-300)",
-            "var(--em-teal-400)",
-            "var(--em-sky-500)",
+            "var(--em-violet-300)",
+            "var(--em-blue-500)",
+            "var(--em-violet-500)",
+            "var(--em-blue-700)",
           ].map((c) => (
             <div key={c} className="aspect-square rounded-md" style={{ background: c }} />
           ))}

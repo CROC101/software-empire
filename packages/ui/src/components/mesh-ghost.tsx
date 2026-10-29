@@ -26,7 +26,7 @@ const MASK = `url("data:image/svg+xml,${encodeURIComponent(
 
 // palette tokens (light → deep); the shader cannot read CSS vars, so they are resolved at runtime
 const TOKENS = [
-  "--em-coral-400",
+  "--em-violet-300",
   "--em-sky-500",
   "--em-violet-400",
   "--em-blue-600",

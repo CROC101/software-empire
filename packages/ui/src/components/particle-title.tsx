@@ -414,14 +414,14 @@ function createEngine(
 export interface ParticleTitleProps {
   /** The line. The real heading stays in the DOM for screen readers. */
   text: string;
-  /** Three palette tokens for the glow, e.g. ["--em-sky-500", "--em-violet-500", "--em-coral-400"]. */
+  /** Three palette tokens for the glow, e.g. ["--em-blue-500", "--em-violet-500", "--em-sky-500"]. */
   glow?: readonly [string, string, string];
   className?: string;
 }
 
 export function ParticleTitle({
   text,
-  glow = ["--em-blue-500", "--em-violet-500", "--em-coral-400"],
+  glow = ["--em-blue-500", "--em-violet-500", "--em-sky-500"],
   className,
 }: ParticleTitleProps) {
   const [reduce, setReduce] = useState(false);
