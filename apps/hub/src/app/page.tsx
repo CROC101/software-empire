@@ -120,7 +120,10 @@ export default async function HomePage() {
             >
               {cta.label} <span aria-hidden>→</span>
             </Link>
-            <AppLauncher {...LAUNCHER} className="lg:hidden" />
+            {/* the launcher lives in the capsule on desktop; here it stands alone */}
+            <span className="lg:hidden">
+              <AppLauncher {...LAUNCHER} />
+            </span>
             <MobileMenu items={NAV} cta={cta} />
           </div>
         </div>
