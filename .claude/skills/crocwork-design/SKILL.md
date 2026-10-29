@@ -50,8 +50,13 @@ font pair or corner style per app.
 - Phones: `PhoneFrame` from `@empire/ui` (titanium edge, Dynamic Island, status bar 9:41) over
   paper-cut art (`PaperArt`); pairs fan out on hover. Screens are real screenshots
   (`apps/hub/public/previews/m-*.webp`), never mock text.
-- Mascot: `MeshGhost` from `@empire/ui` (shader ghost, eyes follow the pointer) via `Sticker`.
+- Mascots: `MeshMascot` from `@empire/ui`, `kind="ghost"` (also `MeshGhost`) or `kind="owl"`
+  (shader body, eyes follow the pointer). They dress for the current festival automatically.
   Colours come from palette tokens (resolved at runtime); never hard-code hex.
+- Festivals are ambience values (`halloween`, `loykrathong`, `christmas`, `newyear`, `songkran`):
+  pickable in the sky sheet, and `auto` switches by date (`festivalFor` in `@empire/core/theme`).
+- Glass: `.cw-glass` (hub) is the water-menu material for chips, cards and secondary buttons;
+  `.pk-depth` / `.pk-depth-blue` give headlines the extruded depth look.
 - Copy: first person, plain Thai, no em dashes, no buzzwords, only true numbers.
 
 ## 3. Shared across every app (wire these in, every time)
