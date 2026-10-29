@@ -155,11 +155,11 @@ function Laptop({
         </div>
       </motion.div>
 
-      {/* hinge: the dark band where the lid meets the body */}
+      {/* hinge: only a thin shadowed seam shows where the lid meets the body */}
       <div
         aria-hidden
-        className="relative mx-auto aspect-[100/1.3] w-[96%] rounded-b-sm"
-        style={{ background: "linear-gradient(180deg, var(--em-ink-800), var(--em-ink-600))" }}
+        className="relative mx-auto aspect-[100/0.7] w-[93%] rounded-b-[2px]"
+        style={{ background: "linear-gradient(180deg, var(--em-ink-500), var(--em-ink-300))" }}
       />
 
       {/* deck: tilted toward us; keyboard, speaker grilles and trackpad sized like the real one */}
@@ -178,8 +178,9 @@ function Laptop({
             transformStyle: "preserve-3d",
             background: aluminium,
             // lit top, and the chamfered front edge catching the light
+            // the screen's shadow falling on the top case, the lit front chamfer
             boxShadow:
-              "inset 0 1px 0 oklch(1 0 0 / 0.8), inset 0 -3px 0 var(--em-ink-300), inset 0 -4px 0 oklch(1 0 0 / 0.6)",
+              "inset 0 14px 18px -14px oklch(0 0 0 / 0.28), inset 0 -3px 0 var(--em-ink-300), inset 0 -4px 0 oklch(1 0 0 / 0.6)",
           }}
         >
           {[3, 89].map((left) => (
