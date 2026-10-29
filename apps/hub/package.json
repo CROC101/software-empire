@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --port 3000",
+    "shots": "node scripts/screenshots.mjs",
     "build": "next build",
     "start": "next start --port 3000",
     "typegen": "next typegen",
