@@ -86,3 +86,4 @@ export {
   type GlassTuning,
 } from "./components/glass-icon-reveal";
 export { GlowCard } from "./components/glow-card";
+export { ParticleTitle, type ParticleTitleProps } from "./components/particle-title";

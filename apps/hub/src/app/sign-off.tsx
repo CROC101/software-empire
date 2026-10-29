@@ -1,6 +1,6 @@
 "use client";
 
-import { GlassIconReveal, useTokenColors } from "@empire/ui";
+import { GlassIconReveal, ParticleTitle, useTokenColors } from "@empire/ui";
 
 /**
  * The page's sign-off, between the contact band and the footer: a glass droplet lands, bends the
@@ -26,8 +26,10 @@ export function SignOff() {
           className="mx-auto h-[22rem] w-full max-w-xl sm:h-[26rem]"
         />
       )}
-      <p className="mt-2 text-center font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
-        crocwork.studio · ทำคนเดียว ตั้งใจทุกชิ้น
+      {/* the line under the mark: dissolves into dust in the glow and gathers back */}
+      <ParticleTitle text="ทำคนเดียว ตั้งใจทุกชิ้น" className="-mt-16 sm:-mt-20" />
+      <p className="-mt-10 text-center font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
+        crocwork.studio · since 2569
       </p>
     </section>
   );
