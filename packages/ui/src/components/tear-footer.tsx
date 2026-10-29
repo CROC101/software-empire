@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useTokenColors } from "../lib/token-colors";
+import { InkWordmark } from "./ink-wordmark";
 
 /**
  * Tear footer: the footer as a torn poster. A blue sheet carries the chrome (back to top,
@@ -403,6 +404,8 @@ const FALLBACK = ["#2563eb", "#f7f7f5", "#ffffff", "#3b82f6"];
 export type TearFooterProps = {
   /** The wordmark printed on the paper. */
   brand: string;
+  /** Stamps the wordmark in dry-brush ink with a crocodile peeking (InkWordmark). */
+  ink?: boolean;
   /** Small gradient line over the wordmark. */
   name: string;
   /** Centre of the top bar (a logo). */
@@ -453,6 +456,7 @@ export function TearFooter({
   credit,
   handle,
   seed = 7,
+  ink = false,
   labels = {
     top: "Back to top",
     pin: "Pull the pin: tear a new edge",
@@ -960,8 +964,8 @@ export function TearFooter({
             </A>
           )}
         </div>
-        <A href={logoHref} className="tpf-word" label={name}>
-          <span>{brand}</span>
+        <A href={logoHref} className={ink ? "tpf-word is-ink" : "tpf-word"} label={name}>
+          {ink ? <InkWordmark text={brand} play={stage >= 3} /> : <span>{brand}</span>}
         </A>
       </div>
 

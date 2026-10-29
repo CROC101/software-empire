@@ -1038,6 +1038,7 @@ export function SiteFooter() {
   return (
     <TearFooter
       brand="crocwork."
+      ink
       name="crocwork.studio"
       logo={<Image src="/crocwork-logo.jpg" alt="" width={44} height={44} className="rounded-xl" />}
       logoHref="/"

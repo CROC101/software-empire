@@ -1562,3 +1562,180 @@ html:has(dialog[open]) .vt-top {
     transition: none;
   }
 }
+
+/* ---- InkWordmark: dry-brush letters stamped over a waterline, a crocodile peeking ---- */
+.iwm {
+  display: block;
+  overflow: visible;
+  max-width: none;
+  user-select: none;
+}
+.iwm text {
+  fill: currentColor;
+}
+.iwm-water {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.iwm-dust {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0;
+}
+.iwm-letter,
+.iwm-glyph,
+.iwm-croc {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.iwm-letter,
+.iwm-croc {
+  opacity: 0;
+}
+.iwm-mound {
+  fill: var(--em-croc-400);
+  stroke: currentColor;
+  stroke-width: 3;
+}
+.iwm-iris {
+  fill: var(--em-gold-500);
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.iwm-ink {
+  fill: var(--em-croc-950);
+}
+.iwm-glint {
+  fill: var(--em-gold-300);
+}
+.iwm-lid {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.iwm-eye {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .iwm.is-play .iwm-water {
+    animation: iwm-draw 1.1s cubic-bezier(0.6, 0, 0.3, 1) var(--d) both;
+  }
+  .iwm.is-play .iwm-letter {
+    animation: iwm-stamp 0.62s cubic-bezier(0.2, 0.8, 0.25, 1.15) var(--d) both;
+  }
+  .iwm.is-play .iwm-dust {
+    animation: iwm-dust 0.5s ease-out calc(var(--d) + 0.22s) both;
+  }
+  .iwm.is-play .iwm-croc {
+    animation: iwm-surface 0.9s cubic-bezier(0.3, 1.4, 0.5, 1) var(--d) both;
+  }
+  .iwm.is-play .iwm-eye {
+    animation: iwm-blink 4.6s ease-in-out infinite;
+  }
+  .iwm-glyph:hover {
+    animation: iwm-jiggle 0.6s cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .iwm.is-play .iwm-letter,
+  .iwm.is-play .iwm-croc {
+    opacity: 1;
+  }
+  .iwm.is-play .iwm-water {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes iwm-stamp {
+  0% {
+    opacity: 0;
+    transform: translateY(-34%) scale(1.28) rotate(var(--r));
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(2%) scale(0.95, 1.05);
+  }
+  75% {
+    transform: scale(1.04, 0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes iwm-dust {
+  0% {
+    opacity: 0;
+    stroke-dasharray: 0 40;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    stroke-dasharray: 14 40;
+    stroke-dashoffset: -16;
+  }
+}
+@keyframes iwm-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes iwm-surface {
+  0% {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-8%);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes iwm-blink {
+  0%,
+  92%,
+  100% {
+    transform: none;
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes iwm-jiggle {
+  25% {
+    transform: rotate(-4deg) scale(1.03, 0.97);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-3%);
+  }
+  75% {
+    transform: rotate(-1.5deg);
+  }
+}
+.tpf-word.is-ink {
+  overflow: visible;
+  /* upper-case Arial Black runs wider than the lower-case word: keep it clear of the side links */
+  font-size: max(30px, min(8.4cqmin, 10.5cqw));
+  letter-spacing: normal;
+}
+.tpf-word.is-ink span {
+  transform: none !important;
+}
+.tpf-word.is-ink span::after {
+  content: none;
+}

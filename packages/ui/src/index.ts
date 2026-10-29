@@ -30,6 +30,7 @@ export { MeshGhost } from "./components/mesh-ghost";
 export { ScrollAssemble } from "./components/scroll-assemble";
 export { TidelineCta } from "./components/tideline-cta";
 export { TearFooter, type TearFooterProps } from "./components/tear-footer";
+export { InkWordmark } from "./components/ink-wordmark";
 export { useTokenColors } from "./lib/token-colors";
 export { CrocReveal } from "./components/croc-reveal";
 export { LanyardBadge } from "./components/lanyard-badge";
