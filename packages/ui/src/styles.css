@@ -2646,8 +2646,8 @@ a.lgn-app:focus-visible {
   }
 }
 
-/* theme switch "stream": the live water curtain (sun-moon-theme-toggle.tsx pourTheme). It only
-   ever moves by transform; its wavy top and stream-fingered bottom are a static mask. */
+/* theme switch "wave" / "stream": the live water body (sun-moon-theme-toggle.tsx pourTheme). It
+   only ever moves by transform; its wavy top and stream-fingered bottom are a static mask. */
 .em-pour {
   --pour-bg: var(--em-ink-25);
   position: fixed;
@@ -2667,8 +2667,8 @@ a.lgn-app:focus-visible {
   max-height: none;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 3 C10 0 20 5 30 2.5 S50 0 60 3 S80 5 100 2 L100 94 C96 97 93 99.6 89 96 S81 92 75 97.5 S65 100 59 95 S47 92 41 98 S31 99.6 25 95 S15 92 9 98.5 S3 97 0 95 Z'/%3E%3C/svg%3E")
     0 0 / 100% 100% no-repeat;
-  /* foam at both edges, the coming theme's colour solid through the middle, caustic light,
-     ripples and a sheen */
+  /* see-through foam at both edges, the coming theme's colour solid from 9% to 91% (pourTheme
+     swaps the theme while that covers the screen), caustic light, ripples and a sheen */
   background:
     radial-gradient(
       38% 16% at 22% 34%,
@@ -2693,25 +2693,14 @@ a.lgn-app:focus-visible {
     ),
     linear-gradient(
       180deg,
-      color-mix(in oklab, var(--em-sky-500) 35%, transparent) 0%,
-      color-mix(
-          in oklab,
-          var(--pour-bg) 62%,
-          color-mix(in oklab, var(--em-blue-500) 30%, transparent)
-        )
-        6%,
-      color-mix(in oklab, var(--pour-bg) 62%, transparent) 14%,
-      color-mix(in oklab, var(--pour-bg) 62%, transparent) 86%,
-      color-mix(
-          in oklab,
-          var(--pour-bg) 62%,
-          color-mix(in oklab, var(--em-blue-500) 30%, transparent)
-        )
-        94%,
-      color-mix(in oklab, var(--em-sky-500) 35%, transparent) 100%
+      color-mix(in oklab, var(--em-sky-500) 40%, transparent) 0%,
+      color-mix(in oklab, var(--pour-bg) 80%, var(--em-blue-500)) 5%,
+      var(--pour-bg) 9%,
+      var(--pour-bg) 91%,
+      color-mix(in oklab, var(--pour-bg) 80%, var(--em-blue-500)) 95%,
+      color-mix(in oklab, var(--em-sky-500) 40%, transparent) 100%
     );
-  /* see-through water: the page stays visible (blurred) under it, even at the moment it recolours */
-  backdrop-filter: blur(7px) saturate(1.3);
+  /* no backdrop blur: a full-screen blur on a moving layer costs the GPU every frame */
 }
 .em-pour[data-next="dark"] {
   --pour-bg: var(--em-ink-975);

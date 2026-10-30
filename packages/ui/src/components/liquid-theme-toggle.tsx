@@ -60,8 +60,8 @@ export function LiquidThemeToggle({
             // this tab wrote the cookie; nudge the store (cookieStore may not report our own write)
             window.dispatchEvent(new Event("focus"));
           };
-          // the drop crosses the track first, then the page follows it, so the snapshot the wave
-          // pours over already shows the drop where it landed
+          // the drop crosses the track first, then the water follows it down the page (the water
+          // covers the header too, so the drop would otherwise travel out of sight)
           const wait = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : DROP_LEAD_MS;
           lead.current = window.setTimeout(() => {
             if (from) revealPage(effect, from, swap, 900);

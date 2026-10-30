@@ -109,12 +109,11 @@ function fadePage(duration: number) {
  * compositor. "drop" (the default) spreads the new theme from the button like a drop of ink in
  * water: a liquid edge that wobbles while it grows and settles round as it covers the screen,
  * while the old page sinks back a little and dims. Without the API (or with reduced motion) the
- * swap is instant; "fade" cross-fades colours. "wave" (the default) reveals the new theme from the
- * top down behind a falling, streaming water edge, so the colours change where the water has
- * passed; it skips to the end if the visitor scrolls, and without View Transitions it falls back
- * to "stream". "stream" is live, no snapshot: a
- * sheet of water in the coming theme's colour pours down in streams, the theme changes under
- * it, and it drains away, while the page keeps scrolling and moving underneath.
+ * swap is instant; "fade" cross-fades colours. "wave" (the default, "stream" is the same) is live,
+ * no snapshot: a body of water in the coming theme's colour pours down the screen, the theme
+ * changes while it fills the screen, and it drains away, while the page keeps moving and
+ * scrolling above and below it. (A snapshot reveal holds a still picture of the page until the
+ * water reaches it, so moving things stop for a moment.)
  */
 export type ThemeEffect = "wave" | "stream" | "drop" | "circle" | "wipe" | "fade";
 
@@ -123,21 +122,25 @@ const DROP_MS = 1100;
 const DROP_POINTS = 72;
 const DROP_FRAMES = 36;
 
-const POUR_MS = 1250;
-// screens tall: just enough that its solid middle covers the whole screen for a beat (~0.1s) to
-// hide the swap, short enough that the page is never blank for long
-const POUR_TALL = 1.45;
+const POUR_MS = 1400;
+// screens tall; its solid middle (9%–91% of it, see .em-pour) covers the whole screen while the
+// sheet top is between -0.46 and -0.14 screens: short, so the page is hidden only for a beat
+const POUR_TALL = 1.6;
+// where the sheet slows down: it has just covered the screen at the first, and starts to drain
+// at the second (~0.28s later), so the theme swaps out of sight while the page restyles
+const POUR_COVER = [0.4, 0.6] as const;
 
 /**
- * The live water curtain for "stream": a tall, click-through sheet of the coming theme's colour,
- * with a wavy top and stream fingers at the bottom, falls through the screen. While it covers the
- * whole screen the theme swaps underneath; then it slides away. It only moves by transform (on
- * the compositor), so it keeps flowing even while the page recolours, and the real page keeps
- * scrolling under it the whole time. No View Transition, nothing frozen.
+ * The live water body ("wave", "stream"): a tall, click-through sheet of the coming theme's
+ * colour, with a wavy top and stream fingers at the bottom, pours down the screen, slows while it
+ * fills it, and drains away. The theme swaps while it covers everything. It only moves by
+ * transform (on the compositor), so it keeps flowing even while the page restyles, and the real
+ * page keeps moving and scrolling above and below it the whole time. No snapshot, nothing frozen.
  */
 function pourTheme(next: ResolvedTheme, swap: () => void) {
   const vh = innerHeight;
   const tall = Math.round(vh * POUR_TALL);
+  const at = (y: number) => `translate3d(0, ${String(Math.round(y))}px, 0)`;
   const sheet = document.createElement("div");
   sheet.className = "em-pour";
   sheet.dataset.next = next;
@@ -147,50 +150,26 @@ function pourTheme(next: ResolvedTheme, swap: () => void) {
   sheet.popover = "manual";
   document.body.appendChild(sheet);
   sheet.showPopover();
+  const [covered, draining] = POUR_COVER;
   const run = sheet.animate(
     [
-      { transform: `translate3d(0, ${String(-tall)}px, 0)` },
-      { transform: `translate3d(0, ${String(vh)}px, 0)` },
+      // pours in, easing off as it fills the screen (it meets the drift at the drift's speed,
+      // ~0.5 of this stretch's average, so the water never jerks)
+      { offset: 0, transform: at(-tall), easing: "cubic-bezier(0.3, 0.45, 0.6, 0.81)" },
+      // fills it: a slow drift, the theme swaps underneath
+      { offset: covered, transform: at(-0.44 * vh), easing: "linear" },
+      // drains away, picking up speed again
+      { offset: draining, transform: at(-0.16 * vh), easing: "cubic-bezier(0.4, 0.19, 0.7, 0.64)" },
+      { offset: 1, transform: at(vh) },
     ],
-    // symmetric, and gentle in the middle, so the covered moment lasts
-    { duration: POUR_MS, easing: "cubic-bezier(0.3, 0, 0.7, 1)", fill: "both" },
+    { duration: POUR_MS, fill: "both" },
   );
-  // halfway through, the sheet is centred on the screen and covers all of it
-  const swapAt = window.setTimeout(swap, POUR_MS * 0.5);
+  const swapAt = window.setTimeout(swap, POUR_MS * covered + 16);
   const done = () => {
     window.clearTimeout(swapAt);
     sheet.remove();
   };
   run.finished.then(done, done);
-}
-
-const WAVE_MS = 1100;
-const WAVE_POINTS = 96;
-const WAVE_FRAMES = 40;
-
-/**
- * Clip-path keyframes for "wave": the new theme fills the screen from the top down behind a
- * falling edge of water, streams of it racing ahead with rippling heads that calm as it lands.
- */
-function waveFrames(w: number, h: number): Keyframe[] {
-  const lag = (u: number) =>
-    0.5 +
-    0.24 * Math.sin(u * 9.1 + 0.6) +
-    0.16 * Math.sin(u * 17.3 + 2.1) +
-    0.1 * Math.sin(u * 31.7 + 4.4);
-  const smooth = (t: number) => t * t * (3 - 2 * t);
-  return Array.from({ length: WAVE_FRAMES + 1 }, (_, f) => {
-    const t = f / WAVE_FRAMES;
-    const edge = Array.from({ length: WAVE_POINTS + 1 }, (_, i) => {
-      const u = 1 - i / WAVE_POINTS; // right to left along the falling edge
-      const start = Math.max(0, Math.min(1, lag(u))) * 0.38;
-      const k = Math.max(0, Math.min(1, (t - start) / (1 - start)));
-      const ripple = k > 0 && k < 1 ? (1 - t) * 16 * Math.sin(u * 46 + t * 18) : 0;
-      const y = smooth(k) ** 1.1 * (h + 48) + ripple;
-      return `${(u * w).toFixed(1)}px ${Math.max(0, y).toFixed(1)}px`;
-    });
-    return { offset: t, clipPath: `polygon(0px 0px, ${w.toFixed(1)}px 0px, ${edge.join(",")})` };
-  });
 }
 
 /** Clip-path keyframes for the ink drop; equal point counts, so the browser interpolates them. */
@@ -225,17 +204,12 @@ export function revealPage(
     swap();
     return;
   }
-  if (effect === "stream") {
+  if (effect === "wave" || effect === "stream") {
     const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
     pourTheme(next, swap);
     return;
   }
   const canTransition = "startViewTransition" in document;
-  if (effect === "wave" && !canTransition) {
-    const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
-    pourTheme(next, swap);
-    return;
-  }
   if (effect === "fade" || !canTransition) {
     if (effect === "fade") fadePage(fadeMs);
     swap();
@@ -251,44 +225,6 @@ export function revealPage(
   const restore = () => {
     root.classList.remove("vt-flat");
   };
-  if (effect === "wave") {
-    // the page swapped before the wave starts, so the main thread is free while it runs; and if
-    // the visitor scrolls (or keys through the page) mid-wave, it finishes at once instead of
-    // holding a still picture of the page
-    const finish = () => {
-      transition.skipTransition();
-    };
-    const keys = (e: KeyboardEvent) => {
-      if (/^(Arrow|Page|Home|End| )/.test(e.key)) finish();
-    };
-    window.addEventListener("wheel", finish, { passive: true, once: true });
-    window.addEventListener("touchmove", finish, { passive: true, once: true });
-    window.addEventListener("keydown", keys);
-    const unlisten = () => {
-      window.removeEventListener("wheel", finish);
-      window.removeEventListener("touchmove", finish);
-      window.removeEventListener("keydown", keys);
-      restore();
-    };
-    transition.ready
-      .then(() => {
-        root.animate(waveFrames(innerWidth, innerHeight), {
-          duration: WAVE_MS,
-          easing: "linear", // the frames carry their own easing
-          pseudoElement: "::view-transition-new(root)",
-        });
-        // the old page darkens a little as the water comes over it
-        root.animate([{ filter: "brightness(1)" }, { filter: "brightness(0.85)" }], {
-          duration: WAVE_MS,
-          easing: SKY_EASE,
-          pseudoElement: "::view-transition-old(root)",
-        });
-      })
-      .catch(() => undefined);
-    transition.updateCallbackDone.catch(() => undefined);
-    transition.finished.then(unlisten, unlisten);
-    return;
-  }
   const box = from.getBoundingClientRect();
   const x = box.left + box.width / 2;
   const y = box.top + box.height / 2;
