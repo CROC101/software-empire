@@ -12,9 +12,12 @@ import { useRef } from "react";
 export function MobileMenu({
   items,
   cta,
+  initialTheme,
 }: {
   items: readonly { href: string; label: string }[];
   cta: { href: string; label: string };
+  /** The theme the server read from the cookie (undefined for "system"). */
+  initialTheme?: "light" | "dark";
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const close = () => ref.current?.close();
@@ -74,7 +77,7 @@ export function MobileMenu({
           </ul>
         </nav>
         <div className="flex items-center gap-2 px-4 pb-6 pt-3">
-          <LiquidThemeToggle cookieDomain={domain} size={36} />
+          <LiquidThemeToggle cookieDomain={domain} size={36} initial={initialTheme} />
           <AmbienceButton cookieDomain={domain} />
           <Link
             href={cta.href}

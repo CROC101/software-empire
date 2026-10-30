@@ -246,7 +246,8 @@ export function LiquidToggle({
   const iconRef = React.useRef<HTMLSpanElement>(null);
   const audio = React.useRef<AudioContext | null>(null);
   const st = React.useRef(makeState());
-  const [gl, setGl] = React.useState<"on" | "off">("on");
+  // "pending" until the shader is up: a CSS drop shows meanwhile, in the right place
+  const [gl, setGl] = React.useState<"pending" | "on" | "off">("pending");
   const darkRef = React.useRef(0);
   const cbRef = React.useRef({ onCheckedChange, controlled: checked !== undefined, sound });
   // latest props for the animation loop, which lives outside React's render cycle
@@ -523,7 +524,7 @@ export function LiquidToggle({
     s.reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const cv = canvasRef.current;
     s.glc = cv ? initGL(cv) : null;
-    if (!s.glc) setGl("off");
+    setGl(s.glc ? "on" : "off");
     const lost = (e: Event) => {
       e.preventDefault();
       s.glc = null;

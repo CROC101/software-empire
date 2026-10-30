@@ -23,8 +23,11 @@ export function LiquidThemeToggle({
   cookieDomain,
   effect = "stream",
   size = 30,
+  initial,
   className,
 }: {
+  /** The theme the server read from the cookie, so the first paint is already right. */
+  initial?: ResolvedTheme;
   /** the app's NEXT_PUBLIC_/VITE_COOKIE_DOMAIN — unset on localhost */
   cookieDomain?: string;
   effect?: ThemeEffect;
@@ -32,8 +35,8 @@ export function LiquidThemeToggle({
   size?: number;
   className?: string;
 }) {
-  // server render can't see the cookie; until mount the switch shows light
-  const theme = useSyncExternalStore(subscribeTheme, resolvedNow, () => null);
+  // the server passes the cookie's theme as `initial`; with none ("system") it starts light
+  const theme = useSyncExternalStore(subscribeTheme, resolvedNow, () => initial ?? null);
   const box = useRef<HTMLSpanElement>(null);
   const dark = theme === "dark";
   return (

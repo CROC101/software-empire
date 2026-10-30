@@ -19,9 +19,12 @@ const NAV: { href: string; label: string; icon: React.ReactNode; fx: NimbusFx }[
  */
 export function SiteNav({
   launcher,
+  initialTheme,
   className,
 }: {
   launcher: React.ComponentProps<typeof AppLauncher>;
+  /** The theme the server read from the cookie, used until the page colours can be read. */
+  initialTheme?: "light" | "dark";
   className?: string;
 }) {
   const [active, setActive] = useState(0);
@@ -29,7 +32,7 @@ export function SiteNav({
   // or the drop would chase every section it passes and stutter
   const lockedUntil = useRef(0);
   const bg = useTokenColors(["--background"])?.[0];
-  const dark = bg ? parseInt(bg.slice(1, 3), 16) < 128 : false;
+  const dark = bg ? parseInt(bg.slice(1, 3), 16) < 128 : initialTheme === "dark";
 
   // scroll spy: the section crossing the band 35–45% down the screen is the current one
   useEffect(() => {

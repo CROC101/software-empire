@@ -112,3 +112,4 @@ export {
   type CirculariumRingProps,
   type RingView,
 } from "./components/circularium-ring";
+export { CobeGlobe, type GlobePin } from "./components/cobe-globe";

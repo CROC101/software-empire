@@ -360,6 +360,9 @@ function Layer({ from, to, x, y, w, h, duration, strength, onDone }: LayerProps)
     gl.enableVertexAttribArray(0);
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
     const U = (k: string) => gl.getUniformLocation(prog, k);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // decode, then shrink to the size it is drawn at, off the main thread: uploading two 2880px
+    // screenshots as textures in one frame is what made the transition stutter
     const load = (src: string) =>
       new Promise<HTMLImageElement>((res, rej) => {
         const im = new Image();
@@ -372,6 +375,14 @@ function Layer({ from, to, x, y, w, h, duration, strength, onDone }: LayerProps)
         };
         im.onerror = () => rej(new Error("image"));
         im.src = src;
+      }).then((im) => {
+        const scale = Math.min(1, (Math.max(w, h) * dpr) / Math.max(im.naturalWidth, 1));
+        if (scale >= 1 || typeof createImageBitmap !== "function") return im;
+        return createImageBitmap(im, {
+          resizeWidth: Math.max(1, Math.round(im.naturalWidth * scale)),
+          resizeHeight: Math.max(1, Math.round(im.naturalHeight * scale)),
+          resizeQuality: "high",
+        }).catch(() => im);
       });
     Promise.all([load(from), load(to)])
       .then(([a, b]) => {
@@ -385,15 +396,14 @@ function Layer({ from, to, x, y, w, h, duration, strength, onDone }: LayerProps)
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         });
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         cv.width = Math.round(w * dpr);
         cv.height = Math.round(h * dpr);
         gl.viewport(0, 0, cv.width, cv.height);
         gl.uniform1i(U("A"), 0);
         gl.uniform1i(U("B"), 1);
         gl.uniform2f(U("c"), x / w, 1 - y / h);
-        gl.uniform2fv(U("ca"), coverScale(w, h, a.naturalWidth, a.naturalHeight));
-        gl.uniform2fv(U("cb"), coverScale(w, h, b.naturalWidth, b.naturalHeight));
+        gl.uniform2fv(U("ca"), coverScale(w, h, a.width, a.height));
+        gl.uniform2fv(U("cb"), coverScale(w, h, b.width, b.height));
         gl.uniform1f(U("asp"), w / h);
         gl.uniform1f(U("str"), strength);
         const t0 = performance.now();
@@ -502,7 +512,12 @@ export function WaterRippleCarousel({
   // warm the cache so a tap starts its transition at once
   const srcKey = srcs.join("|");
   React.useEffect(() => {
-    for (const src of srcKey.split("|")) if (src) new Image().src = src;
+    for (const src of srcKey.split("|")) {
+      if (!src) continue;
+      const im = new Image();
+      im.src = src;
+      void im.decode().catch(() => undefined);
+    }
   }, [srcKey]);
 
   React.useEffect(() => {

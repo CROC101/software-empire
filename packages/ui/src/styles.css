@@ -2468,6 +2468,22 @@ a.lgn-app:focus-visible {
 .nimbus-toggle[data-tone="dark"] .nt-fill {
   background: linear-gradient(180deg, var(--em-sky-500), var(--em-blue-700));
 }
+/* before the shader is up (first paint, hydration): a CSS drop at the right end, no blank pill */
+.nimbus-toggle[data-gl="pending"] .nt-knob {
+  display: block;
+  top: 10%;
+  height: 80%;
+  aspect-ratio: 1;
+  left: 5%;
+}
+.nimbus-toggle[data-gl="pending"][data-state="on"] .nt-knob {
+  left: auto;
+  right: 5%;
+}
+.nimbus-toggle[data-gl="pending"][data-state="on"] .nt-fill {
+  display: block;
+  right: 2px;
+}
 .nt-icon {
   position: absolute;
   left: 0;
@@ -2687,4 +2703,27 @@ a.lgn-app:focus-visible {
 }
 .em-pour[data-next="dark"] {
   --pour-bg: var(--em-ink-975);
+}
+
+/* CobeGlobe pins: a label above each pin, anchored where the browser supports it */
+.cobe-pin {
+  position: absolute;
+  bottom: anchor(top);
+  left: anchor(center);
+  translate: -50% -6px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font: 600 11px/1 var(--font-mono, monospace);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--background);
+  background: var(--foreground);
+  box-shadow: 0 4px 14px -4px color-mix(in oklab, var(--em-blue-700) 50%, transparent);
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+@supports not (anchor-name: --a) {
+  .cobe-pin {
+    display: none;
+  }
 }

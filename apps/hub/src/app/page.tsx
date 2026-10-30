@@ -16,6 +16,7 @@ import {
   Code2,
   Cpu,
   GitBranch,
+  Globe2,
   Hexagon,
   Laptop,
   ListChecks,
@@ -32,6 +33,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { parseChoice, THEME_COOKIE } from "@empire/core/theme";
 import { getClaims } from "@/lib/supabase/server";
 import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
@@ -42,6 +45,7 @@ import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
 import { ActivitySkyline } from "./activity-skyline";
 import { RhythmRing } from "./rhythm-ring";
+import { WhereSection } from "./where-section";
 import { CodebaseHexes } from "./codebase-hexes";
 import { PocketSection } from "./pocket-section";
 import { SignOff } from "./sign-off";
@@ -132,6 +136,12 @@ const LAUNCHER = {
     { href: "#team", label: "ทีม", icon: <Users />, keywords: "team" },
     { href: "#wardrobe", label: "7 บทบาท", icon: <Shirt />, keywords: "roles wardrobe" },
     { href: "#faq", label: "คำถามที่พบบ่อย", icon: <MessageCircleQuestion />, keywords: "faq ถาม" },
+    {
+      href: "#where",
+      label: "ทำงานจากที่ไหน",
+      icon: <Globe2 />,
+      keywords: "where bangkok time เวลา",
+    },
     { href: "#contact", label: "ติดต่อ", icon: <Mail />, keywords: "contact email อีเมล" },
   ],
   links: [
@@ -160,6 +170,10 @@ const LAUNCHER = {
 
 export default async function HomePage() {
   const claims = await getClaims();
+  // the theme from the cookie, so the water menu and switch render in it from the first paint
+  // ("system" can't be known on the server: those start light and settle after hydration)
+  const choice = parseChoice((await cookies()).get(THEME_COOKIE)?.value);
+  const theme = choice === "system" ? undefined : choice;
   const cta = claims
     ? { href: "/dashboard", label: "แดชบอร์ด" }
     : { href: "/login", label: "เข้าสู่ระบบ" };
@@ -185,11 +199,14 @@ export default async function HomePage() {
           <div className="flex items-center gap-1 sm:gap-4">
             {/* the water pill; its own CSS sets display, so the breakpoint lives on a wrapper */}
             <span className="site-nav hidden lg:block">
-              <SiteNav launcher={LAUNCHER} />
+              <SiteNav launcher={LAUNCHER} initialTheme={theme} />
             </span>
             <span className="hidden items-center gap-2 lg:flex">
               <AmbienceButton cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
-              <LiquidThemeToggle cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
+              <LiquidThemeToggle
+                cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN}
+                initial={theme}
+              />
             </span>
             <Link
               href={cta.href}
@@ -201,7 +218,7 @@ export default async function HomePage() {
             <span className="lg:hidden">
               <AppLauncher {...LAUNCHER} />
             </span>
-            <MobileMenu items={NAV} cta={cta} />
+            <MobileMenu items={NAV} cta={cta} initialTheme={theme} />
           </div>
         </div>
       </header>
@@ -319,6 +336,7 @@ export default async function HomePage() {
         <TeamSection />
         <Wardrobe />
         <FaqSection />
+        <WhereSection />
         <CrocPoster />
         <ContactSection cta={cta} />
         <SignOff />
