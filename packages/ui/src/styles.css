@@ -2729,6 +2729,14 @@ a.lgn-app:focus-visible {
   }
 }
 
+/* SeasonTree: no box round the scene: it fades out at every edge, so the pond runs off into the
+   page and the moon's glow is never cut */
+.stree {
+  mask-image:
+    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 5%, #000 86%, transparent);
+  mask-composite: intersect;
+}
 /* SeasonTree: each fruit carries a real link; its name shows on hover / focus */
 .stree-fruit {
   position: absolute;

@@ -227,17 +227,20 @@ export default async function HomePage() {
       </header>
 
       <main>
-        <section className="relative isolate mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-10 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:pt-16">
-          {/* soft aurora behind the hero, in the menu's water colours */}
-          <div aria-hidden className="hero-aurora pointer-events-none absolute inset-0 -z-10" />
-          <div className="flex flex-col items-start gap-6">
+        {/* phone: chip, headline, the scene, the buttons first; the rest below the fold (the text
+            column dissolves into the grid below lg so its children can interleave with the tree) */}
+        <section className="relative isolate mx-auto grid max-w-6xl items-center gap-6 px-4 pb-20 pt-8 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-16">
+          <div className="max-lg:contents lg:flex lg:flex-col lg:items-start lg:gap-6">
             {/* glass chip, the same material as the water menu */}
-            <p className="cw-glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-widest">
+            <p className="cw-glass order-1 inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-xs lg:order-none">
               <span className="st-live" aria-hidden />
-              <span className="cw-blue font-semibold">crocwork studio</span>
+              <span className="cw-blue font-mono text-[11px] font-semibold uppercase tracking-widest">
+                crocwork studio
+              </span>
+              {/* Thai is never letter-spaced or set in mono: the letters come apart */}
               <span className="text-muted-foreground">ซอฟต์แวร์ · AI · ระบบหลังบ้าน</span>
             </p>
-            <h1 className="pk-depth font-sans text-5xl font-black leading-[1.05] tracking-tight sm:text-7xl">
+            <h1 className="pk-depth order-2 font-sans text-5xl lg:order-none font-black leading-[1.05] tracking-tight sm:text-7xl">
               ระบบที่ผมสร้าง
               <br />
               ทำงานได้จริง
@@ -250,14 +253,19 @@ export default async function HomePage() {
               </span>
             </h1>
             {/* Enterprise ของคนเดียว: ทุกตำแหน่งในทีม คือคนคนเดียวกัน */}
-            <div className="cw-glass flex w-full max-w-lg items-center gap-3 rounded-2xl px-4 py-3 text-2xl font-black leading-none sm:text-3xl">
-              <span className="shrink-0">ทีมของผม =</span>
+            <div className="cw-glass relative order-5 flex w-full max-w-lg items-center gap-3 overflow-hidden rounded-xl px-4 py-3 text-2xl font-black leading-none sm:text-3xl lg:order-none">
+              {/* a small tank: water laps at its foot */}
+              <span className="cw-water" aria-hidden style={{ height: "1.1rem" }}>
+                <span />
+                <span />
+              </span>
+              <span className="relative shrink-0">ทีมของผม =</span>
               <MorphingText
                 texts={ROLES}
                 className="vt-live mx-0 h-10 max-w-none text-left text-2xl cw-blue sm:h-12 md:h-12 sm:text-3xl lg:text-3xl"
               />
             </div>
-            <p className="max-w-lg text-muted-foreground">
+            <p className="order-6 max-w-lg text-muted-foreground lg:order-none">
               ผมทำเองคนเดียวทุกขั้น ตั้งแต่วาดหน้าจอยันเขียนฐานข้อมูล มีโซเชียลแบบ{" "}
               <LinkPreview
                 href="/go/community"
@@ -281,11 +289,16 @@ export default async function HomePage() {
               ทั้งหมดใช้บัญชีเดียวกัน สิทธิ์ใครเห็นอะไรเขียนไว้ในฐานข้อมูล แล้วเขียนเทสต์ดักไว้{" "}
               <CountUp to={PGTAP_TESTS} /> ข้อ เพราะเคยพลาดมาแล้ว
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="order-4 flex flex-wrap gap-3 lg:order-none">
               <a
                 href="#subsystems"
-                className="cw-btn-blue inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold shadow-[0_14px_30px_-12px_color-mix(in_oklab,var(--em-blue-600)_70%,transparent)] transition-transform hover:-translate-y-0.5"
+                className="cw-btn-blue cw-btn-water inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold shadow-[0_14px_30px_-12px_color-mix(in_oklab,var(--em-blue-600)_70%,transparent)] transition-transform hover:-translate-y-0.5"
               >
+                {/* water rises inside on hover */}
+                <span className="cw-water" aria-hidden>
+                  <span />
+                  <span />
+                </span>
                 ดูผลงาน <span aria-hidden>↓</span>
               </a>
               <Link
@@ -296,7 +309,7 @@ export default async function HomePage() {
               </Link>
             </div>
             {/* true numbers only */}
-            <ul className="flex flex-wrap gap-2 text-xs font-semibold text-muted-foreground">
+            <ul className="order-7 flex flex-wrap gap-2 text-xs font-semibold text-muted-foreground lg:order-none">
               {[
                 `${String(subsystems.filter((x) => appUrl(x.slug)).length)} ระบบเปิดใช้แล้ว`,
                 `${String(PGTAP_TESTS)} เทสต์ฐานข้อมูล`,
@@ -309,7 +322,11 @@ export default async function HomePage() {
             </ul>
           </div>
 
-          <SeasonTree fruits={TREE_FRUITS} className="max-w-[28rem] lg:max-w-[34rem]" />
+          <SeasonTree
+            fruits={TREE_FRUITS}
+            className="order-3 max-lg:-mx-4 max-lg:w-[calc(100%+2rem)] lg:order-none lg:-mr-16 lg:w-[calc(100%+4rem)]"
+            sceneClassName="h-[46svh] min-h-[19rem] lg:h-[min(42rem,calc(100svh-9rem))]"
+          />
         </section>
 
         <StatusSection />
@@ -356,7 +373,7 @@ function Scribble({ className }: { className?: string }) {
   return (
     <svg aria-hidden viewBox="0 0 300 14" preserveAspectRatio="none" className={className}>
       <path
-        d="M3 9 C 40 4, 80 12, 120 7 S 200 3, 240 8 S 285 6, 297 4"
+        d="M3 8 Q 40.5 2, 78 8 T 153 8 T 228 8 T 297 8"
         fill="none"
         stroke="currentColor"
         strokeWidth="3.5"

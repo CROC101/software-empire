@@ -66,6 +66,29 @@ font pair or corner style per app.
   `.pk-depth` / `.pk-depth-blue` give headlines the extruded depth look.
 - Copy: first person, plain Thai, no em dashes, no buzzwords, only true numbers.
 
+## 2b. เผ่าน้ำ (Water Tribe) — the owner's name for the house style
+
+The hero is the reference (`SeasonTree` + `apps/hub/src/app/page.tsx`). Apply the same rules
+anywhere water meets the page:
+
+1. **One wave**: where anything meets water, use the shared lapping band `.cw-water` (two layers,
+   7 s / 11 s, opposite ways) or a sum-of-sines waterline — never a ruled 1px line or a blob.
+2. **Water is the only gradient**: light `--em-sky-500 → --em-blue-500 → --em-blue-700`; dark
+   `--em-blue-700 → --em-ink-975`. Fuchsia / coral only for festivals.
+3. **One light**: the moon (or day moon) at the top right. Solids are `--em-ink-800` with a rim
+   of light on the side facing it.
+4. **Two materials**: water things are glass (`.cw-glass`), land things are ink. Corners
+   ≤ 0.75rem; pills only for chips.
+5. **Two speeds**: a slow swell that never stops, and a quick reaction (ripple ~1.4 s) to a
+   touch. Transform / opacity only; reduced motion = still water at its level.
+6. **Things rise from the water**, never slide in sideways (`TideReveal`).
+7. **What rests on water has a reflection** (~30–50%, broken by ripples).
+8. **No boxes round scenes**: canvases fade out at their edges (`.stree` mask) so water runs off
+   into the page; halos are never clipped.
+9. **The croc visits, never stays**: head ridge and eyes at the waterline, a V of wake.
+10. **Type**: `pk-depth` headlines; never letter-space Thai or set it in mono (mono is for Latin
+    eyebrows only).
+
 ## 3. Shared across every app (wire these in, every time)
 
 - `public/theme-boot.js` identical in every app + `<script src="/theme-boot.js">` in `<head>`

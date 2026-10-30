@@ -390,25 +390,6 @@ a.sw-app:focus-visible .sw-tile {
     0 10px 30px -14px color-mix(in oklab, var(--em-blue-700) 35%, transparent);
   backdrop-filter: blur(14px) saturate(1.5);
 }
-.hero-aurora {
-  background:
-    radial-gradient(
-      40% 45% at 78% 40%,
-      color-mix(in oklab, var(--em-blue-500) 16%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      30% 35% at 60% 75%,
-      color-mix(in oklab, var(--em-violet-500) 12%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      28% 30% at 12% 20%,
-      color-mix(in oklab, var(--em-sky-500) 10%, transparent),
-      transparent 70%
-    );
-  filter: blur(10px);
-}
 
 /* stars twinkling round the where-globe (after 21st.dev "globe": its twinkle, our tokens) */
 .cw-stars {
@@ -443,7 +424,8 @@ a.sw-app:focus-visible .sw-tile {
   }
 }
 
-/* cookie notice (cookie-notice.tsx): a glass card with water lapping along its foot */
+/* cookie notice (cookie-notice.tsx): a glass card with water lapping along its foot; .cw-water is
+   the shared lapping water band (the cookie card, the hero's team box, the hero button) */
 .cw-cookie {
   position: fixed;
   z-index: 45;
@@ -463,7 +445,7 @@ a.sw-app:focus-visible .sw-tile {
     bottom: 1.5rem;
   }
 }
-.cw-cookie-water {
+.cw-water {
   position: absolute;
   inset: auto 0 0;
   height: 3.25rem;
@@ -471,7 +453,7 @@ a.sw-app:focus-visible .sw-tile {
   pointer-events: none;
 }
 /* each layer: a strip twice the card's width, its wavy top a repeating mask, slid sideways */
-.cw-cookie-water > span {
+.cw-water > span {
   position: absolute;
   inset: 0 auto 0 0;
   width: 200%;
@@ -483,7 +465,7 @@ a.sw-app:focus-visible .sw-tile {
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 14 C25 4 50 4 75 14 S125 24 150 14 S175 4 200 14 V40 H0 Z'/%3E%3C/svg%3E")
     0 0 / 50% 100% repeat-x;
 }
-.cw-cookie-water > span + span {
+.cw-water > span + span {
   opacity: 0.6;
   translate: 0 0.35rem;
   mask-position: 25% 0;
@@ -492,13 +474,13 @@ a.sw-app:focus-visible .sw-tile {
   .cw-cookie {
     animation: cw-cookie-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .cw-cookie-water {
+  .cw-water {
     animation: cw-cookie-rise 1100ms 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .cw-cookie-water > span {
+  .cw-water > span {
     animation: cw-cookie-lap 7s linear infinite;
   }
-  .cw-cookie-water > span + span {
+  .cw-water > span + span {
     animation-duration: 11s;
     animation-direction: reverse;
   }
@@ -506,7 +488,7 @@ a.sw-app:focus-visible .sw-tile {
   .cw-cookie[data-leaving] {
     animation: cw-cookie-out 900ms cubic-bezier(0.5, 0, 0.75, 0) both;
   }
-  .cw-cookie[data-leaving] .cw-cookie-water {
+  .cw-cookie[data-leaving] .cw-water {
     animation: cw-cookie-fill 600ms cubic-bezier(0.3, 0, 0.2, 1) both;
   }
 }
@@ -541,4 +523,22 @@ a.sw-app:focus-visible .sw-tile {
     opacity: 0;
     transform: translateY(1rem);
   }
+}
+
+/* the hero's main button: water rises inside it on hover / focus */
+.cw-btn-water {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cw-btn-water > .cw-water {
+  z-index: -1;
+  height: 100%;
+  animation: none;
+  transform: translateY(100%);
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cw-btn-water:hover > .cw-water,
+.cw-btn-water:focus-visible > .cw-water {
+  transform: translateY(40%);
 }

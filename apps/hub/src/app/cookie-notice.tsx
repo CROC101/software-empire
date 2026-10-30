@@ -64,7 +64,7 @@ export function CookieNotice({ cookieDomain }: { cookieDomain?: string }) {
       className="cw-cookie cw-glass"
       data-leaving={state === "leaving" || undefined}
     >
-      <span className="cw-cookie-water" aria-hidden>
+      <span className="cw-water" aria-hidden>
         <span />
         <span />
       </span>
