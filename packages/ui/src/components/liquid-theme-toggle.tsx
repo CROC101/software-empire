@@ -17,11 +17,11 @@ const resolvedNow = (): ResolvedTheme => resolve(currentChoice(), osDark());
 /**
  * The theme switch as water: a LiquidToggle (sun drop by day, moon drop by night) on the shared
  * `em-theme` cookie, so every app flips with it. The page changes with the same reveal as the
- * sun/moon button (water pouring down from the top by default).
+ * sun/moon button (the theme follows a wave of water down the page by default).
  */
 export function LiquidThemeToggle({
   cookieDomain,
-  effect = "stream",
+  effect = "wave",
   size = 30,
   initial,
   className,

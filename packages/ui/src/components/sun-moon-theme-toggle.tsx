@@ -109,11 +109,14 @@ function fadePage(duration: number) {
  * compositor. "drop" (the default) spreads the new theme from the button like a drop of ink in
  * water: a liquid edge that wobbles while it grows and settles round as it covers the screen,
  * while the old page sinks back a little and dims. Without the API (or with reduced motion) the
- * swap is instant; "fade" cross-fades colours. "stream" (the default) is live, no snapshot: a
+ * swap is instant; "fade" cross-fades colours. "wave" (the default) reveals the new theme from the
+ * top down behind a falling, streaming water edge, so the colours change where the water has
+ * passed; it skips to the end if the visitor scrolls, and without View Transitions it falls back
+ * to "stream". "stream" is live, no snapshot: a
  * sheet of water in the coming theme's colour pours down in streams, the theme changes under
  * it, and it drains away, while the page keeps scrolling and moving underneath.
  */
-export type ThemeEffect = "stream" | "drop" | "circle" | "wipe" | "fade";
+export type ThemeEffect = "wave" | "stream" | "drop" | "circle" | "wipe" | "fade";
 
 const REVEAL_MS = 560;
 const DROP_MS = 1100;
@@ -161,6 +164,35 @@ function pourTheme(next: ResolvedTheme, swap: () => void) {
   run.finished.then(done, done);
 }
 
+const WAVE_MS = 1100;
+const WAVE_POINTS = 96;
+const WAVE_FRAMES = 40;
+
+/**
+ * Clip-path keyframes for "wave": the new theme fills the screen from the top down behind a
+ * falling edge of water, streams of it racing ahead with rippling heads that calm as it lands.
+ */
+function waveFrames(w: number, h: number): Keyframe[] {
+  const lag = (u: number) =>
+    0.5 +
+    0.24 * Math.sin(u * 9.1 + 0.6) +
+    0.16 * Math.sin(u * 17.3 + 2.1) +
+    0.1 * Math.sin(u * 31.7 + 4.4);
+  const smooth = (t: number) => t * t * (3 - 2 * t);
+  return Array.from({ length: WAVE_FRAMES + 1 }, (_, f) => {
+    const t = f / WAVE_FRAMES;
+    const edge = Array.from({ length: WAVE_POINTS + 1 }, (_, i) => {
+      const u = 1 - i / WAVE_POINTS; // right to left along the falling edge
+      const start = Math.max(0, Math.min(1, lag(u))) * 0.38;
+      const k = Math.max(0, Math.min(1, (t - start) / (1 - start)));
+      const ripple = k > 0 && k < 1 ? (1 - t) * 16 * Math.sin(u * 46 + t * 18) : 0;
+      const y = smooth(k) ** 1.1 * (h + 48) + ripple;
+      return `${(u * w).toFixed(1)}px ${Math.max(0, y).toFixed(1)}px`;
+    });
+    return { offset: t, clipPath: `polygon(0px 0px, ${w.toFixed(1)}px 0px, ${edge.join(",")})` };
+  });
+}
+
 /** Clip-path keyframes for the ink drop; equal point counts, so the browser interpolates them. */
 function dropFrames(x: number, y: number, reach: number): Keyframe[] {
   return Array.from({ length: DROP_FRAMES + 1 }, (_, f) => {
@@ -198,7 +230,13 @@ export function revealPage(
     pourTheme(next, swap);
     return;
   }
-  if (effect === "fade" || !("startViewTransition" in document)) {
+  const canTransition = "startViewTransition" in document;
+  if (effect === "wave" && !canTransition) {
+    const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
+    pourTheme(next, swap);
+    return;
+  }
+  if (effect === "fade" || !canTransition) {
     if (effect === "fade") fadePage(fadeMs);
     swap();
     return;
@@ -211,6 +249,44 @@ export function revealPage(
   const restore = () => {
     root.classList.remove("vt-flat");
   };
+  if (effect === "wave") {
+    // the page swapped before the wave starts, so the main thread is free while it runs; and if
+    // the visitor scrolls (or keys through the page) mid-wave, it finishes at once instead of
+    // holding a still picture of the page
+    const finish = () => {
+      transition.skipTransition();
+    };
+    const keys = (e: KeyboardEvent) => {
+      if (/^(Arrow|Page|Home|End| )/.test(e.key)) finish();
+    };
+    window.addEventListener("wheel", finish, { passive: true, once: true });
+    window.addEventListener("touchmove", finish, { passive: true, once: true });
+    window.addEventListener("keydown", keys);
+    const unlisten = () => {
+      window.removeEventListener("wheel", finish);
+      window.removeEventListener("touchmove", finish);
+      window.removeEventListener("keydown", keys);
+      restore();
+    };
+    transition.ready
+      .then(() => {
+        root.animate(waveFrames(innerWidth, innerHeight), {
+          duration: WAVE_MS,
+          easing: "linear", // the frames carry their own easing
+          pseudoElement: "::view-transition-new(root)",
+        });
+        // the old page darkens a little as the water comes over it
+        root.animate([{ filter: "brightness(1)" }, { filter: "brightness(0.85)" }], {
+          duration: WAVE_MS,
+          easing: SKY_EASE,
+          pseudoElement: "::view-transition-old(root)",
+        });
+      })
+      .catch(() => undefined);
+    transition.updateCallbackDone.catch(() => undefined);
+    transition.finished.then(unlisten, unlisten);
+    return;
+  }
   const box = from.getBoundingClientRect();
   const x = box.left + box.width / 2;
   const y = box.top + box.height / 2;
@@ -267,7 +343,7 @@ const resolvedNow = (): ResolvedTheme => resolve(currentChoice(), osDark());
 
 export function SunMoonThemeToggle({
   cookieDomain,
-  effect = "stream",
+  effect = "wave",
   duration = 1740,
   size = 40,
   className,
