@@ -192,9 +192,10 @@ function StackDiagram() {
           <Image
             src="/crocwork-logo.webp"
             alt=""
-            width={31}
-            height={36}
-            className="h-6 w-auto sm:h-9"
+            width={35}
+            height={40}
+            className="h-8 w-auto sm:h-10"
+            style={{ width: "auto" }}
           />
         </div>
         <motion.div

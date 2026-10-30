@@ -177,6 +177,7 @@ export default async function HomePage() {
               width={28}
               height={32}
               priority
+              style={{ width: "auto" }}
               className="h-8 w-auto drop-shadow-[0_2px_6px_color-mix(in_oklab,var(--em-blue-500)_35%,transparent)]"
             />
             crocwork.studio
