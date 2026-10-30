@@ -2353,3 +2353,133 @@ a.lgn-app:focus-visible {
     mask-image: none;
   }
 }
+
+/* ── LiquidToggle (components/liquid-toggle.tsx): a drop of the navbar's water as the knob ── */
+.nimbus-toggle {
+  --t-tint: rgb(255 255 255 / 0.18);
+  --t-rim: rgb(255 255 255 / 0.8);
+  --t-ico-off: var(--em-gold-500);
+  --t-ico-on: var(--em-ink-975);
+  position: relative;
+  display: inline-block;
+  flex: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  border-radius: 999px;
+  cursor: pointer;
+  isolation: isolate;
+  vertical-align: middle;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  outline: none;
+}
+.nimbus-toggle[data-tone="dark"] {
+  --t-tint: rgb(10 18 40 / 0.32);
+  --t-rim: rgb(255 255 255 / 0.3);
+  --t-ico-off: var(--em-gold-300);
+  --t-ico-on: var(--em-ink-0);
+}
+.nimbus-toggle:focus-visible {
+  outline: 2px solid var(--em-blue-500);
+  outline-offset: 3px;
+}
+.nimbus-toggle:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.nt-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -2;
+  overflow: hidden;
+  background: var(--t-tint);
+  backdrop-filter: blur(10px) saturate(1.2) brightness(1.06);
+  box-shadow:
+    inset 0 2px 5px rgb(0 40 90 / 0.16),
+    inset 0 -1px 1px var(--t-rim),
+    inset 0 0 0 1px rgb(255 255 255 / 0.24),
+    0 1px 0 rgb(255 255 255 / 0.45),
+    0 10px 24px -14px rgb(0 40 90 / 0.5);
+}
+.nimbus-toggle[data-tone="dark"] .nt-glass {
+  box-shadow:
+    inset 0 2px 6px rgb(0 0 0 / 0.35),
+    inset 0 -1px 1px var(--t-rim),
+    inset 0 0 0 1px rgb(255 255 255 / 0.12),
+    0 10px 24px -14px rgb(0 0 0 / 0.7);
+}
+.nt-water {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+.nimbus-toggle[data-gl="off"] .nt-water {
+  display: none;
+}
+.nt-fill,
+.nt-knob {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+  will-change: transform, width;
+}
+.nimbus-toggle[data-gl="off"] .nt-fill,
+.nimbus-toggle[data-gl="off"] .nt-knob {
+  display: block;
+}
+.nt-fill {
+  z-index: -1;
+  left: 2px;
+  top: 2px;
+  bottom: 2px;
+  background: linear-gradient(180deg, var(--em-sky-500), var(--em-blue-500));
+  opacity: 0.85;
+}
+.nt-knob {
+  z-index: 0;
+  left: 0;
+  background:
+    radial-gradient(120% 140% at 30% 0%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 60%),
+    rgb(240 250 255 / 0.82);
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 -2px 6px rgb(0 162 255 / 0.25),
+    inset 0 0 0 1px rgb(255 255 255 / 0.6),
+    0 4px 10px -3px rgb(0 60 130 / 0.45);
+}
+.nimbus-toggle[data-tone="dark"] .nt-knob {
+  background:
+    radial-gradient(120% 140% at 30% 0%, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0) 60%),
+    rgb(120 180 240 / 0.5);
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 0.7),
+    inset 0 0 0 1px rgb(255 255 255 / 0.35),
+    0 4px 10px -3px rgb(0 0 0 / 0.6);
+}
+.nimbus-toggle[data-tone="dark"] .nt-fill {
+  background: linear-gradient(180deg, var(--em-sky-500), var(--em-blue-700));
+}
+.nt-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform;
+}
+.nt-icon > span {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.nt-icon > span:first-child {
+  color: var(--t-ico-off);
+}
+.nt-icon > span:last-child {
+  color: var(--t-ico-on);
+}

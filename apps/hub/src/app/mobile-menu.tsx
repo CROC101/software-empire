@@ -1,6 +1,6 @@
 "use client";
 
-import { AmbienceButton, SunMoonThemeToggle } from "@empire/ui";
+import { AmbienceButton, LiquidThemeToggle } from "@empire/ui";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
@@ -74,7 +74,7 @@ export function MobileMenu({
           </ul>
         </nav>
         <div className="flex items-center gap-2 px-4 pb-6 pt-3">
-          <SunMoonThemeToggle cookieDomain={domain} />
+          <LiquidThemeToggle cookieDomain={domain} size={36} />
           <AmbienceButton cookieDomain={domain} />
           <Link
             href={cta.href}

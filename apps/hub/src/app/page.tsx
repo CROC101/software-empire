@@ -6,7 +6,7 @@ import {
   LinkPreview,
   MorphingText,
   PhoneFrame,
-  SunMoonThemeToggle,
+  LiquidThemeToggle,
 } from "@empire/ui";
 import {
   ArrowUp,
@@ -180,7 +180,7 @@ export default async function HomePage() {
             </span>
             <span className="hidden items-center gap-2 lg:flex">
               <AmbienceButton cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
-              <SunMoonThemeToggle cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
+              <LiquidThemeToggle cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
             </span>
             <Link
               href={cta.href}

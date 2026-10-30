@@ -139,7 +139,13 @@ function dropFrames(x: number, y: number, reach: number): Keyframe[] {
   });
 }
 
-function revealPage(effect: ThemeEffect, from: HTMLElement, swap: () => void, fadeMs: number) {
+/** Swap the theme with a page transition from `from` (the control that was used). */
+export function revealPage(
+  effect: ThemeEffect,
+  from: HTMLElement,
+  swap: () => void,
+  fadeMs: number,
+) {
   if (reducedMotion()) {
     swap();
     return;
