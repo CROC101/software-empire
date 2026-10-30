@@ -245,9 +245,13 @@ export function revealPage(
   // water (or drop) passes over all of them, then let them have their own snapshots again
   const root = document.documentElement;
   root.classList.add("vt-flat");
+  // the control that was pressed stays live above the reveal: its own water animation would
+  // otherwise play unseen behind the old snapshot
+  from.style.viewTransitionName = "em-theme-control";
   const transition = document.startViewTransition(swap);
   const restore = () => {
     root.classList.remove("vt-flat");
+    from.style.viewTransitionName = "";
   };
   if (effect === "wave") {
     // the page swapped before the wave starts, so the main thread is free while it runs; and if

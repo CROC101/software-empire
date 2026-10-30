@@ -442,6 +442,17 @@ html.vt-flat .vt-live,
 html.vt-flat .vt-top {
   view-transition-name: none;
 }
+/* the theme control that was pressed (named by revealPage): live, above the reveal */
+::view-transition-group(em-theme-control) {
+  z-index: 3;
+  animation: none;
+}
+::view-transition-old(em-theme-control) {
+  display: none;
+}
+::view-transition-new(em-theme-control) {
+  animation: none;
+}
 /* sticky / fixed chrome (headers, floating buttons): its own group, always stacked above the
    live groups so a moving phone never slides over the header mid-swap */
 .vt-top {
