@@ -106,3 +106,4 @@ export {
 } from "./components/liquid-toggle";
 export { LiquidThemeToggle } from "./components/liquid-theme-toggle";
 export { HoarfrostPane, type HoarfrostPaneProps } from "./components/hoarfrost-pane";
+export { DataRain, type DataRainProps, type DataRainPalette } from "./components/data-rain";
