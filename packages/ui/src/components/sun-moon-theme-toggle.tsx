@@ -109,9 +109,9 @@ function fadePage(duration: number) {
  * compositor. "drop" (the default) spreads the new theme from the button like a drop of ink in
  * water: a liquid edge that wobbles while it grows and settles round as it covers the screen,
  * while the old page sinks back a little and dims. Without the API (or with reduced motion) the
- * swap is instant; "fade" cross-fades colours. "stream" (the default) pours the new theme down
- * from the top in streams of water: each stream its own width and pace, the leaders racing ahead
- * with rippling heads, until they merge into one sheet that fills the screen.
+ * swap is instant; "fade" cross-fades colours. "stream" (the default) is live, no snapshot: a
+ * sheet of water in the coming theme's colour pours down in streams, the theme changes under
+ * it, and it drains away, while the page keeps scrolling and moving underneath.
  */
 export type ThemeEffect = "stream" | "drop" | "circle" | "wipe" | "fade";
 
@@ -120,37 +120,65 @@ const DROP_MS = 1100;
 const DROP_POINTS = 72;
 const DROP_FRAMES = 36;
 
-const STREAM_MS = 1500;
 const STREAM_POINTS = 96;
 const STREAM_FRAMES = 40;
 
-/** Clip-path keyframes for the pour: a straight top edge, a falling edge of many streams. */
-function streamFrames(w: number, h: number): Keyframe[] {
-  // how late each part of the width starts to pour (0 = a leading stream), smooth across x
-  const lag = (u: number) =>
+const POUR_MS = 1700;
+const POUR_COVER = 0.5; // share of the run spent pouring until the screen is under water
+
+/**
+ * The live water curtain for "stream": a fixed, click-through sheet of the coming theme's colour
+ * pours down in streams until it covers the screen, the theme swaps underneath it, then it drains
+ * off the bottom, streams first. No View Transition, so nothing is frozen: the page keeps
+ * scrolling and moving under the water the whole time.
+ */
+function pourTheme(next: ResolvedTheme, swap: () => void) {
+  const w = innerWidth;
+  const h = innerHeight;
+  const lag = (u: number, seed: number) =>
     0.5 +
-    0.24 * Math.sin(u * 9.1 + 0.6) +
-    0.16 * Math.sin(u * 17.3 + 2.1) +
+    0.24 * Math.sin(u * 9.1 + seed) +
+    0.16 * Math.sin(u * 17.3 + 2.1 * seed) +
     0.1 * Math.sin(u * 31.7 + 4.4);
   const smooth = (t: number) => t * t * (3 - 2 * t);
-  return Array.from({ length: STREAM_FRAMES + 1 }, (_, f) => {
+  const edge = (u: number, t: number, seed: number) => {
+    const start = Math.max(0, Math.min(1, lag(u, seed))) * 0.42;
+    const k = Math.max(0, Math.min(1, (t - start) / (1 - start)));
+    const ripple = k > 0 && k < 1 ? (1 - t) * 14 * Math.sin(u * 46 + t * 18 + seed) : 0;
+    return smooth(k) ** 1.15 * (h + 40) + ripple;
+  };
+  const N = STREAM_POINTS;
+  const frames: Keyframe[] = Array.from({ length: STREAM_FRAMES + 1 }, (_, f) => {
     const t = f / STREAM_FRAMES;
-    const edge = Array.from({ length: STREAM_POINTS + 1 }, (_, i) => {
-      const u = 1 - i / STREAM_POINTS; // right to left along the falling edge
-      const start = Math.max(0, Math.min(1, lag(u))) * 0.42;
-      const k = Math.max(0, Math.min(1, (t - start) / (1 - start)));
-      // water accelerates as it falls, then the sheet settles at the bottom
-      const fall = smooth(k) ** 1.15;
-      // the heads ripple while they run, still once the screen is full
-      const ripple = (1 - t) * 14 * Math.sin(u * 46 + t * 18);
-      const y = fall * (h + 40) + (k > 0 && k < 1 ? ripple : 0);
-      return `${(u * w).toFixed(1)}px ${Math.max(0, y).toFixed(1)}px`;
-    });
-    return {
-      offset: t,
-      clipPath: `polygon(0px 0px, ${w.toFixed(1)}px 0px, ${edge.join(",")})`,
-    };
+    const fill = Math.min(1, t / POUR_COVER);
+    const drain = Math.max(0, (t - POUR_COVER) / (1 - POUR_COVER));
+    const pts: string[] = [];
+    // top edge, left to right: stays at the top while pouring, then falls away in streams
+    for (let i = 0; i <= N; i++) {
+      const u = i / N;
+      const y = drain > 0 ? Math.max(0, edge(u, drain, 2.3)) : 0;
+      pts.push(`${(u * w).toFixed(1)}px ${y.toFixed(1)}px`);
+    }
+    // bottom edge, right to left: the pour
+    for (let i = N; i >= 0; i--) {
+      const u = i / N;
+      pts.push(`${(u * w).toFixed(1)}px ${Math.max(0, edge(u, fill, 0.6)).toFixed(1)}px`);
+    }
+    return { offset: t, clipPath: `polygon(${pts.join(",")})` };
   });
+  const sheet = document.createElement("div");
+  sheet.className = "em-pour";
+  sheet.dataset.next = next;
+  sheet.setAttribute("aria-hidden", "true");
+  document.body.appendChild(sheet);
+  const run = sheet.animate(frames, { duration: POUR_MS, easing: "linear", fill: "both" });
+  // the screen is under water: change the theme where nobody can see the cut
+  const swapAt = window.setTimeout(swap, POUR_MS * POUR_COVER + 40);
+  const done = () => {
+    window.clearTimeout(swapAt);
+    sheet.remove();
+  };
+  run.finished.then(done, done);
 }
 
 /** Clip-path keyframes for the ink drop; equal point counts, so the browser interpolates them. */
@@ -185,6 +213,11 @@ export function revealPage(
     swap();
     return;
   }
+  if (effect === "stream") {
+    const next = document.documentElement.classList.contains("dark") ? "light" : "dark";
+    pourTheme(next, swap);
+    return;
+  }
   if (effect === "fade" || !("startViewTransition" in document)) {
     if (effect === "fade") fadePage(fadeMs);
     swap();
@@ -203,26 +236,6 @@ export function revealPage(
   const y = box.top + box.height / 2;
   // far enough to cover the corner furthest from the button
   const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-  if (effect === "stream") {
-    transition.ready
-      .then(() => {
-        root.animate(streamFrames(innerWidth, innerHeight), {
-          duration: STREAM_MS,
-          easing: "linear", // the frames carry their own easing
-          pseudoElement: "::view-transition-new(root)",
-        });
-        // the old page darkens a little under the falling water
-        root.animate([{ filter: "brightness(1)" }, { filter: "brightness(0.85)" }], {
-          duration: STREAM_MS,
-          easing: SKY_EASE,
-          pseudoElement: "::view-transition-old(root)",
-        });
-      })
-      .catch(() => undefined);
-    transition.updateCallbackDone.catch(() => undefined);
-    transition.finished.then(restore, restore);
-    return;
-  }
   if (effect === "drop") {
     transition.ready
       .then(() => {

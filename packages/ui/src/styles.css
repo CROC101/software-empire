@@ -2608,3 +2608,28 @@ a.lgn-app:focus-visible {
     animation: none;
   }
 }
+
+/* theme switch "stream": the live water curtain (sun-moon-theme-toggle.tsx pourTheme) */
+.em-pour {
+  --pour-bg: var(--em-ink-25);
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 60% at 50% 0%,
+      color-mix(in oklab, var(--em-sky-500) 22%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--pour-bg) 84%, var(--em-blue-500)),
+      var(--pour-bg) 60%
+    );
+  opacity: 0.97;
+  will-change: clip-path;
+}
+.em-pour[data-next="dark"] {
+  --pour-bg: var(--em-ink-975);
+}
