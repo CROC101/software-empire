@@ -18,13 +18,13 @@ import { useTokenColors } from "../lib/token-colors";
 type Sprite = string[]; // "X" lit, "o" dim, anything else off
 
 const SPARKLE: Sprite = ["..X..", "..X..", "XXoXX", "..X..", "..X.."];
+// the studio croc in profile: nostril at the left, one eye mound about 70% along, keels behind
 const CROC: Sprite = [
-  "....XXX..........XXX...................",
-  "...XoXoX........XoXoX..................",
-  "..XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...",
-  ".XX..............................XXXX..",
-  "XX.o.o.o.o.o.o.o.o.o.o.o.o.o.o.o..XXXX.",
-  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "...........................XXXX.........",
+  ".XX.......................XXoXXX.X..X..X",
+  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  "X.o.o.o.o.o.o.o.o.o.o.o.o.o.XXXXXXXXXXXX",
+  "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
 ];
 
 type Lit = { x: number; y: number; a: number };

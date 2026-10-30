@@ -282,6 +282,7 @@ interface FruitState {
   vy: number;
   slot: number; // where it floats, 0..1 across the pond
   grow: number; // 0..1 as it grows back
+  squash: number; // 1 the moment it lands, back to 0
 }
 interface Mote {
   kind: Particle;
@@ -388,6 +389,7 @@ export function SeasonTree({
       vy: 0,
       slot: fruits.length > 1 ? i / (fruits.length - 1) : 0.5,
       grow: 1,
+      squash: 0,
     }));
     const motes: Mote[] = [];
     const ripples: Ripple[] = [];
@@ -445,26 +447,44 @@ export function SeasonTree({
       if (c) {
         c.scale(dpr, dpr);
         const m = r * 1.8;
-        // a glass drop: soft glow, tinted body, light on the moon side
-        const halo = c.createRadialGradient(m, m, r * 0.6, m, m, r * 1.75);
-        halo.addColorStop(0, withAlpha(col(tone), 0.35));
+        // a water drop: clear in the middle (what is behind shows through, see drawFruit), its
+        // colour gathering at the rim, a hard highlight toward the moon, a caustic below
+        const halo = c.createRadialGradient(m, m, r * 0.7, m, m, r * 1.75);
+        halo.addColorStop(0, withAlpha(col(tone), 0.3));
         halo.addColorStop(1, withAlpha(col(tone), 0));
         c.fillStyle = halo;
         c.fillRect(0, 0, m * 2, m * 2);
-        const body = c.createRadialGradient(m + r * 0.3, m - r * 0.35, r * 0.1, m, m, r);
-        body.addColorStop(0, withAlpha(col(C.white), 0.9));
-        body.addColorStop(0.45, withAlpha(col(tone), 0.72));
-        body.addColorStop(1, withAlpha(col(tone), 0.92));
+        const body = c.createRadialGradient(m + r * 0.15, m - r * 0.15, r * 0.05, m, m, r);
+        body.addColorStop(0, withAlpha(col(tone), 0.16));
+        body.addColorStop(0.62, withAlpha(col(tone), 0.34));
+        body.addColorStop(0.86, withAlpha(col(tone), 0.7));
+        body.addColorStop(1, withAlpha(col(tone), 0.95));
         c.fillStyle = body;
         c.beginPath();
         c.arc(m, m, r, 0, Math.PI * 2);
         c.fill();
-        c.strokeStyle = withAlpha(col(C.white), 0.75);
-        c.lineWidth = r * 0.16;
+        c.strokeStyle = withAlpha(col(C.white), 0.5);
+        c.lineWidth = r * 0.08;
         c.lineCap = "round";
         c.beginPath();
-        c.arc(m, m, r * 0.8, -1.35, -0.15);
+        c.arc(m, m, r * 0.86, -1.3, -0.2);
         c.stroke();
+        c.fillStyle = withAlpha(col(C.white), 0.95);
+        c.beginPath();
+        c.ellipse(m + r * 0.36, m - r * 0.42, r * 0.2, r * 0.11, -0.65, 0, Math.PI * 2);
+        c.fill();
+        const caustic = c.createRadialGradient(
+          m - r * 0.32,
+          m + r * 0.46,
+          0,
+          m - r * 0.32,
+          m + r * 0.46,
+          r * 0.3,
+        );
+        caustic.addColorStop(0, withAlpha(col(C.white), 0.65));
+        caustic.addColorStop(1, withAlpha(col(C.white), 0));
+        c.fillStyle = caustic;
+        c.fillRect(m - r * 0.7, m + r * 0.1, r * 0.8, r * 0.7);
       }
       fruitSprites.set(tone, sp);
       return sp;
@@ -893,11 +913,71 @@ export function SeasonTree({
       ctx.fill();
     };
 
-    const drawFruit = (x: number, y: number, i: number, scale: number) => {
+    const drawFruit = (
+      x: number,
+      y: number,
+      i: number,
+      scale: number,
+      mode: "hang" | "fall" | "float" = "hang",
+      vy = 0,
+      squash = 0,
+    ) => {
       if (scale <= 0.02) return;
-      const sp = fruitSprite(FRUIT_TONES[i % FRUIT_TONES.length] ?? C.blue);
-      const size = fruitR() * 3.6 * scale;
-      ctx.drawImage(sp, x - size / 2, y - size / 2, size, size);
+      const tone = FRUIT_TONES[i % FRUIT_TONES.length] ?? C.blue;
+      const sp = fruitSprite(tone);
+      const r = fruitR() * scale;
+      const size = r * 3.6;
+      // falling: stretched along the fall, a thin tail; landed: squashed for a moment
+      const stretch = mode === "fall" ? Math.min(0.35, Math.max(0, vy) / (S * 5)) : 0;
+      const sx = 1 - stretch * 0.4 + squash * 0.45;
+      const sy = 1 + stretch - squash * 0.4;
+      ctx.fillStyle = withAlpha(col(tone), mode === "fall" ? 0.3 : 0.55);
+      if (mode === "hang") {
+        // a teardrop: the drop draws to a point where it hangs from its thread
+        ctx.beginPath();
+        ctx.moveTo(x - r * 0.42, y - r * 0.55);
+        ctx.quadraticCurveTo(x - r * 0.12, y - r * 1.05, x, y - r * 1.45);
+        ctx.quadraticCurveTo(x + r * 0.12, y - r * 1.05, x + r * 0.42, y - r * 0.55);
+        ctx.fill();
+      } else if (mode === "fall" && stretch > 0.02) {
+        const tail = r * (1 + stretch * 9);
+        ctx.beginPath();
+        ctx.moveTo(x - r * 0.5, y - r * 0.2);
+        ctx.quadraticCurveTo(x, y - r - tail * 0.4, x, y - r - tail);
+        ctx.quadraticCurveTo(x, y - r - tail * 0.4, x + r * 0.5, y - r * 0.2);
+        ctx.fill();
+      }
+      // what is behind the drop, upside down and small inside it, as a real drop shows it
+      if (scale > 0.5) {
+        const d = r * 2.6;
+        const h = (d * H) / Math.max(1, W);
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(x, y, r * 0.84 * sx, r * 0.84 * sy, 0, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.globalAlpha = 0.6;
+        ctx.translate(x, y);
+        ctx.scale(-1, -1);
+        ctx.drawImage(sky, -d / 2, -h / 2, d, h);
+        ctx.restore();
+      }
+      if (sx === 1 && sy === 1) ctx.drawImage(sp, x - size / 2, y - size / 2, size, size);
+      else {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(sx, sy);
+        ctx.drawImage(sp, -size / 2, -size / 2, size, size);
+        ctx.restore();
+      }
+      if (mode === "float") {
+        // its reflection, broken by the water
+        ctx.save();
+        ctx.globalAlpha = 0.32;
+        ctx.translate(x, y + r * 1.7);
+        ctx.scale(sx, -0.6 * sy);
+        ctx.drawImage(sp, -size / 2, -size / 2, size, size);
+        ctx.restore();
+      }
     };
 
     const drawReeds = () => {
@@ -949,19 +1029,17 @@ export function SeasonTree({
         ctx.globalAlpha = 1;
       }
       ctx.drawImage(tint, 0, top, W, waterH);
-      // a moonlit path under the moon
-      ctx.strokeStyle = col(dark ? C.gold3 : C.white);
-      ctx.lineWidth = 1.6;
-      for (let k = 0; k < 12; k++) {
-        const y = top + 5 + k * (waterH / 12.5);
-        const f = still ? 0.8 : 0.55 + 0.45 * Math.sin(time * 3 + k * 1.7);
-        const w = S * 0.045 * (1 - k / 16) * f;
-        const x = moon.x + (still ? 0 : Math.sin(time * 1.3 + k) * 3);
-        ctx.globalAlpha = (dark ? 0.6 : 0.75) * (1 - k / 14);
+      // a moonlit path under the moon: glints that flicker and drift, never ruled lines
+      ctx.fillStyle = col(dark ? C.gold3 : C.white);
+      for (let k = 0; k < 14; k++) {
+        const y = top + 4 + k * (waterH / 14.5);
+        const f = still ? 0.8 : 0.5 + 0.5 * Math.sin(time * 3 + k * 1.7);
+        const w = S * 0.04 * (1 - k / 18) * f;
+        const x = moon.x + (still ? 0 : Math.sin(time * 1.3 + k * 2.1) * (3 + k * 0.6));
+        ctx.globalAlpha = (dark ? 0.7 : 0.85) * (1 - k / 16);
         ctx.beginPath();
-        ctx.moveTo(x - w, y);
-        ctx.lineTo(x + w, y);
-        ctx.stroke();
+        ctx.ellipse(x, y, Math.max(0.5, w), 1 + k * 0.06, 0, 0, Math.PI * 2);
+        ctx.fill();
       }
       ctx.globalAlpha = 1;
       // the waterline: a living wave, not a ruled line
@@ -1135,37 +1213,110 @@ export function SeasonTree({
         return;
       }
       const up = clamp01(Math.min((6000 - left) / 700, left / 700));
-      const x = baseX + S * 0.55 - (6000 - left) * S * 0.000035;
+      // the studio's one croc (CrocReveal's eye and hide), in profile, swimming left: head
+      // length L, nostril tip at the origin on the waterline, y up is negative
+      const u = (S * 0.16) / 100;
+      const x = baseX + S * 0.36 - (6000 - left) * S * 0.000035;
       const y = top + (H - top) * 0.42;
-      const r = S * 0.016;
-      // wake
-      ctx.strokeStyle = withAlpha(col(dark ? C.sky : C.white), 0.55 * up);
+      const k = up * u; // heights rise with it
+      const blink = (now / 1000) % 3.4 < 0.12 ? 0.12 : 1;
+      // a Kelvin V of wake from the nostril, fading behind, with two cross ripples
+      const arm = 220 * u;
+      const ss = Math.sin(0.34);
+      const cc = Math.cos(0.34);
+      ctx.strokeStyle = col(dark ? C.sky : C.white);
       ctx.lineWidth = 1;
+      for (let seg = 0; seg < 3; seg++) {
+        const t0 = seg / 3;
+        const t1 = (seg + 1) / 3;
+        ctx.globalAlpha = 0.5 * (1 - t0) * up;
+        ctx.beginPath();
+        for (const sgn of [-1, 1]) {
+          ctx.moveTo(x + arm * t0 * cc, y + sgn * arm * t0 * ss * 0.35);
+          ctx.lineTo(x + arm * t1 * cc, y + sgn * arm * t1 * ss * 0.35);
+        }
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 0.25 * up;
       ctx.beginPath();
-      ctx.moveTo(x + r * 2.6, y);
-      ctx.lineTo(x + r * 9, y - r * 1.6);
-      ctx.moveTo(x + r * 2.6, y + r * 0.3);
-      ctx.lineTo(x + r * 9, y + r * 1.9);
+      for (const t of [0.45, 0.8]) {
+        const cx = x + arm * t * cc;
+        const ry = arm * t * ss * 0.35;
+        ctx.moveTo(cx + 6 * u, y - ry);
+        ctx.quadraticCurveTo(cx - 10 * u, y, cx + 6 * u, y + ry);
+      }
       ctx.stroke();
-      // snout, head ridge and scutes
-      ctx.fillStyle = withAlpha(col(dark ? C.croc8 : C.croc6), up);
+      // the body under the water, dim and a little wavy
+      ctx.globalAlpha = 0.35 * up;
+      ctx.fillStyle = col(C.croc8);
       ctx.beginPath();
-      ctx.ellipse(x, y, r * 3, r * 0.5 * up, 0, Math.PI, 0);
-      for (let s = 0; s < 3; s++) {
-        const sx = x + r * (3.4 + s * 1.2);
-        ctx.moveTo(sx - r * 0.4, y);
-        ctx.lineTo(sx, y - r * 0.5 * up);
-        ctx.lineTo(sx + r * 0.4, y);
-      }
+      ctx.ellipse(
+        x + 130 * u,
+        y + 7 * u + Math.sin(time * 2) * u,
+        135 * u,
+        11 * u,
+        0,
+        0,
+        Math.PI * 2,
+      );
       ctx.fill();
-      const blink = (now / 1000) % 3 < 0.12 ? 0.15 : 1;
-      ctx.fillStyle = withAlpha(col(C.gold3), up);
+      // what shows above the water: nostril dome, snout ridge, eye mound, keels (and, mirrored,
+      // its reflection)
+      const above = (sgn: number) => {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.quadraticCurveTo(x + 30 * u, y - sgn * 2.5 * k, x + 64 * u, y - sgn * 3 * k);
+        ctx.lineTo(x + 86 * u, y - sgn * 4 * k);
+        ctx.lineTo(x + 100 * u, y - sgn * 2 * k);
+        ctx.lineTo(x + 100 * u, y);
+        ctx.closePath();
+        ctx.moveTo(x + 8 * u, y);
+        ctx.ellipse(x + 4 * u, y - sgn * 1 * k, 4 * u, 3 * k, 0, 0, Math.PI, sgn > 0);
+        ctx.moveTo(x + 81 * u, y);
+        ctx.ellipse(x + 72 * u, y - sgn * 2 * k, 9 * u, 6 * k, 0, 0, Math.PI, sgn > 0);
+        for (let j = 0; j < 12; j++) {
+          const kx = j < 2 ? 92 + j * 6 : 105 + (j - 2) * 7;
+          const kh = j < 2 ? 3 : 2.5 - (j - 2) * 0.13;
+          ctx.moveTo(kx * u + x - 2.2 * u, y);
+          ctx.lineTo(kx * u + x, y - sgn * kh * k);
+          ctx.lineTo(kx * u + x + 2.2 * u, y);
+        }
+        ctx.fill();
+      };
+      ctx.globalAlpha = 0.35 * up;
+      above(-1);
+      ctx.globalAlpha = up;
+      ctx.fillStyle = col(C.croc8);
+      above(1);
+      // moon-side rim on the mound
+      ctx.strokeStyle = col(C.croc4);
       ctx.beginPath();
-      for (const dx of [r * 0.6, r * 1.6]) {
-        ctx.moveTo(x + dx + r * 0.3, y - r * 0.55);
-        ctx.ellipse(x + dx, y - r * 0.55, r * 0.3, r * 0.3 * blink * up, 0, 0, Math.PI * 2);
-      }
+      ctx.ellipse(x + 72 * u, y - 2 * k, 9 * u, 6 * k, 0, -1.45, -0.2);
+      ctx.stroke();
+      // the eye: an almond, gold iris, a vertical slit, the glint toward the moon
+      const ew = 11 * u;
+      const eh = (ew / 1.8) * blink * up;
+      const ex = x + 72 * u;
+      const ey = y - 5.5 * k;
+      ctx.fillStyle = col(C.gold5);
+      ctx.beginPath();
+      ctx.moveTo(ex - ew / 2, ey);
+      ctx.quadraticCurveTo(ex, ey - eh, ex + ew / 2, ey);
+      ctx.quadraticCurveTo(ex, ey + eh * 0.8, ex - ew / 2, ey);
       ctx.fill();
+      ctx.fillStyle = col(C.gold3);
+      ctx.beginPath();
+      ctx.ellipse(ex + ew * 0.05, ey - eh * 0.1, ew * 0.22, eh * 0.4, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = col(C.ink950);
+      ctx.beginPath();
+      ctx.ellipse(ex, ey, Math.max(0.5, ew * 0.06), eh * 0.42, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = col(C.white);
+      ctx.beginPath();
+      ctx.arc(ex + ew * 0.16, ey - eh * 0.25, Math.max(0.6, ew * 0.06), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
     };
 
     const frame = (now: number) => {
@@ -1225,9 +1376,10 @@ export function SeasonTree({
           f.vy += S * 2.2 * dt;
           f.x += f.vx * dt;
           f.y += f.vy * dt;
-          drawFruit(f.x, f.y, i, 1);
+          drawFruit(f.x, f.y, i, 1, "fall", f.vy);
           if (f.y >= top + (H - top) * 0.25) {
             f.phase = "float";
+            f.squash = 1;
             ripples.push({ x: f.x, y: f.y, r: 2, life: 0 });
             for (let k = 0; k < 6; k++) {
               motes.push({
@@ -1258,7 +1410,16 @@ export function SeasonTree({
         if (f.phase !== "float") continue;
         f.x += (pondX(f.slot) - f.x) * Math.min(1, dt * 1.4);
         f.y += (floatY(i) - f.y) * Math.min(1, dt * 2);
-        drawFruit(f.x, f.y + (still ? 0 : Math.sin(time * 2 + i) * 1.5), i, 0.9);
+        f.squash *= Math.exp(-dt * 8);
+        drawFruit(
+          f.x,
+          f.y + (still ? 0 : Math.sin(time * 2 + i) * 1.5),
+          i,
+          0.9,
+          "float",
+          0,
+          f.squash,
+        );
       }
       drawRipples(dt);
       drawCroc(now);

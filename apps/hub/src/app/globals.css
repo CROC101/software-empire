@@ -168,28 +168,73 @@ html.em-intro .intro-cover {
 }
 
 /* pocket headline: letters stand out of the page, a stacked shadow cut in the ink colours */
+/* deep-water extrusion, falling away from the moon (light from the upper right) */
 .pk-depth {
   color: var(--foreground);
   text-shadow:
-    1px 1px 0 color-mix(in oklab, var(--em-blue-700) 35%, var(--background)),
-    2px 2px 0 color-mix(in oklab, var(--em-blue-700) 30%, var(--background)),
-    3px 3px 0 color-mix(in oklab, var(--em-blue-700) 25%, var(--background)),
-    4px 4px 0 color-mix(in oklab, var(--em-blue-700) 20%, var(--background)),
-    6px 10px 24px color-mix(in oklab, var(--em-blue-700) 30%, transparent);
+    -1px 1px 0 color-mix(in oklab, var(--em-blue-700) 35%, var(--background)),
+    -2px 2px 0 color-mix(in oklab, var(--em-blue-700) 30%, var(--background)),
+    -3px 3px 0 color-mix(in oklab, var(--em-blue-700) 25%, var(--background)),
+    -4px 4px 0 color-mix(in oklab, var(--em-blue-700) 20%, var(--background)),
+    -6px 10px 24px color-mix(in oklab, var(--em-blue-700) 30%, transparent);
 }
 .pk-depth-blue {
+  /* water: clear at the top, deep at the bottom */
   background: linear-gradient(
     180deg,
     var(--em-sky-500),
-    var(--em-blue-600) 55%,
-    var(--em-violet-600)
+    var(--em-blue-500) 50%,
+    var(--em-blue-700)
   );
   background-clip: text;
   color: transparent;
   /* the gradient fill hides the parent's shadow; give the blue line its own, in front-to-back order */
-  filter: drop-shadow(2px 2px 0 color-mix(in oklab, var(--em-blue-700) 55%, var(--background)))
-    drop-shadow(4px 8px 12px color-mix(in oklab, var(--em-blue-700) 28%, transparent));
+  filter: drop-shadow(-2px 2px 0 color-mix(in oklab, var(--em-blue-700) 55%, var(--background)))
+    drop-shadow(-4px 8px 12px color-mix(in oklab, var(--em-blue-700) 28%, transparent));
   text-shadow: none;
+}
+
+/* water lettering (เผ่าน้ำ): light netting through the letters. Two still nets of caustics
+   (alpha-only masks over the light colour) crossfade, so it shimmers on opacity alone. The
+   element repeats its text in data-text. */
+.cw-water-text {
+  position: relative;
+  /* inline-block: the overlay's box is then the same line box as the text it repeats */
+  display: inline-block;
+}
+.cw-water-text::before,
+.cw-water-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  background: var(--em-ink-0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20144%2064'%3E%3Cpath%20d%3D'M0%2010.9%20Q36%202.7%2072%2010.9%20T144%2010.9%20M0%2024.7%20Q36%2017.7%2072%2024.7%20T144%2024.7%20M0%2042.7%20Q36%2034.6%2072%2042.7%20T144%2042.7%20M0%2056.5%20Q36%2047.0%2072%2056.5%20T144%2056.5%20M4.7%200%20Q18.0%2032%208.7%2064%20M26.3%200%20Q42.5%2032%2030.3%2064%20M53.3%200%20Q63.9%2032%2057.3%2064%20M76.0%200%20Q87.9%2032%2080.0%2064%20M101.4%200%20Q112.6%2032%20105.4%2064%20M124.5%200%20Q138.4%2032%20128.5%2064'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'2.2'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E")
+    0 0 / 9rem 4rem repeat;
+  opacity: 0.45;
+  pointer-events: none;
+}
+.cw-water-text::after {
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20144%2064'%3E%3Cpath%20d%3D'M0%2010.7%20Q36%202.2%2072%2010.7%20T144%2010.7%20M0%2025.2%20Q36%2017.6%2072%2025.2%20T144%2025.2%20M0%2040.9%20Q36%2034.8%2072%2040.9%20T144%2040.9%20M0%2060.7%20Q36%2052.4%2072%2060.7%20T144%2060.7%20M6.9%200%20Q24.8%2032%2010.9%2064%20M26.3%200%20Q37.5%2032%2030.3%2064%20M51.4%200%20Q67.3%2032%2055.4%2064%20M74.4%200%20Q88.7%2032%2078.4%2064%20M98.5%200%20Q114.2%2032%20102.5%2064%20M125.9%200%20Q139.4%2032%20129.9%2064'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'2.2'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E");
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-water-text::before {
+    animation: cw-shimmer 5s ease-in-out infinite alternate;
+  }
+  .cw-water-text::after {
+    animation: cw-shimmer 5s ease-in-out infinite alternate-reverse;
+  }
+}
+@keyframes cw-shimmer {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0.05;
+  }
 }
 
 /* selected work: a stage with a horizon and a grid floor; apps as glass tiles on it */

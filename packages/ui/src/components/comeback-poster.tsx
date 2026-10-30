@@ -919,10 +919,11 @@ const Figure = ({
             strokeWidth="1.6"
             strokeLinecap="round"
           />
-          {/* the nose pad and its nostrils */}
-          <ellipse cx="98" cy="84" rx="9" ry="5.5" fill={hideLight} />
-          <ellipse cx="94.5" cy="83.5" rx="1.8" ry="1.2" fill={hideDark} />
-          <ellipse cx="101.5" cy="83.5" rx="1.8" ry="1.2" fill={hideDark} />
+          {/* the nostril domes at the snout tip (the studio croc's: two, never a pad) */}
+          <ellipse cx="94.5" cy="84" rx="3.4" ry="2.6" fill={hideLight} />
+          <ellipse cx="101.5" cy="84" rx="3.4" ry="2.6" fill={hideLight} />
+          <ellipse cx="94.5" cy="83.6" rx="1.4" ry="0.9" fill={hideDark} />
+          <ellipse cx="101.5" cy="83.6" rx="1.4" ry="0.9" fill={hideDark} />
           {/* the grin, upper and lower teeth interlocking along it */}
           <path
             d="M75 94 Q98 103 121 94"
@@ -950,11 +951,11 @@ const Figure = ({
           <g className="cbp-void">
             {[86, 110].map((x) => (
               <g key={x}>
-                <ellipse cx={x} cy="46" rx="9" ry="8" fill={hide} />
+                <ellipse cx={x} cy="46.5" rx="9" ry="6.5" fill={hide} />
                 <ellipse cx={x} cy="44" rx="8" ry="4" fill={hideLight} fillOpacity="0.5" />
                 <circle cx={x} cy="47" r="5.6" fill={url("iris")} />
                 <ellipse cx={x} cy="47" rx="1.2" ry="4.6" fill="#0b0805" />
-                <circle cx={x - 2} cy="45" r="1.2" fill="#fffbe8" fillOpacity="0.9" />
+                <circle cx={x + 2} cy="45" r="1.2" fill="#fffbe8" fillOpacity="0.9" />
                 <path
                   d={`M${String(x - 7)} 43 Q${String(x)} 37 ${String(x + 7)} 43`}
                   fill="none"

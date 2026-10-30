@@ -1614,7 +1614,7 @@ html.vt-flat .vt-top {
   opacity: 0;
 }
 .iwm-mound {
-  fill: var(--em-croc-400);
+  fill: var(--em-croc-600);
   stroke: currentColor;
   stroke-width: 3;
 }
@@ -1624,10 +1624,10 @@ html.vt-flat .vt-top {
   stroke-width: 2;
 }
 .iwm-ink {
-  fill: var(--em-croc-950);
+  fill: var(--em-ink-975);
 }
 .iwm-glint {
-  fill: var(--em-gold-300);
+  fill: var(--em-ink-0);
 }
 .iwm-lid {
   fill: none;
@@ -2794,5 +2794,66 @@ a.lgn-app:focus-visible {
   from {
     opacity: 0;
     transform: translateY(-6px);
+  }
+}
+
+/* CrocReveal water: waves drift one period, caustics one tile, drops gather, fall and go */
+@media (prefers-reduced-motion: no-preference) {
+  .crr-wave {
+    animation: crr-drift 7s linear infinite;
+  }
+  .crr-wave--back {
+    animation-duration: 11s;
+    animation-direction: reverse;
+  }
+  .crr-caustic {
+    animation: crr-caustic 9s linear infinite;
+  }
+  .crr-caustic--back {
+    animation-duration: 13s;
+    animation-direction: reverse;
+  }
+  .crr-drop {
+    transform-box: fill-box;
+    transform-origin: 50% 0;
+    opacity: 0;
+    animation: crr-drop 5s ease-in infinite;
+  }
+}
+@keyframes crr-drift {
+  to {
+    transform: translateX(-200px);
+  }
+}
+@keyframes crr-caustic {
+  to {
+    transform: translateX(-280px);
+  }
+}
+@keyframes crr-drop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(0.7);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1, 1.15);
+  }
+  62% {
+    opacity: 1;
+    transform: translateY(4px) scale(0.92, 1.35);
+  }
+  86% {
+    opacity: 0.9;
+    transform: translateY(150px) scale(0.8, 1.25);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translateY(170px) scale(0.8, 1.25);
   }
 }

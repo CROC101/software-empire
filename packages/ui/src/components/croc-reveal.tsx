@@ -118,6 +118,55 @@ const stop = (c: string, o = 1): React.CSSProperties => ({ stopColor: c, stopOpa
 const d = (pts: Pt[], close = true) =>
   "M" + pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join("L") + (close ? "Z" : "");
 
+/** A wave along y, one period every 200 units, wide enough to slide a period either way. */
+const wavePath = (y: number, amp: number, from = -2800, to = 2800) => {
+  let p = `M${String(from)} ${String(y)} Q${String(from + 50)} ${String(y - amp)} ${String(from + 100)} ${String(y)}`;
+  for (let x = from + 200; x <= to; x += 100) p += ` T${String(x)} ${String(y)}`;
+  return p;
+};
+
+/** Light caught in water: a net of soft, uneven cells (what sunlight draws on a pool floor),
+ *  the same every 280 units so sliding by 280 loops without a jump. Built once. */
+function buildCaustics(seed: number) {
+  const r = rng(seed);
+  // one jitter table for a 7-column tile, reused along the word
+  const rows = 8;
+  const jit = Array.from({ length: rows * 7 }, () => ({
+    dx: (r() - 0.5) * 16,
+    dy: (r() - 0.5) * 12,
+    rad: 15 + r() * 7,
+    turn: r() * Math.PI,
+    k: Array.from({ length: 6 }, () => 0.75 + r() * 0.4),
+  }));
+  let p = "";
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0, x = -300; x <= 1300; col++, x += 40) {
+      const j = jit[row * 7 + (col % 7)];
+      if (!j) continue;
+      const cx = x + j.dx + (row % 2) * 20;
+      const cy = 200 + row * 30 + j.dy;
+      const pts = j.k.map((k, i) => {
+        const a2 = j.turn + (i / 6) * Math.PI * 2;
+        return [cx + Math.cos(a2) * j.rad * k, cy + Math.sin(a2) * j.rad * k * 0.8] as const;
+      });
+      // smooth closed curve through the midpoints, the vertices as control points
+      const mid = (i: number) => {
+        const p0 = pts[i % 6] ?? [cx, cy];
+        const p1 = pts[(i + 1) % 6] ?? [cx, cy];
+        return [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2] as const;
+      };
+      const m0 = mid(0);
+      p += ` M${m0[0].toFixed(1)} ${m0[1].toFixed(1)}`;
+      for (let i = 1; i <= 6; i++) {
+        const c = pts[i % 6] ?? [cx, cy];
+        const m = mid(i);
+        p += ` Q${c[0].toFixed(1)} ${c[1].toFixed(1)} ${m[0].toFixed(1)} ${m[1].toFixed(1)}`;
+      }
+    }
+  }
+  return p;
+}
+
 /** Rows of rounded scutes, offset brick-wise, a little uneven. One path, built once. */
 function buildScutes() {
   const r = rng(29);
@@ -126,11 +175,11 @@ function buildScutes() {
     const y = -360 + row * 30;
     const off = row % 2 ? 21 : 0;
     for (let x = -940 + off; x < 940; x += 42) {
-      const w = 34 + (r() - 0.5) * 6;
-      const h = 23 + (r() - 0.5) * 5;
+      const w = 34 * (1 + (r() - 0.5) * 0.5);
+      const h = 23 * (1 + (r() - 0.5) * 0.5);
       const k = 6; // corner
-      const x0 = x + (r() - 0.5) * 4;
-      const y0 = y + (r() - 0.5) * 4;
+      const x0 = x + (r() - 0.5) * 9;
+      const y0 = y + (r() - 0.5) * 7;
       s += `M${(x0 + k).toFixed(1)} ${y0.toFixed(1)}h${(w - 2 * k).toFixed(1)}q${k} 0 ${k} ${k}v${(h - 2 * k).toFixed(1)}q0 ${k} ${-k} ${k}h${(2 * k - w).toFixed(1)}q${-k} 0 ${-k} ${-k}v${(2 * k - h).toFixed(1)}q0 ${-k} ${k} ${-k}Z`;
     }
   }
@@ -217,11 +266,22 @@ function Water({ id, rise }: { id: string; rise: number }) {
   return (
     <g>
       <rect x={-2600} y={WATER_Y} width={5200} height={600} fill={`url(#${id}-water)`} />
+      {/* the waterline: two waves drifting opposite ways, never a ruled line */}
       <path
-        d={`M-2600 ${WATER_Y} H2600`}
+        className="crr-wave"
+        d={wavePath(WATER_Y, 7)}
+        fill="none"
         style={{ stroke: "var(--em-ink-0)" }}
-        strokeOpacity={0.45}
+        strokeOpacity={0.5}
         strokeWidth={2}
+      />
+      <path
+        className="crr-wave crr-wave--back"
+        d={wavePath(WATER_Y + 4, 4)}
+        fill="none"
+        style={{ stroke: "var(--em-ink-0)" }}
+        strokeOpacity={0.25}
+        strokeWidth={1.5}
       />
       {EYES.map(([x], i) => (
         <g
@@ -295,8 +355,22 @@ function Eye({
           />
           {/* the vertical slit; `slit` is its half-width */}
           <ellipse rx={slit} ry={33} style={fill("var(--em-ink-975)")} />
-          <ellipse cx={-13} cy={-14} rx={7} ry={5} style={fill("var(--em-ink-0)")} opacity={0.9} />
-          <circle cx={10} cy={11} r={2.4} style={fill("var(--em-ink-0)")} opacity={0.55} />
+          {/* light from the moon, up and to the right, on both eyes (the left one is mirrored) */}
+          <ellipse
+            cx={flip ? -13 : 13}
+            cy={-14}
+            rx={7}
+            ry={5}
+            style={fill("var(--em-ink-0)")}
+            opacity={0.9}
+          />
+          <circle
+            cx={flip ? 10 : -10}
+            cy={11}
+            r={2.4}
+            style={fill("var(--em-ink-0)")}
+            opacity={0.55}
+          />
         </g>
         <ellipse cx={0} cy={-42} rx={84} ry={30} fill={`url(#${id}-lid)`} />
         <g transform={`translate(0 ${(-60 + blink * 66).toFixed(2)})`}>
@@ -412,6 +486,8 @@ type Frame = { p: number; look: Pt; blink: number; squint: number };
 
 // water running off the bottom of the word, under a letter's curve or leg (8 letters, 105 wide
 // each, centred on CX): [x from the centre, length]
+const CAUSTICS_A = buildCaustics(41);
+const CAUSTICS_B = buildCaustics(97);
 const DRIPS: readonly (readonly [number, number])[] = [
   [-362, 20],
   [-157, 34],
@@ -574,7 +650,6 @@ export function CrocReveal({
             fontFamily: "inherit",
             fontSize: 32,
             fontWeight: 700,
-            letterSpacing: "0.08em",
           }}
         >
           {tagline}
@@ -583,7 +658,7 @@ export function CrocReveal({
       {/* the word as water: depth, a sky-to-deep body, ripples, a surface gloss, drips */}
       {(
         [
-          ["translate(4 7)", "var(--em-blue-700)", 0.35],
+          ["translate(-4 7)", "var(--em-blue-700)", 0.35],
           ["", `url(#${id}-word-water)`, 1],
           ["", `url(#${id}-word-ripples)`, 1],
           ["", `url(#${id}-word-gloss)`, 1],
@@ -604,6 +679,51 @@ export function CrocReveal({
           {word}
         </text>
       ))}
+      {/* inside the letters: light netting through water, and a waterline across the lower part */}
+      <clipPath id={`${id}-word-clip`}>
+        <text
+          x={CX}
+          y={404}
+          textAnchor="middle"
+          textLength={840}
+          lengthAdjust="spacingAndGlyphs"
+          style={{ fontFamily: "inherit", fontSize: 250, fontWeight: 900 }}
+        >
+          {word}
+        </text>
+      </clipPath>
+      <g clipPath={`url(#${id}-word-clip)`} aria-hidden>
+        <path
+          className="crr-caustic"
+          d={CAUSTICS_A}
+          fill="none"
+          style={{ stroke: "var(--em-ink-0)" }}
+          strokeOpacity={0.28}
+          strokeWidth={2.6}
+        />
+        <path
+          className="crr-caustic crr-caustic--back"
+          d={CAUSTICS_B}
+          fill="none"
+          style={{ stroke: "var(--em-sky-500)" }}
+          strokeOpacity={0.35}
+          strokeWidth={2}
+        />
+        <g className="crr-wave">
+          <path
+            d={`${wavePath(352, 9, -400, 1600)} V600 H-400 Z`}
+            style={fill("var(--em-blue-700)")}
+            opacity={0.45}
+          />
+          <path
+            d={wavePath(352, 9, -400, 1600)}
+            fill="none"
+            style={{ stroke: "var(--em-ink-0)" }}
+            strokeOpacity={0.7}
+            strokeWidth={2.5}
+          />
+        </g>
+      </g>
       {DRIPS.map(([dx, len], i) => {
         const x = CX + dx;
         return (
@@ -614,13 +734,37 @@ export function CrocReveal({
               style={fill(`url(#${id}-word-water)`)}
             />
             <ellipse
-              cx={x - 3}
+              cx={x + 3}
               cy={392 + len}
               rx={1.8}
               ry={3.2}
               style={fill("var(--em-ink-0)")}
               opacity={0.7}
             />
+            {/* a drop gathers at the end, lets go, falls and is gone; the stem stays */}
+            <g
+              className="crr-drop"
+              style={{
+                animationDelay: `${String(1.3 + i * 1.7)}s`,
+                animationDuration: `${String(4.6 + (i % 3) * 1.2)}s`,
+              }}
+            >
+              <ellipse
+                cx={x}
+                cy={402 + len}
+                rx={7}
+                ry={8.5}
+                style={fill(`url(#${id}-word-water)`)}
+              />
+              <ellipse
+                cx={x + 2.5}
+                cy={399 + len}
+                rx={1.6}
+                ry={2.6}
+                style={fill("var(--em-ink-0)")}
+                opacity={0.8}
+              />
+            </g>
           </g>
         );
       })}
@@ -727,9 +871,9 @@ export function CrocReveal({
             <linearGradient
               id={`${id}-word-gloss`}
               gradientUnits="userSpaceOnUse"
-              x1="0"
+              x1="900"
               y1="215"
-              x2="0"
+              x2="620"
               y2="410"
             >
               <stop offset="0" style={stop("var(--em-ink-0)", 0.6)} />
@@ -809,7 +953,7 @@ export function CrocReveal({
         {hint && (
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.35em] text-muted-foreground"
+            className="pointer-events-none absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 text-xs text-muted-foreground"
             style={{ opacity: Math.max(0, 0.8 - s.crack * 3) }}
           >
             {hint}

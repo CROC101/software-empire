@@ -203,11 +203,12 @@ export function InkWordmark({
         <g className="iwm-croc" style={{ "--d": ms(crocAt) } as React.CSSProperties}>
           {[-22, 22].map((x) => (
             <g key={x}>
-              <ellipse className="iwm-mound" cx={x} cy="-14" rx="21" ry="19" />
+              <ellipse className="iwm-mound" cx={x} cy="-12" rx="24" ry="15" />
               <g className="iwm-eye">
-                <ellipse className="iwm-iris" cx={x} cy="-18" rx="11" ry="9" />
-                <ellipse className="iwm-ink" cx={x} cy="-18" rx="2.4" ry="8" />
-                <circle className="iwm-glint" cx={x - 4} cy="-22" r="2.2" />
+                <ellipse className="iwm-iris" cx={x} cy="-17" rx="12" ry="7.5" />
+                <ellipse className="iwm-ink" cx={x} cy="-17" rx="1.6" ry="6.8" />
+                {/* the studio croc's glint: toward the moon, up and to the right */}
+                <circle className="iwm-glint" cx={x + 4} cy="-20" r="2" />
               </g>
               <path
                 className="iwm-lid"

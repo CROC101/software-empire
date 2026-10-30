@@ -240,13 +240,16 @@ export default async function HomePage() {
               {/* Thai is never letter-spaced or set in mono: the letters come apart */}
               <span className="text-muted-foreground">ซอฟต์แวร์ · AI · ระบบหลังบ้าน</span>
             </p>
-            <h1 className="pk-depth order-2 font-sans text-5xl lg:order-none font-black leading-[1.05] tracking-tight sm:text-7xl">
+            <h1 className="pk-depth order-2 font-sans text-5xl lg:order-none font-black leading-[1.05] sm:text-7xl">
               ระบบที่ผมสร้าง
               <br />
               ทำงานได้จริง
               <br />
               <span className="relative inline-block">
-                <span className="pk-depth-blue">
+                <span
+                  className="pk-depth-blue cw-water-text"
+                  data-text={`ครบ ${String(subsystems.length)} ระบบ`}
+                >
                   ครบ <CountUp to={subsystems.length} /> ระบบ
                 </span>
                 <Scribble className="absolute -bottom-3 left-0 w-full cw-blue" />
