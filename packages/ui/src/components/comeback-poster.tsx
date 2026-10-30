@@ -1800,7 +1800,7 @@ export function ComebackPoster({
             aria-label={target}
             className="cbp-title m-0"
             style={{
-              fontSize: narrow ? "min(15cqw, 13cqh)" : "min(13cqw, 13.5cqh)",
+              fontSize: narrow ? "min(14cqw, 13cqh)" : "min(13cqw, 13.5cqh)", // narrow: fits 320px
               margin: narrow ? "1.5cqw 0 1cqw" : "-0.6cqw 0 0.4cqw",
               color: ink,
             }}

@@ -120,8 +120,10 @@ const DROP_MS = 1100;
 const DROP_POINTS = 72;
 const DROP_FRAMES = 36;
 
-const POUR_MS = 1500;
-const POUR_TALL = 2.2; // the sheet is this many screens tall, so it covers the screen for a while
+const POUR_MS = 1250;
+// screens tall: just enough that its solid middle covers the whole screen for a beat (~0.1s) to
+// hide the swap, short enough that the page is never blank for long
+const POUR_TALL = 1.45;
 
 /**
  * The live water curtain for "stream": a tall, click-through sheet of the coming theme's colour,
@@ -138,7 +140,10 @@ function pourTheme(next: ResolvedTheme, swap: () => void) {
   sheet.dataset.next = next;
   sheet.setAttribute("aria-hidden", "true");
   sheet.style.height = `${String(tall)}px`;
+  // a popover lives in the top layer, so the water also covers an open <dialog> (the phone menu)
+  sheet.popover = "manual";
   document.body.appendChild(sheet);
+  sheet.showPopover();
   const run = sheet.animate(
     [
       { transform: `translate3d(0, ${String(-tall)}px, 0)` },
