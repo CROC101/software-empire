@@ -55,6 +55,11 @@ font pair or corner style per app.
   Colours come from palette tokens (resolved at runtime); never hard-code hex.
 - Festivals are ambience values (`halloween`, `loykrathong`, `christmas`, `newyear`, `songkran`):
   pickable in the sky sheet, and `auto` switches by date (`festivalFor` in `@empire/core/theme`).
+- Seasons in the portfolio: hub renders `<Ambience rich />`, so rain is `DataRain` over the whole
+  page and the cool season / Christmas frost the screen's edges with `HoarfrostPane overlay`. The
+  working apps keep the light CSS particles (no `rich`).
+- Theme reveal default is `stream`: a live water curtain (no View Transition), so the page keeps
+  scrolling during the switch. Never reintroduce a snapshot reveal as the default.
 - Theme switch in the hub: `LiquidThemeToggle` (`@empire/ui`, a `LiquidToggle` drop of the navbar's
   water on the shared cookie, ink-drop page reveal). `SunMoonThemeToggle` stays in `HubSwitcher`.
 - Glass: `.cw-glass` (hub) is the water-menu material for chips, cards and secondary buttons;
