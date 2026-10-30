@@ -2694,12 +2694,24 @@ a.lgn-app:focus-visible {
     linear-gradient(
       180deg,
       color-mix(in oklab, var(--em-sky-500) 35%, transparent) 0%,
-      color-mix(in oklab, var(--pour-bg) 80%, var(--em-blue-500)) 6%,
-      var(--pour-bg) 13%,
-      var(--pour-bg) 87%,
-      color-mix(in oklab, var(--pour-bg) 80%, var(--em-blue-500)) 94%,
+      color-mix(
+          in oklab,
+          var(--pour-bg) 62%,
+          color-mix(in oklab, var(--em-blue-500) 30%, transparent)
+        )
+        6%,
+      color-mix(in oklab, var(--pour-bg) 62%, transparent) 14%,
+      color-mix(in oklab, var(--pour-bg) 62%, transparent) 86%,
+      color-mix(
+          in oklab,
+          var(--pour-bg) 62%,
+          color-mix(in oklab, var(--em-blue-500) 30%, transparent)
+        )
+        94%,
       color-mix(in oklab, var(--em-sky-500) 35%, transparent) 100%
     );
+  /* see-through water: the page stays visible (blurred) under it, even at the moment it recolours */
+  backdrop-filter: blur(7px) saturate(1.3);
 }
 .em-pour[data-next="dark"] {
   --pour-bg: var(--em-ink-975);

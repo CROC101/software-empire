@@ -378,17 +378,21 @@ function Layer({ from, to, x, y, w, h, duration, strength, onDone }: LayerProps)
       }).then((im) => {
         const scale = Math.min(1, (Math.max(w, h) * dpr) / Math.max(im.naturalWidth, 1));
         if (scale >= 1 || typeof createImageBitmap !== "function") return im;
+        // UNPACK_FLIP_Y does not apply to an ImageBitmap: flip it here, or the ripple shows
+        // the screenshot upside down until the transition ends
         return createImageBitmap(im, {
           resizeWidth: Math.max(1, Math.round(im.naturalWidth * scale)),
           resizeHeight: Math.max(1, Math.round(im.naturalHeight * scale)),
           resizeQuality: "high",
+          imageOrientation: "flipY",
         }).catch(() => im);
       });
     Promise.all([load(from), load(to)])
       .then(([a, b]) => {
         if (dead) return;
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
         [a, b].forEach((im, i) => {
+          // bitmaps come already flipped; a plain image (no resize, old browser) is flipped on upload
+          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, im instanceof HTMLImageElement);
           gl.activeTexture(i ? gl.TEXTURE1 : gl.TEXTURE0);
           gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
           gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, im);
