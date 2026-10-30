@@ -2326,35 +2326,13 @@ a.lgn-app:focus-visible {
   );
 }
 
-/* TideReveal: a soft water line rises through each block the first time it reaches the screen */
-@property --tide {
-  syntax: "<percentage>";
-  inherits: false;
-  initial-value: 130%;
-}
-.tide-armed {
-  --tide: 0%;
+/* the reveal engine (lib/fade.ts: FadeContent, TideReveal): hidden until its animation plays */
+.fade-armed {
   opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  mask-image: linear-gradient(to top, #000 calc(var(--tide) - 30%), transparent var(--tide));
-}
-.tide-armed.tide-in {
-  --tide: 130%;
-  opacity: 1;
-  transform: none;
-  transition:
-    --tide 1.3s cubic-bezier(0.33, 1, 0.68, 1) var(--tide-delay, 0ms),
-    opacity 0.9s ease-out var(--tide-delay, 0ms),
-    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) var(--tide-delay, 0ms);
-}
-.tide-armed.tide-done {
-  mask-image: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .tide-armed {
+  .fade-armed {
     opacity: 1;
-    transform: none;
-    mask-image: none;
   }
 }
 

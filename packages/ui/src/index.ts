@@ -99,6 +99,8 @@ export {
 export { NimbusNavbar, type NimbusNavItem, type NimbusFx } from "./components/nimbus-navbar";
 export { useReducedMotionAfterMount } from "./lib/use-reduced-motion";
 export { TideReveal } from "./components/tide-reveal";
+export { FadeContent } from "./components/fade-content";
+export { type FadeEffect } from "./lib/fade";
 export {
   LiquidToggle,
   NimbusToggleIcons,

@@ -107,8 +107,11 @@ anywhere water meets the page:
   never add framer-motion, gsap or lenis; never hijack scrolling).
 - Always honour `prefers-reduced-motion` (static fallback, ambience off).
 - Page reveal: `<TideReveal/>` (`@empire/ui`, mounted once in hub `page.tsx`): every direct child
-  of a `data-tide` element rises in once (a soft water line, 14px, fade) when it first reaches the
-  screen. Time-driven, never scroll-linked: no lag behind the finger, no tilt, no drift (scroll-
+  of a `data-tide` element comes in once when it first reaches the screen, with a preset from
+  `lib/fade.ts` (Web Animations, opacity / transform / filter only): `focus` for heading blocks,
+  `develop` for pictures, lists and grids item by item, `tide` (rise out of the water) otherwise;
+  `data-fade="mist|fade|..."` on a child overrides. For one-off blocks use `<FadeContent>` (same
+  presets, after React Bits). Never gsap / ScrollTrigger, never SVG noise filters. Time-driven, never scroll-linked: no lag behind the finger, no tilt, no drift (scroll-
   linked depth on every section made people dizzy). Mark ordinary sections (or the inner container
   of a full-bleed band); never pinned / sticky scenes. Long lists of screens use `ScreenRail` +
   `useAutoplay` (scroll length fixed, whatever the count) instead of one scroll step per item.
