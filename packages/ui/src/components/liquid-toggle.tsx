@@ -578,10 +578,11 @@ export function LiquidToggle({
     loop();
   }, [size, draw, loop]);
 
-  /* follow the controlled / uncontrolled value */
+  /* follow the controlled / uncontrolled value when it changes (not on every render: a parent
+     may take a moment to accept a tap, and the drop must not snap back meanwhile) */
   React.useEffect(() => {
     if (st.current.drag.id === -1) goTo(current);
-  });
+  }, [current, goTo]);
   React.useEffect(() => {
     loop();
   }, [tone, hasIcons, loop]);
