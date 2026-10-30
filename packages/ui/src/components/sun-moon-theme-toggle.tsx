@@ -109,14 +109,49 @@ function fadePage(duration: number) {
  * compositor. "drop" (the default) spreads the new theme from the button like a drop of ink in
  * water: a liquid edge that wobbles while it grows and settles round as it covers the screen,
  * while the old page sinks back a little and dims. Without the API (or with reduced motion) the
- * swap is instant; "fade" cross-fades colours.
+ * swap is instant; "fade" cross-fades colours. "stream" (the default) pours the new theme down
+ * from the top in streams of water: each stream its own width and pace, the leaders racing ahead
+ * with rippling heads, until they merge into one sheet that fills the screen.
  */
-export type ThemeEffect = "drop" | "circle" | "wipe" | "fade";
+export type ThemeEffect = "stream" | "drop" | "circle" | "wipe" | "fade";
 
 const REVEAL_MS = 560;
 const DROP_MS = 1100;
 const DROP_POINTS = 72;
 const DROP_FRAMES = 36;
+
+const STREAM_MS = 1500;
+const STREAM_POINTS = 96;
+const STREAM_FRAMES = 40;
+
+/** Clip-path keyframes for the pour: a straight top edge, a falling edge of many streams. */
+function streamFrames(w: number, h: number): Keyframe[] {
+  // how late each part of the width starts to pour (0 = a leading stream), smooth across x
+  const lag = (u: number) =>
+    0.5 +
+    0.24 * Math.sin(u * 9.1 + 0.6) +
+    0.16 * Math.sin(u * 17.3 + 2.1) +
+    0.1 * Math.sin(u * 31.7 + 4.4);
+  const smooth = (t: number) => t * t * (3 - 2 * t);
+  return Array.from({ length: STREAM_FRAMES + 1 }, (_, f) => {
+    const t = f / STREAM_FRAMES;
+    const edge = Array.from({ length: STREAM_POINTS + 1 }, (_, i) => {
+      const u = 1 - i / STREAM_POINTS; // right to left along the falling edge
+      const start = Math.max(0, Math.min(1, lag(u))) * 0.42;
+      const k = Math.max(0, Math.min(1, (t - start) / (1 - start)));
+      // water accelerates as it falls, then the sheet settles at the bottom
+      const fall = smooth(k) ** 1.15;
+      // the heads ripple while they run, still once the screen is full
+      const ripple = (1 - t) * 14 * Math.sin(u * 46 + t * 18);
+      const y = fall * (h + 40) + (k > 0 && k < 1 ? ripple : 0);
+      return `${(u * w).toFixed(1)}px ${Math.max(0, y).toFixed(1)}px`;
+    });
+    return {
+      offset: t,
+      clipPath: `polygon(0px 0px, ${w.toFixed(1)}px 0px, ${edge.join(",")})`,
+    };
+  });
+}
 
 /** Clip-path keyframes for the ink drop; equal point counts, so the browser interpolates them. */
 function dropFrames(x: number, y: number, reach: number): Keyframe[] {
@@ -171,6 +206,27 @@ export function revealPage(
   const y = box.top + box.height / 2;
   // far enough to cover the corner furthest from the button
   const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  if (effect === "stream") {
+    transition.ready
+      .then(() => {
+        const root = document.documentElement;
+        root.animate(streamFrames(innerWidth, innerHeight), {
+          duration: STREAM_MS,
+          easing: "linear", // the frames carry their own easing
+          pseudoElement: "::view-transition-new(root)",
+        });
+        // the old page darkens a little under the falling water
+        root.animate([{ filter: "brightness(1)" }, { filter: "brightness(0.85)" }], {
+          duration: STREAM_MS,
+          easing: SKY_EASE,
+          pseudoElement: "::view-transition-old(root)",
+        });
+      })
+      .catch(() => undefined);
+    transition.updateCallbackDone.catch(() => undefined);
+    transition.finished.then(restore, restore);
+    return;
+  }
   if (effect === "drop") {
     transition.ready
       .then(() => {
@@ -223,7 +279,7 @@ const resolvedNow = (): ResolvedTheme => resolve(currentChoice(), osDark());
 
 export function SunMoonThemeToggle({
   cookieDomain,
-  effect = "drop",
+  effect = "stream",
   duration = 1740,
   size = 40,
   className,
