@@ -210,7 +210,14 @@ export function NimbusNavbar({
     if (s.glc) {
       const { gl: g, u } = s.glc;
       const U = (n: string) => u.get(n) ?? null;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // devicePixelRatio can change after mount: follow it, and scale by the real canvas size
+      const cv = canvasRef.current;
+      const want = Math.min(window.devicePixelRatio || 1, 2);
+      if (cv && cv.width !== Math.round((s.w + PAD * 2) * want)) {
+        cv.width = Math.round((s.w + PAD * 2) * want);
+        cv.height = Math.round((s.h + PAD * 2) * want);
+      }
+      const dpr = g.drawingBufferWidth / (s.w + PAD * 2);
       g.viewport(0, 0, g.drawingBufferWidth, g.drawingBufferHeight);
       g.uniform2f(U("uRes"), s.w + PAD * 2, s.h + PAD * 2);
       g.uniform1f(U("uDpr"), dpr);

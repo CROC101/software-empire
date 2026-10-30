@@ -270,7 +270,15 @@ export function LiquidToggle({
       const { gl: c, u } = s.glc;
       const at = (n: string) => u.get(n) ?? null;
       const S = G.S;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // devicePixelRatio can change after mount (devtools device mode, a window dragged to
+      // another screen): resize the canvas to it, and always scale by the size it really has
+      const cv = canvasRef.current;
+      const want = Math.min(window.devicePixelRatio || 1, 2);
+      if (cv && cv.width !== Math.round((G.w + G.PAD * 2) * want)) {
+        cv.width = Math.round((G.w + G.PAD * 2) * want);
+        cv.height = Math.round((G.h + G.PAD * 2) * want);
+      }
+      const dpr = c.drawingBufferWidth / (G.w + G.PAD * 2);
       c.viewport(0, 0, c.drawingBufferWidth, c.drawingBufferHeight);
       c.uniform2f(at("uRes"), G.w + G.PAD * 2, G.h + G.PAD * 2);
       c.uniform1f(at("uDpr"), dpr);
