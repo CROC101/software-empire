@@ -20,7 +20,7 @@
     "db:status": "supabase status",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
-    "db:types": "supabase gen types typescript --local --schema public,toolboxes,canva,community,commerce > packages/core/src/database.types.ts && prettier --write packages/core/src/database.types.ts"
+    "db:types": "supabase gen types typescript --local --schema public,toolboxes,canva,community,commerce,cms > packages/core/src/database.types.ts && prettier --write packages/core/src/database.types.ts"
   },
   "devDependencies": {
     "prettier": "^3.9.10",

@@ -46,6 +46,8 @@ font pair or corner style per app.
   word), `SkeletonKeyPreloader` (the first-visit intro, via hub `intro-gate.tsx` + `public/intro-boot.js`;
   one preloader per site). `IconFolder` (glass folder, icon tiles fan out; hub services). `PerspectiveTunnel` (cards fly past the camera, sticky + native scroll), `LaptopPreview` (lid opens on scroll, 16:10 screenshots + step cards). `ClothingRail` (garments on a rail, turn / lift / spin; hub "wardrobe" of roles). `GlassIconReveal` (WebGL2 glass droplet reveals a logo; hub sign-off above the footer, mark in `public/crocwork-mark.webp`). Branch on reduced motion only via `useReducedMotionAfterMount` (lib) or hydration breaks. Our own: `BlueprintReveal`, `PhosphorNotFound` (hub 404),
   `GlassClock`. Props from server components must be serialisable: label templates like `"{n} of {total}"`.
+- Editable copy and numbers come from the CMS (`getContent(CmsPage)` in hub `lib/cms.ts`, defaults
+  in code); a number the owner edits is shown with `RollingCounter` (digits roll to the new value).
 - Terminals for facts: `$ crocwork status`, real data only, blinking caret (`em-cursor`).
 - Phones: `PhoneFrame` from `@empire/ui` (titanium edge, Dynamic Island, status bar 9:41) over
   paper-cut art (`PaperArt`); pairs fan out on hover. Screens are real screenshots

@@ -17,6 +17,7 @@ import {
   TextLoop,
   TidelineCta,
   GlassBucket,
+  RollingCounter,
 } from "@empire/ui";
 import {
   Braces,
@@ -56,7 +57,6 @@ import { SoloFlock } from "./solo-flock";
 
 export { PGTAP_TESTS } from "@/lib/facts";
 import { PGTAP_TESTS } from "@/lib/facts";
-const COMMUNITY_ROUNDS = 7;
 
 // last commits, as I would say them out loud (update when shipping)
 const WORK_LOG = [
@@ -257,7 +257,17 @@ function PaperArt({ hue, seed }: { hue: number; seed: number }) {
 
 /* ── status: the terminal ───────────────────────────────────── */
 
-export function StatusSection() {
+export function StatusSection({
+  title1,
+  title2,
+  intro,
+  rounds,
+}: {
+  title1: string;
+  title2: string;
+  intro: string;
+  rounds: number;
+}) {
   const live = subsystems.filter((s) => appUrl(s.slug));
   const building = subsystems.filter((s) => !appUrl(s.slug));
   return (
@@ -285,22 +295,25 @@ export function StatusSection() {
               status · live
             </p>
             <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-              ระบบที่ผมทำ
+              {title1}
               <br />
-              <span className="text-[var(--em-blue-500)]">ยังรันอยู่ตอนนี้</span>
+              <span className="text-[var(--em-blue-500)]">{title2}</span>
             </h2>
-            <p className="max-w-md text-[var(--em-ink-300)]">
-              คนที่คุยงานกับคุณ คือคนที่เขียนโค้ดเอง ตัวเลขข้าง ๆ ไม่ได้แต่ง ดึงจากระบบกับ repo จริง
-            </p>
+            <p className="max-w-md text-[var(--em-ink-300)]">{intro}</p>
             <dl className="mt-4 grid grid-cols-3 gap-3 sm:gap-4">
-              {[
-                [String(live.length), "ระบบที่เปิดให้ใช้แล้ว"],
-                [String(PGTAP_TESTS), "เทสต์ความปลอดภัยที่ผ่าน"],
-                [`${String(COMMUNITY_ROUNDS)} รอบ`, "ที่ใช้ทำ Community จนจบ"],
-              ].map(([value, label]) => (
+              {(
+                [
+                  [live.length, "", "ระบบที่เปิดให้ใช้แล้ว"],
+                  [PGTAP_TESTS, "", "เทสต์ความปลอดภัยที่ผ่าน"],
+                  [rounds, " รอบ", "ที่ใช้ทำ Community จนจบ"],
+                ] as const
+              ).map(([value, unit, label]) => (
                 <div key={label} className="st-card flex flex-col-reverse">
                   <dt className="mt-1 text-xs leading-snug text-[var(--em-ink-400)]">{label}</dt>
-                  <dd className="st-num text-3xl font-black sm:text-4xl">{value}</dd>
+                  {/* the numbers roll in, and roll again when I change one at /admin */}
+                  <dd className="st-num text-3xl font-black sm:text-4xl">
+                    <RollingCounter value={value} suffix={unit || undefined} />
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -521,7 +534,7 @@ export function WorkReel() {
   );
 }
 
-export function WorkSection() {
+export function WorkSection({ summaries }: { summaries: Record<string, string> }) {
   const others = subsystems.filter((s) => !WORK.some((w) => w.slug === s.slug));
   const live = subsystems.filter((s) => appUrl(s.slug)).length;
   return (
@@ -592,7 +605,7 @@ export function WorkSection() {
               <p className="text-xs text-warning">◐ กำลังทำ</p>
             )}
             <p className="mt-1 font-bold">{s.name}</p>
-            <p className="text-sm text-muted-foreground">{s.summary}</p>
+            <p className="text-sm text-muted-foreground">{summaries[s.slug] ?? s.summary}</p>
           </li>
         ))}
       </ul>
@@ -715,7 +728,7 @@ export function LaptopSection() {
   );
 }
 
-export function ShotsSection() {
+export function ShotsSection({ summaries }: { summaries: Record<string, string> }) {
   return (
     <section data-tide id="screens" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-t pt-12">
@@ -747,7 +760,7 @@ export function ShotsSection() {
           return {
             image,
             title: app?.name ?? slug,
-            caption: app?.summary,
+            caption: summaries[slug] ?? app?.summary,
             alt: `ภาพหน้าจอ ${app?.name ?? slug} บนเดสก์ท็อป`,
           };
         })}

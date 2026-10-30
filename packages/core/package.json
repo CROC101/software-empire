@@ -8,7 +8,8 @@
     "./worker": "./src/worker.ts",
     "./redirect": "./src/redirect.ts",
     "./subsystems": "./src/subsystems.ts",
-    "./theme": "./src/theme.ts"
+    "./theme": "./src/theme.ts",
+    "./cms": "./src/cms.ts"
   },
   "scripts": {
     "lint": "eslint .",

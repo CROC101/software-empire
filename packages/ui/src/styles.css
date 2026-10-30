@@ -2336,6 +2336,46 @@ a.lgn-app:focus-visible {
   }
 }
 
+/* ── RollingCounter (components/rolling-counter.tsx): digits on rolling strips ── */
+.rc {
+  position: relative;
+  display: inline-flex;
+  white-space: nowrap;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}
+.rc-row {
+  display: inline-flex;
+  align-items: baseline;
+}
+.rc-digit {
+  position: relative;
+  display: inline-block;
+}
+.rc-sizer {
+  visibility: hidden;
+}
+.rc-affix {
+  white-space: pre;
+}
+/* clipped to the digit's own line box; the edges fade so digits roll out of sight softly */
+.rc-window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(transparent, #000 0.14em, #000 calc(100% - 0.14em), transparent);
+}
+.rc-numeral {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
 /* ── LiquidToggle (components/liquid-toggle.tsx): a drop of the navbar's water as the knob ── */
 .nimbus-toggle {
   --t-tint: rgb(255 255 255 / 0.18);

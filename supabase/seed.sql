@@ -113,3 +113,7 @@ select pg_temp.as_user('a0000000-0000-4000-8000-000000000004');
 select community.put_note('กำลังเทรนโมเดลอยู่ 🤖');
 
 select set_config('request.jwt.claims', '', false);
+
+-- the demo admin also edits CMS content at the hub's /admin (local only; the real owner is added
+-- by hand, see migration cms_content)
+insert into cms.admins (user_id) select id from auth.users where email = 'admin@empire.local';

@@ -142,6 +142,106 @@ export type Database = {
       [_ in never]: never;
     };
   };
+  cms: {
+    Tables: {
+      admins: {
+        Row: {
+          created_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      audit_log: {
+        Row: {
+          action: string;
+          actor: string | null;
+          app: string;
+          at: string;
+          id: number;
+          key: string;
+          new_value: Json | null;
+          old_value: Json | null;
+          page: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          action: string;
+          actor?: string | null;
+          app: string;
+          at?: string;
+          id?: never;
+          key: string;
+          new_value?: Json | null;
+          old_value?: Json | null;
+          page: string;
+        };
+        Update: {
+          action?: string;
+          actor?: string | null;
+          app?: string;
+          at?: string;
+          id?: never;
+          key?: string;
+          new_value?: Json | null;
+          old_value?: Json | null;
+          page?: string;
+        };
+        Relationships: [];
+      };
+      entries: {
+        Row: {
+          app: string;
+          key: string;
+          kind: string;
+          page: string;
+          updated_at: string;
+          updated_by: string | null;
+          value: NonNullable<Json>;
+        };
+        ComputedFields: never;
+        Insert: {
+          app: string;
+          key: string;
+          kind: string;
+          page: string;
+          updated_at?: string;
+          updated_by?: string | null;
+          value: NonNullable<Json>;
+        };
+        Update: {
+          app?: string;
+          key?: string;
+          kind?: string;
+          page?: string;
+          updated_at?: string;
+          updated_by?: string | null;
+          value?: NonNullable<Json>;
+        };
+        Relationships: [];
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   commerce: {
     Tables: {
       order_events: {
@@ -2827,6 +2927,9 @@ export type CompositeTypes<
 
 export const Constants = {
   canva: {
+    Enums: {},
+  },
+  cms: {
     Enums: {},
   },
   commerce: {

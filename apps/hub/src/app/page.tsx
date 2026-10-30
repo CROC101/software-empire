@@ -31,6 +31,7 @@ import {
   User,
   Users,
 } from "lucide-react";
+import { Fragment, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -38,6 +39,7 @@ import { parseChoice, THEME_COOKIE } from "@empire/core/theme";
 import { getClaims } from "@/lib/supabase/server";
 import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
+import { getContent, HUB_HOME, HUB_SUBSYSTEMS } from "@/lib/cms";
 import { CountUp } from "./count-up";
 import { MobileMenu } from "./mobile-menu";
 import { BackToTop } from "./nav-spy";
@@ -180,6 +182,53 @@ export default async function HomePage() {
   const cta = claims
     ? { href: "/dashboard", label: "แดชบอร์ด" }
     : { href: "/login", label: "เข้าสู่ระบบ" };
+  // text, numbers and section order the owner edits at /admin (defaults when the DB is down)
+  const [home, cards] = await Promise.all([getContent(HUB_HOME), getContent(HUB_SUBSYSTEMS)]);
+  const summaries = Object.fromEntries(
+    subsystems.map((x) => [x.slug, cards.text(`${x.slug}.summary`)]),
+  );
+  const SECTIONS: Record<string, ReactNode> = {
+    status: (
+      <StatusSection
+        title1={home.text("status.title1")}
+        title2={home.text("status.title2")}
+        intro={home.text("status.intro")}
+        rounds={home.number("status.rounds")}
+      />
+    ),
+    depth: <DepthSection />,
+    croc: (
+      <CrocReveal
+        word="CROCWORK"
+        tagline="สตูดิโอนี้มีจระเข้ตัวเดียว"
+        hint="เลื่อนลง"
+        stickyTop="4rem"
+        height="calc(100svh - 4rem)"
+        label="โปสเตอร์ CROCWORK ถูกฉีกออก จระเข้โผล่ขึ้นจากน้ำแล้วลืมตามอง"
+      />
+    ),
+    about: <AboutSection />,
+    "work-reel": <WorkReel />,
+    work: <WorkSection summaries={summaries} />,
+    "work-tunnel": <WorkTunnel />,
+    shots: <ShotsSection summaries={summaries} />,
+    laptop: <LaptopSection />,
+    pocket: <PocketSection />,
+    "hidden-work": <HiddenWork />,
+    skills: <SkillsSection />,
+    activity: <ActivitySkyline />,
+    rhythm: <RhythmRing />,
+    codebase: <CodebaseHexes />,
+    services: <ServicesSection aside={<StackCard href="#subsystems" />} />,
+    how: <HowSection />,
+    team: <TeamSection />,
+    wardrobe: <Wardrobe />,
+    faq: <FaqSection />,
+    where: <WhereSection />,
+    "croc-poster": <CrocPoster />,
+    contact: <ContactSection cta={cta} />,
+    "sign-off": <SignOff />,
+  };
 
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-background">
@@ -238,12 +287,12 @@ export default async function HomePage() {
                 crocwork studio
               </span>
               {/* Thai is never letter-spaced or set in mono: the letters come apart */}
-              <span className="text-muted-foreground">ซอฟต์แวร์ · AI · ระบบหลังบ้าน</span>
+              <span className="text-muted-foreground">{home.text("hero.chip")}</span>
             </p>
             <h1 className="pk-depth order-2 font-sans text-5xl lg:order-none font-black leading-[1.05] sm:text-7xl">
-              ระบบที่ผมสร้าง
+              {home.text("hero.line1")}
               <br />
-              ทำงานได้จริง
+              {home.text("hero.line2")}
               <br />
               <span className="relative inline-block">
                 <span
@@ -302,7 +351,7 @@ export default async function HomePage() {
                   <span />
                   <span />
                 </span>
-                ดูผลงาน <span aria-hidden>↓</span>
+                {home.text("hero.cta")} <span aria-hidden>↓</span>
               </a>
               <Link
                 href={cta.href}
@@ -316,7 +365,7 @@ export default async function HomePage() {
               {[
                 `${String(subsystems.filter((x) => appUrl(x.slug)).length)} ระบบเปิดใช้แล้ว`,
                 `${String(PGTAP_TESTS)} เทสต์ฐานข้อมูล`,
-                "ล็อกอินครั้งเดียว ใช้ได้ทุกระบบ",
+                home.text("hero.promise"),
               ].map((t) => (
                 <li key={t} className="cw-glass rounded-full px-3 py-1">
                   {t}
@@ -332,37 +381,12 @@ export default async function HomePage() {
           />
         </section>
 
-        <StatusSection />
-        <DepthSection />
-        <CrocReveal
-          word="CROCWORK"
-          tagline="สตูดิโอนี้มีจระเข้ตัวเดียว"
-          hint="เลื่อนลง"
-          stickyTop="4rem"
-          height="calc(100svh - 4rem)"
-          label="โปสเตอร์ CROCWORK ถูกฉีกออก จระเข้โผล่ขึ้นจากน้ำแล้วลืมตามอง"
-        />
-        <AboutSection />
-        <WorkReel />
-        <WorkSection />
-        <WorkTunnel />
-        <ShotsSection />
-        <LaptopSection />
-        <PocketSection />
-        <HiddenWork />
-        <SkillsSection />
-        <ActivitySkyline />
-        <RhythmRing />
-        <CodebaseHexes />
-        <ServicesSection aside={<StackCard href="#subsystems" />} />
-        <HowSection />
-        <TeamSection />
-        <Wardrobe />
-        <FaqSection />
-        <WhereSection />
-        <CrocPoster />
-        <ContactSection cta={cta} />
-        <SignOff />
+        {home
+          .sections()
+          .filter((x) => x.visible)
+          .map((x) => (
+            <Fragment key={x.key}>{SECTIONS[x.key]}</Fragment>
+          ))}
       </main>
       <TideReveal />
       <BackToTop />
