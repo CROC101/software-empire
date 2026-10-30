@@ -13,7 +13,8 @@
     "typecheck": "tsc -p .",
     "smoke": "node --env-file=.env.local e2e/auth-smoke.ts",
     "contributions": "node scripts/contributions.mjs",
-    "codebase": "node scripts/codebase.mjs"
+    "codebase": "node scripts/codebase.mjs",
+    "rhythm": "node scripts/rhythm.mjs"
   },
   "dependencies": {
     "@empire/core": "workspace:*",

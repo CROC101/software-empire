@@ -12,6 +12,7 @@ import {
   ArrowUp,
   Blocks,
   BriefcaseBusiness,
+  Clock3,
   Code2,
   Cpu,
   GitBranch,
@@ -40,6 +41,7 @@ import { BackToTop } from "./nav-spy";
 import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
 import { ActivitySkyline } from "./activity-skyline";
+import { RhythmRing } from "./rhythm-ring";
 import { CodebaseHexes } from "./codebase-hexes";
 import { PocketSection } from "./pocket-section";
 import { SignOff } from "./sign-off";
@@ -112,6 +114,12 @@ const LAUNCHER = {
       label: "กิจกรรม GitHub",
       icon: <GitBranch />,
       keywords: "activity commit",
+    },
+    {
+      href: "#rhythm",
+      label: "ช่วงเวลาที่ทำงาน",
+      icon: <Clock3 />,
+      keywords: "rhythm time commit",
     },
     { href: "#codebase", label: "โค้ดใน repo", icon: <Hexagon />, keywords: "codebase lines" },
     {
@@ -303,6 +311,7 @@ export default async function HomePage() {
         <HiddenWork />
         <SkillsSection />
         <ActivitySkyline />
+        <RhythmRing />
         <CodebaseHexes />
         <ServicesSection aside={<StackCard href="#subsystems" />} />
         <HowSection />
