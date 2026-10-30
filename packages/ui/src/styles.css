@@ -2630,50 +2630,37 @@ a.lgn-app:focus-visible {
   }
 }
 
-/* theme switch "stream": the live water curtain (sun-moon-theme-toggle.tsx pourTheme) */
+/* theme switch "stream": the live water curtain (sun-moon-theme-toggle.tsx pourTheme). It only
+   ever moves by transform; its wavy top and stream-fingered bottom are a static mask. */
 .em-pour {
   --pour-bg: var(--em-ink-25);
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 2147483000;
   pointer-events: none;
-  will-change: clip-path;
-}
-.em-pour[data-next="dark"] {
-  --pour-bg: var(--em-ink-975);
-}
-/* the foam that runs ahead: a bright, half-clear rim */
-.em-pour--foam {
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklab, var(--em-sky-500) 40%, transparent),
-    color-mix(in oklab, white 55%, transparent)
-  );
-  opacity: 0.75;
-}
-/* the water: the coming theme's colour, ripples, a sheen, a little see-through */
-.em-pour--water {
+  will-change: transform;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 3 C10 0 20 5 30 2.5 S50 0 60 3 S80 5 100 2 L100 94 C96 97 93 99.6 89 96 S81 92 75 97.5 S65 100 59 95 S47 92 41 98 S31 99.6 25 95 S15 92 9 98.5 S3 97 0 95 Z'/%3E%3C/svg%3E")
+    0 0 / 100% 100% no-repeat;
+  /* foam at both edges, the coming theme's colour solid through the middle, ripples and a sheen */
   background:
     repeating-linear-gradient(
       172deg,
       transparent 0 26px,
-      color-mix(in oklab, white 9%, transparent) 26px 28px,
+      color-mix(in oklab, white 8%, transparent) 26px 28px,
       transparent 28px 61px
-    ),
-    radial-gradient(
-      120% 55% at 30% 0%,
-      color-mix(in oklab, var(--em-sky-500) 26%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      90% 45% at 80% 100%,
-      color-mix(in oklab, var(--em-blue-500) 18%, transparent),
-      transparent 70%
     ),
     linear-gradient(
       180deg,
-      color-mix(in oklab, var(--pour-bg) 82%, var(--em-blue-500)),
-      var(--pour-bg) 65%
+      color-mix(in oklab, var(--em-sky-500) 35%, transparent) 0%,
+      color-mix(in oklab, var(--pour-bg) 80%, var(--em-blue-500)) 7%,
+      var(--pour-bg) 22%,
+      var(--pour-bg) 78%,
+      color-mix(in oklab, var(--pour-bg) 80%, var(--em-blue-500)) 93%,
+      color-mix(in oklab, var(--em-sky-500) 35%, transparent) 100%
     );
-  opacity: 0.9;
+}
+.em-pour[data-next="dark"] {
+  --pour-bg: var(--em-ink-975);
 }
