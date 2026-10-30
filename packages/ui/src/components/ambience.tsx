@@ -29,7 +29,7 @@ import { cn } from "../lib/cn";
 import { useTokenColors } from "../lib/token-colors";
 import { AmbiencePicker } from "./ambience-picker";
 import { DataRain } from "./data-rain";
-import { HoarfrostPane } from "./hoarfrost-pane";
+import { PixelSnow } from "./pixel-snow";
 
 /**
  * Portfolio-wide ambience: meteors at night, rain / frost / golden-shower petals by Thai season.
@@ -100,15 +100,19 @@ export function useAmbience(): {
 // rain over a page: glowing light at night, deep ink by day (a pale page would swallow light)
 const RAIN_DARK = ["--em-sky-500", "--em-blue-500", "--em-violet-400"] as const;
 const RAIN_LIGHT = ["--em-blue-600", "--em-blue-700", "--em-violet-600"] as const;
+// snow: moonlit white at night, blue ink on the pale day page (white would vanish there)
+const SNOW_DARK = ["--em-ink-0"] as const;
+const SNOW_LIGHT = ["--em-blue-600"] as const;
 
 /**
  * `rich` (the portfolio): the rainy season becomes DataRain over the whole page, parting round
- * the pointer, and winter (cool season, Christmas) frosts the whole page from the screen's edges
- * with HoarfrostPane, wipeable. Without it (the working apps), the light CSS particles only.
+ * the pointer, and winter (cool season, Christmas) snows over the whole page in pixel crystals
+ * (PixelSnow) that the pointer brushes aside and that settle in drifts along the bottom edge. Without it (the working apps), the light CSS particles only.
  */
 export function Ambience({ rich = false }: { rich?: boolean }) {
   const { season, dark } = useAmbience();
   const rainColors = useTokenColors(dark ? RAIN_DARK : RAIN_LIGHT);
+  const snowColor = useTokenColors(dark ? SNOW_DARK : SNOW_LIGHT)?.[0];
   const [reduced, setReduced] = useState(true);
   useEffect(() => {
     // no matchMedia (test DOMs, very old embedded browsers): stay off, as if motion were reduced
@@ -136,12 +140,28 @@ export function Ambience({ rich = false }: { rich?: boolean }) {
   }
   const frost =
     rich && (season === "snow" || season === "christmas") ? (
-      <HoarfrostPane overlay tone={dark ? "dark" : "light"} coverage={0.22} interactive />
+      snowColor ? (
+        <div aria-hidden className="vt-live pointer-events-none fixed inset-0 z-[60]">
+          <PixelSnow
+            color={snowColor}
+            lightMode={!dark}
+            density={dark ? 0.2 : 0.16}
+            speed={0.8}
+            wind={0.18}
+            flakeSize={0.85}
+            glow={dark ? 0.9 : 0.4}
+            fade={0.15}
+            opacity={dark ? 0.9 : 0.75}
+            accumulate
+          />
+        </div>
+      ) : null
     ) : null;
 
+  // the pixel snow replaces the CSS flakes; two kinds of snow at once read as a glitch
+  if (frost) return frost;
   return (
     <>
-      {frost}
       <div aria-hidden className={cn("em-ambience", `em-ambience--${season}`)}>
         {Array.from({ length: COUNT[season] }, (_, i) => (
           <span

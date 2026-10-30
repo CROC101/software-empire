@@ -106,7 +106,12 @@ export function VerifyCode({
           // the last digit submits — no extra click, like every banking app
           onComplete={() => form.current?.requestSubmit()}
         />
-        <Button type="submit" variant="aurora" className="w-full" disabled={checking || locked}>
+        <Button
+          type="submit"
+          variant="default"
+          className="w-full bg-[var(--em-blue-600)] text-[var(--em-ink-0)] hover:bg-[var(--em-blue-700)]"
+          disabled={checking || locked}
+        >
           {checking ? "กำลังตรวจ…" : "ยืนยัน"}
         </Button>
       </form>

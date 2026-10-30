@@ -16,6 +16,8 @@ import { useCreateDesign } from '@/lib/create-design';
 import { BROWSE_TILES, DESIGN_GROUPS, DESIGN_TYPES, designType, type DesignType } from '@/lib/design-types';
 import { formatBytes } from '@/lib/format';
 import { useIsMobile } from '@/lib/use-media';
+import { CANVA_HOME } from '@empire/core/cms-pages';
+import { useCmsContent } from '@/lib/cms';
 import { MobileHome } from './mobile-home';
 import { MobileTemplatesShell } from './mobile-templates';
 import { CategoryChips, TemplatesTab } from './templates-tab';
@@ -32,6 +34,7 @@ export function HomeView({ tab }: { tab: 'home' | 'templates' }) {
   const [focused, setFocused] = useState(false);
   const searching = query.trim() !== '' || JSON.stringify(filters) !== JSON.stringify(EMPTY_FILTERS);
   const isMobile = useIsMobile();
+  const cms = useCmsContent(CANVA_HOME);
   const templatesTab = (
     <TemplatesTab
       key={`${params.get('starred')}|${params.get('builtIn')}|${params.get('owner')}`}
@@ -69,7 +72,7 @@ export function HomeView({ tab }: { tab: 'home' | 'templates' }) {
     <div>
       <section className="cv-hero relative px-4 pt-14 pb-6 md:px-10">
         <QuotaChip />
-        <h1 className="cv-gradient-text text-center text-cv-h1 font-bold md:text-cv-display">วันนี้คุณจะดีไซน์อะไร?</h1>
+        <h1 className="cv-gradient-text text-center text-cv-h1 font-bold md:text-cv-display">{cms.text('hero.title')}</h1>
 
         <div className="mt-6 flex justify-center gap-2" role="tablist" aria-label="มุมมอง">
           {(

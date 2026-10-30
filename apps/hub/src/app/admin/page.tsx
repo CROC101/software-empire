@@ -8,6 +8,7 @@ import { CMS_PAGES } from "@/lib/cms";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "../dashboard/actions";
 import { SectionCard, type FieldView } from "./editor";
+import { PageMenu } from "./page-menu";
 
 export const metadata: Metadata = {
   title: "จัดการเนื้อหา",
@@ -79,29 +80,16 @@ export default async function AdminPage({
           aria-label="หน้าที่แก้ได้"
           className="cw-glass h-fit rounded-xl p-3 lg:sticky lg:top-6"
         >
-          {apps.map((app) => (
-            <div key={app} className="mb-2 last:mb-0">
-              <p className="px-2 py-1 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                {app}
-              </p>
-              <ul>
-                {CMS_PAGES.filter((x) => x.app === app).map((x) => {
-                  const on = x === current;
-                  return (
-                    <li key={x.page}>
-                      <Link
-                        href={`/admin?p=${x.app}/${x.page}`}
-                        aria-current={on ? "page" : undefined}
-                        className={`block rounded-md px-2 py-2 text-sm font-semibold hover:bg-muted ${on ? "cw-blue" : ""}`}
-                      >
-                        {x.label}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
+          <PageMenu
+            current={`${current.app}/${current.page}`}
+            apps={apps.map((app) => ({
+              app,
+              pages: CMS_PAGES.filter((x) => x.app === app).map((x) => ({
+                id: `${x.app}/${x.page}`,
+                label: x.label,
+              })),
+            }))}
+          />
         </nav>
 
         <div className="flex min-w-0 flex-col gap-4">

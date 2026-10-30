@@ -1,5 +1,7 @@
 import { Button } from "@empire/ui";
 import Link from "next/link";
+import { COMMERCE_HOME } from "@empire/core/cms-pages";
+import { getContent } from "@/lib/cms";
 import { db } from "@/lib/db";
 import { CATEGORIES } from "@/lib/market";
 import { ServiceCard } from "./service-card";
@@ -14,6 +16,7 @@ const STEPS = [
 ];
 
 export default async function HomePage() {
+  const cms = await getContent(COMMERCE_HOME);
   const { data: latest } = await (
     await db()
   )
@@ -30,17 +33,14 @@ export default async function HomePage() {
           aria-hidden
           className="absolute -right-24 -top-24 size-96 rounded-full bg-aurora opacity-50 blur-3xl"
         />
-        <p className="relative text-sm text-white/70">ระบบย่อย 2 · Software Empire</p>
+        <p className="relative text-sm text-white/70">{cms.text("hero.eyebrow")}</p>
         <h1 className="relative mt-2 max-w-2xl font-heading text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-          จ้างฟรีแลนซ์ จ่ายตรงถึงคนทำงาน
+          {cms.text("hero.title")}
         </h1>
-        <p className="relative mt-4 max-w-xl text-white/80">
-          ไม่มีคนกลางถือเงิน ไม่มีค่าธรรมเนียม ผู้ซื้อโอนเข้าพร้อมเพย์ของผู้ขายโดยตรง
-          ทุกขั้นบันทึกในไทม์ไลน์ของคำสั่งซื้อ
-        </p>
+        <p className="relative mt-4 max-w-xl text-white/80">{cms.text("hero.intro")}</p>
         <div className="relative mt-8 flex flex-wrap gap-3">
           <Button asChild variant="aurora" size="lg">
-            <Link href="/services">ดูบริการทั้งหมด</Link>
+            <Link href="/services">{cms.text("hero.browse")}</Link>
           </Button>
           <Button
             asChild
@@ -48,7 +48,7 @@ export default async function HomePage() {
             variant="outline"
             className="border-white/30 bg-white/10 text-white hover:bg-white/20"
           >
-            <Link href="/sell">เริ่มขายงาน</Link>
+            <Link href="/sell">{cms.text("hero.sell")}</Link>
           </Button>
         </div>
       </section>

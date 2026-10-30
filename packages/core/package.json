@@ -9,7 +9,8 @@
     "./redirect": "./src/redirect.ts",
     "./subsystems": "./src/subsystems.ts",
     "./theme": "./src/theme.ts",
-    "./cms": "./src/cms.ts"
+    "./cms": "./src/cms.ts",
+    "./cms-pages": "./src/cms-pages.ts"
   },
   "scripts": {
     "lint": "eslint .",

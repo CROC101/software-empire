@@ -2,6 +2,8 @@ import { ArrowRight, Clock, LockKeyhole, Star, Wifi, Zap } from "lucide-react";
 import { Link } from "react-router";
 import { ToolCard, ToolGrid } from "@/components/tools/tool-card";
 import { ToolSearch } from "@/components/tools/tool-search";
+import { TOOLBOXES_HOME } from "@empire/core/cms-pages";
+import { useCmsContent } from "@/lib/cms";
 import { useSession } from "@/lib/session";
 import { CATEGORIES } from "@/lib/tools/categories";
 import { useFavorites, useRecent } from "@/lib/tools/prefs";
@@ -31,6 +33,7 @@ export function HomeView() {
   const favoriteTools = resolve(favorites);
   const recentTools = resolve(recent).slice(0, 8);
   const name = user?.email?.split("@")[0];
+  const cms = useCmsContent(TOOLBOXES_HOME);
 
   return (
     <main className="px-4 py-6 sm:px-8 sm:py-10">
@@ -38,11 +41,11 @@ export function HomeView() {
         <section className="brand-gradient relative overflow-hidden rounded-3xl px-5 py-10 text-primary-foreground sm:px-10 sm:py-14">
           <p className="text-primary-foreground/80">{name ? `สวัสดี ${name}` : "ยินดีต้อนรับ"}</p>
           <h1 className="mt-2 font-display text-3xl font-bold leading-tight sm:text-5xl">
-            เครื่องมือออนไลน์ฟรี
+            {cms.text("hero.title")}
             <span className="block text-white/85">{TOOLS.length} ชิ้นในที่เดียว</span>
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-primary-foreground/85">
-            สำหรับนักพัฒนาและทุกคน — แปลง คำนวณ สร้าง ตรวจ ทำงานในเบราว์เซอร์ทั้งหมด
+            {cms.text("hero.intro")}
           </p>
           <div className="mt-6 max-w-2xl text-on-surface">
             <ToolSearch autoFocus />
@@ -50,15 +53,15 @@ export function HomeView() {
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-primary-foreground/85">
             <li className="flex items-center gap-2">
               <LockKeyhole aria-hidden className="size-4" />
-              ข้อมูลไม่ออกจากเครื่อง
+              {cms.text("hero.perk1")}
             </li>
             <li className="flex items-center gap-2">
               <Zap aria-hidden className="size-4" />
-              ผลลัพธ์ทันทีขณะพิมพ์
+              {cms.text("hero.perk2")}
             </li>
             <li className="flex items-center gap-2">
               <Wifi aria-hidden className="size-4" />
-              ฟรี ไม่มีโฆษณา
+              {cms.text("hero.perk3")}
             </li>
           </ul>
         </section>

@@ -589,3 +589,9 @@ a.sw-app:focus-visible .sw-tile {
 .cw-btn-water:focus-visible > .cw-water {
   transform: translateY(40%);
 }
+
+/* the left-edge section list (edge-nav.tsx): one line per section, a size smaller */
+.edge-nav .line-sidebar__label {
+  font-size: 0.875rem;
+  white-space: nowrap;
+}

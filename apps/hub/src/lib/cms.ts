@@ -1,5 +1,6 @@
 import "server-only";
 import { readCms, resolveCms, type CmsPage } from "@empire/core/cms";
+import { SUBSYSTEM_PAGES } from "@empire/core/cms-pages";
 import { subsystems } from "@empire/core/subsystems";
 import { env } from "@/lib/env";
 
@@ -86,8 +87,8 @@ export const HUB_SUBSYSTEMS: CmsPage = {
   })),
 };
 
-/** Every page the admin can edit. Each subsystem adds its own CmsPage here as it reads the CMS. */
-export const CMS_PAGES: CmsPage[] = [HUB_HOME, HUB_SUBSYSTEMS];
+/** Every page the admin can edit; a subsystem lists its pages in @empire/core/cms-pages. */
+export const CMS_PAGES: CmsPage[] = [HUB_HOME, HUB_SUBSYSTEMS, ...SUBSYSTEM_PAGES];
 
 /** One page's content: cached until the admin saves; defaults when the database is down. */
 export async function getContent(page: CmsPage) {

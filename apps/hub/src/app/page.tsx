@@ -4,7 +4,8 @@ import {
   CrocReveal,
   TideReveal,
   LinkPreview,
-  MorphingText,
+  RotatingText,
+  ShinyText,
   LiquidThemeToggle,
   SeasonTree,
 } from "@empire/ui";
@@ -74,6 +75,8 @@ import {
   APP_ICON,
 } from "./sections";
 import { StackCard } from "./stack-card";
+import { EdgeNav } from "./edge-nav";
+import { NightRays } from "./night-rays";
 
 // the hero tree's fruit: the systems themselves, each a link that opens it
 const TREE_FRUITS = subsystems.map((x) => ({ id: x.slug, label: x.name, href: `/go/${x.slug}` }));
@@ -279,12 +282,21 @@ export default async function HomePage() {
         {/* phone: chip, headline, the scene, the buttons first; the rest below the fold (the text
             column dissolves into the grid below lg so its children can interleave with the tree) */}
         <section className="relative isolate mx-auto grid max-w-6xl items-center gap-6 px-4 pb-20 pt-8 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-16">
+          <NightRays />
           <div className="max-lg:contents lg:flex lg:flex-col lg:items-start lg:gap-6">
             {/* glass chip, the same material as the water menu */}
             <p className="cw-glass order-1 inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 text-xs lg:order-none">
               <span className="st-live" aria-hidden />
-              <span className="cw-blue font-mono text-[11px] font-semibold uppercase tracking-widest">
-                crocwork studio
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-widest">
+                {/* a glint runs along the name now and then, like light on water */}
+                <ShinyText
+                  color="var(--em-blue-500)"
+                  shineColor="var(--em-ink-0)"
+                  speed={2.4}
+                  delay={3}
+                >
+                  crocwork studio
+                </ShinyText>
               </span>
               {/* Thai is never letter-spaced or set in mono: the letters come apart */}
               <span className="text-muted-foreground">{home.text("hero.chip")}</span>
@@ -312,9 +324,15 @@ export default async function HomePage() {
                 <span />
               </span>
               <span className="relative shrink-0">ทีมของผม =</span>
-              <MorphingText
+              {/* each role rises out of the water line, letter by letter; never blank between */}
+              <RotatingText
                 texts={ROLES}
-                className="vt-live mx-0 h-10 max-w-none text-left text-2xl cw-blue sm:h-12 md:h-12 sm:text-3xl lg:text-3xl"
+                effect="slide"
+                staggerDuration={0.018}
+                staggerFrom="first"
+                rotationInterval={2400}
+                splitLevelClassName="overflow-hidden pb-1"
+                className="vt-live relative min-w-0 flex-nowrap whitespace-nowrap cw-blue"
               />
             </div>
             <p className="order-6 max-w-lg text-muted-foreground lg:order-none">
@@ -389,6 +407,11 @@ export default async function HomePage() {
           ))}
       </main>
       <TideReveal />
+      <EdgeNav
+        items={LAUNCHER.sections
+          .filter((x) => x.href.startsWith("#") && x.href !== "#top")
+          .map((x) => ({ label: x.label, href: x.href }))}
+      />
       <BackToTop />
       <SiteFooter />
     </div>

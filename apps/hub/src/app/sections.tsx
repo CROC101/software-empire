@@ -18,7 +18,9 @@ import {
   TidelineCta,
   GlassBucket,
   RollingCounter,
+  SplitFlapText,
 } from "@empire/ui";
+import { Haggle } from "./haggle";
 import {
   Braces,
   Bug,
@@ -317,6 +319,15 @@ export function StatusSection({
                 </div>
               ))}
             </dl>
+            {/* a departure board of what is open right now (Latin caps: the board's own alphabet) */}
+            <SplitFlapText
+              words={live.map((x) => `${x.slug.toUpperCase()} ONLINE`)}
+              padTo={16}
+              fontSize={18}
+              gap={3}
+              cycleDelay={2600}
+              className="max-w-full overflow-hidden"
+            />
           </div>
 
           <div className="st-term font-mono text-[0.8rem]">
@@ -1312,6 +1323,7 @@ export function FaqSection() {
           className="mt-10 text-3xl font-black tracking-tight sm:text-4xl"
           staticTextClassName="text-muted-foreground"
         />
+        <Haggle />
       </div>
       <div className="flex flex-col">
         {FAQ.map(([q, a], i) => (

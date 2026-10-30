@@ -58,7 +58,14 @@ export function LoginForm({ next }: { next: string }) {
         </p>
       )}
 
-      <Button type="submit" name="intent" value="signin" variant="aurora" disabled={pending}>
+      <Button
+        type="submit"
+        name="intent"
+        value="signin"
+        variant="default"
+        className="bg-[var(--em-blue-600)] text-[var(--em-ink-0)] hover:bg-[var(--em-blue-700)]"
+        disabled={pending}
+      >
         {pending ? "กำลังดำเนินการ…" : "เข้าสู่ระบบ"}
       </Button>
       <Button type="submit" name="intent" value="signup" variant="outline" disabled={pending}>
