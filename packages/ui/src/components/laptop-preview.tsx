@@ -48,6 +48,7 @@ const Screen = ({ step, active }: { step: LaptopStep; active: boolean }) => (
     alt={active ? step.title : ""}
     aria-hidden={!active}
     draggable={false}
+    loading="lazy"
     decoding="async"
     className="absolute inset-0 h-full w-full object-cover object-top transition-[opacity,transform] duration-700 ease-out"
     style={{ opacity: active ? 1 : 0, transform: active ? "none" : "scale(1.04)" }}

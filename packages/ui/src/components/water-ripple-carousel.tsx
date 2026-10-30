@@ -593,6 +593,8 @@ export function WaterRippleCarousel({
             src={from}
             alt={slides[index]?.alt ?? slides[index]?.title ?? ""}
             draggable={false}
+            loading="lazy"
+            decoding="async"
           />
         ) : null}
       </div>

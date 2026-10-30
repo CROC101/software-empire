@@ -410,7 +410,7 @@ export function LanyardBadge({
   };
 
   return (
-    <div ref={boxRef} className={cn("relative h-[560px] w-full touch-none select-none", className)}>
+    <div ref={boxRef} className={cn("relative h-[560px] w-full select-none", className)}>
       <canvas ref={canvasRef} aria-hidden className="absolute inset-0 size-full" />
       <div
         ref={cardRef}
@@ -423,7 +423,8 @@ export function LanyardBadge({
           tabIndex={0}
           aria-label={cardLabel}
           aria-pressed={showingBack}
-          className="relative size-full cursor-grab active:cursor-grabbing"
+          // pan-y: a vertical swipe on the card scrolls the page, sideways swings the badge
+          className="relative size-full cursor-grab touch-pan-y active:cursor-grabbing"
           style={{ transformStyle: "preserve-3d" }}
           onPointerDown={onDown}
           onPointerMove={onMove}

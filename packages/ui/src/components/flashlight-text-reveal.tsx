@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { whenNear } from "../lib/when-near";
 
 /**
  * Flashlight Text Reveal, by Kedhareswer Naidu (21st.dev/@kedhareswer, MIT), vendored with the
@@ -460,189 +461,194 @@ export function FlashlightTextReveal({
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
-    const gl = canvas.getContext("webgl", { antialias: false, alpha: false });
-    const program = gl ? compile(gl, VERT, FRAG) : null;
-    if (!gl || !program) {
-      // no WebGL: the gradient fallback below takes over (set outside the effect body)
-      const id = window.setTimeout(() => setFailed(true), 0);
-      return () => window.clearTimeout(id);
-    }
-
-    // one triangle that covers the viewport; cheaper than a quad's diagonal
-    const triangleBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, triangleBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const position = gl.getAttribLocation(program, "a_position");
-    gl.enableVertexAttribArray(position);
-    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-    gl.useProgram(program);
-
-    const u = (name: string) => gl.getUniformLocation(program, name);
-    const loc = {
-      colors: u("u_colors"),
-      scene: u("u_scene"),
-      shape: u("u_shape"),
-      surface: u("u_surface"),
-      finish: u("u_finish"),
-      transform: u("u_transform"),
-      space: u("u_space"),
-      cursor: u("u_cursor"),
-    };
-    const colorData = new Float32Array(24);
-
-    const pointer = { x: 0, y: 0, inside: false };
-    // where the light is, eased toward the pointer or the roaming path
-    const light = { x: 0, y: 0 };
-    let presence = 0;
-    let time = 0;
-    let roam = 0;
-    let last = 0;
-    let raf = 0;
-    let onScreen = true;
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
-      const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-      }
-    };
-
-    const draw = (now: number) => {
-      raf = 0;
-      const dt = last ? Math.min((now - last) / 1000, 0.05) : 0.016;
-      last = now;
-      resize();
-
-      const s = settingsRef.current;
-      const moving = !reduced && !s.paused;
-      if (moving) {
-        time += dt * s.speed;
-        roam += dt;
+    // no context or shaders until the text is about a screen away
+    return whenNear(canvas, () => {
+      const gl = canvas.getContext("webgl", { antialias: false, alpha: false });
+      const program = gl ? compile(gl, VERT, FRAG) : null;
+      if (!gl || !program) {
+        // no WebGL: the gradient fallback below takes over (set outside the effect body)
+        const id = window.setTimeout(() => setFailed(true), 0);
+        return () => window.clearTimeout(id);
       }
 
-      // pointer first; otherwise roam, or park in the centre when nothing may move
-      const [tx, ty] = pointer.inside
-        ? [pointer.x, pointer.y]
-        : s.wander && moving
-          ? wanderAt(roam)
-          : [0, 0];
-      const on = pointer.inside || s.wander ? 1 : 0;
-      // under reduced motion it snaps, since there is no loop to finish an ease
-      const k = reduced ? 1 : 1 - Math.exp(-dt / (pointer.inside ? 0.08 : 0.6));
-      light.x += (tx - light.x) * k;
-      light.y += (ty - light.y) * k;
-      presence += (on - presence) * (reduced ? 1 : 1 - Math.exp(-dt / 0.25));
+      // one triangle that covers the viewport; cheaper than a quad's diagonal
+      const triangleBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, triangleBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const position = gl.getAttribLocation(program, "a_position");
+      gl.enableVertexAttribArray(position);
+      gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+      gl.useProgram(program);
 
-      colorData.fill(0);
-      s.palette.forEach((hex, i) => colorData.set(hexToRgb(hex), i * 3));
+      const u = (name: string) => gl.getUniformLocation(program, name);
+      const loc = {
+        colors: u("u_colors"),
+        scene: u("u_scene"),
+        shape: u("u_shape"),
+        surface: u("u_surface"),
+        finish: u("u_finish"),
+        transform: u("u_transform"),
+        space: u("u_space"),
+        cursor: u("u_cursor"),
+      };
+      const colorData = new Float32Array(24);
 
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.uniform3fv(loc.colors, colorData);
-      gl.uniform4f(loc.scene, canvas.width, canvas.height, time, s.palette.length);
-      gl.uniform4f(loc.shape, s.scale, s.intensity, 0.5, s.warp);
-      gl.uniform4f(loc.surface, s.detail, s.contrast, s.brightness, s.saturation);
-      gl.uniform4f(loc.finish, s.hue, s.vignette, s.blur, s.grain);
-      gl.uniform4f(loc.transform, s.seed, s.rotation, s.drift, s.oklab ? 1 : 0);
-      gl.uniform4f(loc.space, 0, 0, light.x, light.y);
-      gl.uniform4f(loc.cursor, presence, SPOTLIGHT, s.strength, s.radius);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      const pointer = { x: 0, y: 0, inside: false };
+      // where the light is, eased toward the pointer or the roaming path
+      const light = { x: 0, y: 0 };
+      let presence = 0;
+      let time = 0;
+      let roam = 0;
+      let last = 0;
+      let raf = 0;
+      let onScreen = true;
 
-      // the same light, in CSS pixels, cut out of the writing
-      const writing = writingRef.current;
-      if (writing) {
-        const w = canvas.clientWidth;
-        const h = canvas.clientHeight;
-        const mask = lightMask(
-          ((light.x + 1) / 2) * w,
-          ((1 - light.y) / 2) * h,
-          s.radius * Math.min(w, h),
-          presence,
-          s.ghost,
-        );
-        writing.style.maskImage = mask;
-        writing.style.setProperty("-webkit-mask-image", mask);
-      }
+      const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
+        const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+        }
+      };
 
-      const easing =
-        Math.abs(on - presence) > 0.001 ||
-        Math.abs(tx - light.x) > 0.0005 ||
-        Math.abs(ty - light.y) > 0.0005;
-      if ((moving || easing) && onScreen && !document.hidden) raf = requestAnimationFrame(draw);
-    };
+      const draw = (now: number) => {
+        raf = 0;
+        const dt = last ? Math.min((now - last) / 1000, 0.05) : 0.016;
+        last = now;
+        resize();
 
-    const kick = () => {
-      if (!raf && onScreen && !document.hidden) raf = requestAnimationFrame(draw);
-    };
-    kick();
-    kickRef.current = kick;
+        const s = settingsRef.current;
+        const moving = !reduced && !s.paused;
+        if (moving) {
+          time += dt * s.speed;
+          roam += dt;
+        }
 
-    const observer = new ResizeObserver(kick);
-    observer.observe(canvas);
-    // off screen, nothing runs
-    const io = new IntersectionObserver(([e]) => {
-      onScreen = Boolean(e?.isIntersecting);
-      if (onScreen) {
-        last = 0;
+        // pointer first; otherwise roam, or park in the centre when nothing may move
+        const [tx, ty] = pointer.inside
+          ? [pointer.x, pointer.y]
+          : s.wander && moving
+            ? wanderAt(roam)
+            : [0, 0];
+        const on = pointer.inside || s.wander ? 1 : 0;
+        // under reduced motion it snaps, since there is no loop to finish an ease
+        const k = reduced ? 1 : 1 - Math.exp(-dt / (pointer.inside ? 0.08 : 0.6));
+        light.x += (tx - light.x) * k;
+        light.y += (ty - light.y) * k;
+        presence += (on - presence) * (reduced ? 1 : 1 - Math.exp(-dt / 0.25));
+
+        colorData.fill(0);
+        s.palette.forEach((hex, i) => colorData.set(hexToRgb(hex), i * 3));
+
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform3fv(loc.colors, colorData);
+        gl.uniform4f(loc.scene, canvas.width, canvas.height, time, s.palette.length);
+        gl.uniform4f(loc.shape, s.scale, s.intensity, 0.5, s.warp);
+        gl.uniform4f(loc.surface, s.detail, s.contrast, s.brightness, s.saturation);
+        gl.uniform4f(loc.finish, s.hue, s.vignette, s.blur, s.grain);
+        gl.uniform4f(loc.transform, s.seed, s.rotation, s.drift, s.oklab ? 1 : 0);
+        gl.uniform4f(loc.space, 0, 0, light.x, light.y);
+        gl.uniform4f(loc.cursor, presence, SPOTLIGHT, s.strength, s.radius);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+        // the same light, in CSS pixels, cut out of the writing
+        const writing = writingRef.current;
+        if (writing) {
+          const w = canvas.clientWidth;
+          const h = canvas.clientHeight;
+          const mask = lightMask(
+            ((light.x + 1) / 2) * w,
+            ((1 - light.y) / 2) * h,
+            s.radius * Math.min(w, h),
+            presence,
+            s.ghost,
+          );
+          writing.style.maskImage = mask;
+          writing.style.setProperty("-webkit-mask-image", mask);
+        }
+
+        const easing =
+          Math.abs(on - presence) > 0.001 ||
+          Math.abs(tx - light.x) > 0.0005 ||
+          Math.abs(ty - light.y) > 0.0005;
+        if ((moving || easing) && onScreen && !document.hidden) raf = requestAnimationFrame(draw);
+      };
+
+      const kick = () => {
+        if (!raf && onScreen && !document.hidden) raf = requestAnimationFrame(draw);
+      };
+      kick();
+      kickRef.current = kick;
+
+      const observer = new ResizeObserver(kick);
+      observer.observe(canvas);
+      // off screen, nothing runs
+      const io = new IntersectionObserver(([e]) => {
+        onScreen = Boolean(e?.isIntersecting);
+        if (onScreen) {
+          last = 0;
+          kick();
+        }
+      });
+      io.observe(canvas);
+
+      // the writing and any children sit above the canvas, so track the pointer on the window
+      const onMove = (e: PointerEvent) => {
+        const r = canvas.getBoundingClientRect();
+        const inside =
+          e.clientX >= r.left &&
+          e.clientX <= r.right &&
+          e.clientY >= r.top &&
+          e.clientY <= r.bottom;
+        if (!inside && !pointer.inside) return;
+        pointer.inside = inside;
+        pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+        pointer.y = 1 - ((e.clientY - r.top) / r.height) * 2;
         kick();
-      }
-    });
-    io.observe(canvas);
-
-    // the writing and any children sit above the canvas, so track the pointer on the window
-    const onMove = (e: PointerEvent) => {
-      const r = canvas.getBoundingClientRect();
-      const inside =
-        e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-      if (!inside && !pointer.inside) return;
-      pointer.inside = inside;
-      pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
-      pointer.y = 1 - ((e.clientY - r.top) / r.height) * 2;
-      kick();
-    };
-    const onLeave = () => {
-      pointer.inside = false;
-      kick();
-    };
-    const onVisibility = () => {
-      if (document.hidden) {
+      };
+      const onLeave = () => {
+        pointer.inside = false;
+        kick();
+      };
+      const onVisibility = () => {
+        if (document.hidden) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        } else {
+          last = 0;
+          kick();
+        }
+      };
+      // a lost context leaves a black canvas unless the whole setup runs again
+      const onLost = (e: Event) => {
+        e.preventDefault();
         cancelAnimationFrame(raf);
         raf = 0;
-      } else {
-        last = 0;
-        kick();
-      }
-    };
-    // a lost context leaves a black canvas unless the whole setup runs again
-    const onLost = (e: Event) => {
-      e.preventDefault();
-      cancelAnimationFrame(raf);
-      raf = 0;
-    };
-    const onRestored = () => setGeneration((g) => g + 1);
+      };
+      const onRestored = () => setGeneration((g) => g + 1);
 
-    window.addEventListener("pointermove", onMove, { passive: true });
-    document.documentElement.addEventListener("pointerleave", onLeave);
-    document.addEventListener("visibilitychange", onVisibility);
-    canvas.addEventListener("webglcontextlost", onLost);
-    canvas.addEventListener("webglcontextrestored", onRestored);
+      window.addEventListener("pointermove", onMove, { passive: true });
+      document.documentElement.addEventListener("pointerleave", onLeave);
+      document.addEventListener("visibilitychange", onVisibility);
+      canvas.addEventListener("webglcontextlost", onLost);
+      canvas.addEventListener("webglcontextrestored", onRestored);
 
-    return () => {
-      kickRef.current = () => undefined;
-      cancelAnimationFrame(raf);
-      observer.disconnect();
-      io.disconnect();
-      window.removeEventListener("pointermove", onMove);
-      document.documentElement.removeEventListener("pointerleave", onLeave);
-      document.removeEventListener("visibilitychange", onVisibility);
-      canvas.removeEventListener("webglcontextlost", onLost);
-      canvas.removeEventListener("webglcontextrestored", onRestored);
-      gl.deleteBuffer(triangleBuffer);
-      gl.deleteProgram(program);
-    };
+      return () => {
+        kickRef.current = () => undefined;
+        cancelAnimationFrame(raf);
+        observer.disconnect();
+        io.disconnect();
+        window.removeEventListener("pointermove", onMove);
+        document.documentElement.removeEventListener("pointerleave", onLeave);
+        document.removeEventListener("visibilitychange", onVisibility);
+        canvas.removeEventListener("webglcontextlost", onLost);
+        canvas.removeEventListener("webglcontextrestored", onRestored);
+        gl.deleteBuffer(triangleBuffer);
+        gl.deleteProgram(program);
+      };
+    });
   }, [reduced, generation]);
 
   // a re-render may have changed props while the loop is idle; kick() is a no-op when a frame is queued

@@ -1074,6 +1074,8 @@ function Photo({ src, alt, full }: { src: string; alt: string; full: boolean }) 
       src={src}
       alt={alt}
       draggable={false}
+      loading="lazy"
+      decoding="async"
       className={`pointer-events-none absolute inset-x-0 bottom-0 size-auto w-full object-contain object-top select-none ${full ? "top-0 h-full" : "top-[8%] h-[92%]"}`}
     />
   );

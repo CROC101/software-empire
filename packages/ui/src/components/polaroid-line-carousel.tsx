@@ -581,7 +581,13 @@ export function PolaroidLineCarousel({
           <div className="pl-print">
             <div className="pl-shot">
               {srcs[i] ? (
-                <img src={srcs[i]} alt={sl.alt ?? sl.title ?? ""} draggable={false} />
+                <img
+                  src={srcs[i]}
+                  alt={sl.alt ?? sl.title ?? ""}
+                  draggable={false}
+                  loading="lazy"
+                  decoding="async"
+                />
               ) : null}
             </div>
             <div className="pl-note">{sl.title ?? ""}</div>

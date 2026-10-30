@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../lib/cn";
+import { whenNear } from "../lib/when-near";
 
 /**
  * Glass icon reveal: a logo lingers big against the rim of a clear glass tile, the glass bends it
@@ -913,21 +914,27 @@ export function GlassIconReveal({
   ]);
 
   const live = React.useRef<Live>({ settings, loop });
+  // the logo, kept in case it arrives before the engine starts
+  const logoData = React.useRef<LogoData | null>(null);
   live.current = { settings, loop };
 
   React.useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
-    const engine = startEngine(wrap, live);
-    if (!engine) {
-      setFallback(true);
-      return;
-    }
-    engineRef.current = engine;
-    return () => {
-      engineRef.current = null;
-      engine.dispose();
-    };
+    // WebGL2 and its shaders only once the tile is about a screen away
+    return whenNear(wrap, () => {
+      const engine = startEngine(wrap, live);
+      if (!engine) {
+        setFallback(true);
+        return;
+      }
+      engineRef.current = engine;
+      if (logoData.current) engine.setLogo(logoData.current);
+      return () => {
+        engineRef.current = null;
+        engine.dispose();
+      };
+    });
   }, []);
 
   React.useEffect(() => {
@@ -935,17 +942,32 @@ export function GlassIconReveal({
   }, [settings, loop]);
 
   React.useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
     let cancelled = false;
-    loadLogo(logo).then(
-      (data) => {
-        if (!cancelled) engineRef.current?.setLogo(data);
+    // fetch the logo and build its SDF (~100 ms) only once the tile is about a screen away, not
+    // while the page is still loading
+    const near = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        near.disconnect();
+        loadLogo(logo).then(
+          (data) => {
+            if (cancelled) return;
+            logoData.current = data;
+            engineRef.current?.setLogo(data);
+          },
+          (err: unknown) => {
+            console.error(err);
+          },
+        );
       },
-      (err: unknown) => {
-        console.error(err);
-      },
+      { rootMargin: "100% 0px" },
     );
+    near.observe(wrap);
     return () => {
       cancelled = true;
+      near.disconnect();
     };
   }, [logo]);
 

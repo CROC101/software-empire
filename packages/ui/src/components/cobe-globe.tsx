@@ -3,6 +3,7 @@
 import createGlobe, { type COBEOptions } from "cobe";
 import * as React from "react";
 import { cn } from "../lib/cn";
+import { whenNear } from "../lib/when-near";
 
 /**
  * A slowly turning dotted globe (cobe, MIT) with labelled pins. Drag to spin it. It starts with
@@ -81,66 +82,69 @@ export function CobeGlobe({
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const first = pins[0];
-    const [phi0, theta0] = first ? facing(first.location) : [0, 0.2];
-    let globe: ReturnType<typeof createGlobe> | null = null;
-    let raf = 0;
-    let phi = phi0;
-    let onScreen = true;
+    // the globe (16k map samples, its shaders) is built only once it is about a screen away
+    return whenNear(canvas, () => {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const first = pins[0];
+      const [phi0, theta0] = first ? facing(first.location) : [0, 0.2];
+      let globe: ReturnType<typeof createGlobe> | null = null;
+      let raf = 0;
+      let phi = phi0;
+      let onScreen = true;
 
-    const frame = () => {
-      raf = 0;
-      if (!globe || !onScreen) return;
-      if (!drag.current && !reduce) phi += speed;
-      const o = offset.current;
-      globe.update({
-        phi: phi + o.phi + o.dphi,
-        theta: Math.max(-0.6, Math.min(0.9, theta0 * 0.6 + o.theta + o.dtheta)),
+      const frame = () => {
+        raf = 0;
+        if (!globe || !onScreen) return;
+        if (!drag.current && !reduce) phi += speed;
+        const o = offset.current;
+        globe.update({
+          phi: phi + o.phi + o.dphi,
+          theta: Math.max(-0.6, Math.min(0.9, theta0 * 0.6 + o.theta + o.dtheta)),
+        });
+        raf = requestAnimationFrame(frame);
+      };
+      const start = () => {
+        if (!raf) raf = requestAnimationFrame(frame);
+      };
+
+      const init = () => {
+        const width = canvas.offsetWidth;
+        if (!width || globe) return;
+        globe = createGlobe(canvas, {
+          devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+          width,
+          height: width,
+          phi,
+          theta: theta0 * 0.6,
+          mapSamples: 16000,
+          markerElevation: 0.02,
+          markers: pins.map((p) => ({ location: p.location, size: 0.05, id: p.id })),
+          ...lookRef.current,
+        });
+        globeRef.current = globe;
+        start();
+        canvas.style.opacity = "1";
+      };
+
+      const ro = new ResizeObserver(() => {
+        init();
       });
-      raf = requestAnimationFrame(frame);
-    };
-    const start = () => {
-      if (!raf) raf = requestAnimationFrame(frame);
-    };
-
-    const init = () => {
-      const width = canvas.offsetWidth;
-      if (!width || globe) return;
-      globe = createGlobe(canvas, {
-        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-        width,
-        height: width,
-        phi,
-        theta: theta0 * 0.6,
-        mapSamples: 16000,
-        markerElevation: 0.02,
-        markers: pins.map((p) => ({ location: p.location, size: 0.05, id: p.id })),
-        ...lookRef.current,
+      ro.observe(canvas);
+      const io = new IntersectionObserver(([e]) => {
+        onScreen = e?.isIntersecting ?? true;
+        if (onScreen) start();
       });
-      globeRef.current = globe;
-      start();
-      canvas.style.opacity = "1";
-    };
-
-    const ro = new ResizeObserver(() => {
+      io.observe(canvas);
       init();
-    });
-    ro.observe(canvas);
-    const io = new IntersectionObserver(([e]) => {
-      onScreen = e?.isIntersecting ?? true;
-      if (onScreen) start();
-    });
-    io.observe(canvas);
-    init();
 
-    return () => {
-      ro.disconnect();
-      io.disconnect();
-      if (raf) cancelAnimationFrame(raf);
-      globe?.destroy();
-      globeRef.current = null;
-    };
+      return () => {
+        ro.disconnect();
+        io.disconnect();
+        if (raf) cancelAnimationFrame(raf);
+        globe?.destroy();
+        globeRef.current = null;
+      };
+    });
   }, [pins, speed]);
 
   React.useEffect(() => {
