@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { watchTheme } from "../lib/token-colors";
 import {
   at,
   clamp01,
@@ -762,11 +763,7 @@ export function IsometricHexChart({
     });
     ro.observe(stage);
     // the theme switch flips classes on <html>
-    const mo = new MutationObserver(retheme);
-    mo.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class", "style", "data-theme"],
-    });
+    const stopTheme = watchTheme(retheme);
     const onReduce = () => {
       reduced = reduceMq.matches;
       kick();
@@ -800,7 +797,7 @@ export function IsometricHexChart({
       io.disconnect();
       io2.disconnect();
       ro.disconnect();
-      mo.disconnect();
+      stopTheme();
       reduceMq.removeEventListener("change", onReduce);
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointermove", onMove);

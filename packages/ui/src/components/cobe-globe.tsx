@@ -1,6 +1,6 @@
 "use client";
 
-import createGlobe from "cobe";
+import createGlobe, { type COBEOptions } from "cobe";
 import * as React from "react";
 import { cn } from "../lib/cn";
 
@@ -31,6 +31,23 @@ const facing = ([lat, lng]: [number, number]): [number, number] => [
   (lat * Math.PI) / 180,
 ];
 
+// everything the theme changes; applied with globe.update(), no rebuild
+const lookOf = (
+  dark: boolean,
+  colors: { base: string; marker: string; glow: string },
+): Pick<
+  COBEOptions,
+  "dark" | "diffuse" | "mapBrightness" | "baseColor" | "markerColor" | "glowColor" | "opacity"
+> => ({
+  dark: dark ? 1 : 0,
+  diffuse: dark ? 1.2 : 1.5,
+  mapBrightness: dark ? 6 : 10,
+  baseColor: rgb(colors.base),
+  markerColor: rgb(colors.marker),
+  glowColor: rgb(colors.glow),
+  opacity: dark ? 0.85 : 0.75,
+});
+
 export function CobeGlobe({
   pins,
   dark = false,
@@ -52,6 +69,14 @@ export function CobeGlobe({
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const drag = React.useRef<{ x: number; y: number } | null>(null);
   const offset = React.useRef({ phi: 0, theta: 0, dphi: 0, dtheta: 0 });
+  const globeRef = React.useRef<ReturnType<typeof createGlobe> | null>(null);
+  // a theme switch recolours the globe in place: rebuilding it (16k map samples) mid-switch
+  // stalls the page while the water pours
+  const lookRef = React.useRef(lookOf(dark, colors));
+  React.useEffect(() => {
+    lookRef.current = lookOf(dark, { base: colors.base, marker: colors.marker, glow: colors.glow });
+    globeRef.current?.update(lookRef.current);
+  }, [dark, colors.base, colors.marker, colors.glow]);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -88,17 +113,12 @@ export function CobeGlobe({
         height: width,
         phi,
         theta: theta0 * 0.6,
-        dark: dark ? 1 : 0,
-        diffuse: dark ? 1.2 : 1.5,
         mapSamples: 16000,
-        mapBrightness: dark ? 6 : 10,
-        baseColor: rgb(colors.base),
-        markerColor: rgb(colors.marker),
-        glowColor: rgb(colors.glow),
         markerElevation: 0.02,
         markers: pins.map((p) => ({ location: p.location, size: 0.05, id: p.id })),
-        opacity: dark ? 0.85 : 0.75,
+        ...lookRef.current,
       });
+      globeRef.current = globe;
       start();
       canvas.style.opacity = "1";
     };
@@ -119,8 +139,9 @@ export function CobeGlobe({
       io.disconnect();
       if (raf) cancelAnimationFrame(raf);
       globe?.destroy();
+      globeRef.current = null;
     };
-  }, [pins, dark, colors.base, colors.marker, colors.glow, speed]);
+  }, [pins, speed]);
 
   React.useEffect(() => {
     const move = (e: PointerEvent) => {

@@ -428,7 +428,21 @@ export function ParticleTitle({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const colors = useTokenColors(["--foreground", "--background", ...glow]);
-  const key = colors?.join() ?? "";
+  const wanted = colors?.join() ?? "";
+  // the colours the dust is built with: a rebuild resamples the whole title, so off screen it
+  // waits until the title scrolls into view (not mid theme switch, where it stalls the page)
+  const [key, setKey] = useState("");
+  useEffect(() => {
+    const heading = headingRef.current;
+    if (wanted === key || !heading) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) setKey(wanted);
+    });
+    io.observe(heading);
+    return () => {
+      io.disconnect();
+    };
+  }, [wanted, key]);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");

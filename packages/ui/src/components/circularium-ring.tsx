@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../lib/cn";
+import { watchTheme } from "../lib/token-colors";
 
 /**
  * Circularium ring: a 24-hour circadian activity ring. Seven concentric rings (Monday innermost)
@@ -854,8 +855,7 @@ export function CirculariumRing({
     });
     ro.observe(stage);
 
-    const mo = new MutationObserver(retheme);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    const stopTheme = watchTheme(retheme);
 
     const onReduce = () => {
       reduced = reduceMq.matches;
@@ -890,7 +890,7 @@ export function CirculariumRing({
       io.disconnect();
       io2.disconnect();
       ro.disconnect();
-      mo.disconnect();
+      stopTheme();
       reduceMq.removeEventListener("change", onReduce);
       canvas.removeEventListener("pointerdown", onDown);
       canvas.removeEventListener("pointermove", onMove);

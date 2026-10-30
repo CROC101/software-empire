@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { watchTheme } from "../lib/token-colors";
 
 /**
  * Contribution Skyline, by Kedhareswer Naidu (21st.dev/@kedhareswer, MIT), vendored with the
@@ -1293,11 +1294,7 @@ export function ContributionSkyline({
     });
     ro.observe(stage);
 
-    const mo = new MutationObserver(retheme);
-    mo.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class", "style", "data-theme"],
-    });
+    const stopTheme = watchTheme(retheme);
     const onReduce = () => {
       reduced = reduceMq.matches;
       kick();
@@ -1335,7 +1332,7 @@ export function ContributionSkyline({
       if (raf) cancelAnimationFrame(raf);
       io.disconnect();
       ro.disconnect();
-      mo.disconnect();
+      stopTheme();
       reduceMq.removeEventListener("change", onReduce);
       darkMq.removeEventListener("change", retheme);
       canvas.removeEventListener("pointerdown", onDown);

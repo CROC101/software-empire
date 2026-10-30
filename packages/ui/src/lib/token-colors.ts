@@ -11,13 +11,35 @@ export function useTokenColors(tokens: readonly string[]): string[] | null {
   const [colors, setColors] = useState<string[] | null>(null);
   const key = tokens.join(",");
   useEffect(() => {
-    const read = () => setColors(resolveTokens(key.split(",")));
+    // same colours keep the same array, so canvases do not rebuild for nothing
+    const read = () =>
+      setColors((prev) => {
+        const next = resolveTokens(key.split(","));
+        return prev?.join() === next.join() ? prev : next;
+      });
     read();
-    const watch = new MutationObserver(read);
-    watch.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => watch.disconnect();
+    return watchTheme(read);
   }, [key]);
   return colors;
+}
+
+/**
+ * Calls `onFlip` when <html> turns dark or light, and only then: other classes and styles on it
+ * (the theme reveal's vt-flat, --vt-origin) come and go mid-switch, and a colour read on each
+ * forces a style pass over the whole page. Returns a stop function.
+ */
+export function watchTheme(onFlip: () => void): () => void {
+  const html = document.documentElement;
+  let dark = html.classList.contains("dark");
+  const watch = new MutationObserver(() => {
+    if (html.classList.contains("dark") === dark) return;
+    dark = !dark;
+    onFlip();
+  });
+  watch.observe(html, { attributes: true, attributeFilter: ["class"] });
+  return () => {
+    watch.disconnect();
+  };
 }
 
 function resolveTokens(tokens: string[]): string[] {

@@ -13,8 +13,8 @@ import { LiquidToggle, NimbusToggleIcons } from "./liquid-toggle";
 import { revealPage, type ThemeEffect } from "./sun-moon-theme-toggle";
 
 const resolvedNow = (): ResolvedTheme => resolve(currentChoice(), osDark());
-// about how long the drop takes to cross the track (90ms lag, then the spring)
-const DROP_LEAD_MS = 380;
+// the drop has nearly crossed the track by now (90ms lag, then the spring)
+const DROP_LEAD_MS = 280;
 
 /**
  * The theme switch as water: a LiquidToggle (sun drop by day, moon drop by night) on the shared
