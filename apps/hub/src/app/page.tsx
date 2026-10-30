@@ -45,6 +45,7 @@ import { PocketSection } from "./pocket-section";
 import { SignOff } from "./sign-off";
 import { SiteNav } from "./site-nav";
 import { Wardrobe } from "./wardrobe";
+import { WinterWindow } from "./winter-window";
 import { HiddenWork } from "./hidden-work";
 import { CrocPoster } from "./croc-poster";
 import {
@@ -309,6 +310,7 @@ export default async function HomePage() {
         <TeamSection />
         <Wardrobe />
         <FaqSection />
+        <WinterWindow />
         <CrocPoster />
         <ContactSection cta={cta} />
         <SignOff />

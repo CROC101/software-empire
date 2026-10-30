@@ -2483,3 +2483,55 @@ a.lgn-app:focus-visible {
 .nt-icon > span:last-child {
   color: var(--t-ico-on);
 }
+
+/* ── HoarfrostPane (components/hoarfrost-pane.tsx): a window that frosts over ── */
+.hfp-root {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  touch-action: pan-y;
+  background: var(--em-ink-975);
+}
+.hfp-root canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  max-width: none;
+  opacity: 0;
+  transition: opacity 0.9s ease-out;
+}
+.hfp-root canvas[data-ready] {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hfp-root canvas {
+    transition: none;
+  }
+}
+.hfp-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      70% 60% at 50% 50%,
+      transparent 40%,
+      rgb(222 232 245 / 0.55) 78%,
+      rgb(240 245 252 / 0.85)
+    ),
+    linear-gradient(to top, #2a2530 0%, #1c2638 40%, var(--em-ink-975) 100%);
+}
+.hfp-over {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  pointer-events: none;
+}
+.hfp-over a,
+.hfp-over button,
+.hfp-over input,
+.hfp-over [data-interactive] {
+  pointer-events: auto;
+}

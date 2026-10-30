@@ -25,7 +25,7 @@ export { ParallaxLayers, type ParallaxLayer } from "./components/parallax-layers
 export { LinkPreview } from "./components/link-preview";
 export { SunMoonThemeToggle } from "./components/sun-moon-theme-toggle";
 export { type ThemeEffect } from "./components/sun-moon-theme-toggle";
-export { Ambience, AmbienceButton, Meteors } from "./components/ambience";
+export { Ambience, AmbienceButton, Meteors, useAmbience } from "./components/ambience";
 export { MeshGhost, MeshMascot } from "./components/mesh-ghost";
 export { ScrollAssemble } from "./components/scroll-assemble";
 export { TidelineCta } from "./components/tideline-cta";
@@ -105,3 +105,4 @@ export {
   type LiquidToggleProps,
 } from "./components/liquid-toggle";
 export { LiquidThemeToggle } from "./components/liquid-theme-toggle";
+export { HoarfrostPane, type HoarfrostPaneProps } from "./components/hoarfrost-pane";
