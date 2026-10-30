@@ -123,7 +123,7 @@ const DROP_FRAMES = 36;
 const STREAM_POINTS = 96;
 const STREAM_FRAMES = 40;
 
-const POUR_MS = 1700;
+const POUR_MS = 1400;
 const POUR_COVER = 0.5; // share of the run spent pouring until the screen is under water
 
 /**
@@ -148,36 +148,53 @@ function pourTheme(next: ResolvedTheme, swap: () => void) {
     return smooth(k) ** 1.15 * (h + 40) + ripple;
   };
   const N = STREAM_POINTS;
-  const frames: Keyframe[] = Array.from({ length: STREAM_FRAMES + 1 }, (_, f) => {
-    const t = f / STREAM_FRAMES;
-    const fill = Math.min(1, t / POUR_COVER);
-    const drain = Math.max(0, (t - POUR_COVER) / (1 - POUR_COVER));
-    const pts: string[] = [];
-    // top edge, left to right: stays at the top while pouring, then falls away in streams
-    for (let i = 0; i <= N; i++) {
-      const u = i / N;
-      const y = drain > 0 ? Math.max(0, edge(u, drain, 2.3)) : 0;
-      pts.push(`${(u * w).toFixed(1)}px ${y.toFixed(1)}px`);
-    }
-    // bottom edge, right to left: the pour
-    for (let i = N; i >= 0; i--) {
-      const u = i / N;
-      pts.push(`${(u * w).toFixed(1)}px ${Math.max(0, edge(u, fill, 0.6)).toFixed(1)}px`);
-    }
-    return { offset: t, clipPath: `polygon(${pts.join(",")})` };
-  });
-  const sheet = document.createElement("div");
-  sheet.className = "em-pour";
-  sheet.dataset.next = next;
-  sheet.setAttribute("aria-hidden", "true");
-  document.body.appendChild(sheet);
-  const run = sheet.animate(frames, { duration: POUR_MS, easing: "linear", fill: "both" });
-  // the screen is under water: change the theme where nobody can see the cut
-  const swapAt = window.setTimeout(swap, POUR_MS * POUR_COVER + 40);
+  // lead: px the layer runs ahead of the water (its foam runs ahead of the sheet, both ways)
+  const frames = (lead: number): Keyframe[] =>
+    Array.from({ length: STREAM_FRAMES + 1 }, (_, f) => {
+      const t = f / STREAM_FRAMES;
+      const fill = Math.min(1, t / POUR_COVER);
+      const drain = Math.max(0, (t - POUR_COVER) / (1 - POUR_COVER));
+      const pts: string[] = [];
+      // top edge, left to right: stays at the top while pouring, then falls away in streams
+      for (let i = 0; i <= N; i++) {
+        const u = i / N;
+        const y = drain > 0 ? Math.max(0, edge(u, drain, 2.3) - lead) : 0;
+        pts.push(`${(u * w).toFixed(1)}px ${y.toFixed(1)}px`);
+      }
+      // bottom edge, right to left: the pour
+      for (let i = N; i >= 0; i--) {
+        const u = i / N;
+        const y = fill > 0 ? Math.max(0, edge(u, fill, 0.6) + lead) : 0;
+        pts.push(`${(u * w).toFixed(1)}px ${y.toFixed(1)}px`);
+      }
+      return { offset: t, clipPath: `polygon(${pts.join(",")})` };
+    });
+  const layer = (kind: string, lead: number) => {
+    const el = document.createElement("div");
+    el.className = `em-pour ${kind}`;
+    el.dataset.next = next;
+    el.setAttribute("aria-hidden", "true");
+    document.body.appendChild(el);
+    return {
+      el,
+      run: el.animate(frames(lead), { duration: POUR_MS, easing: "linear", fill: "both" }),
+    };
+  };
+  // a bright, half-clear rim of foam runs just ahead of the water; the water itself is a little
+  // see-through, with ripples and a sheen, so the page shows through it as through a stream
+  const foam = layer("em-pour--foam", 22);
+  const water = layer("em-pour--water", 0);
+  // the screen is under water: the colours wash over to the new theme underneath
+  const swapAt = window.setTimeout(() => {
+    fadePage(520);
+    swap();
+  }, POUR_MS * POUR_COVER);
   const done = () => {
     window.clearTimeout(swapAt);
-    sheet.remove();
+    foam.el.remove();
+    water.el.remove();
   };
+  const run = water.run;
   run.finished.then(done, done);
 }
 
