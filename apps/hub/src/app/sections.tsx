@@ -15,8 +15,10 @@ import {
   TearFooter,
   TextLoop,
   TidelineCta,
+  GlassBucket,
 } from "@empire/ui";
 import {
+  Braces,
   Bug,
   Cat,
   Code2,
@@ -36,6 +38,7 @@ import {
   ShieldCheck,
   Sparkles,
   Store,
+  Workflow,
   Wrench,
 } from "lucide-react";
 import Image from "next/image";
@@ -914,6 +917,22 @@ const WAYS = [
   "รับ feedback",
 ] as const;
 
+// what every job ships with: only things the repo really enforces
+const IN_EVERY_JOB = [
+  { icon: <Braces />, title: "TypeScript แบบ strict", description: "ตรวจชนิดข้อมูลทุกบรรทัด" },
+  {
+    icon: <Workflow />,
+    title: "ตรวจทุกครั้งที่ push",
+    description: "lint · typecheck · test · build",
+  },
+  {
+    icon: <ShieldCheck />,
+    title: "สิทธิ์คุมที่ฐานข้อมูล",
+    description: `RLS ทุกตาราง · ${String(PGTAP_TESTS)} เทสต์`,
+  },
+  { icon: <MonitorSmartphone />, title: "ใช้ได้ทุกจอ", description: "ทดสอบทั้งมือถือและเดสก์ท็อป" },
+];
+
 export function SkillsSection() {
   return (
     <section data-tide id="skills" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
@@ -944,6 +963,18 @@ export function SkillsSection() {
             {w}
           </span>
         ))}
+      </div>
+      <div className="mt-16 grid items-center gap-10 lg:grid-cols-[1fr_1.3fr]">
+        <div>
+          <p className={`${EYEBROW} cw-blue`}>in every job</p>
+          <h3 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+            ทุกงานที่ส่ง <span className="cw-blue">มีของพวกนี้ติดไปด้วย</span>
+          </h3>
+          <p className="mt-4 max-w-md text-muted-foreground">
+            ไม่ใช่ของเสริมที่ต้องจ่ายเพิ่ม เป็นมาตรฐานที่ผมใช้กับระบบของตัวเองทั้ง 8 ตัวอยู่แล้ว
+          </p>
+        </div>
+        <GlassBucket chips={IN_EVERY_JOB} className="mx-auto" />
       </div>
     </section>
   );

@@ -1,13 +1,26 @@
 "use client";
 
 import { CobeGlobe, useAmbience, useTokenColors, type GlobePin } from "@empire/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 const EYEBROW = "font-mono text-xs uppercase tracking-[0.2em]";
 // only what is true: the studio works from Bangkok
 const PINS: GlobePin[] = [{ id: "bkk", location: [13.75, 100.5], label: "BKK · UTC+7" }];
 const LIGHT = ["--em-ink-0", "--em-blue-600", "--em-ink-100"] as const;
 const DARK = ["--em-ink-600", "--em-sky-500", "--em-blue-700"] as const;
+// stars in a ring just outside the globe, spread by the golden angle so none bunch up; fixed
+// numbers, so the server and the browser draw the same ones
+const STARS = Array.from({ length: 16 }, (_, i) => {
+  const a = i * 2.39996;
+  const r = 52 + ((i * 7) % 9); // % of the box from the centre: the globe's edge is at 50
+  return {
+    left: `${(50 + r * Math.cos(a)).toFixed(1)}%`,
+    top: `${(50 + r * Math.sin(a)).toFixed(1)}%`,
+    "--s": `${String(2 + (i % 3))}px`,
+    "--t": `${String(2 + ((i * 5) % 7) / 2)}s`,
+    "--d": `${String(((i * 3) % 10) / 4)}s`,
+  } as CSSProperties;
+});
 
 function useBangkokTime() {
   // after mount only: the server and the visitor's clock never disagree in the markup
@@ -55,7 +68,12 @@ export function WhereSection() {
             <span className="font-bold tabular-nums">{time ?? "--:--"}</span>
           </p>
         </div>
-        <div className="mx-auto w-full max-w-md">
+        <div className="relative mx-auto w-full max-w-md">
+          <div className="cw-stars" aria-hidden>
+            {STARS.map((style, i) => (
+              <span key={i} className="cw-star" style={style} />
+            ))}
+          </div>
           {c && (
             <CobeGlobe
               pins={PINS}

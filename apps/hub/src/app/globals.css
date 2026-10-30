@@ -425,3 +425,136 @@ a.sw-app:focus-visible .sw-tile {
     );
   filter: blur(10px);
 }
+
+/* stars twinkling round the where-globe (after 21st.dev "globe": its twinkle, our tokens) */
+.cw-stars {
+  --cw-star: var(--em-blue-500);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.dark .cw-stars {
+  --cw-star: var(--em-ink-0);
+}
+.cw-star {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 999px;
+  background: var(--cw-star);
+  box-shadow: 0 0 calc(var(--s) * 2.5) var(--cw-star);
+  translate: -50% -50%;
+  opacity: 0.55;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-star {
+    opacity: 0.12;
+    animation: cw-twinkle var(--t) ease-in-out var(--d) infinite;
+  }
+}
+@keyframes cw-twinkle {
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* cookie notice (cookie-notice.tsx): a glass card with water lapping along its foot */
+.cw-cookie {
+  position: fixed;
+  z-index: 45;
+  left: 0.75rem;
+  right: 5rem; /* clear of the back-to-top button */
+  bottom: 0.75rem;
+  max-width: 24rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.1rem 1.25rem;
+  /* firmer than .cw-glass: it sits over dark bands and busy sections and must stay readable */
+  background: color-mix(in oklab, var(--background) 90%, transparent);
+}
+@media (min-width: 640px) {
+  .cw-cookie {
+    left: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+.cw-cookie-water {
+  position: absolute;
+  inset: auto 0 0;
+  height: 3.25rem;
+  transform-origin: bottom;
+  pointer-events: none;
+}
+/* each layer: a strip twice the card's width, its wavy top a repeating mask, slid sideways */
+.cw-cookie-water > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 200%;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--em-sky-500) 30%, transparent),
+    color-mix(in oklab, var(--em-blue-500) 22%, transparent)
+  );
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 14 C25 4 50 4 75 14 S125 24 150 14 S175 4 200 14 V40 H0 Z'/%3E%3C/svg%3E")
+    0 0 / 50% 100% repeat-x;
+}
+.cw-cookie-water > span + span {
+  opacity: 0.6;
+  translate: 0 0.35rem;
+  mask-position: 25% 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-cookie {
+    animation: cw-cookie-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .cw-cookie-water {
+    animation: cw-cookie-rise 1100ms 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .cw-cookie-water > span {
+    animation: cw-cookie-lap 7s linear infinite;
+  }
+  .cw-cookie-water > span + span {
+    animation-duration: 11s;
+    animation-direction: reverse;
+  }
+  /* accepted: the water fills the card, then it all slips away */
+  .cw-cookie[data-leaving] {
+    animation: cw-cookie-out 900ms cubic-bezier(0.5, 0, 0.75, 0) both;
+  }
+  .cw-cookie[data-leaving] .cw-cookie-water {
+    animation: cw-cookie-fill 600ms cubic-bezier(0.3, 0, 0.2, 1) both;
+  }
+}
+@keyframes cw-cookie-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+@keyframes cw-cookie-rise {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes cw-cookie-lap {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes cw-cookie-fill {
+  to {
+    transform: scaleY(7);
+  }
+}
+@keyframes cw-cookie-out {
+  0%,
+  55% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}

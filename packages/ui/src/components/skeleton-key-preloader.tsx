@@ -964,8 +964,9 @@ export function SkeletonKeyPreloader({
         keyRef.current.style.opacity = ph === "fonts" ? "0" : "1";
       }
       if (keyInRef.current) {
+        // negative: clockwise seen from the bow, the same way the dial turns (rotate(90deg))
         keyInRef.current.style.transform = turn
-          ? `perspective(640px) rotateY(${turn.toFixed(2)}deg)`
+          ? `perspective(640px) rotateY(${(-turn).toFixed(2)}deg)`
           : "none";
         keyInRef.current.style.filter = turn
           ? `brightness(${(1 - turn / 220).toFixed(3)})`
