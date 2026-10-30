@@ -1,4 +1,5 @@
 import {
+  BlueprintButton,
   BlueprintReveal,
   GlowCard,
   IconFolder,
@@ -1147,6 +1148,10 @@ export function HowSection() {
               </li>
             ))}
           </ol>
+          {/* the plan, drawn: its frame draws itself on hover / focus */}
+          <BlueprintButton href="#contact" className="mt-8">
+            เริ่มวางแผนกัน <span aria-hidden>→</span>
+          </BlueprintButton>
 
           <TornPanel tone="blue" seed={11} grid className="mt-20">
             <div className="relative grid gap-8 px-8 py-12 sm:px-12 lg:grid-cols-[1.3fr_1fr] lg:items-center">
