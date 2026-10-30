@@ -26,7 +26,10 @@ import {
   type Season,
 } from "@empire/core/theme";
 import { cn } from "../lib/cn";
+import { useTokenColors } from "../lib/token-colors";
 import { AmbiencePicker } from "./ambience-picker";
+import { DataRain } from "./data-rain";
+import { HoarfrostPane } from "./hoarfrost-pane";
 
 /**
  * Portfolio-wide ambience: meteors at night, rain / frost / golden-shower petals by Thai season.
@@ -65,7 +68,11 @@ const subscribePreview = (notify: () => void) => {
   return () => previewSubs.delete(notify);
 };
 
-export function useAmbience(): { choice: AmbienceChoice; season: Season | null } {
+export function useAmbience(): {
+  choice: AmbienceChoice;
+  season: Season | null;
+  dark: boolean;
+} {
   const saved = useSyncExternalStore(subscribeTheme, currentAmbience, () => "off" as const);
   const previewing = useSyncExternalStore(
     subscribePreview,
@@ -84,14 +91,24 @@ export function useAmbience(): { choice: AmbienceChoice; season: Season | null }
     const d = new Date();
     setDate([d.getMonth(), d.getDate()]);
   }, []);
-  if (choice === "off" || date === null) return { choice, season: null };
-  if (choice !== "auto") return { choice, season: choice };
+  if (choice === "off" || date === null) return { choice, season: null, dark };
+  if (choice !== "auto") return { choice, season: choice, dark };
   // a festival wins over the season, day or night
-  return { choice, season: festivalFor(date[0], date[1]) ?? seasonFor(date[0], dark) };
+  return { choice, season: festivalFor(date[0], date[1]) ?? seasonFor(date[0], dark), dark };
 }
 
-export function Ambience() {
-  const { season } = useAmbience();
+// rain over a page: glowing light at night, deep ink by day (a pale page would swallow light)
+const RAIN_DARK = ["--em-sky-500", "--em-blue-500", "--em-violet-400"] as const;
+const RAIN_LIGHT = ["--em-blue-600", "--em-blue-700", "--em-violet-600"] as const;
+
+/**
+ * `rich` (the portfolio): the rainy season becomes DataRain over the whole page, parting round
+ * the pointer, and winter (cool season, Christmas) frosts the whole page from the screen's edges
+ * with HoarfrostPane, wipeable. Without it (the working apps), the light CSS particles only.
+ */
+export function Ambience({ rich = false }: { rich?: boolean }) {
+  const { season, dark } = useAmbience();
+  const rainColors = useTokenColors(dark ? RAIN_DARK : RAIN_LIGHT);
   const [reduced, setReduced] = useState(true);
   useEffect(() => {
     // no matchMedia (test DOMs, very old embedded browsers): stay off, as if motion were reduced
@@ -104,26 +121,46 @@ export function Ambience() {
     return () => q.removeEventListener("change", on);
   }, []);
   if (!season || reduced) return null;
+  if (rich && season === "rain") {
+    const [calm = "", mid = "", hot = ""] = rainColors ?? [];
+    return rainColors ? (
+      <DataRain
+        overlay
+        tone={dark ? "dark" : "light"}
+        count={dark ? 2600 : 1800}
+        flowSpeed={1.15}
+        obstacleRadius={58}
+        palette={{ calm, mid, hot }}
+      />
+    ) : null;
+  }
+  const frost =
+    rich && (season === "snow" || season === "christmas") ? (
+      <HoarfrostPane overlay tone={dark ? "dark" : "light"} coverage={0.22} interactive />
+    ) : null;
 
   return (
-    <div aria-hidden className={cn("em-ambience", `em-ambience--${season}`)}>
-      {Array.from({ length: COUNT[season] }, (_, i) => (
-        <span
-          key={i}
-          style={
-            {
-              "--x": `${String(at(i, 37, 100))}%`,
-              "--y": `${String(at(i, 23, 60))}%`,
-              "--d": `${String(at(i, 53, 97) / 10)}s`,
-              "--t": `${String(season === "space" || season === "halloween" ? 7 + at(i, 3, 6) : 5 + at(i, 7, 9))}s`,
-              "--s": String(0.55 + at(i, 13, 10) / 20),
-            } as CSSProperties
-          }
-        >
-          <i />
-        </span>
-      ))}
-    </div>
+    <>
+      {frost}
+      <div aria-hidden className={cn("em-ambience", `em-ambience--${season}`)}>
+        {Array.from({ length: COUNT[season] }, (_, i) => (
+          <span
+            key={i}
+            style={
+              {
+                "--x": `${String(at(i, 37, 100))}%`,
+                "--y": `${String(at(i, 23, 60))}%`,
+                "--d": `${String(at(i, 53, 97) / 10)}s`,
+                "--t": `${String(season === "space" || season === "halloween" ? 7 + at(i, 3, 6) : 5 + at(i, 7, 9))}s`,
+                "--s": String(0.55 + at(i, 13, 10) / 20),
+              } as CSSProperties
+            }
+          >
+            <i />
+          </span>
+        ))}
+      </div>
+    </>
   );
 }
 

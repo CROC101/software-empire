@@ -31,6 +31,12 @@ export interface DataRainProps {
   fullscreen?: boolean;
   /** Hex colours; defaults to the --dr-* CSS variables, then built-in cyan / violet / pink. */
   palette?: DataRainPalette;
+  /**
+   * Only the rain, over a page: no backdrop, vignette or grain, never hit-tested. With a light
+   * `tone` the lines are painted normally (they would vanish blended "lighter" on a pale page).
+   */
+  overlay?: boolean;
+  tone?: "light" | "dark";
 }
 
 interface EngineApi {
@@ -578,7 +584,9 @@ export function DataRain(props: DataRainProps) {
     const render = (): void => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
-      ctx.globalCompositeOperation = "lighter";
+      // glowing light on dark; plain ink on a pale page
+      const pr = propsRef.current;
+      ctx.globalCompositeOperation = pr.overlay && pr.tone === "light" ? "source-over" : "lighter";
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
@@ -880,7 +888,13 @@ export function DataRain(props: DataRainProps) {
   return (
     <div
       ref={rootRef}
-      className={cn("dr-root", !fullscreen && "dr-root--contained", props.className)}
+      className={cn(
+        "dr-root",
+        !fullscreen && "dr-root--contained",
+        props.overlay && "dr-root--overlay",
+        props.className,
+      )}
+      data-tone={props.tone ?? "dark"}
       aria-hidden="true"
     >
       <canvas ref={bloomRef} className="dr-bloom" />

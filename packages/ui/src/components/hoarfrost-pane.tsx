@@ -34,6 +34,13 @@ export interface HoarfrostPaneProps {
   height?: string;
   /** Accessible description of the pane. */
   label?: string;
+  /**
+   * Frost only, over the whole page: fixed to the viewport, transparent between the ferns, never
+   * hit-tested (the pointer is read from the window), grows live instead of pre-growing.
+   */
+  overlay?: boolean;
+  /** Overlay frost colour: bluish-grey on a light page, white on a dark one. */
+  tone?: "light" | "dark";
   className?: string;
 }
 
@@ -375,6 +382,8 @@ uniform ivec2 uN;
 uniform vec2 uRes;
 uniform float uCell;
 uniform float uTime;
+uniform float uOverlay;
+uniform float uLight;
 out vec4 o;
 vec4 F(ivec2 q) { return texelFetch(uS, clamp(q, ivec2(0), uN - 1), 0); }
 vec2 G(ivec2 q) { return texelFetch(uR, clamp(q, ivec2(0), uN - 1), 0).xy; }
@@ -427,6 +436,19 @@ void main() {
   float glint = step(0.997, r) * thick * edge;
   glint *= 0.6 + 0.4 * sin(uTime * (1.5 + r * 3.0) + r * 60.0);
   col += glint * 0.7 * vec3(0.95, 0.98, 1.0);
+  if (uOverlay > 0.5) {
+    // frost alone, premultiplied: thick ferns read solid, their edges catch light, wiped glass clears
+    // etched, not painted: the ferns are mostly clear glass with bright edges, dense only near
+    // the screen's frame, so the page in the middle stays readable
+    float a = cover * (0.1 + 0.32 * thick) + edge * cover * 0.5;
+    float rim = 1.0 - smoothstep(0.05, 0.26, min(fr.x, fr.y));
+    a = clamp((a + frame * 0.05) * rim * rim, 0.0, 0.62) * (1.0 - wet * 0.8);
+    vec3 ice = uLight > 0.5
+      ? mix(vec3(0.6, 0.7, 0.82), vec3(0.38, 0.5, 0.68), edge)
+      : mix(vec3(0.82, 0.9, 1.0), vec3(1.0), clamp(edge * 0.6 + glint, 0.0, 1.0));
+    o = vec4(ice * a, a);
+    return;
+  }
   col = 1.0 - exp(-col * 1.15);
   col += (hash(gl_FragCoord.xy + fract(uTime) * 91.0) - 0.5) / 255.0 * 2.0;
   o = vec4(col, 1.0);
@@ -449,15 +471,22 @@ export function HoarfrostPane({
   children,
   height = "100svh",
   label = "หน้าต่างที่มีน้ำแข็งเกาะ ลากเมาส์หรือนิ้วผ่านกระจกเพื่อเช็ดน้ำแข็งออก แล้วน้ำแข็งจะค่อย ๆ กลับมาเกาะ",
+  overlay = false,
+  tone = "dark",
   className,
 }: HoarfrostPaneProps) {
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const [failed, setFailed] = React.useState(false);
-  const opts = React.useRef({ brush, interactive });
+  const opts = React.useRef({ brush, interactive, tone });
+  const repaint = React.useRef<(() => void) | null>(null);
   React.useLayoutEffect(() => {
-    opts.current = { brush, interactive };
+    opts.current = { brush, interactive, tone };
   });
+  // a theme change recolours the frost even while the sim sleeps
+  React.useEffect(() => {
+    repaint.current?.();
+  }, [tone]);
 
   React.useEffect(() => {
     const root = rootRef.current;
@@ -465,7 +494,8 @@ export function HoarfrostPane({
     if (!root || !canvas) return;
     const gl = canvas.getContext("webgl2", {
       antialias: false,
-      alpha: false,
+      alpha: overlay,
+      premultipliedAlpha: true,
       preserveDrawingBuffer: false,
     });
     if (!gl?.getExtension("EXT_color_buffer_float")) {
@@ -677,6 +707,8 @@ export function HoarfrostPane({
       gl.uniform2f(U(show, "uRes"), canvas.width, canvas.height);
       gl.uniform1f(U(show, "uCell"), cell * dpr);
       gl.uniform1f(U(show, "uTime"), reduce ? 0 : (now - start) / 1000);
+      gl.uniform1f(U(show, "uOverlay"), overlay ? 1 : 0);
+      gl.uniform1f(U(show, "uLight"), opts.current.tone === "light" ? 1 : 0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -726,6 +758,8 @@ export function HoarfrostPane({
       const nh = Math.max(1, Math.round(rect.height));
       dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       if (nw === w && nh === h && tex.length) return;
+      // over a page on a phone the URL bar shows and hides: keep the frost, just stretch it
+      if (overlay && nw === w && Math.abs(nh - h) < 160 && tex.length) return;
       // shortcut: a resize regrows the frost from scratch; resample the old state if that shows
       w = nw;
       h = nh;
@@ -733,13 +767,15 @@ export function HoarfrostPane({
       canvas.height = Math.round(h * dpr);
       build();
       const most = reduce ? GROW_STEPS + 1 : 1700;
-      const done = prewarm(reduce ? 2500 : 400, most);
+      // over a page it grows in front of you instead of blocking the first paint
+      const budget = reduce ? 2500 : overlay ? 40 : 400;
+      const done = prewarm(budget, most);
       const fewer = hfpRescale(cells, done, most);
       if (fewer < cells) {
         // too slow a GPU to frost over in time: regrow on a coarser grid it can keep up with
         cells = fewer;
         build();
-        prewarm(reduce ? 2500 : 400, most);
+        prewarm(budget, most);
       }
       render(performance.now());
       canvas.setAttribute("data-ready", "");
@@ -773,9 +809,15 @@ export function HoarfrostPane({
       setFailed(true);
     };
     canvas.addEventListener("webglcontextlost", lost);
-    root.addEventListener("pointermove", onMove);
-    root.addEventListener("pointerleave", onLeave);
-    root.addEventListener("pointercancel", onLeave);
+    // over a page nothing is hit-tested, so the fingertip is read from the window
+    const pointerSource: HTMLElement | Window = overlay ? window : root;
+    pointerSource.addEventListener("pointermove", onMove as EventListener);
+    pointerSource.addEventListener("pointercancel", onLeave);
+    if (overlay) document.documentElement.addEventListener("pointerleave", onLeave);
+    else root.addEventListener("pointerleave", onLeave);
+    repaint.current = () => {
+      render(performance.now());
+    };
     const ro = new ResizeObserver(resize);
     ro.observe(root);
     const io = new IntersectionObserver((entries) => {
@@ -789,18 +831,24 @@ export function HoarfrostPane({
       ro.disconnect();
       io.disconnect();
       canvas.removeEventListener("webglcontextlost", lost);
-      root.removeEventListener("pointermove", onMove);
+      pointerSource.removeEventListener("pointermove", onMove as EventListener);
+      pointerSource.removeEventListener("pointercancel", onLeave);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
       root.removeEventListener("pointerleave", onLeave);
-      root.removeEventListener("pointercancel", onLeave);
+      repaint.current = null;
       free();
       gl.deleteBuffer(quad);
       for (const p of programs) gl.deleteProgram(p.pr);
       for (const s of shaders) gl.deleteShader(s);
     };
-  }, [coverage, seed]);
+  }, [coverage, seed, overlay]);
 
   return (
-    <div ref={rootRef} className={cn("hfp-root", className)} style={{ height }}>
+    <div
+      ref={rootRef}
+      className={cn("hfp-root", overlay && "hfp-root--overlay", className)}
+      style={overlay ? undefined : { height }}
+    >
       {/* the glass is the picture; content laid over it stays readable to screen readers */}
       {failed ? (
         <div className="hfp-fallback" role="img" aria-label={label} />

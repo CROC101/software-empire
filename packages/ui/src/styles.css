@@ -2497,6 +2497,14 @@ a.lgn-app:focus-visible {
   touch-action: pan-y;
   background: var(--em-ink-975);
 }
+/* frost over the whole page, above the content like the other ambience layers */
+.hfp-root--overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background: none;
+}
 .hfp-root canvas {
   position: absolute;
   inset: 0;
@@ -2565,6 +2573,19 @@ a.lgn-app:focus-visible {
 }
 .dr-root--contained {
   position: absolute;
+}
+/* over a page: only the rain, above the content like the other ambience layers */
+.dr-root--overlay {
+  z-index: 60;
+  background: none;
+}
+.dr-root--overlay .dr-vignette,
+.dr-root--overlay .dr-grain {
+  display: none;
+}
+.dr-root--overlay[data-tone="light"] .dr-bloom {
+  mix-blend-mode: multiply;
+  opacity: 0.35;
 }
 .dr-root canvas {
   position: absolute;

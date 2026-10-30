@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body className="min-h-dvh">
         {children}
-        <Ambience />
+        <Ambience rich />
       </body>
     </html>
   );
