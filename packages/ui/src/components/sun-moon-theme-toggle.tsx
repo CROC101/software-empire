@@ -190,16 +190,13 @@ export function revealPage(
     swap();
     return;
   }
-  // only what is on screen needs its own live snapshot; capturing every vt-live element down a
-  // long page is what makes the browser time out
-  const off = Array.from(document.querySelectorAll<HTMLElement>(".vt-live")).filter((el) => {
-    const r = el.getBoundingClientRect();
-    return r.bottom < 0 || r.top > innerHeight;
-  });
-  for (const el of off) el.classList.add("vt-off");
+  // the reveal clips the root snapshot only; flatten every live / sticky element into it so the
+  // water (or drop) passes over all of them, then let them have their own snapshots again
+  const root = document.documentElement;
+  root.classList.add("vt-flat");
   const transition = document.startViewTransition(swap);
   const restore = () => {
-    for (const el of off) el.classList.remove("vt-off");
+    root.classList.remove("vt-flat");
   };
   const box = from.getBoundingClientRect();
   const x = box.left + box.width / 2;
@@ -209,7 +206,6 @@ export function revealPage(
   if (effect === "stream") {
     transition.ready
       .then(() => {
-        const root = document.documentElement;
         root.animate(streamFrames(innerWidth, innerHeight), {
           duration: STREAM_MS,
           easing: "linear", // the frames carry their own easing
@@ -230,7 +226,6 @@ export function revealPage(
   if (effect === "drop") {
     transition.ready
       .then(() => {
-        const root = document.documentElement;
         // the old page sinks toward the drop, not toward the middle of the screen
         root.style.setProperty("--vt-origin", `${String(x)}px ${String(y)}px`);
         root.animate(dropFrames(x, y, r), {

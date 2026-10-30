@@ -435,7 +435,11 @@
 /* a sheet or menu is open: named groups would be painted above the top-layer dialog during the
    swap, so let everything fall back into the root snapshot (the page is dimmed behind it anyway) */
 html:has(dialog[open]) .vt-live,
-html:has(dialog[open]) .vt-top {
+html:has(dialog[open]) .vt-top,
+/* a theme reveal (water, ink drop, circle, wipe) clips one snapshot: everything joins it, so the
+   water passes over the header, the menu and moving things too, instead of skipping them */
+html.vt-flat .vt-live,
+html.vt-flat .vt-top {
   view-transition-name: none;
 }
 /* sticky / fixed chrome (headers, floating buttons): its own group, always stacked above the
