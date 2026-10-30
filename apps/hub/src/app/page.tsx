@@ -5,8 +5,8 @@ import {
   TideReveal,
   LinkPreview,
   MorphingText,
-  PhoneFrame,
   LiquidThemeToggle,
+  SeasonTree,
 } from "@empire/ui";
 import {
   ArrowUp,
@@ -72,6 +72,9 @@ import {
   APP_ICON,
 } from "./sections";
 import { StackCard } from "./stack-card";
+
+// the hero tree's fruit: the systems themselves, each a link that opens it
+const TREE_FRUITS = subsystems.map((x) => ({ id: x.slug, label: x.name, href: `/go/${x.slug}` }));
 
 const ROLES = [
   "Product Manager",
@@ -306,7 +309,7 @@ export default async function HomePage() {
             </ul>
           </div>
 
-          <HeroVisual />
+          <SeasonTree fruits={TREE_FRUITS} className="max-w-[28rem] lg:max-w-[34rem]" />
         </section>
 
         <StatusSection />
@@ -344,110 +347,6 @@ export default async function HomePage() {
       <TideReveal />
       <BackToTop />
       <SiteFooter />
-    </div>
-  );
-}
-
-/** Dark globe + three phones showing our own apps, drawn in CSS — no screenshots to go stale. */
-function HeroVisual() {
-  return (
-    <div
-      aria-hidden
-      className="vt-live relative mx-auto aspect-square w-full max-w-[28rem] lg:max-w-[34rem]"
-    >
-      <div className="cw-globe cw-spin absolute inset-[6%] rounded-full" />
-
-      <Phone
-        className="left-[2%] top-[26%] -rotate-12"
-        tone="var(--em-sky-500)"
-        title="Empire Canvas"
-      >
-        <div className="grid grid-cols-2 gap-1.5">
-          {[
-            "var(--em-violet-300)",
-            "var(--em-blue-500)",
-            "var(--em-violet-500)",
-            "var(--em-blue-700)",
-          ].map((c) => (
-            <div key={c} className="aspect-square rounded-md" style={{ background: c }} />
-          ))}
-        </div>
-      </Phone>
-      <Phone
-        className="right-[2%] top-[24%] rotate-12"
-        tone="var(--em-violet-600)"
-        title="Community"
-      >
-        {[0, 1, 2].map((i) => (
-          <div key={i} className="flex items-center gap-1.5">
-            <div className="size-4 rounded-full" style={{ background: "var(--em-violet-300)" }} />
-            <div className="h-1.5 flex-1 rounded bg-white/25" />
-          </div>
-        ))}
-        <div
-          className="mt-1 aspect-[4/3] rounded-md"
-          style={{
-            background: "linear-gradient(135deg, var(--em-violet-400), var(--em-fuchsia-400))",
-          }}
-        />
-      </Phone>
-      <Phone
-        className="cw-float left-1/2 top-[12%] z-10 -translate-x-1/2 scale-105"
-        tone="var(--em-blue-600)"
-        title="AI Tarot"
-      >
-        <div
-          className="mx-auto mt-1 grid aspect-[2/3] w-3/4 place-items-center rounded-lg border text-2xl"
-          style={{ borderColor: "var(--em-gold-300)", color: "var(--em-gold-300)" }}
-        >
-          ☾
-        </div>
-        <div
-          className="mx-auto mt-2 h-5 w-4/5 rounded-full"
-          style={{ background: "var(--em-gold-300)" }}
-        />
-      </Phone>
-
-      <div className="absolute right-0 top-[6%] z-20 border bg-card px-3 py-2 shadow-lg">
-        <p className="flex items-center gap-1.5 font-mono text-[0.625rem] uppercase tracking-wider text-success">
-          <span className="size-1.5 bg-success" /> live · {subsystems.length} ระบบ
-        </p>
-        <p className="text-lg font-black">1 บัญชี</p>
-        <p className="text-xs text-muted-foreground">ใช้ได้ทุกระบบ</p>
-      </div>
-      <div className="absolute bottom-[10%] left-0 z-20 border bg-card px-3 py-2 shadow-lg">
-        <p className="font-mono text-[0.625rem] uppercase tracking-wider text-muted-foreground">
-          supabase · rls
-        </p>
-        <p className="text-lg font-black">{PGTAP_TESTS} เทสต์</p>
-        <p className="text-xs text-muted-foreground">ผ่านทุกข้อ</p>
-      </div>
-    </div>
-  );
-}
-
-function Phone({
-  className,
-  tone,
-  title,
-  children,
-}: {
-  className: string;
-  tone: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={`absolute w-[31%] ${className}`}>
-      <PhoneFrame statusBar="overlay" className="w-full sm:w-full md:w-full">
-        <div
-          className="flex size-full flex-col gap-1.5 p-3 pt-[18%] text-[0.6rem] text-white"
-          style={{ background: `linear-gradient(170deg, ${tone}, var(--em-ink-950))` }}
-        >
-          <p className="font-bold">{title}</p>
-          {children}
-        </div>
-      </PhoneFrame>
     </div>
   );
 }

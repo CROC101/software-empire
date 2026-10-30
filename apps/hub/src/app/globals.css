@@ -41,30 +41,14 @@
   .cw-btn-blue:hover {
     background: var(--em-blue-700);
   }
-  .cw-globe {
-    background:
-      radial-gradient(circle at 30% 25%, oklch(0.45 0.08 230), transparent 45%),
-      radial-gradient(circle at 70% 80%, oklch(0.3 0.05 250), transparent 50%), var(--em-ink-975);
-    box-shadow:
-      0 -0.75rem 3rem -0.5rem oklch(0.8 0.14 220 / 0.55),
-      inset 0 0 4rem oklch(0 0 0 / 0.6);
-  }
   @media (prefers-reduced-motion: no-preference) {
     .cw-float {
       animation: cw-float 6s ease-in-out infinite;
-    }
-    .cw-spin {
-      animation: cw-spin 120s linear infinite;
     }
   }
   @keyframes cw-float {
     50% {
       translate: 0 -0.5rem;
-    }
-  }
-  @keyframes cw-spin {
-    to {
-      rotate: 360deg;
     }
   }
 }

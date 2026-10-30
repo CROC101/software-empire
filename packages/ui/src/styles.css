@@ -2728,3 +2728,63 @@ a.lgn-app:focus-visible {
     display: none;
   }
 }
+
+/* SeasonTree: each fruit carries a real link; its name shows on hover / focus */
+.stree-fruit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: -0.875rem 0 0 -0.875rem;
+  border-radius: 999px;
+  will-change: transform;
+}
+.stree-fruit:focus-visible {
+  outline: 2px solid var(--em-blue-500);
+  outline-offset: 2px;
+}
+.stree-fruit > span {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  translate: -50% 0;
+  white-space: nowrap;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+.stree-fruit:hover > span,
+.stree-fruit:focus-visible > span {
+  opacity: 1;
+}
+.stree-chip {
+  border: 1px solid color-mix(in oklab, var(--em-blue-500) 35%, transparent);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--em-blue-600);
+  background: color-mix(in oklab, var(--em-blue-500) 8%, var(--card));
+}
+.dark .stree-chip {
+  color: var(--em-sky-500);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .stree-chip {
+    animation: stree-float 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+@keyframes stree-float {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}

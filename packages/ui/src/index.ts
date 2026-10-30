@@ -114,3 +114,4 @@ export {
 } from "./components/circularium-ring";
 export { CobeGlobe, type GlobePin } from "./components/cobe-globe";
 export { GlassBucket, type BucketChip } from "./components/glass-bucket";
+export { SeasonTree, type TreeFruit } from "./components/season-tree";
