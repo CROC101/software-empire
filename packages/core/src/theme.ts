@@ -18,6 +18,8 @@ export type ThemeChoice = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 
 export const THEME_COOKIE = "em-theme";
+/** LITE mode cookie (see the LITE block below); declared here because the boot script uses it. */
+export const LITE_COOKIE = "em-lite";
 const YEAR_S = 60 * 60 * 24 * 365;
 
 export function parseChoice(value: unknown): ThemeChoice {
@@ -116,7 +118,49 @@ try {
 } catch {
   // cookies blocked: keep the default light theme
 }
+try {
+  // LITE: em-lite=on|off, or auto = phones and data-saver. Every effect already falls back to a
+  // still frame for reduced motion, so LITE answers that media query with "reduce".
+  var l = /(?:^|;\\s*)${LITE_COOKIE}=(on|off)(?:;|$)/.exec(document.cookie);
+  var n = navigator.connection;
+  var lite = l
+    ? l[1] === "on"
+    : (matchMedia("(pointer: coarse)").matches && Math.min(screen.width, screen.height) < 768) ||
+      (n && n.saveData) === true;
+  document.documentElement.dataset.lite = lite ? "on" : "off";
+  if (lite) {
+    var mm = window.matchMedia.bind(window);
+    window.matchMedia = function (q) {
+      return /prefers-reduced-motion/.test(q)
+        ? mm(/no-preference/.test(q) ? "not all" : "all")
+        : mm(q);
+    };
+  }
+} catch {
+  // no matchMedia or cookies: full effects, as before
+}
 `;
+
+/* ── LITE: fewer effects for hot phones, shared by every app like the theme ── */
+
+export type LiteChoice = "auto" | "on" | "off";
+
+export function readLite(cookie: string): LiteChoice {
+  const value = new RegExp(`(?:^|;\\s*)${LITE_COOKIE}=([^;]*)`).exec(cookie)?.[1];
+  return value === "on" || value === "off" ? value : "auto";
+}
+
+/** What the boot script decided for this page (auto resolved), read from <html data-lite>. */
+export const liteActive = () => document.documentElement.dataset.lite === "on";
+
+/** Saves the choice and reloads: effects read LITE once, at start, like reduced motion. */
+export function setLite(choice: LiteChoice, cookieDomain?: string): void {
+  const domain = cookieDomain ? `; Domain=${cookieDomain}` : "";
+  // auto = forget the choice, so the device decides again
+  const age = choice === "auto" ? 0 : YEAR_S;
+  document.cookie = `${LITE_COOKIE}=${choice}; Path=/; Max-Age=${String(age)}; SameSite=Lax${domain}`;
+  location.reload();
+}
 
 /* ── ambience: seasonal / space particles, shared by every app like the theme ── */
 

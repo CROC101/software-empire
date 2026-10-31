@@ -85,7 +85,7 @@ const TEAR = (() => {
 })();
 
 /** Edge where one band meets the next; `color` is the band it belongs to. */
-function TornEdge({ color, flip = false }: { color: string; flip?: boolean }) {
+export function TornEdge({ color, flip = false }: { color: string; flip?: boolean }) {
   return (
     <svg
       aria-hidden

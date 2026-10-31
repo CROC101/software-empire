@@ -13,3 +13,24 @@ try {
 } catch {
   // cookies blocked: keep the default light theme
 }
+try {
+  // LITE: em-lite=on|off, or auto = phones and data-saver. Every effect already falls back to a
+  // still frame for reduced motion, so LITE answers that media query with "reduce".
+  var l = /(?:^|;\s*)em-lite=(on|off)(?:;|$)/.exec(document.cookie);
+  var n = navigator.connection;
+  var lite = l
+    ? l[1] === "on"
+    : (matchMedia("(pointer: coarse)").matches && Math.min(screen.width, screen.height) < 768) ||
+      (n && n.saveData) === true;
+  document.documentElement.dataset.lite = lite ? "on" : "off";
+  if (lite) {
+    var mm = window.matchMedia.bind(window);
+    window.matchMedia = function (q) {
+      return /prefers-reduced-motion/.test(q)
+        ? mm(/no-preference/.test(q) ? "not all" : "all")
+        : mm(q);
+    };
+  }
+} catch {
+  // no matchMedia or cookies: full effects, as before
+}

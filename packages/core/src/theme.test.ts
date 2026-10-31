@@ -71,3 +71,49 @@ describe("shared ambience", () => {
     expect(readAmbience("em-ambience=halloween")).toBe("halloween");
   });
 });
+
+describe("LITE mode", () => {
+  /** Runs the real boot script against a fake page; returns <html> data and the patched matchMedia. */
+  function boot(cookie: string, device: { coarse: boolean; side: number; saveData?: boolean }) {
+    const html = { classList: { toggle() {} }, dataset: {} as Record<string, string>, style: {} };
+    const real = (q: string) => ({
+      media: q,
+      matches: q === "all" || (q === "(pointer: coarse)" && device.coarse),
+    });
+    const win = { matchMedia: real };
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval -- the generated asset under test
+    new Function("document", "window", "matchMedia", "screen", "navigator", THEME_BOOT_SCRIPT)(
+      { cookie, documentElement: html },
+      win,
+      real,
+      { width: device.side, height: device.side * 2 },
+      { connection: { saveData: device.saveData } },
+    );
+    return { lite: html.dataset.lite, reduce: win.matchMedia("(prefers-reduced-motion: reduce)") };
+  }
+  const phone = { coarse: true, side: 390 };
+  const desktop = { coarse: false, side: 1440 };
+
+  it("turns itself on for phones and data saver, off for desktops", () => {
+    expect(boot("", phone).lite).toBe("on");
+    expect(boot("", desktop).lite).toBe("off");
+    expect(boot("", { ...desktop, saveData: true }).lite).toBe("on");
+    expect(boot("", { coarse: true, side: 1024 }).lite).toBe("off"); // tablets keep effects
+  });
+
+  it("obeys the saved choice over the device", () => {
+    expect(boot("em-theme=dark; em-lite=off", phone).lite).toBe("off");
+    expect(boot("em-lite=on", desktop).lite).toBe("on");
+  });
+
+  it("makes every effect see reduced motion while on", () => {
+    expect(boot("em-lite=on", desktop).reduce.matches).toBe(true);
+    expect(boot("em-lite=off", desktop).reduce.matches).toBe(false);
+  });
+
+  it("reads the cookie, defaulting to auto", async () => {
+    const { readLite } = await import("./theme");
+    expect(readLite("a=1; em-lite=on")).toBe("on");
+    expect(readLite("em-lite=bogus")).toBe("auto");
+  });
+});

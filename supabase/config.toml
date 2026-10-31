@@ -244,14 +244,14 @@ otp_expiry = 600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
-# email templates show the 6-digit code (hub /login verifies it) — same text must be pasted
-# into the hosted project dashboard, config push is not used for auth there
+# email templates show the 6-digit code (hub /login verifies it) — the same files reach the
+# hosted project through the auth-email workflow (config push is not used for auth there)
 [auth.email.template.confirmation]
-subject = "รหัสยืนยันอีเมล Software Empire"
+subject = "รหัสยืนยันสมัครสมาชิก crocwork.studio"
 content_path = "./supabase/templates/confirmation.html"
 
 [auth.email.template.magic_link]
-subject = "รหัสเข้าสู่ระบบ Software Empire"
+subject = "รหัสเข้าสู่ระบบ crocwork.studio"
 content_path = "./supabase/templates/magic_link.html"
 
 # Uncomment to customize email template
