@@ -279,6 +279,11 @@ export function useFileImport() {
     const withOrigin: ImportOptions = { ...options, origin: options.origin ?? originFrom(null, url) };
 
     try {
+      // https only (plus the local Supabase in dev): no http downgrade, no data:/blob:/file: or
+      // other schemes from pasted or dropped text
+      const { protocol, hostname } = new URL(url);
+      const local = protocol === 'http:' && (hostname === 'localhost' || hostname === '127.0.0.1');
+      if (protocol !== 'https:' && !local) throw new Error('not https');
       const response = await fetch(url, { mode: 'cors', credentials: 'omit' });
 
       if (!response.ok) throw new Error(String(response.status));

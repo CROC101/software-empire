@@ -84,7 +84,7 @@ beforeEach(() => {
     const message = args.map(String).join(" ");
 
     // คำเตือนของ React ที่บอกว่าเขียนโค้ดผิด — ปนกับ warn ทั่วไปไม่ได้
-    if (/^Warning:|React|act\(\)/i.test(message)) {
+    if (/(?:^Warning:)|React|act\(\)/i.test(message)) {
       capturedErrors.push(message);
     }
   });
