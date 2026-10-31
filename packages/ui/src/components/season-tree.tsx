@@ -9,8 +9,8 @@ import { useAmbience } from "./ambience";
 /**
  * A tree on a little island in a pond, under the moon, dressed for the season. Its fruit are the
  * studio's systems: shake it (a tap, a fast sweep of the pointer, or shake the phone) and they
- * drop into the water, splash, and float there as links; they grow back after a while, or on
- * the next tap once they have all fallen. The pond mirrors the tree and the moon with a ripple,
+ * drop into the water, splash, and float there as links. Once down they stay down until the
+ * page is loaded again: the pond is where the visitor picks a system. The pond mirrors the tree and the moon with a ripple,
  * and now and then a crocodile's eyes come up for a look.
  *
  * Canvas 2D, our own design (no library). The tree is grown from a fixed seed, so it is the same
@@ -304,7 +304,6 @@ interface Ripple {
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const HORIZON = 0.72; // share of the height where the water starts
-const REGROW_MS = 22_000;
 const STRIP = 6; // reflection strip height, px
 // leaves behind the branches are a shade deeper, so the crown has volume
 const BACK: Record<Season, number> = {
@@ -639,7 +638,6 @@ export function SeasonTree({
     const born = last;
     let time = 0;
     let shake = 0; // 0..~2, decays
-    let allFallenAt = 0;
     let crocUntil = 0;
     let crocNext = 4000 + rand() * 6000;
     const toggleFallen = () => {
@@ -675,10 +673,7 @@ export function SeasonTree({
         askedMotion = true;
         void DM.requestPermission().catch(() => undefined);
       }
-      if (state.every((f) => f.phase === "float")) {
-        regrow();
-        return;
-      }
+      if (state.every((f) => f.phase === "float")) return;
       shake = Math.min(2, shake + 0.9);
       if (still) dropAll();
       kick();
@@ -706,17 +701,7 @@ export function SeasonTree({
         f.x = pondX(f.slot);
         f.y = floatY(i);
       });
-      allFallenAt = performance.now();
       toggleFallen();
-    };
-    const regrow = () => {
-      for (const f of state) {
-        f.phase = "hang";
-        f.grow = still ? 1 : 0;
-      }
-      allFallenAt = 0;
-      toggleFallen();
-      kick();
     };
 
     wrap.addEventListener("pointermove", onMove, { passive: true });
@@ -1398,11 +1383,7 @@ export function SeasonTree({
           }
         }
       }
-      if (dropped) {
-        toggleFallen();
-        if (state.every((f) => f.phase === "float")) allFallenAt = now;
-      }
-      if (allFallenAt && now - allFallenAt > REGROW_MS) regrow();
+      if (dropped) toggleFallen();
 
       drawWater();
       if (look.krathong) drawKrathong();

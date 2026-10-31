@@ -51,9 +51,7 @@ export function EdgeNav({ items }: { items: { label: string; href: string }[] })
         <LineSidebar
           items={items}
           activeHref={active}
-          style={
-            { "--ls-marker": "36px", "--ls-gap": "6px", "--ls-shift": "18px" } as CSSProperties
-          }
+          style={{ "--ls-marker": "36px", "--ls-gap": "6px", "--ls-shift": "0px" } as CSSProperties}
           className="edge-nav"
         />
       </nav>

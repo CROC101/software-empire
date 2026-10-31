@@ -10,6 +10,10 @@ import { cn } from "../lib/cn";
  * (in page order), the studio's apps (open ones link, others show dimmed) and a few useful links.
  * Ctrl/⌘ K or "/" opens it from anywhere; Enter takes the first match.
  *
+ * It follows the reader: the section crossing the middle of the screen is "now" (one
+ * IntersectionObserver, no scroll handlers). The closed button fills with water to that point of
+ * the page, a ring shows the same, and the panel opens on that section, lit and scrolled to.
+ *
  * Native popover: light dismiss, Escape and focus return come from the browser. When the page
  * has several launchers (desktop and phone headers), only the visible one answers the shortcut.
  * Styles: `.lgn-*` in styles.css.
@@ -60,6 +64,8 @@ export function AppLauncher({
     apps?: string;
     links?: string;
     empty?: string;
+    /** Before the current section's name, e.g. "ตอนนี้อยู่ที่". */
+    now?: string;
   };
   className?: string;
 }) {
@@ -67,7 +73,29 @@ export function AppLauncher({
   const panel = React.useRef<HTMLDivElement>(null);
   const input = React.useRef<HTMLInputElement>(null);
   const [q, setQ] = React.useState("");
+  const [now, setNow] = React.useState<string>();
   const query = q.trim().toLowerCase();
+  const hrefs = sections.map((s) => s.href).join(" ");
+
+  // the section crossing the middle of the screen is the one being read
+  React.useEffect(() => {
+    const owner = new Map<Element, string>();
+    for (const href of hrefs.split(" ")) {
+      const el = href.startsWith("#") ? document.getElementById(href.slice(1)) : null;
+      if (el) owner.set(el, href);
+    }
+    if (!owner.size) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setNow(owner.get(e.target));
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    for (const el of owner.keys()) io.observe(el);
+    return () => {
+      io.disconnect();
+    };
+  }, [hrefs]);
 
   React.useEffect(() => {
     const el = panel.current;
@@ -88,6 +116,13 @@ export function AppLauncher({
       if ((e as ToggleEvent).newState === "open") {
         setQ("");
         input.current?.focus();
+        // open on the current section: centre it in the list (the list only, never the page)
+        const scroller = el.querySelector<HTMLElement>(".lgn-scroll");
+        const item = el.querySelector<HTMLElement>('[aria-current="location"]');
+        if (scroller && item) {
+          const delta = item.getBoundingClientRect().top - scroller.getBoundingClientRect().top;
+          scroller.scrollTop += delta - scroller.clientHeight / 2 + item.offsetHeight / 2;
+        }
       }
     };
     window.addEventListener("keydown", onKey);
@@ -103,12 +138,15 @@ export function AppLauncher({
   const shownApps = apps.filter((a) => match(query, a.name, a.slug));
   const shownLinks = links.filter((l) => match(query, l.label, l.keywords));
   const none = !shownSections.length && !shownApps.length && !shownLinks.length;
+  const at = sections.findIndex((s) => s.href === now);
+  const current = sections[at];
+  // how far down the page, 0..1, by section (the water level in the button)
+  const progress = at < 0 ? 0 : (at + 1) / sections.length;
 
+  // Thai headings: never letter-spaced or set in mono
   const head = (text?: string) =>
     text && (
-      <p className="mb-1.5 mt-3 px-1 font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase first:mt-0">
-        {text}
-      </p>
+      <p className="mb-1.5 mt-3 px-1 text-xs font-bold text-muted-foreground first:mt-0">{text}</p>
     );
 
   return (
@@ -116,11 +154,16 @@ export function AppLauncher({
       <button
         type="button"
         popoverTarget={id}
-        aria-label={label}
-        title={`${label} (Ctrl K)`}
+        aria-label={current ? `${label} · ${labels.now ?? ""} ${current.label}` : label}
+        title={current ? `${current.label} (Ctrl K)` : `${label} (Ctrl K)`}
         className={cn("lgn-launch", className)}
+        style={{ "--lgn-p": progress } as React.CSSProperties}
       >
-        <Grip aria-hidden className="size-[18px]" strokeWidth={2.4} />
+        <span aria-hidden className="lgn-fill" />
+        <svg aria-hidden viewBox="0 0 36 36" className="lgn-ring">
+          <circle cx="18" cy="18" r="16.5" pathLength="1" />
+        </svg>
+        <Grip aria-hidden className="relative size-[18px]" strokeWidth={2.4} />
       </button>
       <div ref={panel} id={id} popover="auto" className="lgn-apps" aria-label={label}>
         <form
@@ -147,6 +190,24 @@ export function AppLauncher({
           <kbd className="lgn-kbd">Ctrl K</kbd>
         </form>
 
+        {current && !query && (
+          <a
+            href={current.href}
+            onClick={close}
+            className="lgn-now"
+            style={{ "--lgn-p": progress } as React.CSSProperties}
+          >
+            <span className="lgn-now-text">
+              <span className="text-muted-foreground">{labels.now}</span>{" "}
+              <span className="font-bold">{current.label}</span>
+            </span>
+            <span className="lgn-now-count">
+              {at + 1}/{sections.length}
+            </span>
+            <span aria-hidden className="lgn-now-bar" />
+          </a>
+        )}
+
         <div className="lgn-scroll">
           {shownSections.length > 0 && (
             <>
@@ -154,7 +215,12 @@ export function AppLauncher({
               <ul className="grid grid-cols-2 gap-1">
                 {shownSections.map((s) => (
                   <li key={s.href}>
-                    <a href={s.href} onClick={close} className="lgn-hit lgn-row">
+                    <a
+                      href={s.href}
+                      onClick={close}
+                      aria-current={s.href === now ? "location" : undefined}
+                      className="lgn-hit lgn-row"
+                    >
                       <span aria-hidden className="lgn-ico">
                         {s.icon}
                       </span>

@@ -437,7 +437,7 @@ function Layer({ from, to, x, y, w, h, duration, strength, onDone }: LayerProps)
 }
 
 const WR_CSS = [
-  ".wr-root{position:relative;width:100%;overflow:hidden;background:#0d0d0f;color:var(--wr-ink);user-select:none;-webkit-user-select:none;touch-action:pan-y;outline:none;cursor:pointer}",
+  ".wr-root{position:relative;width:100%;overflow:hidden;background:var(--em-ink-975,#0d0d0f);color:var(--wr-ink);user-select:none;-webkit-user-select:none;touch-action:pan-y;outline:none;cursor:pointer}",
   ".wr-root:focus-visible{box-shadow:inset 0 0 0 2px var(--wr-ink)}",
   ".wr-base{position:absolute;inset:0}",
   ".wr-img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;display:block;pointer-events:none}",
@@ -586,17 +586,24 @@ export function WaterRippleCarousel({
       onPointerUp={onUp}
     >
       <style>{WR_CSS}</style>
+      {/* every slide stays mounted and decoded; a change only flips opacity. Swapping one
+          <img>'s src left a frame with nothing painted (the black root) after each ripple */}
       <div className="wr-base">
-        {from ? (
-          <img
-            className="wr-img"
-            src={from}
-            alt={slides[index]?.alt ?? slides[index]?.title ?? ""}
-            draggable={false}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : null}
+        {srcs.map((src, i) =>
+          src ? (
+            <img
+              key={i}
+              className="wr-img"
+              src={src}
+              alt={i === index ? (slides[i]?.alt ?? slides[i]?.title ?? "") : ""}
+              aria-hidden={i !== index}
+              style={{ opacity: i === index ? 1 : 0 }}
+              draggable={false}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : null,
+        )}
       </div>
       {incoming && from && to ? (
         <Layer

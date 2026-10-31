@@ -29,6 +29,7 @@ import { cn } from "../lib/cn";
 import { useTokenColors } from "../lib/token-colors";
 import { AmbiencePicker } from "./ambience-picker";
 import { DataRain } from "./data-rain";
+import { BatNight } from "./bat-night";
 import { PixelSnow } from "./pixel-snow";
 
 /**
@@ -103,16 +104,22 @@ const RAIN_LIGHT = ["--em-blue-600", "--em-blue-700", "--em-violet-600"] as cons
 // snow: moonlit white at night, blue ink on the pale day page (white would vanish there)
 const SNOW_DARK = ["--em-ink-0"] as const;
 const SNOW_LIGHT = ["--em-blue-600"] as const;
+// bats: body, membrane, the rim the light catches (festival gold); a touch lighter by night so
+// they read against the dark page
+const BATS_DARK = ["--em-ink-800", "--em-ink-700", "--em-gold-500"] as const;
+const BATS_LIGHT = ["--em-ink-950", "--em-ink-800", "--em-gold-500"] as const;
 
 /**
  * `rich` (the portfolio): the rainy season becomes DataRain over the whole page, parting round
  * the pointer, and winter (cool season, Christmas) snows over the whole page in pixel crystals
- * (PixelSnow) that the pointer brushes aside and that settle in drifts along the bottom edge. Without it (the working apps), the light CSS particles only.
+ * (PixelSnow) that the pointer brushes aside and that settle in drifts along the bottom edge, and
+ * Halloween sends bats with beating wings across it (BatNight). Without it (the working apps), the light CSS particles only.
  */
 export function Ambience({ rich = false }: { rich?: boolean }) {
   const { season, dark } = useAmbience();
   const rainColors = useTokenColors(dark ? RAIN_DARK : RAIN_LIGHT);
   const snowColor = useTokenColors(dark ? SNOW_DARK : SNOW_LIGHT)?.[0];
+  const batColors = useTokenColors(dark ? BATS_DARK : BATS_LIGHT);
   const [reduced, setReduced] = useState(true);
   useEffect(() => {
     // no matchMedia (test DOMs, very old embedded browsers): stay off, as if motion were reduced
@@ -160,6 +167,12 @@ export function Ambience({ rich = false }: { rich?: boolean }) {
 
   // the pixel snow replaces the CSS flakes; two kinds of snow at once read as a glitch
   if (frost) return frost;
+  if (rich && season === "halloween") {
+    const [body = "", wing = "", rim = ""] = batColors ?? [];
+    return batColors ? (
+      <BatNight body={body} wing={wing} rim={rim} glow="var(--em-coral-500)" />
+    ) : null;
+  }
   return (
     <>
       <div aria-hidden className={cn("em-ambience", `em-ambience--${season}`)}>

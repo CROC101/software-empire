@@ -110,6 +110,7 @@ const LAUNCHER = {
     apps: "ระบบทั้งหมด",
     links: "ลิงก์",
     empty: "ไม่เจอที่ค้นหา",
+    now: "ตอนนี้อยู่ที่",
   },
   // every part of the portfolio, in page order; keywords catch the words people type
   sections: [

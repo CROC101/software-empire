@@ -133,3 +133,5 @@ export { SideRays, type SideRaysOrigin } from "./components/side-rays";
 export { FuzzyText } from "./components/fuzzy-text";
 export { MetallicPaint, type MetallicPaintProps } from "./components/metallic-paint";
 export { PixelSnow, type PixelSnowProps } from "./components/pixel-snow";
+export { LightRays, type LightRaysOrigin, type LightRaysProps } from "./components/light-rays";
+export { BatNight } from "./components/bat-night";

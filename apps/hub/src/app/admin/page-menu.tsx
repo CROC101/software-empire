@@ -23,7 +23,7 @@ export function PageMenu({
       items={items}
       defaultOpen={open}
       defaultActive={current}
-      onSelect={(value) => router.push(`/admin?p=${value}`)}
+      onSelect={(value) => router.push(`/admin/content?p=${value}`)}
     />
   );
 }

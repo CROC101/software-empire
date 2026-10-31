@@ -1,38 +1,44 @@
 "use client";
 
-import { SideRays, useTokenColors } from "@empire/ui";
+import { LightRays, useTokenColors } from "@empire/ui";
 
-const TOKENS = ["--background", "--em-ink-100", "--em-sky-500"] as const;
+const TOKENS = ["--background", "--em-ink-100"] as const;
 
 /**
- * Night only: moonlight falls from the top right corner of the hero (where the tree's moon
- * hangs) across the headline, a pale beam and a blue one, leaning a little toward the pointer.
- * By day there is nothing to draw, so the canvas is not even mounted.
+ * Night only: moonlight pours from the top of the screen (a little toward the right, where the
+ * tree's moon hangs) and spreads softly over the whole width, cooling to blue as it falls, with
+ * dust drifting in the shafts. By day there is nothing to draw, so the canvas is not mounted.
  */
 export function NightRays() {
   const colors = useTokenColors(TOKENS);
   if (!colors) return null;
-  const [bg = "#ffffff", moon = "#eeeeee", blue = "#3b82f6"] = colors;
+  const [bg = "#ffffff", moon = "#eeeeee"] = colors;
   if (parseInt(bg.slice(1, 3), 16) >= 128) return null;
   return (
-    // above the tree (its canvas paints its own sky) but only adding light: screen blend
+    // edge to edge of the screen, not the hero's column; above the tree (its canvas paints its
+    // own sky) but only adding light; it thins out toward the bottom so there is no edge
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-y-0 left-0 -right-16 z-10 mix-blend-screen [mask-image:linear-gradient(to_left,transparent,#000_5rem)]"
+      className="pointer-events-none absolute inset-y-0 left-1/2 z-10 w-screen -translate-x-1/2 mix-blend-screen [mask-image:linear-gradient(to_bottom,#000_55%,transparent)]"
     >
-      <SideRays
-        rayColor1={moon}
-        rayColor2={blue}
-        origin="top-right"
-        blend={0.55}
-        intensity={2.4}
-        spread={2}
-        density={4}
-        falloff={1.25}
-        glow={0.6}
-        dust={0.35}
-        mouseInfluence={0.25}
-        opacity={0.85}
+      <LightRays
+        raysOrigin="top-center"
+        raysColor={moon}
+        tilt={-12}
+        lightSpread={1.6}
+        rayLength={2.4}
+        fadeDistance={1.4}
+        rayDensity={1.2}
+        raySharpness={0.25}
+        haze={0.45}
+        glow={0.55}
+        atmosphere={1}
+        intensity={0.9}
+        raysSpeed={0.6}
+        mouseInfluence={0.06}
+        cursorShadow={false}
+        clickPulse={false}
+        opacity={0.8}
       />
     </div>
   );

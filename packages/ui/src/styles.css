@@ -1837,15 +1837,83 @@ html.vt-flat .vt-top {
 
 /* ── AppLauncher: nine-dot button and its glass panel ─────────────────────── */
 .lgn-launch {
+  position: relative;
   display: grid;
   place-items: center;
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
   color: var(--muted-foreground);
   transition:
     color 0.2s ease,
     background-color 0.2s ease;
+}
+/* water in the button rises with the reader: --lgn-p is how far down the page (0..1) */
+.lgn-fill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, var(--em-blue-500), var(--em-sky-500));
+  opacity: 0.22;
+  transform: translateY(calc((1 - var(--lgn-p, 0)) * 100%));
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lgn-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  rotate: -90deg;
+  fill: none;
+  stroke: var(--em-blue-500);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--lgn-p, 0));
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* "now at": the section being read, with a water line under it */
+.lgn-now {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem 0.7rem;
+  border-radius: 0.9rem;
+  font-size: 0.82rem;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--em-blue-500) 9%, transparent);
+  transition: background-color 0.2s ease;
+}
+.lgn-now:hover,
+.lgn-now:focus-visible {
+  background: color-mix(in oklab, var(--em-blue-500) 15%, transparent);
+}
+.lgn-now-text {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lgn-now-count {
+  font: 600 11px/1 var(--font-mono, monospace);
+  color: var(--em-blue-600);
+  font-variant-numeric: tabular-nums;
+}
+.lgn-now-bar {
+  position: absolute;
+  inset: auto 0 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--em-sky-500), var(--em-blue-500));
+  transform-origin: left;
+  transform: scaleX(var(--lgn-p, 0));
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dark .lgn-now-count {
+  color: var(--em-sky-500);
 }
 .lgn-launch:hover,
 .lgn-launch:focus-visible {
@@ -1918,6 +1986,19 @@ html.vt-flat .vt-top {
 .lgn-row:focus-visible {
   background: color-mix(in oklab, var(--em-blue-500) 10%, transparent);
 }
+/* the section being read: lit like water under light */
+.lgn-row[aria-current="location"] {
+  color: var(--em-blue-600);
+  background: color-mix(in oklab, var(--em-blue-500) 14%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--em-blue-500) 35%, transparent);
+}
+.lgn-row[aria-current="location"] .lgn-ico {
+  color: var(--em-ink-0);
+  background: linear-gradient(145deg, var(--em-sky-500), var(--em-blue-600));
+}
+.dark .lgn-row[aria-current="location"] {
+  color: var(--em-sky-500);
+}
 .lgn-ico {
   display: grid;
   place-items: center;
@@ -1955,6 +2036,11 @@ a.lgn-app:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .lgn-apps:popover-open {
     animation: none;
+  }
+  .lgn-fill,
+  .lgn-ring,
+  .lgn-now-bar {
+    transition: none;
   }
 }
 /* ── NimbusNavbar: a pill of water (WebGL), the drop follows the current item ─ */
