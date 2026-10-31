@@ -38,3 +38,6 @@ graphify-out/
 .open-next/
 .wrangler/
 .dev.vars*
+
+# design-taste-frontend working files (screenshots, reports)
+.taste-skill/

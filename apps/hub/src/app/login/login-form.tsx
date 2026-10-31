@@ -24,7 +24,7 @@ const TABS: { id: AuthMode; label: string }[] = [
 const PRIMARY = "h-11 w-full cw-btn-blue font-bold";
 
 const HEADING: Record<AuthMode, [string, string]> = {
-  signin: ["ยินดีต้อนรับกลับมา", "เข้าสู่ระบบด้วยรหัสผ่าน หรือรับรหัสทางอีเมล"],
+  signin: ["เข้าสู่ระบบ", "เข้าสู่ระบบด้วยรหัสผ่าน หรือรับรหัสทางอีเมล"],
   signup: ["สร้างบัญชีใหม่", "กรอกข้อมูลด้านล่าง แล้วยืนยันด้วยรหัสที่ส่งไปทางอีเมล"],
 };
 
@@ -44,14 +44,14 @@ export function AuthPanel({
   const [title, lead] = HEADING[mode];
   return (
     <>
-      <h1 className="font-heading text-2xl font-black sm:text-3xl">{title}</h1>
-      <p className="mb-6 mt-1 text-sm text-muted-foreground">{lead}</p>
+      <h2 className="font-heading text-2xl font-black sm:text-3xl">{title}</h2>
+      <p className="mb-6 mt-2 text-base">{lead}</p>
       {alert && (
         <p role="alert" className="mb-4 text-sm text-destructive">
           {alert}
         </p>
       )}
-      <div className="rounded-xl border bg-card p-5 shadow-sm sm:p-7">
+      <div>
         <div
           role="tablist"
           aria-label="เลือกวิธีเข้าใช้"
@@ -68,8 +68,8 @@ export function AuthPanel({
               onClick={() => setMode(tab.id)}
               className={
                 mode === tab.id
-                  ? "min-h-11 rounded-md bg-background text-sm font-bold shadow-sm"
-                  : "min-h-11 rounded-md text-sm font-semibold text-muted-foreground hover:text-foreground"
+                  ? "min-h-11 rounded-md bg-background text-base font-bold"
+                  : "min-h-11 rounded-md text-base text-foreground hover:bg-background/60"
               }
             >
               {tab.label}
@@ -244,7 +244,7 @@ function SignUpForm({ next, onSignIn }: { next: string; onSignIn: () => void }) 
         />
         <p
           id="signup-confirm-note"
-          className={`min-h-4 text-xs ${mismatch ? "text-destructive" : "text-muted-foreground"}`}
+          className={`min-h-4 text-sm ${mismatch ? "text-destructive" : "text-muted-foreground"}`}
         >
           {mismatch ? "ยังไม่ตรงกับรหัสผ่านด้านบน" : confirm && "ตรงกันแล้ว"}
         </p>
@@ -288,7 +288,7 @@ function Field({
         {label}
       </Label>
       {children}
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {hint && <p className="text-sm text-muted-foreground">{hint}</p>}
       <p id={`${htmlFor}-error`} className="text-sm text-destructive empty:hidden">
         {error}
       </p>
@@ -335,7 +335,7 @@ function Strength({ id, password, passed }: { id: string; password: string; pass
           />
         ))}
       </div>
-      <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+      <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm">
         {PASSWORD_RULES.map((rule) => {
           const ok = rule.test(password);
           return (
@@ -374,11 +374,5 @@ function FormMessage({ id, state }: { id: string; state: AuthState }) {
 }
 
 function Divider({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-      <span aria-hidden className="h-px flex-1 bg-border" />
-      {children}
-      <span aria-hidden className="h-px flex-1 bg-border" />
-    </div>
-  );
+  return <p className="text-center text-sm text-muted-foreground">{children}</p>;
 }
