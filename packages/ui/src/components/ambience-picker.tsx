@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
+  BatteryCharging,
   Check,
   GalleryHorizontalEnd,
   LayoutGrid,
@@ -13,9 +14,13 @@ import {
 } from "lucide-react";
 import {
   currentAmbience,
+  liteActive,
+  readLite,
   setAmbience,
+  setLite,
   subscribeTheme,
   type Ambience as AmbienceChoice,
+  type LiteChoice,
 } from "@empire/core/theme";
 import { cn } from "../lib/cn";
 import { ICON, setAmbiencePreview } from "./ambience";
@@ -330,6 +335,7 @@ export function AmbiencePicker({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-4">
+          <LiteSwitch cookieDomain={cookieDomain} />
           {SECTIONS.map(({ title, note, icon: Icon, options }) => (
             <section key={title} className="mt-2 pb-5">
               <div className="flex items-center gap-3">
@@ -385,5 +391,62 @@ export function AmbiencePicker({
         </div>
       </div>
     </dialog>
+  );
+}
+
+const LITE_OPTIONS: { id: LiteChoice; label: string }[] = [
+  { id: "auto", label: "อัตโนมัติ" },
+  { id: "on", label: "เปิด" },
+  { id: "off", label: "ปิด" },
+];
+
+/**
+ * LITE mode: every animated effect shows a still frame instead, so phones stay cool. Applies at
+ * once (the page reloads), unlike the sky which waits for ยืนยัน.
+ */
+function LiteSwitch({ cookieDomain }: { cookieDomain?: string }) {
+  // cookie and <html data-lite> exist only in the browser; the sheet opens after mount
+  const [choice] = useState(() => readLite(document.cookie));
+  const [on] = useState(liteActive);
+  return (
+    <section
+      aria-labelledby="em-lite-title"
+      className="mb-5 rounded-2xl border border-[oklch(0.85_0.06_290)] bg-[oklch(0.93_0.03_290)] p-4"
+    >
+      <div className="flex items-start gap-3">
+        <BatteryCharging aria-hidden className="mt-0.5 size-5 shrink-0 text-[var(--em-blue-600)]" />
+        <div className="min-w-0 flex-1">
+          <h3 id="em-lite-title" className="font-black">
+            โหมด LITE {on ? "· เปิดอยู่" : "· ปิดอยู่"}
+          </h3>
+          <p className="mt-0.5 text-xs opacity-70">
+            ปิดเอฟเฟกต์ที่เคลื่อนไหว เครื่องไม่ร้อน แบตอยู่นานขึ้น · อัตโนมัติ = เปิดเองบนมือถือ
+          </p>
+        </div>
+      </div>
+      <div
+        role="radiogroup"
+        aria-labelledby="em-lite-title"
+        className="mt-3 grid grid-cols-3 gap-1 rounded-full bg-[oklch(0.97_0.015_290)] p-1"
+      >
+        {LITE_OPTIONS.map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            role="radio"
+            aria-checked={choice === id}
+            onClick={() => {
+              if (id !== choice) setLite(id, cookieDomain);
+            }}
+            className={cn(
+              "rounded-full py-2 text-sm font-bold",
+              choice === id ? "bg-[var(--em-blue-600)] text-white" : "opacity-75 hover:opacity-100",
+            )}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }

@@ -416,6 +416,21 @@
   }
 }
 
+/* LITE (<html data-lite="on">, set by theme-boot.js on phones or by choice): CSS cannot see the
+   reduced-motion answer the boot script gives JS, so the same calm comes from here. Animations
+   jump to their last frame (entrances still end visible) and the sky stays off. */
+html[data-lite="on"] .em-ambience {
+  display: none;
+}
+html[data-lite="on"] *,
+html[data-lite="on"] *::before,
+html[data-lite="on"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
 /* theme switch: elements marked .vt-live keep moving through the reveal instead of freezing in
    the old snapshot (they swap colour instantly; everything else reveals with the effect) */
 .vt-live {

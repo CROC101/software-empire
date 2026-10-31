@@ -1,5 +1,6 @@
 "use server";
 
+import { email, signInInput, signUpInput } from "@empire/core/auth";
 import { safeNext } from "@/lib/apps";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -12,25 +13,21 @@ import { createClient } from "@/lib/supabase/server";
  */
 export type CodePurpose = "signup" | "login";
 
-/** `email` comes back so the form can refill it — React resets form fields after every action. */
+/**
+ * `email` and `name` come back so the form can refill them — React resets form fields after
+ * every action. `field` names the input the error belongs to, for aria-invalid.
+ */
 export type AuthState = {
   error?: string;
+  field?: "name" | "email" | "password" | "confirm";
   notice?: string;
   email?: string;
+  name?: string;
   /** set when the next screen is "type the 6-digit code we emailed you" */
   verify?: CodePurpose;
 };
 
 export type VerifyState = { error?: string; notice?: string; sentAt?: number };
-
-const email = z.email().max(254);
-
-const authInput = z.object({
-  intent: z.enum(["signin", "signup"]),
-  email,
-  // bcrypt (Supabase Auth) ignores bytes past 72
-  password: z.string().min(8).max(72),
-});
 
 const verifyInput = z.object({
   email,
@@ -65,29 +62,48 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
     return { email: parsed.data, verify: "login" };
   }
 
-  const input = authInput.safeParse({
-    intent: formData.get("intent"),
-    email: typed,
-    password: formData.get("password"),
-  });
-  if (!input.success)
-    return { email: typed, error: "กรอกอีเมลให้ถูกต้อง และรหัสผ่าน 8–72 ตัวอักษร" };
-  const { intent, ...credentials } = input.data;
-
-  if (intent === "signin") {
-    const { error } = await supabase.auth.signInWithPassword(credentials);
+  if (formData.get("intent") === "signin") {
+    const input = signInInput.safeParse({ email: typed, password: formData.get("password") });
+    if (!input.success)
+      return { email: typed, error: "กรอกอีเมลให้ถูกต้อง และรหัสผ่าน 8–72 ตัวอักษร" };
+    const { error } = await supabase.auth.signInWithPassword(input.data);
     // one message for every failure — don't reveal which emails have accounts
     if (error) return { email: typed, error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง" };
     redirect(next);
   }
 
-  const { data, error } = await supabase.auth.signUp({
-    ...credentials,
-    options: { emailRedirectTo: `${env.siteUrl}/auth/callback?next=${encodeURIComponent(next)}` },
+  const name = field(formData, "name");
+  const input = signUpInput.safeParse({
+    name,
+    email: typed,
+    password: formData.get("password"),
+    confirm: formData.get("confirm"),
   });
-  if (error) return { email: typed, error: "สมัครไม่สำเร็จ ลองใหม่อีกครั้ง" };
+  if (!input.success) {
+    const issue = input.error.issues[0];
+    const at = issue?.path[0];
+    return {
+      email: typed,
+      name,
+      error: at === "email" ? "กรอกอีเมลให้ถูกต้อง" : (issue?.message ?? "ข้อมูลไม่ครบ"),
+      field:
+        at === "name" || at === "email" || at === "password" || at === "confirm" ? at : undefined,
+    };
+  }
+
+  const { data, error } = await supabase.auth.signUp({
+    email: input.data.email,
+    password: input.data.password,
+    options: {
+      data: { display_name: input.data.name },
+      emailRedirectTo: `${env.siteUrl}/auth/callback?next=${encodeURIComponent(next)}`,
+    },
+  });
+  if (error?.status === 429)
+    return { email: typed, name, error: "ส่งอีเมลถี่เกินไป รอสักครู่แล้วลองใหม่" };
+  if (error) return { email: typed, name, error: "สมัครไม่สำเร็จ ลองใหม่อีกครั้ง" };
   // email confirmation on: no session until the emailed code (or link) is used
-  if (!data.session) return { email: credentials.email, verify: "signup" };
+  if (!data.session) return { email: input.data.email, verify: "signup" };
   redirect(next);
 }
 
