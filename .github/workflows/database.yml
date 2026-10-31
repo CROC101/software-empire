@@ -40,7 +40,8 @@ jobs:
 
   migrate:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # push to main, or run by hand from Actions → database → Run workflow (first deploy)
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production
