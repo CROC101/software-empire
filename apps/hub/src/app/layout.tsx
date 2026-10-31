@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Ambience } from "@empire/ui";
 import type { ReactNode } from "react";
 import { CookieNotice } from "./cookie-notice";
+import { Sky } from "./sky";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body className="min-h-dvh">
         {children}
-        <Ambience rich />
+        <Sky />
         <CookieNotice cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
       </body>
     </html>

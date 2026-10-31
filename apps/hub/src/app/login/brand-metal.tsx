@@ -9,7 +9,7 @@ import { MetallicPaint, useTokenColors } from "@empire/ui";
 export function BrandMetal() {
   const tint = useTokenColors(["--em-ink-100"])?.[0];
   return (
-    <div className="relative mx-auto aspect-[7/8] w-full max-w-xs">
+    <div className="relative mx-auto aspect-[7/8] w-full max-w-[15rem]">
       {tint && (
         <MetallicPaint
           imageSrc="/crocwork-logo.webp"
