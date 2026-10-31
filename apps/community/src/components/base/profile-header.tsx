@@ -73,7 +73,11 @@ export function ProfileHeader({
       <div className="col-start-1 row-span-2 row-start-1 self-center md:mr-8 md:self-start lg:mr-[30px] lg:flex lg:w-[291px] lg:shrink-0 lg:justify-center">
         <div className="relative">
           {isMe && <ProfileNoteBubble />}
-          <ProfileAvatar coreUserId={profile.coreUserId} displayName={profile.displayName} />
+          <ProfileAvatar
+            coreUserId={profile.coreUserId}
+            displayName={profile.displayName}
+            frame={profile.avatarFrame}
+          />
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 /// แชท: ห้อง · สมาชิก · ข้อความ · รีแอ็กชัน · ผู้ออนไลน์ (community รอบ 2)
 /// ทุกการเขียนเรียกฟังก์ชัน SQL ที่ตรวจกติกาเดิมของ csmju-nexus ซ้ำในฐาน — ไฟล์นี้แค่แปลงรูปร่างข้อมูล
+import type { Database } from "@empire/core/supabase";
 import { db } from "@/lib/supabase";
 import {
   badRequest,
@@ -10,7 +11,6 @@ import {
   idParam,
   meta,
   myId,
-  notAvailable,
   notFound,
   ok,
   paging,
@@ -18,7 +18,7 @@ import {
   userId,
   UUID,
 } from "./api-core";
-import { fetchChannel, fetchMessage, reactionSummaries, toMessage } from "./chat-model";
+import { fetchChannel, fetchMessage, reactionSummaries, toMessages } from "./chat-model";
 import { isOnline, onlineUserIds } from "./presence";
 import { reactionChanged } from "./realtime-bus";
 import { purge } from "./storage";
@@ -30,6 +30,7 @@ import type {
   DeliveryResult,
   Message,
   MessageTargets,
+  ShareBody,
   PresenceResponse,
   ReactionSummary,
   ReactionTarget,
@@ -153,7 +154,7 @@ async function listMessages(channel: string, query: URLSearchParams, pinnedOnly 
     : request.order("seq", { ascending: false }).range(from, to));
   if (error) throw fromPostgrest(error);
   // newest first, like nexus — the screen reverses it
-  return { data: rows.map(toMessage), meta: meta(page, limit, count ?? 0) };
+  return { data: await toMessages(rows), meta: meta(page, limit, count ?? 0) };
 }
 
 type SendBody = {
@@ -181,32 +182,64 @@ export async function sendMessage(channel: string, raw: unknown): Promise<Messag
   return messageOrThrow(sent);
 }
 
-async function forward(message: string, raw: unknown): Promise<DeliveryResult> {
-  const targets = body<MessageTargets>(raw);
-  const channelIds = (targets.channelIds ?? []).map(channelId);
-  const peers = (targets.peerCoreUserIds ?? []).map((p) => userId(p));
+type SendArgs = Database["community"]["Functions"]["send_message"]["Args"];
+
+/** 1-20 rooms and people (a DM is opened for each person) — all validated before any database call. */
+function destinations(raw: unknown) {
+  const input = body<MessageTargets>(raw);
+  const channelIds = (input.channelIds ?? []).map(channelId);
+  const peers = (input.peerCoreUserIds ?? []).map((p) => userId(p));
   if (channelIds.length + peers.length === 0)
     throw badRequest("ระบุปลายทางอย่างน้อยหนึ่งห้องหรือหนึ่งคน");
   if (channelIds.length + peers.length > 20) throw badRequest("ส่งได้ครั้งละไม่เกิน 20 ปลายทาง");
-  const original = await messageOrThrow(message);
-  if (!original.content) throw badRequest("ข้อความนี้ไม่มีอะไรให้ส่งต่อ");
+  return { channelIds, peers };
+}
 
-  for (const peer of peers)
-    channelIds.push(check(await db().rpc("open_direct", { peers: [peer] })));
+async function deliver(
+  to: ReturnType<typeof destinations>,
+  args: Omit<SendArgs, "channel" | "nonce">,
+): Promise<DeliveryResult> {
+  const rooms = [...to.channelIds];
+  for (const peer of to.peers) rooms.push(check(await db().rpc("open_direct", { peers: [peer] })));
   const result: DeliveryResult = { channelIds: [], messageIds: [] };
-  for (const target of [...new Set(channelIds)]) {
+  for (const room of new Set(rooms)) {
     const sent = check(
-      await db().rpc("send_message", {
-        channel: target,
-        body: original.content,
-        nonce: crypto.randomUUID(),
-        is_forward: true,
-      }),
+      await db().rpc("send_message", { ...args, channel: room, nonce: crypto.randomUUID() }),
     );
-    result.channelIds.push(target);
+    result.channelIds.push(room);
     result.messageIds.push(sent);
   }
   return result;
+}
+
+async function forward(message: string, raw: unknown): Promise<DeliveryResult> {
+  const to = destinations(raw);
+  const original = await messageOrThrow(message);
+  // a card whose post/reel/story is gone can't travel on
+  const card = original.embed?.available ? original.embed : null;
+  if (!original.content && !card) throw badRequest("ข้อความนี้ไม่มีอะไรให้ส่งต่อ");
+  return deliver(to, {
+    body: original.content ?? "",
+    is_forward: true,
+    embed_kind: card?.kind,
+    embed_ref: card?.refId,
+  });
+}
+
+const SHARE_KINDS = new Set(["POST", "REEL", "STORY"]);
+
+async function share(raw: unknown): Promise<DeliveryResult> {
+  const input = body<ShareBody>(raw);
+  if (!input.targetKind || !SHARE_KINDS.has(input.targetKind))
+    throw badRequest("targetKind ต้องเป็น POST, REEL หรือ STORY");
+  const target = idParam(input.targetId, "สิ่งที่จะแชร์");
+  const message = input.message?.trim() ?? "";
+  if (message.length > 1000) throw badRequest("ข้อความแนบยาวได้ไม่เกิน 1000 ตัวอักษร");
+  return deliver(destinations(raw), {
+    body: message,
+    embed_kind: input.targetKind,
+    embed_ref: target,
+  });
 }
 
 // ── รีแอ็กชัน ────────────────────────────────────────────────────────────
@@ -216,12 +249,8 @@ const TARGET_KINDS = new Set<ReactionTarget>(["MESSAGE", "POST", "REEL"]);
 function reactionTarget(kind: string | null | undefined, target: string | null | undefined) {
   if (!kind || !TARGET_KINDS.has(kind as ReactionTarget))
     throw badRequest("ชนิดเป้าหมายไม่ถูกต้อง");
-  // shortcut: reels arrive with round 4
-  if (kind === "REEL") throw notAvailable();
-  return {
-    kind: kind as ReactionTarget,
-    target: idParam(target ?? undefined, kind === "POST" ? "โพสต์นี้" : "ข้อความนี้"),
-  };
+  const what = { MESSAGE: "ข้อความนี้", POST: "โพสต์นี้", REEL: "คลิปนี้" }[kind as ReactionTarget];
+  return { kind: kind as ReactionTarget, target: idParam(target ?? undefined, what) };
 }
 
 async function summaryOf(kind: ReactionTarget, target: string): Promise<ReactionSummary> {
@@ -263,7 +292,7 @@ async function unreact(query: URLSearchParams) {
 
 async function summaries(query: URLSearchParams) {
   const kind = query.get("targetKind");
-  if (kind !== "MESSAGE" && kind !== "POST") return [];
+  if (kind !== "MESSAGE" && kind !== "POST" && kind !== "REEL") return [];
   const ids = (query.get("targetIds") ?? "")
     .split(",")
     .filter((t) => UUID.test(t))
@@ -476,6 +505,7 @@ export const CHAT_ROUTES: Route[] = [
   ],
   ["GET", path("/reactions/summaries"), ({ query }) => data(summaries(query))],
   ["POST", path("/reactions"), ({ body: raw }) => data(react(raw))],
+  ["POST", path("/shares"), ({ body: raw }) => data(share(raw))],
   ["DELETE", path("/reactions"), ({ query }) => data(unreact(query))],
   ["GET", path("/presence"), ({ query }) => Promise.resolve({ data: presence(query) })],
 ];

@@ -18,5 +18,6 @@ const appOrigins = subsystems.flatMap(({ slug }) => {
 });
 
 export function safeNext(value: unknown): string {
-  return safeRedirectTarget(value, appOrigins, "/dashboard");
+  // the hub is the portfolio: after sign-in land on it, not on the dashboard
+  return safeRedirectTarget(value, appOrigins, "/");
 }

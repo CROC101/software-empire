@@ -9,8 +9,9 @@ import SettingsLayout from "@/app/(app)/settings/layout";
 
 /// เส้นทางเดียวกับ app router ของ csmju-nexus — แต่ละหน้าโหลดแยกก้อน (route-level code splitting)
 
-// the Vite glob keeps every page lazy without listing 33 imports by hand
-const pages = import.meta.glob<{ default: ComponentType }>("./app/(app)/**/page.tsx");
+// the Vite glob keeps every page lazy without listing 33 imports by hand ·
+// the pattern avoids "(app)": parentheses are glob syntax and would match nothing
+const pages = import.meta.glob<{ default: ComponentType }>("./app/**/page.tsx");
 
 function page(route: string) {
   const load = pages[`./app/(app)/${route}/page.tsx`];

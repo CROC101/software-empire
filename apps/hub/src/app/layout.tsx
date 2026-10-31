@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Ambience } from "@empire/ui";
 import type { ReactNode } from "react";
+import { CookieNotice } from "./cookie-notice";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,8 +11,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="th">
-      <body className="min-h-dvh">{children}</body>
+    // theme-boot.js sets the shared theme class before paint, so React sees a different class
+    // data-scroll-behavior: Next turns smooth scrolling off during route changes, on in-page anchors
+    <html lang="th" suppressHydrationWarning data-scroll-behavior="smooth">
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts -- must run before first paint */}
+        <script src="/theme-boot.js" />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts -- the first-visit intro, decided before paint */}
+        <script src="/intro-boot.js" />
+      </head>
+      <body className="min-h-dvh">
+        {children}
+        <Ambience rich />
+        <CookieNotice cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
+      </body>
     </html>
   );
 }

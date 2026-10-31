@@ -22,7 +22,8 @@ Claude ทำงานแทน AIE ได้เต็มที่ภายใ�
 ```
 apps/hub        Core Hub — SSO, dashboard, portfolio showroom     (Next.js)
 apps/community  ระบบย่อย 1 — แชต realtime  (dupe จาก nexus)        (Vite)
-apps/commerce   ระบบย่อย 2 — ตลาดฟรีแลนซ์ + escrow จำลอง           (Next.js)
+apps/commerce   ระบบย่อย 2 — ตลาดฟรีแลนซ์ จ่ายตรงเข้าพร้อมเพย์ผู้ขาย  (Next.js)
+apps/crocbyte   เว็บรับงานของเจ้าของคนเดียว (legacy, Firebase)     (Next.js)
 apps/toolboxes  ระบบย่อย 3 — dev tools + MCP inspector (dupe)      (Vite)
 apps/tarot      ระบบย่อย 4 — AI tarot 3D, WebGPU/BYOK             (Vite)
 apps/design     ระบบย่อย 5 — component & prompt registry          (Next.js)
@@ -43,7 +44,7 @@ pnpm format:check    # CI รันด้วย · แก้ด้วย pnpm fo
 pnpm --filter <pkg> <script>
 
 pnpm db:start        # Supabase ในเครื่อง (Docker) เฉพาะ db + auth + rest · pnpm db:status ดู URL/key
-pnpm db:reset        # ล้างฐาน + รัน supabase/migrations ใหม่ (ลบผู้ใช้ทดสอบด้วย)
+pnpm db:reset        # ล้างฐาน + รัน supabase/migrations ใหม่ + supabase/seed.sql (บัญชีเดโมในเครื่อง ดูหัวไฟล์ seed)
 pnpm db:test         # pgTAP ใน supabase/tests — RLS ทุกตารางต้องมีเทสต์
 pnpm db:types        # สร้าง packages/core/src/database.types.ts ใหม่หลังแก้ migration
 pnpm --filter @empire/hub dev        # http://localhost:3000
@@ -51,11 +52,13 @@ pnpm --filter @empire/toolboxes dev  # http://localhost:3003
 pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็อกอิน)
 pnpm --filter @empire/community dev  # http://localhost:3001 (ต้องล็อกอิน)
 pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จริง (ต้อง db:start)
+pnpm --filter @empire/crocbyte dev     # http://localhost:3007 เว็บรับงานเดิม (ยังใช้ Firebase)
 ```
 
 - `db:start` เปิด storage + realtime ด้วย · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
 - canva / community: หน้าจอเดิมของ csmju-canvas / csmju-nexus เรียก `api.get('/designs/…')` → `src/lib/backend/api.ts` ของแอปแปลงเป็น Supabase · path ที่ยังไม่รองรับตอบ 501 · `lib/router.tsx` แทน `next/link` / `next/navigation` · unit test ใช้ `src/test/router-mock.tsx` แทน router จริง
-- community ย้ายทีละรอบ (Full Nexus): 1 social graph ✅ · 2 แชต + Realtime ✅ (`socket.ts` = ตัวกระจาย event แบบ socket.io ที่ป้อนด้วย Supabase Realtime · `pnpm --filter @empire/community smoke:chat`) · 3 ฟีด + อัปโหลด ✅ (ไบต์อยู่ใน bucket ส่วนตัว `community-*` · intent → PUT signed URL → `commit_asset` อ่านขนาด/ชนิดจริงจาก storage.objects · SQL ลบแถวแล้วแอปเรียก `purge()` ลบไบต์ · `pnpm --filter @empire/community smoke:feed`) · 4 reels/stories/notes · 5 แจ้งเตือน/ค้นหา/ตั้งค่า · 6 ประชุม/เสียง (WebRTC) · 7 admin/report
+- community ย้ายทีละรอบ (Full Nexus): 1 social graph ✅ · 2 แชต + Realtime ✅ (`socket.ts` = ตัวกระจาย event แบบ socket.io ที่ป้อนด้วย Supabase Realtime · `pnpm --filter @empire/community smoke:chat`) · 3 ฟีด + อัปโหลด ✅ (ไบต์อยู่ใน bucket ส่วนตัว `community-*` · intent → PUT signed URL → `commit_asset` อ่านขนาด/ชนิดจริงจาก storage.objects · SQL ลบแถวแล้วแอปเรียก `purge()` ลบไบต์ · `pnpm --filter @empire/community smoke:feed`) · 4 reels/stories/notes ✅ (ตัวนับขยับใน RPC เท่านั้น · การ์ดแชร์ในแชท resolve ตอนอ่านใน `embeds.ts` · ตอบสตอรี่ = DM ที่มีการ์ด STORY) · 5 แจ้งเตือน/ค้นหา/ตั้งค่า ✅ (แจ้งเตือนเกิดจาก trigger บนตารางต้นทาง → `community.notify()` ตัดสินตาม preference · audit_logs เขียนด้วย trigger · `smoke:notify`) · 6 ประชุม/เสียง (WebRTC) ✅ (เหตุการณ์ของสายส่งด้วย `realtime.send` ไป topic ส่วนตัว `user:<id>` · สัญญาณ WebRTC บน `voice:<session>` เฉพาะคนในห้อง · heartbeat 25 วิ ใครเงียบเกิน 90 วิถูกกวาดออก · `smoke:voice`) · 7 admin/report ✅ (ผู้ดูแล = `profiles.role = ADMIN` · คนแรกตั้งด้วย SQL: `update community.profiles set role = 'ADMIN' where user_id = (select id from auth.users where email = '…')` · โควตาต่อคนใน `profiles.storage_quota_bytes`)
+- CMS: schema `cms` (เนื้อหาสาธารณะ อ่านได้ทุกคน เขียนได้เฉพาะ `cms.admins`) · แก้ที่ hub `/admin` · แต่ละแอปประกาศหน้า/ช่องที่แก้ได้เป็น `CmsPage` พร้อมค่าเริ่มต้นในโค้ด (hub: `apps/hub/src/lib/cms.ts` → `CMS_PAGES`) แล้วอ่านด้วย `readCms` + `resolveCms` จาก `@empire/core/cms` (DB ล่ม = แสดงค่าเริ่มต้น) · ตั้งแอดมินคนแรกด้วย SQL (ห้าม commit อีเมล): `insert into cms.admins (user_id) select id from auth.users where email = '…'` · ในเครื่อง `admin@empire.local` เป็นแอดมินจาก seed
 - กติกาความเป็นส่วนตัว (บล็อก · ใครเห็นอะไร) ต้องอยู่ใน RLS / ฟังก์ชัน SQL พร้อม pgTAP — ห้ามอยู่แค่ใน `api.ts`
 - `pnpm verify` จำกัด `--concurrency=50%` — ถ้ารันพร้อมกันหมด worker ของ vitest start ไม่ทัน
 
@@ -66,9 +69,12 @@ pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จร�
 - SPA: Supabase SDK โหลดแบบ lazy (`loadSupabase()`) ไม่ให้ถ่วงหน้าแรก · ล็อกอินที่ hub เสมอ (`signInUrl()`)
 - Auth ฝั่ง server: ใช้ `getClaims()` (ตรวจลายเซ็น JWT) เท่านั้น ห้ามเชื่อ `getSession()` · ทุก `?next=` ผ่าน `safeNext` (hub) / `safeRedirectTarget` จาก `@empire/core/redirect`
 - สร้าง Supabase client ผ่าน `@empire/core/supabase` เสมอ — cookie options ต้องเหมือนกันทุกแอปไม่งั้น SSO ข้าม subdomain พัง
+- ธีม = cookie กลาง `em-theme` (`@empire/core/theme`) ทุกแอปเห็นค่าเดียวกัน · แอปใหม่ต้องมี `public/theme-boot.js` (สร้าง: `WRITE_THEME_BOOT=1 pnpm --filter @empire/core test`) และโหลดใน `<head>` · ปุ่มธีมอยู่ใน `HubSwitcher` แล้ว · บรรยากาศ (ฤดูกาล/ดาวตก) = cookie `em-ambience` + `<Ambience/>` ก็อยู่ใน `HubSwitcher` · ของที่ขยับตลอดใส่คลาส `vt-live` ไม่ให้ค้างตอนสลับธีม
 - Worker: export method ผ่าน `validated(schema, fn)` + `expose` จาก `@empire/core/worker`
 - package ใหม่: `eslint.config.js` = `base(import.meta.dirname)` จาก `@empire/config/eslint` (SPA ใช้ `react()` จาก `@empire/config/eslint/react`) · `tsconfig.json` extends `@empire/config/tsconfig/base.json` (หรือ `react.json`)
 - TypeScript ล็อก `~6.0` — typescript-eslint ยังไม่รองรับ TS 7 · TS 6 ตั้ง `types: []` เป็นค่าเริ่มต้น ต้องใส่ `types` เองเมื่อใช้ `node` / `vite/client`
+
+- งาน UI ทุกชิ้นต้องตรง template ดีไซน์ crocwork.studio — โหลด skill `crocwork-design` (`.claude/skills/crocwork-design/SKILL.md`) ก่อนเสมอ
 
 ## กฎที่ห้ามละเมิด
 

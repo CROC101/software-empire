@@ -1,1 +1,597 @@
 @import "@empire/ui/styles.css";
+
+/* UI fonts (OFL, files in public/fonts) — the same pair as Community and Canvas */
+@font-face {
+  font-family: "Noto Sans Thai UI";
+  src: url("/fonts/NotoSansThai-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans UI";
+  src: url("/fonts/PlusJakartaSans-Variable.ttf") format("truetype");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Noto Sans Thai UI", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans UI", "Noto Sans Thai UI", ui-sans-serif, sans-serif;
+}
+
+@layer components {
+  /* soft aurora glow behind hero sections; purely decorative */
+  .hub-aurora-backdrop {
+    background:
+      radial-gradient(60rem 30rem at 10% -10%, oklch(0.61 0.225 286 / 0.22), transparent 60%),
+      radial-gradient(50rem 28rem at 95% 0%, oklch(0.64 0.25 338 / 0.16), transparent 60%),
+      radial-gradient(40rem 24rem at 60% 110%, oklch(0.76 0.16 32 / 0.12), transparent 60%);
+  }
+}
+
+@layer components {
+  /* crocwork.studio hero: blue accent, dark globe with a cyan rim glow behind the phones */
+  .cw-blue {
+    color: var(--em-blue-600);
+  }
+  .cw-btn-blue {
+    background: var(--em-blue-600);
+    color: var(--em-ink-0);
+  }
+  .cw-btn-blue:hover {
+    background: var(--em-blue-700);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cw-float {
+      animation: cw-float 6s ease-in-out infinite;
+    }
+  }
+  @keyframes cw-float {
+    50% {
+      translate: 0 -0.5rem;
+    }
+  }
+}
+
+@layer components {
+  /* the headline underline draws itself once, like a pen stroke */
+  @media (prefers-reduced-motion: no-preference) {
+    .cw-draw {
+      stroke-dasharray: 340;
+      stroke-dashoffset: 340;
+      animation: cw-draw 900ms 600ms ease-out forwards;
+    }
+  }
+  @keyframes cw-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+/* anchor links glide instead of jumping; the sticky header never covers a section title */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+html {
+  scroll-padding-top: 4.5rem;
+}
+
+/* mobile menu sheet: drops from the top, links follow one by one */
+@media (prefers-reduced-motion: no-preference) {
+  .em-sheet[open] {
+    animation: em-sheet-in 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .em-sheet[open] .em-sheet-item {
+    animation: em-sheet-item 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+@keyframes em-sheet-in {
+  from {
+    transform: translate3d(0, -24px, 0);
+    opacity: 0;
+  }
+}
+@keyframes em-sheet-item {
+  from {
+    transform: translate3d(0, 12px, 0);
+    opacity: 0;
+  }
+}
+
+/* terminal caret */
+@media (prefers-reduced-motion: no-preference) {
+  .em-cursor {
+    animation: em-blink 1.05s steps(1, end) infinite;
+  }
+}
+@keyframes em-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* first-visit intro (intro-gate.tsx, public/intro-boot.js) */
+.intro-cover {
+  display: none;
+}
+html.em-intro {
+  overflow: hidden;
+}
+html.em-intro .intro-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: block;
+  background: var(--em-ink-975);
+}
+.intro-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+/* the gate takes over from the cover in the same colour: a fade-in would show the page through */
+.intro-layer .skp-gate {
+  animation: none;
+}
+.intro-skip {
+  position: absolute;
+  top: clamp(16px, 3vh, 30px);
+  right: clamp(16px, 3vw, 36px);
+  z-index: 3;
+  border: 1px solid oklch(1 0 0 / 0.25);
+  padding: 0.4rem 0.9rem;
+  font:
+    400 11px/1.4 ui-monospace,
+    Menlo,
+    Consolas,
+    monospace;
+  letter-spacing: 0.2em;
+  color: var(--em-ink-200);
+}
+
+/* header water pill: icons only where the header is tight (labels stay for screen readers) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .site-nav .nimbus-item {
+    padding: 0 13px;
+  }
+  .site-nav .nimbus-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* pocket headline: letters stand out of the page, a stacked shadow cut in the ink colours */
+/* deep-water extrusion, falling away from the moon (light from the upper right) */
+.pk-depth {
+  color: var(--foreground);
+  text-shadow:
+    -1px 1px 0 color-mix(in oklab, var(--em-blue-700) 35%, var(--background)),
+    -2px 2px 0 color-mix(in oklab, var(--em-blue-700) 30%, var(--background)),
+    -3px 3px 0 color-mix(in oklab, var(--em-blue-700) 25%, var(--background)),
+    -4px 4px 0 color-mix(in oklab, var(--em-blue-700) 20%, var(--background)),
+    -6px 10px 24px color-mix(in oklab, var(--em-blue-700) 30%, transparent);
+}
+.pk-depth-blue {
+  /* water: clear at the top, deep at the bottom */
+  background: linear-gradient(
+    180deg,
+    var(--em-sky-500),
+    var(--em-blue-500) 50%,
+    var(--em-blue-700)
+  );
+  background-clip: text;
+  color: transparent;
+  /* the gradient fill hides the parent's shadow; give the blue line its own, in front-to-back order */
+  filter: drop-shadow(-2px 2px 0 color-mix(in oklab, var(--em-blue-700) 55%, var(--background)))
+    drop-shadow(-4px 8px 12px color-mix(in oklab, var(--em-blue-700) 28%, transparent));
+  text-shadow: none;
+}
+
+/* water lettering (เผ่าน้ำ): light netting through the letters. Two still nets of caustics
+   (alpha-only masks over the light colour) crossfade, so it shimmers on opacity alone. The
+   element repeats its text in data-text. */
+.cw-water-text {
+  position: relative;
+  /* inline-block: the overlay's box is then the same line box as the text it repeats */
+  display: inline-block;
+}
+.cw-water-text::before,
+.cw-water-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  background: var(--em-ink-0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20144%2064'%3E%3Cpath%20d%3D'M0%2010.9%20Q36%202.7%2072%2010.9%20T144%2010.9%20M0%2024.7%20Q36%2017.7%2072%2024.7%20T144%2024.7%20M0%2042.7%20Q36%2034.6%2072%2042.7%20T144%2042.7%20M0%2056.5%20Q36%2047.0%2072%2056.5%20T144%2056.5%20M4.7%200%20Q18.0%2032%208.7%2064%20M26.3%200%20Q42.5%2032%2030.3%2064%20M53.3%200%20Q63.9%2032%2057.3%2064%20M76.0%200%20Q87.9%2032%2080.0%2064%20M101.4%200%20Q112.6%2032%20105.4%2064%20M124.5%200%20Q138.4%2032%20128.5%2064'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'2.2'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E")
+    0 0 / 9rem 4rem repeat;
+  opacity: 0.45;
+  pointer-events: none;
+}
+.cw-water-text::after {
+  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20144%2064'%3E%3Cpath%20d%3D'M0%2010.7%20Q36%202.2%2072%2010.7%20T144%2010.7%20M0%2025.2%20Q36%2017.6%2072%2025.2%20T144%2025.2%20M0%2040.9%20Q36%2034.8%2072%2040.9%20T144%2040.9%20M0%2060.7%20Q36%2052.4%2072%2060.7%20T144%2060.7%20M6.9%200%20Q24.8%2032%2010.9%2064%20M26.3%200%20Q37.5%2032%2030.3%2064%20M51.4%200%20Q67.3%2032%2055.4%2064%20M74.4%200%20Q88.7%2032%2078.4%2064%20M98.5%200%20Q114.2%2032%20102.5%2064%20M125.9%200%20Q139.4%2032%20129.9%2064'%20fill%3D'none'%20stroke%3D'black'%20stroke-width%3D'2.2'%20stroke-linecap%3D'round'%2F%3E%3C%2Fsvg%3E");
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-water-text::before {
+    animation: cw-shimmer 5s ease-in-out infinite alternate;
+  }
+  .cw-water-text::after {
+    animation: cw-shimmer 5s ease-in-out infinite alternate-reverse;
+  }
+}
+@keyframes cw-shimmer {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0.05;
+  }
+}
+
+/* selected work: a stage with a horizon and a grid floor; apps as glass tiles on it */
+.sw-horizon {
+  position: absolute;
+  inset: auto -10% 28% -10%;
+  height: 46%;
+  background:
+    radial-gradient(
+      60% 70% at 50% 100%,
+      color-mix(in oklab, var(--em-blue-500) 26%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      35% 50% at 30% 100%,
+      color-mix(in oklab, var(--em-violet-500) 18%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      35% 50% at 72% 100%,
+      color-mix(in oklab, var(--em-sky-500) 16%, transparent),
+      transparent 70%
+    );
+  filter: blur(8px);
+}
+.sw-floor {
+  position: absolute;
+  left: -40%;
+  right: -40%;
+  bottom: -10%;
+  height: 46%;
+  transform: perspective(600px) rotateX(64deg);
+  transform-origin: 50% 0%;
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--em-blue-500) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--em-blue-500) 22%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+}
+.sw-app {
+  display: flex;
+  width: 5.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 1.25rem;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+a.sw-app:hover,
+a.sw-app:focus-visible {
+  transform: translateY(-8px);
+}
+.sw-tile {
+  position: relative;
+  display: grid;
+  width: 4.25rem;
+  height: 4.25rem;
+  place-items: center;
+  border-radius: 1.3rem;
+  color: var(--em-ink-0);
+  background:
+    linear-gradient(160deg, rgb(255 255 255 / 0.45), transparent 42%),
+    linear-gradient(
+      145deg,
+      color-mix(in oklab, var(--a) 75%, white),
+      var(--a) 55%,
+      color-mix(in oklab, var(--a) 70%, black)
+    );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    inset 0 -2px 6px rgb(0 0 0 / 0.18),
+    0 14px 30px -12px color-mix(in oklab, var(--a) 70%, transparent);
+  -webkit-box-reflect: below 8px linear-gradient(transparent 60%, rgb(0 0 0 / 0.22));
+  transition: box-shadow 0.35s ease;
+}
+a.sw-app:hover .sw-tile,
+a.sw-app:focus-visible .sw-tile {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    inset 0 -2px 6px rgb(0 0 0 / 0.18),
+    0 20px 44px -10px color-mix(in oklab, var(--a) 90%, transparent);
+}
+.sw-dot {
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  box-shadow: 0 0 0 2.5px var(--background);
+}
+
+/* status band: blueprint grid, glass stat cards, a glowing terminal */
+.st-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(70% 80% at 60% 50%, #000, transparent);
+}
+.st-card {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.09);
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.02));
+  backdrop-filter: blur(8px);
+}
+/* the gradient sits on each rolling numeral: text clipping across moving children is unreliable */
+.st-num .rc-numeral,
+.st-num .rc-row > :not(.rc-digit) {
+  background: linear-gradient(
+    180deg,
+    var(--em-ink-0),
+    color-mix(in oklab, var(--em-sky-500) 70%, var(--em-ink-0))
+  );
+  background-clip: text;
+  color: transparent;
+}
+.st-term {
+  position: relative;
+  border-radius: 0.85rem;
+  background: color-mix(in oklab, var(--em-ink-950) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.08),
+    0 30px 80px -30px color-mix(in oklab, var(--em-blue-500) 55%, transparent);
+}
+/* a gradient hairline round the window */
+.st-term::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--em-blue-500),
+    transparent 40%,
+    transparent 60%,
+    var(--em-violet-500)
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.st-pill {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+}
+.st-pill--on {
+  color: var(--em-success-dark);
+  background: color-mix(in oklab, var(--em-success) 16%, transparent);
+}
+.st-pill--wip {
+  color: var(--em-gold-300);
+  background: color-mix(in oklab, var(--em-gold-500) 14%, transparent);
+}
+.st-live {
+  position: relative;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--em-success-dark);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .st-live::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: st-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+}
+@keyframes st-ping {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* glass, the same material as the water menu: frosted, a bright rim, a blue shadow */
+.cw-glass {
+  border: 1px solid color-mix(in oklab, var(--foreground) 9%, transparent);
+  background: color-mix(in oklab, var(--background) 62%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
+    0 10px 30px -14px color-mix(in oklab, var(--em-blue-700) 35%, transparent);
+  backdrop-filter: blur(14px) saturate(1.5);
+}
+
+/* stars twinkling round the where-globe (after 21st.dev "globe": its twinkle, our tokens) */
+.cw-stars {
+  --cw-star: var(--em-blue-500);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.dark .cw-stars {
+  --cw-star: var(--em-ink-0);
+}
+.cw-star {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 999px;
+  background: var(--cw-star);
+  box-shadow: 0 0 calc(var(--s) * 2.5) var(--cw-star);
+  translate: -50% -50%;
+  opacity: 0.55;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-star {
+    opacity: 0.12;
+    animation: cw-twinkle var(--t) ease-in-out var(--d) infinite;
+  }
+}
+@keyframes cw-twinkle {
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* cookie notice (cookie-notice.tsx): a glass card with water lapping along its foot; .cw-water is
+   the shared lapping water band (the cookie card, the hero's team box, the hero button) */
+.cw-cookie {
+  position: fixed;
+  z-index: 45;
+  left: 0.75rem;
+  right: 5rem; /* clear of the back-to-top button */
+  bottom: 0.75rem;
+  max-width: 24rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  padding: 1.1rem 1.1rem 1.25rem;
+  /* firmer than .cw-glass: it sits over dark bands and busy sections and must stay readable */
+  background: color-mix(in oklab, var(--background) 90%, transparent);
+}
+@media (min-width: 640px) {
+  .cw-cookie {
+    left: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+.cw-water {
+  position: absolute;
+  inset: auto 0 0;
+  height: 3.25rem;
+  transform-origin: bottom;
+  pointer-events: none;
+}
+/* each layer: a strip twice the card's width, its wavy top a repeating mask, slid sideways */
+.cw-water > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 200%;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--em-sky-500) 30%, transparent),
+    color-mix(in oklab, var(--em-blue-500) 22%, transparent)
+  );
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 14 C25 4 50 4 75 14 S125 24 150 14 S175 4 200 14 V40 H0 Z'/%3E%3C/svg%3E")
+    0 0 / 50% 100% repeat-x;
+}
+.cw-water > span + span {
+  opacity: 0.6;
+  translate: 0 0.35rem;
+  mask-position: 25% 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cw-cookie {
+    animation: cw-cookie-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .cw-water {
+    animation: cw-cookie-rise 1100ms 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .cw-water > span {
+    animation: cw-cookie-lap 7s linear infinite;
+  }
+  .cw-water > span + span {
+    animation-duration: 11s;
+    animation-direction: reverse;
+  }
+  /* accepted: the water fills the card, then it all slips away */
+  .cw-cookie[data-leaving] {
+    animation: cw-cookie-out 900ms cubic-bezier(0.5, 0, 0.75, 0) both;
+  }
+  .cw-cookie[data-leaving] .cw-water {
+    animation: cw-cookie-fill 600ms cubic-bezier(0.3, 0, 0.2, 1) both;
+  }
+}
+@keyframes cw-cookie-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+@keyframes cw-cookie-rise {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes cw-cookie-lap {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes cw-cookie-fill {
+  to {
+    transform: scaleY(7);
+  }
+}
+@keyframes cw-cookie-out {
+  0%,
+  55% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+}
+
+/* the hero's main button: water rises inside it on hover / focus */
+.cw-btn-water {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cw-btn-water > .cw-water {
+  z-index: -1;
+  height: 100%;
+  animation: none;
+  transform: translateY(100%);
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cw-btn-water:hover > .cw-water,
+.cw-btn-water:focus-visible > .cw-water {
+  transform: translateY(40%);
+}
+
+/* the left-edge section list (edge-nav.tsx): one line per section, a size smaller */
+.edge-nav .line-sidebar__label {
+  font-size: 0.875rem;
+  white-space: nowrap;
+}

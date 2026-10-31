@@ -5,16 +5,23 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./styles.css": "./src/styles.css"
+    "./styles.css": "./src/styles.css",
+    "./palette.css": "./src/palette.css"
   },
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc -p ."
   },
   "dependencies": {
+    "@empire/core": "workspace:*",
+    "@paper-design/shaders-react": "^0.0.82",
+    "@radix-ui/react-hover-card": "^1.2.1",
     "@radix-ui/react-slot": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cobe": "^2.0.1",
+    "lucide-react": "^1.61.0",
+    "motion": "^12.43.0",
     "tailwind-merge": "^3.7.0",
     "tailwindcss": "^4.3.3"
   },

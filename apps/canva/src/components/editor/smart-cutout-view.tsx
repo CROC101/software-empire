@@ -262,7 +262,7 @@ export function SmartCutoutView({
     if (rect) {
       ctx.setLineDash([6, 4]);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgb(33 84 217)';
+      ctx.strokeStyle = 'oklch(0.535 0.245 284)';
       ctx.strokeRect(
         Math.min(rect.x0, rect.x1) * canvas.width,
         Math.min(rect.y0, rect.y1) * canvas.height,

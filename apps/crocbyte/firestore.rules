@@ -1,0 +1,82 @@
+rules_version = '2';
+
+// CrocByte (Firebase project crocbyte-system). Deploy: see README.md, "Security rules".
+//
+// Shape of the data, as the app uses it:
+//   users/{uid}            private: contact details (phone, address, LINE), totals. Owner + admin.
+//   leaderboard/{uid}      public projection for the ranking page: name, photo, total, VIP.
+//                          Written by the admin page (mirror of users/); owners may refresh their
+//                          own name/photo, never their totals.
+//   transactions/{id}      purchases; the customer sees their own (userId), admin writes.
+//   services/{id}          the catalogue; public read, admin write.
+//   system/info            the update log banner; public read, admin write.
+//   ranking_comments/{id}  public chat on the ranking page; members post as themselves, react to
+//                          anyone's message, delete their own.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    // the shop owner; mirrors ADMIN_EMAIL in src/app/admin/page.tsx
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email == 'skizzkat@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+    function onlyChanges(fields) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields);
+    }
+
+    match /users/{uid} {
+      allow read: if isSelf(uid) || isAdmin();
+      // sign-up writes the profile once, starting at zero: nobody grants themselves VIP
+      allow create: if isAdmin()
+        || (isSelf(uid) && request.resource.data.totalSpent == 0 && request.resource.data.vipLevel == 0);
+      // members edit their contact details and photo; totals and VIP are the admin's
+      allow update: if isAdmin()
+        || (isSelf(uid) && onlyChanges(['realName', 'nickname', 'phone', 'address', 'lineId', 'photoURL', 'name', 'lastUpdated']));
+      allow delete: if isAdmin();
+    }
+
+    match /leaderboard/{uid} {
+      allow read: if true;
+      allow write: if isAdmin();
+      allow update: if isSelf(uid) && onlyChanges(['name', 'photoURL']);
+    }
+
+    match /transactions/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
+    match /services/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /system/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /ranking_comments/{id} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.text is string
+        && request.resource.data.text.size() <= 1000;
+      // reacting = touching only the reactions list
+      allow update: if signedIn() && onlyChanges(['reactions']);
+      allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
+    // anything not listed above is closed
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

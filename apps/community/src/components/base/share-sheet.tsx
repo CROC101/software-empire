@@ -368,7 +368,7 @@ function Tile({
 function ExternalShareRow({ target }: { target: ShareTarget }) {
   const scroller = useRef<HTMLDivElement | null>(null);
   const url = shareUrl(target);
-  const text = "ดูบน CS Nexus";
+  const text = "ดูบน Empire Community";
   const e = encodeURIComponent;
   const mobile =
     typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);

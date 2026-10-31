@@ -1,11 +1,24 @@
 "use client";
 
 import { Button, Input, Label } from "@empire/ui";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { authenticate, type AuthState } from "./actions";
+import { VerifyCode } from "./verify-code";
 
 export function LoginForm({ next }: { next: string }) {
   const [state, action, pending] = useActionState(authenticate, {} satisfies AuthState);
+  // "เปลี่ยนอีเมล" leaves the code screen without throwing away the typed address
+  const [left, setLeft] = useState<AuthState | null>(null);
+
+  if (state.verify && state.email && left !== state)
+    return (
+      <VerifyCode
+        email={state.email}
+        purpose={state.verify}
+        next={next}
+        onBack={() => setLeft(state)}
+      />
+    );
 
   return (
     <form action={action} className="flex flex-col gap-4">
@@ -45,11 +58,29 @@ export function LoginForm({ next }: { next: string }) {
         </p>
       )}
 
-      <Button type="submit" name="intent" value="signin" disabled={pending}>
+      <Button
+        type="submit"
+        name="intent"
+        value="signin"
+        variant="default"
+        className="bg-[var(--em-blue-600)] text-[var(--em-ink-0)] hover:bg-[var(--em-blue-700)]"
+        disabled={pending}
+      >
         {pending ? "กำลังดำเนินการ…" : "เข้าสู่ระบบ"}
       </Button>
       <Button type="submit" name="intent" value="signup" variant="outline" disabled={pending}>
         สมัครสมาชิกใหม่
+      </Button>
+      {/* formNoValidate: a code login needs only the email, not the password field */}
+      <Button
+        type="submit"
+        name="intent"
+        value="code"
+        variant="ghost"
+        formNoValidate
+        disabled={pending}
+      >
+        เข้าสู่ระบบด้วยรหัสทางอีเมล
       </Button>
     </form>
   );

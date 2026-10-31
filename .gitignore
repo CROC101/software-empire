@@ -26,3 +26,15 @@ Thumbs.db
 
 # owner's working notes at the repo root (session logs, drafts) — never published
 /*.txt
+
+# local knowledge-graph output (graphify)
+graphify-out/
+
+# local tool / agent scratch
+.claude/worktrees/
+.worktree-next-upgrade/
+
+# Cloudflare (OpenNext / wrangler) build output and local secrets
+.open-next/
+.wrangler/
+.dev.vars*

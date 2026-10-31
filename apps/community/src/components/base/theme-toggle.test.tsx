@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { THEME_KEY, ThemeToggle } from "./theme-toggle";
+import { THEME_COOKIE } from "@empire/core/theme";
+import { ThemeToggle } from "./theme-toggle";
 
 /// เทสต์ปุ่มสลับธีม
 ///
@@ -26,7 +27,7 @@ function mockMatchMedia(prefersDark: boolean) {
 }
 
 beforeEach(() => {
-  window.localStorage.clear();
+  document.cookie = `${THEME_COOKIE}=; Max-Age=0; Path=/`;
   document.documentElement.className = "";
   document.documentElement.style.colorScheme = "";
 });
@@ -94,35 +95,16 @@ describe("ปุ่มสลับธีม", () => {
 
     await userEvent.click(screen.getByRole("radio", { name: "มืด" }));
 
-    // คีย์นี้ถูกเขียนซ้ำเป็นสตริงตรง ๆ ในสคริปต์ที่ app/layout.tsx ฝังใน
-    // <head> (มันรันก่อน JavaScript ของแอปถูกโหลด จึง import ไม่ได้)
-    // ถ้าสองที่ไม่ตรงกัน หน้าจะกะพริบขาวหนึ่งเฟรมทุกครั้งที่โหลด
-    expect(THEME_KEY).toBe("nx:theme");
-    expect(window.localStorage.getItem(THEME_KEY)).toBe("dark");
+    // cookie กลางของทุกแอปใน hub — theme-boot.js ของทุกแอปอ่านค่านี้ก่อนวาดเฟรมแรก
+    expect(document.cookie).toContain(`${THEME_COOKIE}=dark`);
   });
 
   it("อ่านค่าที่จำไว้ตอนเปิดหน้าใหม่", () => {
     mockMatchMedia(false);
-    window.localStorage.setItem(THEME_KEY, "dark");
+    document.cookie = `${THEME_COOKIE}=dark; Path=/`;
 
     render(<ThemeToggle />);
 
     expect(screen.getByRole("radio", { name: "มืด" })).toBeChecked();
-  });
-
-  it("localStorage ใช้ไม่ได้ก็ยังเปลี่ยนธีมได้ แค่จำไม่ได้", async () => {
-    mockMatchMedia(false);
-    const setItem = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
-      throw new Error("โหมดส่วนตัวบล็อกไว้");
-    });
-
-    render(<ThemeToggle />);
-
-    // ต้องไม่โยน error ออกมาทำให้ทั้งหน้าพัง
-    await userEvent.click(screen.getByRole("radio", { name: "มืด" }));
-
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
-
-    setItem.mockRestore();
   });
 });

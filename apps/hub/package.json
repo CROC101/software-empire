@@ -5,17 +5,29 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --port 3000",
+    "shots": "node scripts/screenshots.mjs",
     "build": "next build",
     "start": "next start --port 3000",
     "typegen": "next typegen",
     "lint": "eslint .",
     "typecheck": "tsc -p .",
-    "smoke": "node --env-file=.env.local e2e/auth-smoke.ts"
+    "smoke": "node --env-file=.env.local e2e/auth-smoke.ts",
+    "contributions": "node scripts/contributions.mjs",
+    "codebase": "node scripts/codebase.mjs",
+    "rhythm": "node scripts/rhythm.mjs",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview"
   },
   "dependencies": {
     "@empire/core": "workspace:*",
     "@empire/ui": "workspace:*",
-    "next": "^16.4.0",
+    "@fontsource/bodoni-moda": "^5.3.0",
+    "@fontsource/caveat": "^5.3.0",
+    "@fontsource/fleur-de-leah": "^5.3.0",
+    "@fontsource/syncopate": "^5.3.0",
+    "lucide-react": "^1.61.0",
+    "motion": "^12.43.0",
+    "next": "^16.4.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "server-only": "^0.0.1",
@@ -23,13 +35,15 @@
   },
   "devDependencies": {
     "@empire/config": "workspace:*",
+    "@opennextjs/cloudflare": "^1.20.13",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^10.12.0",
-    "eslint-config-next": "^16.4.0",
+    "eslint-config-next": "^16.4.3",
     "tailwindcss": "^4.3.3",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "wrangler": "^4.152.0"
   }
 }

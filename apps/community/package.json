@@ -12,10 +12,13 @@
     "test": "vitest run",
     "smoke": "node --env-file=.env.local e2e/social-smoke.ts",
     "smoke:chat": "node --env-file=.env.local e2e/chat-realtime-smoke.ts",
-    "smoke:feed": "node --env-file=.env.local e2e/feed-storage-smoke.ts"
+    "smoke:feed": "node --env-file=.env.local e2e/feed-storage-smoke.ts",
+    "smoke:notify": "node --env-file=.env.local e2e/notify-smoke.ts",
+    "smoke:voice": "node --env-file=.env.local e2e/voice-smoke.ts"
   },
   "dependencies": {
     "@empire/core": "workspace:*",
+    "@empire/ui": "workspace:*",
     "@supabase/supabase-js": "^2.117.3",
     "@tanstack/react-query": "^5.104.2",
     "lucide-react": "^1.56.0",
@@ -41,6 +44,7 @@
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",
     "vite": "^8.3.4",
-    "vitest": "^5.0.4"
+    "vitest": "^5.0.4",
+    "wrangler": "^4.152.0"
   }
 }

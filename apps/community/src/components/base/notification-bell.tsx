@@ -3,7 +3,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, Heart } from "lucide-react";
 import { api } from "@/lib/backend/api";
 import { bindSocket, connectSocket, onSocketReconnect } from "@/lib/backend/socket";
-import { describeNotification, timeAgo } from "@/lib/backend/notifications";
+import { timeAgo } from "@/lib/backend/notifications";
+import { NotificationText } from "@/components/base/notification-text";
 import type { Notification } from "@/lib/backend/types";
 import { NotificationsPanel } from "@/components/base/notifications-panel";
 
@@ -165,7 +166,10 @@ export function NotificationBell({
 
       {open && variant === "rail" && (
         // แผงแบบ Instagram — เลื่อนออกจากขอบแถบ เต็มความสูง มุมขวาโค้ง
-        <div className="fixed inset-y-0 left-[4.5rem] z-50 w-[24.8rem] max-w-[calc(100vw-4.5rem)] overflow-hidden rounded-r-2xl border-r border-border bg-background shadow-nx-lg animate-in slide-in-from-left-4 fade-in-0 duration-200">
+        <div
+          data-rail-panel
+          className="fixed inset-y-0 left-[4.5rem] z-50 w-[24.8rem] max-w-[calc(100vw-4.5rem)] overflow-hidden rounded-r-2xl border-r border-border bg-background shadow-nx-lg animate-in slide-in-from-left-4 fade-in-0 duration-200"
+        >
           <NotificationsPanel unread={unread} onClose={() => setOpen(false)} />
         </div>
       )}
@@ -202,7 +206,9 @@ export function NotificationBell({
                     item.readAt ? "" : "bg-secondary/60"
                   }`}
                 >
-                  <span className="block text-sm leading-snug">{describeNotification(item)}</span>
+                  <span className="block text-sm leading-snug">
+                    <NotificationText item={item} />
+                  </span>
                   <span className="mt-0.5 block text-[11px] text-muted-foreground">
                     {timeAgo(item.createdAt)}
                     {item.readAt ? "" : " · ยังไม่อ่าน"}

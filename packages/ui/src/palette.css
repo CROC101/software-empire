@@ -1,0 +1,109 @@
+/*
+ * Empire palette — "Aurora": royal violet, an aurora sweep (violet → fuchsia → coral) and a
+ * midnight-violet rail, on cool violet-tinted neutrals. One source of truth: every app maps its
+ * own semantic tokens (bg-primary, --nx-*, --cv-*) onto these, so a rebrand is one file.
+ * Raw scales only — no selectors that change per theme, no Tailwind. Apps decide light/dark.
+ */
+:root {
+  /* brand — royal violet; 600 is the primary on light, 400 on dark */
+  --em-violet-50: oklch(0.975 0.018 292);
+  --em-violet-100: oklch(0.945 0.04 292);
+  --em-violet-200: oklch(0.885 0.08 291);
+  --em-violet-300: oklch(0.795 0.13 290);
+  --em-violet-400: oklch(0.7 0.185 288);
+  --em-violet-500: oklch(0.61 0.225 286);
+  --em-violet-600: oklch(0.535 0.245 284);
+  --em-violet-700: oklch(0.465 0.225 283);
+  --em-violet-800: oklch(0.385 0.185 283);
+  --em-violet-900: oklch(0.295 0.13 284);
+  --em-violet-950: oklch(0.21 0.08 285);
+
+  /* aurora accents */
+  --em-fuchsia-400: oklch(0.72 0.21 335);
+  --em-fuchsia-500: oklch(0.64 0.25 338);
+  --em-coral-400: oklch(0.76 0.16 32);
+  --em-coral-500: oklch(0.68 0.2 28);
+  --em-gold-300: oklch(0.88 0.12 85);
+  --em-gold-500: oklch(0.78 0.16 75);
+  --em-teal-400: oklch(0.78 0.13 175);
+  --em-teal-600: oklch(0.6 0.12 170);
+  /* crocodile hide (CrocReveal): olive scutes, deep grooves, pale belly scales */
+  --em-croc-200: oklch(0.86 0.06 115);
+  --em-croc-400: oklch(0.62 0.1 128);
+  --em-croc-600: oklch(0.45 0.085 135);
+  --em-croc-800: oklch(0.3 0.055 140);
+  --em-croc-950: oklch(0.17 0.03 145);
+  --em-sky-500: oklch(0.66 0.15 240);
+  /* crocwork.studio blue — from the S-wave logo */
+  --em-blue-500: oklch(0.6 0.2 258);
+  --em-blue-600: oklch(0.5 0.23 264);
+  --em-blue-700: oklch(0.43 0.21 266);
+  /* sun / moon theme toggle skies */
+  --em-sky-night: linear-gradient(
+    180deg,
+    oklch(0.18 0.06 270) 0%,
+    oklch(0.27 0.09 270) 60%,
+    oklch(0.35 0.11 275) 100%
+  );
+  --em-sky-day: linear-gradient(
+    180deg,
+    oklch(0.7 0.15 245) 0%,
+    oklch(0.84 0.08 235) 60%,
+    oklch(0.95 0.03 230) 100%
+  );
+  --em-sun: oklch(0.76 0.17 55);
+  --em-moon: oklch(0.9 0.1 90);
+
+  /* status */
+  --em-success: oklch(0.6 0.15 160);
+  --em-success-dark: oklch(0.76 0.15 160);
+  --em-warning: oklch(0.7 0.16 65);
+  --em-warning-dark: oklch(0.83 0.15 78);
+  --em-danger: oklch(0.56 0.22 22);
+  --em-danger-dark: oklch(0.7 0.19 22);
+
+  /* neutrals — a whisper of violet so greys sit with the brand instead of against it */
+  --em-ink-0: oklch(1 0 0);
+  --em-ink-25: oklch(0.987 0.004 292);
+  --em-ink-50: oklch(0.972 0.007 292);
+  --em-ink-100: oklch(0.948 0.01 292);
+  --em-ink-200: oklch(0.912 0.014 292);
+  --em-ink-300: oklch(0.84 0.018 291);
+  --em-ink-400: oklch(0.7 0.022 290);
+  --em-ink-500: oklch(0.56 0.025 289);
+  --em-ink-600: oklch(0.45 0.028 288);
+  --em-ink-700: oklch(0.34 0.03 287);
+  --em-ink-800: oklch(0.265 0.032 286);
+  --em-ink-850: oklch(0.225 0.03 286);
+  --em-ink-900: oklch(0.19 0.028 286);
+  --em-ink-950: oklch(0.155 0.024 286);
+  --em-ink-975: oklch(0.13 0.02 286);
+
+  /* signature gradients */
+  --em-aurora: linear-gradient(
+    115deg,
+    var(--em-violet-600) 0%,
+    var(--em-fuchsia-500) 55%,
+    var(--em-coral-400) 100%
+  );
+  --em-aurora-soft: linear-gradient(
+    115deg,
+    oklch(0.535 0.245 284 / 0.14),
+    oklch(0.64 0.25 338 / 0.1) 55%,
+    oklch(0.76 0.16 32 / 0.1)
+  );
+  --em-rail: linear-gradient(
+    165deg,
+    oklch(0.2 0.07 286) 0%,
+    oklch(0.27 0.13 292) 55%,
+    oklch(0.33 0.16 318) 100%
+  );
+  --em-rail-dark: linear-gradient(
+    165deg,
+    oklch(0.13 0.03 286) 0%,
+    oklch(0.19 0.08 292) 60%,
+    oklch(0.24 0.11 315) 100%
+  );
+  --em-glow: 0 8px 28px oklch(0.535 0.245 284 / 0.32);
+  --em-glow-dark: 0 8px 28px oklch(0.7 0.185 288 / 0.3);
+}

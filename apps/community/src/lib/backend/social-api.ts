@@ -19,10 +19,10 @@ import {
   UUID,
 } from "./api-core";
 import { purge, signedUrls } from "./storage";
+import { AVATAR_FRAMES, type AvatarFrame } from "./types";
 import type {
   AudienceCounts,
   FollowEdge,
-  Layer2Role,
   Me,
   MyProfile,
   PrivacySettings,
@@ -35,7 +35,8 @@ import type {
 
 // ── โปรไฟล์ ───────────────────────────────────────────────────────────────
 
-const PROFILE_COLUMNS = "user_id,display_name,avatar_url,cover_url,bio,website,role,created_at";
+const PROFILE_COLUMNS =
+  "user_id,display_name,avatar_url,cover_url,bio,website,role,created_at,avatar_frame";
 
 type ProfileRow = {
   user_id: string;
@@ -46,7 +47,11 @@ type ProfileRow = {
   website: string | null;
   role: string;
   created_at: string;
+  avatar_frame: string;
 };
+
+const isFrame = (value: unknown): value is AvatarFrame =>
+  (AVATAR_FRAMES as readonly unknown[]).includes(value);
 
 const badgeOf = (role: string): ProfileSummary["badge"] => (role === "ADMIN" ? "ADMIN" : null);
 
@@ -124,6 +129,7 @@ async function profileDetail(target: string): Promise<ProfileDetail> {
     bio: p.bio,
     coverUrl: await coverUrl(p, target),
     website: p.website,
+    avatarFrame: isFrame(p.avatar_frame) ? p.avatar_frame : "classic",
   };
 }
 
@@ -147,7 +153,10 @@ async function updateMyProfile(raw: unknown): Promise<MyProfile> {
     website: string | null;
     displayName: string;
     coverAssetId: string | null;
+    avatarFrame: string;
   }>(raw);
+  if (input.avatarFrame !== undefined && !isFrame(input.avatarFrame))
+    throw badRequest("ไม่มีกรอบนี้");
   if (input.coverAssetId !== undefined) {
     const cover = input.coverAssetId === null ? null : idParam(input.coverAssetId, "ไฟล์นี้");
     // set_cover hands back the old cover, whose bytes go now
@@ -159,6 +168,7 @@ async function updateMyProfile(raw: unknown): Promise<MyProfile> {
   if (input.bio !== undefined) patch.bio = input.bio?.trim() || null;
   if (input.website !== undefined) patch.website = input.website?.trim() || null;
   if (input.displayName !== undefined) patch.display_name = input.displayName.trim();
+  if (input.avatarFrame !== undefined) patch.avatar_frame = input.avatarFrame;
   ok(
     await db()
       .from("profiles")
@@ -287,22 +297,14 @@ async function updatePrivacy(raw: unknown): Promise<PrivacySettings> {
 }
 
 async function memberMe(): Promise<SubsystemMember & Me> {
-  const me = await myId();
-  const row = check(
-    await db().from("profiles").select("role,created_at,updated_at").eq("user_id", me).single(),
-  );
-  const role = row.role as Layer2Role;
+  const member = check(await db().rpc("my_member")) as unknown as SubsystemMember;
+  const used = Number(member.storageUsedBytes);
+  const quota = Number(member.storageQuotaBytes);
   return {
-    coreUserId: me,
+    ...member,
     coreRole: "student",
-    layer2Role: role,
-    layer2RoleExplicit: role !== "EDITOR",
-    // shortcut: storage numbers arrive with uploads (feed round)
-    storageUsedBytes: "0",
-    storageQuotaBytes: String(50 * 1024 * 1024),
-    storageUsedPercent: 0,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
+    // one decimal, like nexus; 0 when no quota is set
+    storageUsedPercent: quota > 0 ? Math.round((used / quota) * 1000) / 10 : 0,
   };
 }
 

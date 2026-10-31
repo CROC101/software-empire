@@ -1,0 +1,48 @@
+name: backup
+
+# A nightly copy of the real database, encrypted before it leaves the runner: the repo is public,
+# so artifacts can be downloaded by anyone signed in to GitHub and must be unreadable without
+# BACKUP_PASSPHRASE. Kept 30 days. Restore steps: docs/DEPLOY.md.
+# Does nothing until SUPABASE_DB_URL and BACKUP_PASSPHRASE are set.
+
+on:
+  schedule:
+    - cron: "41 19 * * *" # 02:41 in Bangkok, nightly
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+    steps:
+      - uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359 # v3.0.1
+        if: env.SUPABASE_DB_URL != '' && env.BACKUP_PASSPHRASE != ''
+        with:
+          version: 2.120.0
+      - name: dump and encrypt
+        if: env.SUPABASE_DB_URL != '' && env.BACKUP_PASSPHRASE != ''
+        run: |
+          set -euo pipefail
+          stamp=$(date -u +%Y%m%d-%H%M)
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f roles.sql --role-only
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f schema.sql
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f data.sql --use-copy --data-only
+          tar czf - roles.sql schema.sql data.sql |
+            openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -salt -pass env:BACKUP_PASSPHRASE \
+              -out "backup-$stamp.tar.gz.enc"
+          rm roles.sql schema.sql data.sql
+          echo "FILE=backup-$stamp.tar.gz.enc" >> "$GITHUB_ENV"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: env.FILE != ''
+        with:
+          name: ${{ env.FILE }}
+          path: ${{ env.FILE }}
+          retention-days: 30
+          if-no-files-found: error

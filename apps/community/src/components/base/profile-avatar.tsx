@@ -1,4 +1,6 @@
 import { useCallback, useRef } from "react";
+import { FrameRing } from "@/components/base/avatar-frames";
+import type { AvatarFrame } from "@/lib/backend/types";
 import { useQuery } from "@tanstack/react-query";
 import { StoryViewer, type Story } from "@/components/ui/story-viewer";
 import { Avatar } from "@/components/base/user-name";
@@ -51,9 +53,12 @@ const FILL =
 export function ProfileAvatar({
   coreUserId,
   displayName,
+  frame,
 }: {
   coreUserId: string;
   displayName: string;
+  /// กรอบที่เจ้าของเลือก — มีสตอรี่อยู่ วงสตอรี่มาก่อนแบบ Instagram
+  frame?: AvatarFrame;
 }) {
   const { tray, refetch } = useStoryTray(coreUserId);
   const hidden = useRef<HTMLDivElement | null>(null);
@@ -78,9 +83,17 @@ export function ProfileAvatar({
   if (!hasStory || !tray) {
     return (
       <div className={`${sizing} shrink-0`}>
-        <span className={FILL}>
-          <Avatar coreUserId={coreUserId} size={150} showOnline={false} />
-        </span>
+        {frame ? (
+          <FrameRing frame={frame}>
+            <span className={FILL}>
+              <Avatar coreUserId={coreUserId} size={150} showOnline={false} />
+            </span>
+          </FrameRing>
+        ) : (
+          <span className={FILL}>
+            <Avatar coreUserId={coreUserId} size={150} showOnline={false} />
+          </span>
+        )}
       </div>
     );
   }

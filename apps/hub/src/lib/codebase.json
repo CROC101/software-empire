@@ -1,0 +1,217 @@
+{
+  "generated": "2026-10-29",
+  "files": 715,
+  "lines": 176900,
+  "dirs": [
+    {
+      "path": "apps/community/src/components",
+      "files": 160,
+      "lines": 43716
+    },
+    {
+      "path": "apps/canva/src/components",
+      "files": 86,
+      "lines": 29629
+    },
+    {
+      "path": "apps/canva/src/lib",
+      "files": 113,
+      "lines": 28960
+    },
+    {
+      "path": "packages/ui/src/components",
+      "files": 31,
+      "lines": 13248
+    },
+    {
+      "path": "apps/community/src/app",
+      "files": 66,
+      "lines": 12762
+    },
+    {
+      "path": "apps/community/src/lib",
+      "files": 55,
+      "lines": 12664
+    },
+    {
+      "path": "apps/toolboxes/src/lib",
+      "files": 36,
+      "lines": 9921
+    },
+    {
+      "path": "supabase/migrations",
+      "files": 12,
+      "lines": 5221
+    },
+    {
+      "path": "apps/crocbyte/src/app",
+      "files": 8,
+      "lines": 3379
+    },
+    {
+      "path": "apps/hub/src/app",
+      "files": 24,
+      "lines": 3108
+    },
+    {
+      "path": "apps/toolboxes/src/pages",
+      "files": 6,
+      "lines": 2353
+    },
+    {
+      "path": "packages/ui/src",
+      "files": 3,
+      "lines": 1932
+    },
+    {
+      "path": "apps/toolboxes/src/components",
+      "files": 11,
+      "lines": 1663
+    },
+    {
+      "path": "apps/commerce/src/app",
+      "files": 14,
+      "lines": 1509
+    },
+    {
+      "path": "supabase/tests",
+      "files": 11,
+      "lines": 1375
+    },
+    {
+      "path": "apps/canva/src",
+      "files": 4,
+      "lines": 948
+    },
+    {
+      "path": "apps/crocbyte/src/components",
+      "files": 4,
+      "lines": 846
+    },
+    {
+      "path": "apps/canva/src/pages",
+      "files": 4,
+      "lines": 822
+    },
+    {
+      "path": "apps/community/e2e",
+      "files": 5,
+      "lines": 570
+    },
+    {
+      "path": "packages/core/src",
+      "files": 9,
+      "lines": 493
+    },
+    {
+      "path": "apps/commerce/src/lib",
+      "files": 7,
+      "lines": 272
+    },
+    {
+      "path": "apps/toolboxes/src",
+      "files": 4,
+      "lines": 268
+    },
+    {
+      "path": "apps/community",
+      "files": 3,
+      "lines": 202
+    },
+    {
+      "path": "apps/community/src",
+      "files": 3,
+      "lines": 138
+    },
+    {
+      "path": "supabase",
+      "files": 1,
+      "lines": 116
+    },
+    {
+      "path": "apps/canva",
+      "files": 2,
+      "lines": 96
+    },
+    {
+      "path": "apps/toolboxes",
+      "files": 2,
+      "lines": 83
+    },
+    {
+      "path": "apps/hub/src/lib",
+      "files": 5,
+      "lines": 68
+    },
+    {
+      "path": "apps/hub/e2e",
+      "files": 1,
+      "lines": 66
+    },
+    {
+      "path": "packages/config/eslint",
+      "files": 2,
+      "lines": 66
+    },
+    {
+      "path": "apps/commerce",
+      "files": 4,
+      "lines": 60
+    },
+    {
+      "path": "apps/hub/src",
+      "files": 1,
+      "lines": 49
+    },
+    {
+      "path": "apps/crocbyte/src/lib",
+      "files": 3,
+      "lines": 48
+    },
+    {
+      "path": "apps/commerce/src",
+      "files": 1,
+      "lines": 47
+    },
+    {
+      "path": "apps/hub",
+      "files": 3,
+      "lines": 45
+    },
+    {
+      "path": "packages/ui/src/lib",
+      "files": 2,
+      "lines": 43
+    },
+    {
+      "path": "apps/hub/scripts",
+      "files": 1,
+      "lines": 39
+    },
+    {
+      "path": "apps/crocbyte",
+      "files": 4,
+      "lines": 37
+    },
+    {
+      "path": "apps/community/src/test",
+      "files": 1,
+      "lines": 26
+    },
+    {
+      "path": "packages/config",
+      "files": 1,
+      "lines": 4
+    },
+    {
+      "path": "packages/core",
+      "files": 1,
+      "lines": 4
+    },
+    {
+      "path": "packages/ui",
+      "files": 1,
+      "lines": 4
+    }
+  ]
+}

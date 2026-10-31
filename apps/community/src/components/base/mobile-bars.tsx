@@ -126,19 +126,10 @@ export function MobileTopBar() {
     <header className="sticky top-0 z-30 flex h-[3.25rem] shrink-0 items-center gap-3 border-b border-border bg-background px-3 lg:hidden">
       <Link
         href="/feed"
-        aria-label="CS Nexus หน้าหลัก"
+        aria-label="Empire Community หน้าหลัก"
         className="flex shrink-0 items-center gap-2"
       >
-        <img
-          src="/nx-mark.png"
-          alt=""
-          width={28}
-          height={28}
-          className="size-7 rounded-full object-contain"
-        />
-        <span className="font-heading text-lg font-extrabold leading-none tracking-tight text-primary">
-          CS Nexus
-        </span>
+        <img src="/logo.jpg" alt="" className="size-8 rounded-full object-cover" />
       </Link>
 
       {/* หน้าค้นหามีช่องค้นหาของตัวเองอยู่แล้ว — ถ้าคงช่องนี้ไว้จะเห็นสองช่องซ้อนกัน */}
@@ -189,7 +180,7 @@ export function MobileTopBar() {
             {CORE_HOME && (
               <a href={CORE_HOME} className={SHEET_ROW}>
                 <Shapes aria-hidden className="size-5" strokeWidth={1.9} />
-                บัญชีกลาง CSMJU2030
+                บัญชีกลาง Software Empire
               </a>
             )}
           </nav>

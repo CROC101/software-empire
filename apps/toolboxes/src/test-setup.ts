@@ -15,7 +15,7 @@ beforeEach(() => {
   });
   vi.spyOn(console, "warn").mockImplementation((...args: unknown[]) => {
     const message = args.map(String).join(" ");
-    if (/^Warning:|React|act\(\)/i.test(message)) captured.push(message);
+    if (/(?:^Warning:)|React|act\(\)/i.test(message)) captured.push(message);
   });
 });
 

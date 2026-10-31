@@ -331,7 +331,7 @@ describe("DirectThread", () => {
 
     setup();
 
-    await screen.findByText("อาจารย์สมชาย · CS Nexus");
+    await screen.findByText("อาจารย์สมชาย · Empire Community");
     await userEvent.type(screen.getByLabelText("พิมพ์ข้อความ"), "ถึงแล้วครับ{Enter}");
 
     expect(await screen.findByText("กำลังส่ง…")).toBeInTheDocument();
@@ -997,7 +997,7 @@ describe("รอบที่ 3 — เมนูข้อความ ตอบ�
 
     // ชื่อสำรองของคนที่ยังไม่มีชื่อในแคช (mock คืน displayName = coreUserId แบบหลังบ้าน)
     // หัวแชทและบล็อกแนะนำตัวต้นห้องบอกเหมือนกัน
-    expect(await screen.findAllByText("บัญชี CS Nexus")).toHaveLength(2);
+    expect(await screen.findAllByText("บัญชี Empire Community")).toHaveLength(2);
     expect(screen.queryByText(uuid)).not.toBeInTheDocument();
     expect(document.body.textContent).not.toContain(uuid);
   });

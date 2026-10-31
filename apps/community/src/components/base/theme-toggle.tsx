@@ -1,4 +1,11 @@
-import { useCallback, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
+import {
+  currentChoice as readChoice,
+  setThemeChoice,
+  subscribeTheme as subscribe,
+  type ThemeChoice,
+} from "@empire/core/theme";
+import { env } from "@/lib/env";
 import { Monitor, Moon, Sun } from "lucide-react";
 
 /// สลับธีม สว่าง / มืด / ตามระบบ
@@ -10,11 +17,10 @@ import { Monitor, Moon, Sun } from "lucide-react";
 /// ค่าเริ่มต้นคือ **สว่าง** ให้หน้าตาตรงกับ Core Hub (PL ตัดสิน 8 ต.ค. 2569)
 /// ผู้ใช้ที่อยากได้มืดหรือตามเครื่องเลือกเองได้ และระบบจำไว้
 
-export type ThemeChoice = "light" | "dark" | "system";
+export type { ThemeChoice };
 
-/// คีย์เดียวกับที่สคริปต์กันจอกะพริบใน app/layout.tsx อ่าน — ถ้าสองที่
-/// ไม่ตรงกัน หน้าจะกะพริบขาวหนึ่งเฟรมทุกครั้งที่โหลดในโหมดมืด
-export const THEME_KEY = "nx:theme";
+/// ธีมเก็บใน cookie กลาง em-theme ของทุกแอปใน hub (@empire/core/theme) ไม่ใช่ localStorage
+/// เปลี่ยนที่นี่ แอปอื่นทุกตัวเปลี่ยนตาม
 
 const OPTIONS: ReadonlyArray<{
   value: ThemeChoice;
@@ -26,62 +32,7 @@ const OPTIONS: ReadonlyArray<{
   { value: "dark", label: "มืด", Icon: Moon },
 ];
 
-/// ลงมือเปลี่ยนคลาสบน `<html>` จริง ๆ
-///
-/// ตรรกะเดียวกับสคริปต์กันจอกะพริบใน layout.tsx ซึ่งต้องเขียนซ้ำที่นั่น
-/// เพราะมันต้องรันก่อน JavaScript ของแอปจะถูกโหลดด้วยซ้ำ
-function applyTheme(choice: ThemeChoice): void {
-  const dark =
-    choice === "dark" ||
-    (choice === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-  document.documentElement.classList.toggle("dark", dark);
-  document.documentElement.style.colorScheme = dark ? "dark" : "light";
-}
-
-/// ────────────────────────────────────────────────────────────────
-/// อ่านค่าที่เลือกไว้แบบ external store
-///
-/// ใช้ `useSyncExternalStore` ไม่ใช่ `useState` + `useEffect` เพราะค่านี้
-/// **ไม่ได้อยู่ใน React** — มันอยู่ใน localStorage และการตั้งค่าของ
-/// ระบบปฏิบัติการ การอ่านมันด้วย setState ในตัว effect ทำให้เกิดการวาดซ้ำ
-/// รอบพิเศษทุกครั้งที่ component ขึ้นจอ ซึ่งกฎ react-hooks ของ React
-/// Compiler ห้ามไว้ตรง ๆ
-///
-/// ผลพลอยได้: `getServerSnapshot` ทำให้ฝั่งเซิร์ฟเวอร์กับเบราว์เซอร์เรนเดอร์
-/// ตรงกันเสมอ จึงไม่มีคำเตือน hydration
-/// ────────────────────────────────────────────────────────────────
-function subscribe(onChange: () => void): () => void {
-  // แท็บอื่นเปลี่ยนธีม — แท็บนี้ต้องตามด้วย
-  window.addEventListener("storage", onChange);
-
-  // ผู้ใช้สลับธีมที่ระบบปฏิบัติการขณะเลือก "ตามระบบ" อยู่
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
-  const follow = () => {
-    if (readChoice() === "system") applyTheme("system");
-    onChange();
-  };
-
-  media.addEventListener("change", follow);
-
-  return () => {
-    window.removeEventListener("storage", onChange);
-    media.removeEventListener("change", follow);
-  };
-}
-
-function readChoice(): ThemeChoice {
-  try {
-    const raw = window.localStorage.getItem(THEME_KEY);
-
-    return raw === "system" || raw === "dark" ? raw : "light";
-  } catch {
-    // โหมดส่วนตัวของเบราว์เซอร์บล็อก localStorage ได้
-    return "light";
-  }
-}
-
-/// ฝั่งเซิร์ฟเวอร์ไม่มี localStorage — ใช้ค่าเริ่มต้นเดียวกับเบราว์เซอร์
+/// ฝั่งเซิร์ฟเวอร์ไม่มี document.cookie — ใช้ค่าเริ่มต้นเดียวกับเบราว์เซอร์
 const serverChoice = (): ThemeChoice => "light";
 
 /// ธีมปัจจุบันสำหรับที่อื่นที่ไม่ใช่ปุ่มสามตัว — เช่นสวิตช์ "โหมดมืด" ในเมนู ≡
@@ -98,33 +49,15 @@ export function useThemeChoice() {
 }
 
 function pickTheme(next: ThemeChoice): void {
-  applyTheme(next);
-
-  try {
-    window.localStorage.setItem(THEME_KEY, next);
-  } catch {
-    // เปลี่ยนธีมได้อยู่ แค่จำไม่ได้เมื่อรีเฟรช ไม่ใช่เรื่องคอขาดบาดตาย
-  }
-
-  // `storage` ไม่ยิงให้แท็บที่เป็นคนเขียนเอง ต้องปลุก store ด้วยมือ
-  window.dispatchEvent(new StorageEvent("storage", { key: THEME_KEY }));
+  setThemeChoice(next, env.supabase.cookieDomain);
+  // cookieStore ไม่ยิงเสมอไปในแท็บที่เป็นคนเขียน — ปลุก store ด้วยมือ
+  window.dispatchEvent(new Event("focus"));
 }
 
 export function ThemeToggle() {
   const choice = useSyncExternalStore(subscribe, readChoice, serverChoice);
 
-  const pick = useCallback((next: ThemeChoice) => {
-    applyTheme(next);
-
-    try {
-      window.localStorage.setItem(THEME_KEY, next);
-    } catch {
-      // เปลี่ยนธีมได้อยู่ แค่จำไม่ได้เมื่อรีเฟรช ไม่ใช่เรื่องคอขาดบาดตาย
-    }
-
-    // `storage` ไม่ยิงให้แท็บที่เป็นคนเขียนเอง ต้องปลุก store ด้วยมือ
-    window.dispatchEvent(new StorageEvent("storage", { key: THEME_KEY }));
-  }, []);
+  const pick = pickTheme;
 
   return (
     <div

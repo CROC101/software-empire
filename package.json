@@ -15,12 +15,12 @@
     "verify": "turbo run lint typecheck test build --concurrency=50%",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "db:start": "supabase start -x imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor",
+    "db:start": "supabase start -x imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor",
     "db:stop": "supabase stop",
     "db:status": "supabase status",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
-    "db:types": "supabase gen types typescript --local --schema public,toolboxes,canva,community > packages/core/src/database.types.ts && prettier --write packages/core/src/database.types.ts"
+    "db:types": "supabase gen types typescript --local --schema public,toolboxes,canva,community,commerce,cms > packages/core/src/database.types.ts && prettier --write packages/core/src/database.types.ts"
   },
   "devDependencies": {
     "prettier": "^3.9.10",

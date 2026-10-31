@@ -1,4 +1,5 @@
 import { Loader2 } from "lucide-react";
+import { FramePicker } from "@/components/base/avatar-frames";
 import { useProfileData } from "@/components/base/profile-data";
 import { ProfileSettingsForm } from "@/components/base/profile-settings-form";
 import { ApiError } from "@/lib/backend/api";
@@ -27,18 +28,21 @@ export function EditProfileSection() {
           {error instanceof ApiError ? error.message : "โหลดโปรไฟล์ไม่สำเร็จ"}
         </p>
       ) : data?.mine ? (
-        <ProfileSettingsForm
-          key={data.mine.coreUserId}
-          profile={data.mine}
-          suggestions={
-            privacy.data
-              ? {
-                  value: privacy.data.showInSuggestions,
-                  save: async (next) => privacy.saveAsync({ showInSuggestions: next }),
-                }
-              : undefined
-          }
-        />
+        <div className="flex flex-col gap-10">
+          <FramePicker profile={data.mine} />
+          <ProfileSettingsForm
+            key={data.mine.coreUserId}
+            profile={data.mine}
+            suggestions={
+              privacy.data
+                ? {
+                    value: privacy.data.showInSuggestions,
+                    save: async (next) => privacy.saveAsync({ showInSuggestions: next }),
+                  }
+                : undefined
+            }
+          />
+        </div>
       ) : (
         <p className="flex items-center gap-2 text-nx-label text-muted-foreground">
           <Loader2 aria-hidden className="size-4 animate-spin" />

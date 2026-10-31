@@ -1,0 +1,12 @@
+{
+  // toolboxes: a static SPA on Cloudflare Workers (free plan, assets only, no Worker script: unlimited
+  // asset requests). Unknown paths fall back to index.html for the client router.
+  // Deployed by .github/workflows/deploy.yml; setup: docs/DEPLOY.md.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "crocwork-toolboxes",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
+  },
+}

@@ -2,7 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { Loader2, LogIn } from "lucide-react";
 import { createContext, use, useCallback, useEffect, useState, type ReactNode } from "react";
 import { env } from "@/lib/env";
-import { supabase } from "@/lib/supabase";
+import { db, supabase } from "@/lib/supabase";
 
 /// ตัวตนของผู้ใช้ — ใช้ session ของ Supabase ที่ Hub ตั้งไว้ (cookie เดียวกันทุกแอป)
 /// รักษา API เดิมของ csmju-nexus (useMe · useSignOut · SessionProvider) ให้หน้าจอเดิมไม่ต้องแก้
@@ -48,7 +48,32 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      setState(session ? { status: "ready", me: toMe(session.user) } : { status: "signed-out" });
+      if (!session) {
+        setState({ status: "signed-out" });
+        return;
+      }
+      const me = toMe(session.user);
+      setState({ status: "ready", me });
+      // after the callback returns: supabase-js deadlocks if we query inside onAuthStateChange
+      setTimeout(() => {
+        void db()
+          .from("profiles")
+          .select("role")
+          .eq("user_id", me.id)
+          .maybeSingle()
+          .then(({ data: profile }) => {
+            const role = profile?.role as SubsystemRole | undefined;
+            if (!role || role === me.subsystemRole) return;
+            setState({
+              status: "ready",
+              me: {
+                ...me,
+                subsystemRole: role,
+                coreRole: role === "ADMIN" ? "admin" : me.coreRole,
+              },
+            });
+          });
+      }, 0);
     });
     return () => {
       data.subscription.unsubscribe();

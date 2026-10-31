@@ -210,7 +210,9 @@ export function csvToMarkdown(text: string, delimiter = ","): string {
   if (!rows.length) throw new Error("กรุณาวาง CSV");
 
   const width = Math.max(...rows.map((r) => r.length));
-  const cell = (v: string) => v.replace(/\|/gu, "\\|").replace(/\r?\n/gu, "<br>");
+  // escape backslashes before pipes, or a cell ending in "\" would swallow the next "|"
+  const cell = (v: string) =>
+    v.replace(/\\/gu, "\\\\").replace(/\|/gu, "\\|").replace(/\r?\n/gu, "<br>");
   const line = (r: string[]) =>
     `| ${Array.from({ length: width }, (_, i) => cell(r[i] ?? "")).join(" | ")} |`;
 

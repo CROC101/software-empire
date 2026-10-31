@@ -150,7 +150,7 @@ describe("เปลือกหน้า", () => {
     for (const link of within(footer).getAllByRole("link")) {
       expect(link.getAttribute("href")).toMatch(/^(\/[a-z]+|http:\/\/core\.test)$/);
     }
-    expect(footer).toHaveTextContent("© 2026 CS Nexus");
+    expect(footer).toHaveTextContent("© 2026 Empire Community");
   });
 });
 

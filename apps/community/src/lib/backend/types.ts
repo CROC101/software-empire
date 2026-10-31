@@ -533,6 +533,17 @@ export interface ProfileSummary {
   badge: "ADMIN" | "STAFF" | null;
 }
 
+/// กรอบรูปโปรไฟล์ — ตรงกับ CHECK ของ community.profiles.avatar_frame
+export const AVATAR_FRAMES = [
+  "classic",
+  "lavender",
+  "rosegold",
+  "aurora",
+  "ocean",
+  "mono",
+] as const;
+export type AvatarFrame = (typeof AVATAR_FRAMES)[number];
+
 export interface ProfileDetail extends ProfileSummary {
   stats: {
     reelCount: number;
@@ -548,6 +559,8 @@ export interface ProfileDetail extends ProfileSummary {
   coverUrl: string | null;
   /// เว็บไซต์บนโปรไฟล์ (http/https) — หลังบ้านส่งมาเสมอ
   website?: string | null;
+  /// กรอบรอบรูปโปรไฟล์ ("แต่งโปรไฟล์") — ไม่มี = classic
+  avatarFrame?: AvatarFrame;
 }
 
 /// โปรไฟล์ของตัวเอง — เพิ่มรายการ field ที่แก้ไม่ได้

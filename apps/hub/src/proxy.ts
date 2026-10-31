@@ -2,7 +2,8 @@ import { createServerSupabase } from "@empire/core/supabase";
 import { NextResponse, type NextRequest } from "next/server";
 import { env } from "@/lib/env";
 
-const PROTECTED_PREFIXES = ["/dashboard"];
+// signed-in only; /admin also checks cms.is_admin() itself, page and every action
+const PROTECTED_PREFIXES = ["/dashboard", "/admin"];
 
 /** Refreshes the Supabase session on every request and gates protected pages. */
 export async function proxy(request: NextRequest) {

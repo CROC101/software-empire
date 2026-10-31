@@ -13,6 +13,8 @@ import { api, qs } from '@/lib/backend/api';
 import { useCreateDesign } from '@/lib/create-design';
 import { BROWSE_TILES, DESIGN_GROUPS, DESIGN_TYPES, designType, type DesignType } from '@/lib/design-types';
 import type { DesignSummary, DesignTypeUsage, TemplateSummary } from '@/lib/types';
+import { CANVA_HOME } from '@empire/core/cms-pages';
+import { useCmsContent } from '@/lib/cms';
 
 /// หน้าแรกของมือถือ (ภาพบรีฟ "หลัก" · "หลัก 1" · "หลัก 1.2" · "หลัก 1.3")
 ///
@@ -21,6 +23,7 @@ export function MobileHome({ query, onQuery, searching, results }: { query: stri
   const heroRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [compact, setCompact] = useState(false);
+  const cms = useCmsContent(CANVA_HOME);
   const openCreate = useOpenCreate();
 
   useEffect(() => {
@@ -61,7 +64,7 @@ export function MobileHome({ query, onQuery, searching, results }: { query: stri
       </div>
 
       <section ref={heroRef} className="cv-hero px-4 pt-8 pb-5">
-        <h1 className="cv-gradient-text text-center text-cv-h2 font-bold">วันนี้คุณจะดีไซน์อะไร?</h1>
+        <h1 className="cv-gradient-text text-center text-cv-h2 font-bold">{cms.text('hero.title')}</h1>
         <form role="search" onSubmit={(e) => e.preventDefault()} className="mt-5">
           <div className="cv-search relative rounded-2xl">
             <Search aria-hidden className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-ink" />

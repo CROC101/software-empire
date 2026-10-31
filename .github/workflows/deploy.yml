@@ -1,0 +1,149 @@
+name: deploy
+
+# Every web app on Cloudflare Workers (free plan). CrocByte has its own workflow.
+#   pull request → build, prove the Worker fits the free plan (dry run), and, once the Cloudflare
+#                  secrets exist, upload a preview version with its own URL (pr-<number>)
+#   push to main → build and deploy for real
+# Without the secrets every step still builds, so a PR always proves the apps can ship.
+# Setup (once): docs/DEPLOY.md.
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [apps/**, packages/**, pnpm-lock.yaml, .github/workflows/deploy.yml]
+  push:
+    branches: [main]
+    paths: [apps/**, packages/**, pnpm-lock.yaml, .github/workflows/deploy.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { app: hub, kind: next }
+          - { app: commerce, kind: next }
+          - { app: toolboxes, kind: spa }
+          - { app: canva, kind: spa }
+          - { app: community, kind: spa }
+    environment: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # public values (they ship to every browser), kept as repository variables
+      SUPABASE_URL: ${{ vars.SUPABASE_URL || 'http://localhost:54321' }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || 'ci-placeholder' }}
+      WORKERS_SUBDOMAIN: ${{ vars.CF_WORKERS_SUBDOMAIN }}
+      COOKIE_DOMAIN: ${{ vars.COOKIE_DOMAIN }}
+      # a custom domain later: set SITE_<APP> (e.g. SITE_HUB=https://crocwork.in.th) to override
+      SITE_HUB: ${{ vars.SITE_HUB }}
+      SITE_COMMERCE: ${{ vars.SITE_COMMERCE }}
+      SITE_TOOLBOXES: ${{ vars.SITE_TOOLBOXES }}
+      SITE_CANVA: ${{ vars.SITE_CANVA }}
+      SITE_COMMUNITY: ${{ vars.SITE_COMMUNITY }}
+      SITE_CROCBYTE: ${{ vars.SITE_CROCBYTE }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: where each app lives
+        run: |
+          url() { # explicit SITE_<APP>, else <worker>.<subdomain>.workers.dev, else empty
+            local over="SITE_${1^^}"
+            if [ -n "${!over}" ]; then echo "${!over}"
+            elif [ -n "$WORKERS_SUBDOMAIN" ]; then echo "https://$2.$WORKERS_SUBDOMAIN.workers.dev"
+            fi
+          }
+          {
+            echo "URL_HUB=$(url hub crocwork-hub)"
+            echo "URL_COMMERCE=$(url commerce crocwork-commerce)"
+            echo "URL_TOOLBOXES=$(url toolboxes crocwork-toolboxes)"
+            echo "URL_CANVA=$(url canva crocwork-canva)"
+            echo "URL_COMMUNITY=$(url community crocwork-community)"
+            echo "URL_CROCBYTE=$(url crocbyte crocbyte)"
+          } >> "$GITHUB_ENV"
+
+      # Next apps: OpenNext compiles .env.production into the Worker, so server-only values
+      # (APP_URL_*) are there at runtime too
+      - name: env (next)
+        if: matrix.kind == 'next'
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          self="URL_${MATRIX_APP^^}"
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$SUPABASE_URL"
+            echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$SUPABASE_PUBLISHABLE_KEY"
+            echo "NEXT_PUBLIC_SITE_URL=${!self:-http://localhost:3000}"
+            echo "NEXT_PUBLIC_HUB_URL=${URL_HUB:-http://localhost:3000}"
+            echo "NEXT_PUBLIC_COOKIE_DOMAIN=$COOKIE_DOMAIN"
+            echo "APP_URL_TOOLBOXES=$URL_TOOLBOXES"
+            echo "APP_URL_CANVA=$URL_CANVA"
+            echo "APP_URL_COMMUNITY=$URL_COMMUNITY"
+            echo "APP_URL_COMMERCE=$URL_COMMERCE"
+            echo "APP_URL_CROCBYTE=$URL_CROCBYTE"
+          } > .env.production
+        env:
+          MATRIX_APP: ${{ matrix.app }}
+
+      - name: build (next)
+        if: matrix.kind == 'next'
+        run: pnpm --filter @empire/${{ matrix.app }} cf:build
+
+      - name: build (spa)
+        if: matrix.kind == 'spa'
+        run: |
+          self="URL_${MATRIX_APP^^}"
+          export VITE_SUPABASE_URL="$SUPABASE_URL"
+          export VITE_SUPABASE_PUBLISHABLE_KEY="$SUPABASE_PUBLISHABLE_KEY"
+          export VITE_SITE_URL="${!self:-http://localhost:3000}"
+          export VITE_HUB_URL="${URL_HUB:-http://localhost:3000}"
+          export VITE_COOKIE_DOMAIN="$COOKIE_DOMAIN"
+          pnpm --filter @empire/${{ matrix.app }} build
+        env:
+          MATRIX_APP: ${{ matrix.app }}
+
+      # the free plan caps a Worker at 3 MiB gzipped; the dry run reports the real size and fails
+      # the PR before it could fail a deploy
+      - name: fits the free plan (dry run)
+        working-directory: apps/${{ matrix.app }}
+        run: pnpm exec wrangler deploy --dry-run --outdir /tmp/worker
+
+      - name: preview version
+        if: >-
+          github.event_name == 'pull_request' && env.CLOUDFLARE_API_TOKEN != '' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          if [ "${{ matrix.kind }}" = next ]; then
+            pnpm exec opennextjs-cloudflare upload -- --preview-alias "pr-${{ github.event.number }}"
+          else
+            pnpm exec wrangler versions upload --preview-alias "pr-${{ github.event.number }}"
+          fi
+
+      - name: deploy
+        if: github.event_name != 'pull_request' && env.CLOUDFLARE_API_TOKEN != ''
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          if [ "${{ matrix.kind }}" = next ]; then
+            pnpm exec opennextjs-cloudflare deploy
+          else
+            pnpm exec wrangler deploy
+          fi

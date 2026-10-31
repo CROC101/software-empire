@@ -28,7 +28,10 @@ const notes = vi.hoisted(() => ({
 }));
 
 vi.mock("@/lib/backend/session", () => ({ useSignOut: () => signOut }));
-vi.mock("@/components/base/messages-notes", () => ({ useNotes: () => ({ data: notes.current }) }));
+vi.mock("@/components/base/messages-notes", () => ({
+  useNotes: () => ({ data: notes.current }),
+  NoteComposer: () => <div>composer</div>,
+}));
 vi.mock("@/components/base/profile-settings-form", () => ({ CORE_HOME: "http://core.test" }));
 vi.mock("@/components/base/user-name", () => ({
   Avatar: ({ coreUserId }: { coreUserId: string }) => <span>{coreUserId}</span>,
@@ -148,7 +151,7 @@ describe("หัวโปรไฟล์", () => {
     expect(signOut).toHaveBeenCalledTimes(1);
   });
 
-  it("ฟองโน้ตบนรูปโปรไฟล์ตัวเองแสดงโน้ตจริง และพาไปแก้ที่หน้าข้อความ", () => {
+  it("ฟองโน้ตบนรูปโปรไฟล์ตัวเองแสดงโน้ตจริง และกดแล้วเปิดกล่องโน้ตใหม่บนหน้าเดิม", async () => {
     notes.current = [{ coreUserId: "user-002", text: "อ่านหนังสือสอบ", isMe: true }];
 
     const mine: MyProfile = {
@@ -160,10 +163,8 @@ describe("หัวโปรไฟล์", () => {
 
     renderHeader({ profile: mine, mine, isMe: true, handle: "user-002" });
 
-    expect(screen.getByRole("link", { name: /โน้ตของคุณ: อ่านหนังสือสอบ/ })).toHaveAttribute(
-      "href",
-      "/messages?note=1",
-    );
+    await userEvent.click(screen.getByRole("button", { name: /โน้ตของคุณ: อ่านหนังสือสอบ/ }));
+    expect(await screen.findByText("composer")).toBeInTheDocument();
     notes.current = [];
   });
 

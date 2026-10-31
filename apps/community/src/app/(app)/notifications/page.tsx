@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Link } from "@/lib/router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bell, Check, ChevronRight, Loader2 } from "lucide-react";
-import { UserAvatar } from "@/components/base/user-badge";
+import { NotificationText } from "@/components/base/notification-text";
+import { Avatar } from "@/components/base/user-name";
 import { api, ApiError, qs } from "@/lib/backend/api";
-import { describeNotification, notificationLink, timeAgo } from "@/lib/backend/notifications";
+import { notificationLink, timeAgo } from "@/lib/backend/notifications";
 import type { Notification } from "@/lib/backend/types";
 import { cn } from "@/lib/utils";
 
@@ -165,14 +166,12 @@ export default function NotificationsPage() {
 
           const body = (
             <>
-              <UserAvatar
-                coreUserId={item.actorCoreUserId ?? "ระบบ"}
-                size={36}
-                showOnline={false}
-              />
+              <Avatar coreUserId={item.actorCoreUserId ?? ""} size={36} showOnline={false} />
 
               <span className="min-w-0 flex-1">
-                <span className="block text-sm leading-snug">{describeNotification(item)}</span>
+                <span className="block text-sm leading-snug">
+                  <NotificationText item={item} />
+                </span>
                 <span className="mt-0.5 block text-[11px] text-muted-foreground">
                   {timeAgo(item.createdAt)}
                   {unread && " · ยังไม่อ่าน"}

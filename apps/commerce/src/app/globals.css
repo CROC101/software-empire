@@ -1,0 +1,30 @@
+@import "@empire/ui/styles.css";
+
+/* UI fonts (OFL, files in public/fonts) — the same pair as Community and Canvas */
+@font-face {
+  font-family: "Noto Sans Thai UI";
+  src: url("/fonts/NotoSansThai-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans UI";
+  src: url("/fonts/PlusJakartaSans-Variable.ttf") format("truetype");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Noto Sans Thai UI", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans UI", "Noto Sans Thai UI", ui-sans-serif, sans-serif;
+}
+
+@layer components {
+  /* soft aurora glow behind hero sections; purely decorative */
+  .hub-aurora-backdrop {
+    background:
+      radial-gradient(60rem 30rem at 10% -10%, oklch(0.61 0.225 286 / 0.22), transparent 60%),
+      radial-gradient(50rem 28rem at 95% 0%, oklch(0.64 0.25 338 / 0.16), transparent 60%),
+      radial-gradient(40rem 24rem at 60% 110%, oklch(0.76 0.16 32 / 0.12), transparent 60%);
+  }
+}
