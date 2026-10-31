@@ -9,6 +9,7 @@
     "vitest.config.ts",
     "next-env.d.ts",
     "next.config.ts",
+    "open-next.config.ts",
     "src",
     "e2e",
     ".next/types/**/*.ts"

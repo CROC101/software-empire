@@ -1,0 +1,62 @@
+name: database
+
+# The Supabase schema, guarded the same way as the code.
+#   pull request → start a throwaway Postgres with every migration + seed, run all pgTAP tests
+#   push to main → the same tests, then `supabase db push` to the real project (only once the
+#                  Supabase secrets exist; nothing reaches it unless the tests passed first)
+# Setup (once): docs/DEPLOY.md.
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [supabase/**, .github/workflows/database.yml]
+  push:
+    branches: [main]
+    paths: [supabase/**, .github/workflows/database.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # never two migrations at once against the real project
+  group: database-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v3
+        with:
+          version: 2.120.0
+      # Postgres only (no Studio, Realtime, Storage …): migrations, seed, pgTAP
+      - run: supabase db start
+      - run: supabase test db
+
+  migrate:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v3
+        with:
+          version: 2.120.0
+      - name: push migrations
+        if: env.SUPABASE_ACCESS_TOKEN != '' && env.SUPABASE_PROJECT_REF != ''
+        run: |
+          supabase link --project-ref "$SUPABASE_PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+          # migrations only: the seed (demo accounts) never touches the real project
+          supabase db push --password "$SUPABASE_DB_PASSWORD"
+      - name: not set up yet
+        if: env.SUPABASE_ACCESS_TOKEN == '' || env.SUPABASE_PROJECT_REF == ''
+        run: echo "::notice::Supabase secrets not set; migrations were tested but not pushed (docs/DEPLOY.md)"

@@ -111,9 +111,23 @@ community  commerce  toolboxes   tarot     design     canva     stream
 - Next.js 15+: `hub`, `commerce`, `design` · Vite 6+: `community`, `toolboxes`, `tarot`, `canva`, `stream`
 - ข้อยกเว้นชั่วคราว: แอปที่ dupe มาจาก Next.js รันเป็น Next ไปก่อนได้ ถ้าการย้ายเป็น Vite ยังไม่คุ้ม — บันทึกใน `standards/exceptions.yml` พร้อมวันหมดอายุ
 
-### ADR-05 ✅ Hosting: Cloudflare Pages (หลัก) · Vercel Hobby (สำรองสำหรับ Next ที่ต้อง ISR)
+### ADR-05 ✅ Hosting: Cloudflare Workers ฟรีทุกแอป · Supabase Cloud ฟรี 1 project (แก้ 2569-11-01)
 
-- Cloudflare Pages: bandwidth ไม่จำกัด, ใช้เชิงพาณิชย์ได้ · Vercel Hobby ห้ามใช้เชิงพาณิชย์
+- **หน้าเว็บ:** ทุกแอปขึ้น Cloudflare Workers แผนฟรี (ไม่ต้องใช้บัตร) — Next (`hub`, `commerce`, `crocbyte`)
+  ผ่าน OpenNext · Vite SPA (`toolboxes`, `canva`, `community`) เป็น Worker แบบ static assets ล้วน
+  (request ของ asset ไม่จำกัด) · bandwidth ไม่จำกัด ใช้เชิงพาณิชย์ได้ · Worker ละไม่เกิน 3 MiB (gzip)
+  ทุก PR เช็กขนาดให้ (`deploy.yml` dry run)
+- **ฐานข้อมูล:** Supabase Cloud ฟรี project เดียว (DB 500 MB, MAU 50k) แยก schema ต่อแอปตาม ADR-02 ·
+  แผนฟรีหยุด project ที่เงียบ 7 วัน → `keep-alive.yml` เรียกทุกวัน · สำรองทุกคืน (`backup.yml`)
+  เข้ารหัสก่อนเก็บเพราะ repo สาธารณะ
+- **CI/CD:** GitHub Actions (repo สาธารณะ = ไม่จำกัดนาที) · PR = verify + pgTAP + dry run + preview URL ·
+  main = deploy + `supabase db push` หลังเทสต์ผ่านเท่านั้น · CodeQL + dependency review + Dependabot
+- **โดเมน:** ใช้ `*.workers.dev` ไปก่อน (SSO ข้ามแอปยังไม่ได้ เพราะอยู่ใน Public Suffix List — ADR-03) ·
+  ได้โดเมนเมื่อไหร่ (`.in.th` ฟรีปีแรกผ่าน THNIC Thaionline หรือซื้อ) ย้าย DNS มา Cloudflare แล้วตั้ง
+  `SITE_*` + `COOKIE_DOMAIN` ใน GitHub variables
+- **เมื่อโตเกินแผนฟรี:** ย้ายหลังบ้านไป VPS + Coolify + Supabase self-host ได้โดยใช้ migration ชุดเดิม ·
+  ไม่เลือกตอนนี้เพราะต้องใช้บัตร (Oracle Always Free) หรือมีค่ารายเดือน
+- เดิม: Cloudflare Pages + Vercel Hobby (Vercel Hobby ห้ามใช้เชิงพาณิชย์; Pages ไม่รองรับ Next แบบ OpenNext)
 
 ### ADR-06 ✅ ข้อยกเว้น: CrocByte อยู่บน Firebase (2569-10-24)
 

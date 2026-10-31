@@ -1,0 +1,14 @@
+{
+  // hub on Cloudflare Workers (free plan) via OpenNext; built and deployed by
+  // .github/workflows/deploy.yml (Linux: OpenNext needs symlinks). Setup: docs/DEPLOY.md.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "crocwork-hub",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "observability": { "enabled": true },
+}
