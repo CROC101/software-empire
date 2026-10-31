@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input, Label } from "@empire/ui";
-import type { CmsField } from "@empire/core/cms";
+import { cmsValue, type CmsField } from "@empire/core/cms";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useState, useTransition } from "react";
@@ -242,7 +242,9 @@ function ImageInput({
     <fieldset className="flex flex-col gap-3">
       <legend className="mb-1.5 text-sm font-medium">{label}</legend>
       <div className="flex flex-wrap items-start gap-4">
-        {url && (
+        {/* preview only what the database would accept (https or a site path), never a typed
+            javascript: / data: URL */}
+        {cmsValue.image.shape.url.safeParse(url).success && (
           // eslint-disable-next-line @next/next/no-img-element -- any https host the admin picks
           <img src={url} alt="" className="size-24 rounded-md border object-cover" />
         )}
