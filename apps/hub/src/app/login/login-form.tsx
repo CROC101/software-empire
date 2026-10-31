@@ -3,7 +3,14 @@
 import { PASSWORD_RULES, passedRules } from "@empire/core/auth";
 import { Button, Input, Label } from "@empire/ui";
 import { ArrowRight, Check, Eye, EyeOff, Mail } from "lucide-react";
-import { useActionState, useId, useState, type ComponentProps, type ReactNode } from "react";
+import {
+  useActionState,
+  useEffect,
+  useId,
+  useState,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
 import { authenticate, type AuthState } from "./actions";
 import { VerifyCode } from "./verify-code";
 
@@ -61,8 +68,8 @@ export function AuthPanel({
               onClick={() => setMode(tab.id)}
               className={
                 mode === tab.id
-                  ? "rounded-md bg-background py-2 text-sm font-bold shadow-sm"
-                  : "rounded-md py-2 text-sm font-semibold text-muted-foreground hover:text-foreground"
+                  ? "min-h-11 rounded-md bg-background text-sm font-bold shadow-sm"
+                  : "min-h-11 rounded-md text-sm font-semibold text-muted-foreground hover:text-foreground"
               }
             >
               {tab.label}
@@ -164,18 +171,23 @@ function SignUpForm({ next, onSignIn }: { next: string; onSignIn: () => void }) 
   // password because the name was too long is the kind of thing that makes people leave
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  // a refused field gets focus, so keyboard and screen-reader users land on what to fix
+  useEffect(() => {
+    if (state.field) document.getElementById(`signup-${state.field}`)?.focus();
+  }, [state]);
   const code = useCodeStep(state, next);
   if (code) return code;
 
   const strength = passedRules(password);
   const mismatch = confirm.length > 0 && confirm !== password;
   const invalid = (name: AuthState["field"]) => (state.field === name ? true : undefined);
+  const error = (name: AuthState["field"]) => (state.field === name ? state.error : undefined);
 
   return (
     <form action={action} className="flex flex-col gap-4">
       <input type="hidden" name="next" value={next} />
       <input type="hidden" name="intent" value="signup" />
-      <Field label="ชื่อที่แสดง" htmlFor="signup-name">
+      <Field label="ชื่อที่แสดง" htmlFor="signup-name" error={error("name")}>
         <Input
           id="signup-name"
           name="name"
@@ -185,10 +197,16 @@ function SignUpForm({ next, onSignIn }: { next: string; onSignIn: () => void }) 
           defaultValue={state.name}
           className="h-11"
           aria-invalid={invalid("name")}
+          aria-describedby="signup-name-error"
           required
         />
       </Field>
-      <Field label="อีเมล" htmlFor="signup-email" hint="เราจะส่งรหัสยืนยัน 6 หลักไปที่อีเมลนี้">
+      <Field
+        label="อีเมล"
+        htmlFor="signup-email"
+        hint="เราจะส่งรหัสยืนยัน 6 หลักไปที่อีเมลนี้"
+        error={error("email")}
+      >
         <Input
           id="signup-email"
           name="email"
@@ -199,21 +217,22 @@ function SignUpForm({ next, onSignIn }: { next: string; onSignIn: () => void }) 
           defaultValue={state.email}
           className="h-11"
           aria-invalid={invalid("email")}
+          aria-describedby="signup-email-error"
           required
         />
       </Field>
-      <Field label="รหัสผ่าน" htmlFor="signup-password">
+      <Field label="รหัสผ่าน" htmlFor="signup-password" error={error("password")}>
         <PasswordInput
           id="signup-password"
           autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           aria-invalid={invalid("password")}
-          aria-describedby="signup-rules"
+          aria-describedby="signup-password-error signup-rules"
         />
         <Strength id="signup-rules" password={password} passed={strength} />
       </Field>
-      <Field label="ยืนยันรหัสผ่าน" htmlFor="signup-confirm">
+      <Field label="ยืนยันรหัสผ่าน" htmlFor="signup-confirm" error={error("confirm")}>
         <PasswordInput
           id="signup-confirm"
           name="confirm"
@@ -221,7 +240,7 @@ function SignUpForm({ next, onSignIn }: { next: string; onSignIn: () => void }) 
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           aria-invalid={mismatch || invalid("confirm")}
-          aria-describedby="signup-confirm-note"
+          aria-describedby="signup-confirm-error signup-confirm-note"
         />
         <p
           id="signup-confirm-note"
@@ -230,13 +249,11 @@ function SignUpForm({ next, onSignIn }: { next: string; onSignIn: () => void }) 
           {mismatch ? "ยังไม่ตรงกับรหัสผ่านด้านบน" : confirm && "ตรงกันแล้ว"}
         </p>
       </Field>
-      <FormMessage id="signup-error" state={state} />
+      {/* errors that belong to a field show under it; this line is for the rest */}
+      <FormMessage id="signup-error" state={state.field ? {} : state} />
 
-      <Button
-        type="submit"
-        className={PRIMARY}
-        disabled={pending || mismatch || strength < PASSWORD_RULES.length}
-      >
+      {/* never disabled for bad input: a dead button doesn't say what is wrong, the server does */}
+      <Button type="submit" className={PRIMARY} disabled={pending}>
         {pending ? "กำลังส่งรหัสยืนยัน…" : "สมัครสมาชิก"}
         {!pending && <ArrowRight aria-hidden className="size-4" />}
       </Button>
@@ -255,11 +272,14 @@ function Field({
   label,
   htmlFor,
   hint,
+  error,
   children,
 }: {
   label: string;
   htmlFor: string;
   hint?: string;
+  /** refused by the server; the input points here with aria-describedby `${htmlFor}-error` */
+  error?: string;
   children: ReactNode;
 }) {
   return (
@@ -269,6 +289,9 @@ function Field({
       </Label>
       {children}
       {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      <p id={`${htmlFor}-error`} className="text-sm text-destructive empty:hidden">
+        {error}
+      </p>
     </div>
   );
 }
