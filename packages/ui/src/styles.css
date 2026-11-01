@@ -422,9 +422,10 @@
 html[data-lite="on"] .em-ambience {
   display: none;
 }
-html[data-lite="on"] *,
-html[data-lite="on"] *::before,
-html[data-lite="on"] *::after {
+/* .em-keep-motion: the rare part the owner wants moving even in LITE (the launch countdown) */
+html[data-lite="on"] :not(.em-keep-motion, .em-keep-motion *),
+html[data-lite="on"] :not(.em-keep-motion, .em-keep-motion *)::before,
+html[data-lite="on"] :not(.em-keep-motion, .em-keep-motion *)::after {
   animation-duration: 0.01ms !important;
   animation-delay: 0s !important;
   animation-iteration-count: 1 !important;
@@ -3706,5 +3707,44 @@ a.lgn-app:focus-visible {
   .split-flap-text__flap,
   .split-flap-text__shade {
     animation: none !important;
+  }
+}
+
+/* DominoLettering: each tile tips over its bottom-right corner onto the next, rests leaning,
+   then the chain stands back up in the same order */
+.em-domino {
+  display: inline;
+}
+.em-domino__tile {
+  display: inline-block;
+  transform-origin: 100% 100%;
+  animation: em-domino 5s cubic-bezier(0.55, 0, 0.8, 0.4) var(--domino-delay, 0s) infinite both;
+}
+@keyframes em-domino {
+  0%,
+  6% {
+    transform: rotate(0deg);
+  }
+  13% {
+    transform: rotate(17deg);
+  }
+  15% {
+    transform: rotate(12deg);
+  }
+  17%,
+  58% {
+    transform: rotate(15deg);
+  }
+  66% {
+    transform: rotate(-4deg);
+  }
+  70%,
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .em-domino__tile {
+    animation: none;
   }
 }

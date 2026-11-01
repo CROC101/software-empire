@@ -30,6 +30,8 @@ try {
         ? mm(/no-preference/.test(q) ? "not all" : "all")
         : mm(q);
     };
+    // the device's own answer, for the few things that keep moving in LITE (see osReducedMotion)
+    window.matchMedia.real = mm;
   }
 } catch {
   // no matchMedia or cookies: full effects, as before

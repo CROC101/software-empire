@@ -1,14 +1,24 @@
 import { safeNext } from "@/lib/apps";
+import { ChevronLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getClaims } from "@/lib/supabase/server";
-import { TornEdge } from "../sections";
 import { BrandMetal } from "./brand-metal";
+import { FloatingPaths } from "./floating-paths";
 import { AuthPanel } from "./login-form";
 
 export const metadata: Metadata = { title: "เข้าสู่ระบบ" };
+
+function Wordmark() {
+  return (
+    <span className="flex items-center gap-2.5 font-heading text-xl font-bold">
+      <Image src="/crocwork-logo.webp" alt="" width={28} height={32} className="h-8 w-auto" />
+      crocwork.studio
+    </span>
+  );
+}
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
@@ -16,44 +26,50 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   if (await getClaims()) redirect(next);
 
   return (
-    <main className="min-h-dvh bg-background lg:grid lg:grid-cols-[1fr_34rem]">
-      {/* brand band: on top on phones (torn into the form), a full column on desktop */}
-      <div className="relative bg-[var(--em-ink-975)] text-[var(--em-ink-0)] lg:min-h-dvh">
-        <aside
-          aria-label="crocwork.studio"
-          className="relative mx-auto flex h-full w-full flex-col gap-6 overflow-hidden px-5 pb-8 pt-5 sm:max-w-md sm:px-0 lg:max-w-none lg:justify-between lg:p-12"
-        >
-          <Link
-            href="/"
-            className="flex w-fit items-center gap-2.5 font-heading font-bold text-[var(--em-ink-0)]"
-          >
-            <Image src="/crocwork-logo.webp" alt="" width={28} height={32} className="h-8 w-auto" />
-            crocwork.studio
-          </Link>
-
-          <div className="flex max-w-xl flex-col gap-4">
-            <h1 className="font-heading text-4xl font-black leading-[1.1] sm:text-5xl lg:text-[clamp(3.75rem,5.6vw,6rem)]">
-              บัญชีเดียว
-              <br />
-              <span className="text-[var(--em-sky-500)]">เปิดได้ทุกระบบ</span>
-            </h1>
-            <p className="text-lg text-[var(--em-ink-100)]">
-              เข้าสู่ระบบ crocwork.studio ด้วยบัญชีเดียว ใช้ได้ทั้ง Community, Commerce, Toolboxes,
-              Empire Canvas และหลังบ้าน
-            </p>
-          </div>
-          {/* the logo in liquid chrome; desktop only, phones skip the WebGL entirely */}
-          <div aria-hidden className="hidden lg:block">
-            <BrandMetal />
-          </div>
-        </aside>
-        <div className="absolute inset-x-0 top-full lg:hidden">
-          <TornEdge color="var(--em-ink-975)" flip />
+    <main className="relative lg:grid lg:min-h-dvh lg:grid-cols-2">
+      {/* brand panel, desktop: the logo in liquid chrome over slowly tracing curves */}
+      <aside className="relative hidden flex-col overflow-hidden border-r bg-muted/60 p-10 lg:sticky lg:top-0 lg:flex lg:h-dvh">
+        <div aria-hidden className="absolute inset-0">
+          <FloatingPaths position={1} />
+          <FloatingPaths position={-1} />
         </div>
-      </div>
+        <div
+          aria-hidden
+          className="absolute inset-0 z-10 bg-gradient-to-t from-background to-transparent"
+        />
+        <div className="relative z-10">
+          <Wordmark />
+        </div>
+        <div aria-hidden className="relative z-10 my-auto">
+          <BrandMetal />
+        </div>
+        <blockquote className="relative z-10 space-y-2">
+          <p className="font-heading text-2xl font-bold leading-snug">
+            บัญชีเดียว เปิดได้ทุกระบบ
+            <br />
+            Community · Commerce · Toolboxes · Empire Canvas
+          </p>
+          <footer className="text-sm font-semibold text-muted-foreground">— crocwork.studio</footer>
+        </blockquote>
+      </aside>
 
-      <section className="flex items-start justify-center px-5 pb-16 pt-12 sm:px-8 lg:items-center lg:p-12">
-        <div className="w-full max-w-md">
+      <section className="relative flex min-h-dvh flex-col justify-center px-4 py-24">
+        {/* soft light in the corner, as on the brand panel */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute -right-24 -top-40 h-[40rem] w-[28rem] rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--foreground)_6%,transparent),transparent)]" />
+          <div className="absolute -top-24 right-24 h-[30rem] w-60 rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklch,var(--em-blue-600)_8%,transparent),transparent)]" />
+        </div>
+        <Link
+          href="/"
+          className="absolute left-5 top-7 inline-flex min-h-11 items-center gap-1 rounded-md px-3 text-sm font-medium hover:bg-accent"
+        >
+          <ChevronLeft aria-hidden className="size-4" />
+          หน้าแรก
+        </Link>
+        <div className="mx-auto w-full max-w-sm">
+          <div className="mb-6 lg:hidden">
+            <Wordmark />
+          </div>
           <AuthPanel
             next={next}
             mode={params.mode === "signup" ? "signup" : "signin"}
@@ -63,11 +79,6 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
                 : undefined
             }
           />
-          <p className="mt-6 text-center text-xs text-muted-foreground">
-            <Link href="/" className="hover:underline">
-              ← กลับหน้าแรก
-            </Link>
-          </p>
         </div>
       </section>
     </main>

@@ -135,6 +135,8 @@ try {
         ? mm(/no-preference/.test(q) ? "not all" : "all")
         : mm(q);
     };
+    // the device's own answer, for the few things that keep moving in LITE (see osReducedMotion)
+    window.matchMedia.real = mm;
   }
 } catch {
   // no matchMedia or cookies: full effects, as before
@@ -152,6 +154,21 @@ export function readLite(cookie: string): LiteChoice {
 
 /** What the boot script decided for this page (auto resolved), read from <html data-lite>. */
 export const liteActive = () => document.documentElement.dataset.lite === "on";
+
+/**
+ * The device's real reduced-motion setting, ignoring LITE. Only for something the owner wants
+ * moving even on phones in LITE (the launch countdown); everything else asks matchMedia.
+ */
+export function osReducedMotion(): boolean {
+  if (typeof window.matchMedia !== "function") return true;
+  // read as a value, never called unbound: only its `real` property is used
+  // eslint-disable-next-line @typescript-eslint/unbound-method
+  const patched = window.matchMedia as typeof window.matchMedia & {
+    real?: typeof window.matchMedia;
+  };
+  const query = "(prefers-reduced-motion: reduce)";
+  return (patched.real ? patched.real(query) : window.matchMedia(query)).matches;
+}
 
 /** Saves the choice and reloads: effects read LITE once, at start, like reduced motion. */
 export function setLite(choice: LiteChoice, cookieDomain?: string): void {

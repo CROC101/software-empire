@@ -1,12 +1,18 @@
 {
-  // community: a static SPA on Cloudflare Workers (free plan, assets only, no Worker script: unlimited
-  // asset requests). Unknown paths fall back to index.html for the client router.
+  // community: a static SPA on Cloudflare Workers (free plan: files under /assets/ never invoke the Worker,
+  // so they stay unlimited). Unknown paths fall back to index.html for the client router.
   // Deployed by .github/workflows/deploy.yml; setup: docs/DEPLOY.md.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "crocwork-community",
   "compatibility_date": "2026-10-01",
+  // until launch (1 Jan 2570) a small Worker asks the hub whether the visitor is an admin before
+  // serving a page; bundles under /assets/ skip it. After launch it passes everything through.
+  "main": "../../packages/core/src/launch-gate-worker.ts",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application",
+    "run_worker_first": ["/*", "!/assets/*"],
   },
+  "services": [{ "binding": "HUB", "service": "crocwork-hub" }],
 }

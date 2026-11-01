@@ -135,3 +135,4 @@ export { MetallicPaint, type MetallicPaintProps } from "./components/metallic-pa
 export { PixelSnow, type PixelSnowProps } from "./components/pixel-snow";
 export { LightRays, type LightRaysOrigin, type LightRaysProps } from "./components/light-rays";
 export { BatNight } from "./components/bat-night";
+export { DominoLettering, dominoCount } from "./components/domino-lettering";
