@@ -29,7 +29,7 @@
     "@empire/config": "workspace:*",
     "@types/node": "^24.19.2",
     "eslint": "^10.12.0",
-    "typescript": "~6.0.3",
+    "typescript": "~7.0.2",
     "vitest": "^5.0.4"
   }
 }
