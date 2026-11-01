@@ -42,9 +42,7 @@ export function DominoLettering({
             <span
               key={l}
               className="em-domino__tile"
-              style={
-                { "--domino-delay": `${(index++ * step).toFixed(2)}s` } as CSSProperties
-              }
+              style={{ "--domino-delay": `${(index++ * step).toFixed(2)}s` } as CSSProperties}
             >
               {letter}
             </span>
