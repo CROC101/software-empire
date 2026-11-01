@@ -124,3 +124,25 @@ describe("LITE mode", () => {
     expect(readLite("em-lite=bogus")).toBe("auto");
   });
 });
+
+describe("shared cookies on a parent domain", () => {
+  it("expire the host-only twin left from before COOKIE_DOMAIN", async () => {
+    const { setAmbience } = await import("./theme");
+    const written: string[] = [];
+    const g = globalThis as unknown as { document?: unknown; window?: unknown };
+    g.document = {
+      set cookie(v: string) {
+        written.push(v);
+      },
+    };
+    g.window = { dispatchEvent: () => true };
+    setAmbience("rain", ".example.com");
+    expect(written[0]).toBe("em-ambience=; Path=/; Max-Age=0; SameSite=Lax");
+    expect(written[1]).toContain("Domain=.example.com");
+    written.length = 0;
+    setAmbience("rain"); // localhost: one host-only cookie, nothing to drop
+    expect(written).toHaveLength(1);
+    delete g.document;
+    delete g.window;
+  });
+});

@@ -1,18 +1,19 @@
 "use client";
 
-import { LightRays, useTokenColors } from "@empire/ui";
+import { SideRays, useTokenColors } from "@empire/ui";
 
-const TOKENS = ["--background", "--em-ink-100"] as const;
+const TOKENS = ["--background", "--em-ink-100", "--em-sky-500"] as const;
 
 /**
- * Night only: moonlight pours from the top of the screen (a little toward the right, where the
- * tree's moon hangs) and spreads softly over the whole width, cooling to blue as it falls, with
- * dust drifting in the shafts. By day there is nothing to draw, so the canvas is not mounted.
+ * Night only: moonlight fans in from the top-right corner, where the tree's moon hangs, two
+ * layers of shafts (moon white over sky blue) with dust drifting in them, leaning toward the
+ * pointer. Across the whole width of the hero; by day there is nothing to draw, so the canvas is
+ * not mounted.
  */
 export function NightRays() {
   const colors = useTokenColors(TOKENS);
   if (!colors) return null;
-  const [bg = "#ffffff", moon = "#eeeeee"] = colors;
+  const [bg = "#ffffff", moon = "#eeeeee", sky = "#3399ff"] = colors;
   if (parseInt(bg.slice(1, 3), 16) >= 128) return null;
   return (
     // edge to edge of the screen, not the hero's column; above the tree (its canvas paints its
@@ -21,24 +22,21 @@ export function NightRays() {
       aria-hidden
       className="pointer-events-none absolute inset-y-0 left-1/2 z-10 w-screen -translate-x-1/2 mix-blend-screen [mask-image:linear-gradient(to_bottom,#000_55%,transparent)]"
     >
-      <LightRays
-        raysOrigin="top-center"
-        raysColor={moon}
-        tilt={-12}
-        lightSpread={1.6}
-        rayLength={2.4}
-        fadeDistance={1.4}
-        rayDensity={1.2}
-        raySharpness={0.25}
-        haze={0.45}
-        glow={0.55}
-        atmosphere={1}
-        intensity={0.9}
-        raysSpeed={0.6}
-        mouseInfluence={0.06}
-        cursorShadow={false}
-        clickPulse={false}
-        opacity={0.8}
+      <SideRays
+        origin="top-right"
+        rayColor1={moon}
+        rayColor2={sky}
+        blend={0.45}
+        speed={1.2}
+        intensity={2.2}
+        spread={2.2}
+        density={5}
+        sharpness={0.45}
+        falloff={1.3}
+        glow={0.8}
+        dust={0.35}
+        mouseInfluence={0.35}
+        opacity={1}
       />
     </div>
   );

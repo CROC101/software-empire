@@ -60,7 +60,17 @@ export function applyTheme(choice: ThemeChoice): ResolvedTheme {
   return theme;
 }
 
+/**
+ * A shared cookie (Domain=…) does not replace a host-only one of the same name written before
+ * COOKIE_DOMAIN was set: the browser keeps both and sends the old one first, so a theme switch
+ * snapped back. Writing the shared value also expires that host-only twin.
+ */
+export function dropHostOnlyTwin(name: string, cookieDomain?: string): void {
+  if (cookieDomain) document.cookie = `${name}=; Path=/; Max-Age=0; SameSite=Lax`;
+}
+
 export function setThemeChoice(choice: ThemeChoice, cookieDomain?: string): void {
+  dropHostOnlyTwin(THEME_COOKIE, cookieDomain);
   document.cookie = themeCookie(choice, cookieDomain);
   applyTheme(choice);
 }
@@ -175,6 +185,7 @@ export function setLite(choice: LiteChoice, cookieDomain?: string): void {
   const domain = cookieDomain ? `; Domain=${cookieDomain}` : "";
   // auto = forget the choice, so the device decides again
   const age = choice === "auto" ? 0 : YEAR_S;
+  dropHostOnlyTwin(LITE_COOKIE, cookieDomain);
   document.cookie = `${LITE_COOKIE}=${choice}; Path=/; Max-Age=${String(age)}; SameSite=Lax${domain}`;
   location.reload();
 }
@@ -240,6 +251,7 @@ export function currentAmbience(): Ambience {
 
 export function setAmbience(value: Ambience, cookieDomain?: string): void {
   const domain = cookieDomain ? `; Domain=${cookieDomain}` : "";
+  dropHostOnlyTwin(AMBIENCE_COOKIE, cookieDomain);
   document.cookie = `${AMBIENCE_COOKIE}=${value}; Path=/; Max-Age=${String(YEAR_S)}; SameSite=Lax${domain}`;
   // same nudge as the theme: other components re-read on focus
   window.dispatchEvent(new Event("focus"));
