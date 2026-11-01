@@ -6,6 +6,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getClaims } from "@/lib/supabase/server";
 import { BrandMetal } from "./brand-metal";
+import { DesktopOnly } from "./desktop-only";
 import { FloatingPaths } from "./floating-paths";
 import { AuthPanel } from "./login-form";
 
@@ -30,18 +31,23 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       {/* brand panel, desktop: the logo in liquid chrome over slowly tracing curves */}
       <aside className="relative hidden flex-col overflow-hidden border-r bg-muted/60 p-10 lg:sticky lg:top-0 lg:flex lg:h-dvh">
         <div aria-hidden className="absolute inset-0">
-          <FloatingPaths position={1} />
-          <FloatingPaths position={-1} />
+          <DesktopOnly>
+            <FloatingPaths position={1} />
+            <FloatingPaths position={-1} />
+          </DesktopOnly>
         </div>
         <div
           aria-hidden
-          className="absolute inset-0 z-10 bg-gradient-to-t from-background to-transparent"
+          // fades the curves out behind the brand line only, the rest of the panel keeps them
+          className="absolute inset-0 z-10 bg-gradient-to-t from-background from-10% via-transparent via-45% to-transparent"
         />
         <div className="relative z-10">
           <Wordmark />
         </div>
         <div aria-hidden className="relative z-10 my-auto">
-          <BrandMetal />
+          <DesktopOnly>
+            <BrandMetal />
+          </DesktopOnly>
         </div>
         <blockquote className="relative z-10 space-y-2">
           <p className="font-heading text-2xl font-bold leading-snug">

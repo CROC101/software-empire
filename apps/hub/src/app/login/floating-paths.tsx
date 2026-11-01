@@ -23,7 +23,8 @@ export function FloatingPaths({ position }: { position: 1 | -1 }) {
     <svg
       aria-hidden
       className="pointer-events-none absolute inset-0 size-full text-foreground"
-      viewBox="0 0 696 316"
+      // the curves run from above the top-left corner to y=875: frame all of them, not a strip
+      viewBox="0 0 696 875"
       preserveAspectRatio="xMidYMid slice"
       fill="none"
     >
