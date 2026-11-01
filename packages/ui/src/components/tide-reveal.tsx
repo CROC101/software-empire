@@ -3,13 +3,13 @@
 import { useEffect } from "react";
 import { arm, playFade, reducedMotion, staggerDelay, type FadeEffect } from "../lib/fade";
 
-// every block rises through mist (lib/fade.ts); headings float their letters in (ScrollFloat)
+// every block develops like a print (lib/fade.ts); headings float their letters in (ScrollFloat)
 
 const presetFor = (el: HTMLElement): FadeEffect => {
   const own = el.dataset.fade as FadeEffect | undefined;
   if (own) return own;
-  // everything rises through mist; headings bring their own letters (ScrollFloat)
-  return "mist";
+  // everything develops like a print, grey to colour; headings bring their own letters (ScrollFloat)
+  return "develop";
 };
 
 // lists and grids of several items play item by item
