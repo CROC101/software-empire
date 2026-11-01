@@ -138,3 +138,4 @@ export { BatNight } from "./components/bat-night";
 export { DominoLettering, dominoCount } from "./components/domino-lettering";
 export { ScrollFloat } from "./components/scroll-float";
 export { DitherVeil } from "./components/dither-veil";
+export { HalftoneReveal } from "./components/halftone-reveal";

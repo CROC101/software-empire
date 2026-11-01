@@ -23,6 +23,7 @@ import {
   ScrollFloat,
 } from "@empire/ui";
 import { Haggle } from "./haggle";
+import { PrintedScreen } from "./printed-screen";
 import {
   Braces,
   Bug,
@@ -758,9 +759,10 @@ export function ShotsSection({ summaries }: { summaries: Record<string, string> 
           </h2>
         </div>
         <p className="text-sm text-muted-foreground">
-          แตะภาพเพื่อเปลี่ยน · ลากรูปมือถือเพื่อเลื่อน
+          ขยับเมาส์บนภาพพิมพ์เพื่อดูของจริง · แตะภาพเพื่อเปลี่ยน
         </p>
       </div>
+      <PrintedScreen />
       <WaterRippleCarousel
         className="mb-16"
         height="min(68svh, 640px)"
