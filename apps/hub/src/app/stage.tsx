@@ -2,11 +2,11 @@
 
 import { Activity, useEffect, useRef, useState, type ReactNode } from "react";
 
-/** Sections within this distance of the screen stay live; the rest are put to sleep. */
-const AWAKE = "150% 0px";
+/** Sections within half a screen of the view stay live; the rest are put to sleep. */
+const AWAKE = "50% 0px";
 
 /**
- * One portfolio section that sleeps while it is far from the screen: React's <Activity hidden>
+ * One portfolio section that sleeps while it is away from the screen: React's <Activity hidden>
  * stops its effects (WebGL, canvas and animation loops) and skips its layout and paint, but keeps
  * its state and DOM, so it wakes exactly as it was, with a short fade. The server renders every
  * section, so search engines and the first paint still get the whole page.

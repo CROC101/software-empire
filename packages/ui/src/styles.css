@@ -2428,16 +2428,6 @@ a.lgn-app:focus-visible {
   );
 }
 
-/* the reveal engine (lib/fade.ts: FadeContent, TideReveal): hidden until its animation plays */
-.fade-armed {
-  opacity: 0;
-}
-@media (prefers-reduced-motion: reduce) {
-  .fade-armed {
-    opacity: 1;
-  }
-}
-
 /* ── RollingCounter (components/rolling-counter.tsx): digits on rolling strips ── */
 .rc {
   position: relative;
@@ -3746,5 +3736,41 @@ a.lgn-app:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .em-domino__tile {
     animation: none;
+  }
+}
+
+/* ScrollFloat: letters stretch up out of a slot and settle while the heading scrolls in.
+   One view timeline per heading, compositor-only (transform, opacity). */
+.em-float {
+  display: block;
+  view-timeline: --em-float block;
+}
+.em-float-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.em-float-char {
+  display: inline-block;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-lite="on"]) .em-float-char {
+      transform-origin: 50% 0%;
+      animation: em-float linear both;
+      animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      animation-timeline: --em-float;
+      animation-range: entry calc(4% + var(--float-i) * 1.2%) cover
+        calc(28% + var(--float-i) * 1.2%);
+    }
+  }
+}
+@keyframes em-float {
+  from {
+    opacity: 0;
+    transform: translateY(120%) scaleY(2.3) scaleX(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

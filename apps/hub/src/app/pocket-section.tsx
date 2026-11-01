@@ -1,6 +1,12 @@
 "use client";
 
-import { PhoneScrollHero, ScreenRail, useAutoplay, useReducedMotionAfterMount } from "@empire/ui";
+import {
+  PhoneScrollHero,
+  ScreenRail,
+  useAutoplay,
+  useReducedMotionAfterMount,
+  ScrollFloat,
+} from "@empire/ui";
 import { motion, useMotionValueEvent, useTransform, type MotionValue } from "motion/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -91,9 +97,11 @@ function DepthTitle({ progress }: { progress: MotionValue<number> }) {
         </span>
       </motion.p>
       <h2 className={`pk-depth mt-3 ${size}`}>
-        บนมือถือ
-        <br />
-        <span className="pk-depth-blue">หน้าตาแบบนี้</span>
+        <ScrollFloat>
+          บนมือถือ
+          <br />
+          <span className="pk-depth-blue">หน้าตาแบบนี้</span>
+        </ScrollFloat>
       </h2>
       {CHIPS.map((c, i) => (
         <motion.span

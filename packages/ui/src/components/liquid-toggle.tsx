@@ -1,5 +1,6 @@
 "use client";
 
+import { ambientSkip } from "../lib/ambient";
 import * as React from "react";
 import { cn } from "../lib/cn";
 
@@ -168,6 +169,8 @@ function makeState() {
     reduce: false,
     raf: 0,
     last: 0,
+    /** last frame needed full rate (switching, dragging, ripples) */
+    busy: true,
     time: 0,
     glc: null as GLC | null,
   };
@@ -452,12 +455,18 @@ export function LiquidToggle({
     if (s.raf) return;
     s.last = performance.now();
     const tick = (now: number) => {
+      // resting liquid at the ambient rate; a switch, drag or ripple gets every frame
+      if (!s.busy && ambientSkip(now, s.last)) {
+        s.raf = requestAnimationFrame(tick);
+        return;
+      }
       const dt = Math.min((now - s.last) / 1000, 1 / 30);
       s.last = now;
       step(dt, now);
       draw();
       const busy =
         s.moving || s.drag.id !== -1 || s.rips.length > 0 || s.sats.length > 0 || s.mouse.s > 0.01;
+      s.busy = busy;
       if (s.visible && (!s.reduce || busy)) s.raf = requestAnimationFrame(tick);
       else s.raf = 0;
     };

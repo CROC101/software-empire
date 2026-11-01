@@ -1,5 +1,6 @@
 "use client";
 
+import { ambientSkip } from "../lib/ambient";
 import type { Season } from "@empire/core/theme";
 import * as React from "react";
 import { cn } from "../lib/cn";
@@ -1307,6 +1308,12 @@ export function SeasonTree({
     const frame = (now: number) => {
       raf = 0;
       if (!onScreen || document.hidden) return;
+      // idle sway at the ambient rate; growing, shaking and falling fruit get every frame
+      const urgent = now - born < 2600 || shake > 0.01 || state.some((f) => f.phase === "fall");
+      if (!urgent && ambientSkip(now, last)) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       time += dt;

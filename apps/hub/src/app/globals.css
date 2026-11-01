@@ -131,24 +131,41 @@ html.em-intro .intro-cover {
   position: fixed;
   inset: 0;
   z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--em-ink-975);
 }
-/* the gate takes over from the cover in the same colour: a fade-in would show the page through */
-.intro-layer .skp-gate {
-  animation: none;
+.intro-veil {
+  width: min(62vmin, 520px);
+  aspect-ratio: 7 / 8;
+}
+.intro-name {
+  position: absolute;
+  bottom: clamp(28px, 9vh, 96px);
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  font-weight: 800;
+  color: var(--em-ink-0);
+}
+/* into the hub: the scene flies past the camera, compositor only */
+.intro-layer--out {
+  animation: intro-out 0.9s cubic-bezier(0.7, 0, 0.2, 1) forwards;
+}
+@keyframes intro-out {
+  to {
+    opacity: 0;
+    transform: scale(2.4);
+  }
 }
 .intro-skip {
   position: absolute;
   top: clamp(16px, 3vh, 30px);
   right: clamp(16px, 3vw, 36px);
   z-index: 3;
+  min-height: 44px;
   border: 1px solid oklch(1 0 0 / 0.25);
-  padding: 0.4rem 0.9rem;
-  font:
-    400 11px/1.4 ui-monospace,
-    Menlo,
-    Consolas,
-    monospace;
-  letter-spacing: 0.2em;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.95rem;
   color: var(--em-ink-200);
 }
 
@@ -596,14 +613,34 @@ a.sw-app:focus-visible .sw-tile {
   white-space: nowrap;
 }
 
-/* a section waking up (stage.tsx): a short fade, opacity only */
+/* a section waking up (stage.tsx) comes in through mist: a soft fog front with drifting noise
+   in it sweeps up the section while it turns opaque. Only during the 0.9 s, then the class goes. */
 @media (prefers-reduced-motion: no-preference) {
   .em-stage-wake {
-    animation: em-stage-wake 0.45s ease-out;
+    mask-image:
+      linear-gradient(to top, #000 42%, transparent 72%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    mask-size:
+      100% 260%,
+      320px 320px;
+    mask-repeat: no-repeat, repeat;
+    mask-composite: add;
+    animation: em-stage-mist 0.9s ease-out both;
   }
 }
-@keyframes em-stage-wake {
+@keyframes em-stage-mist {
+  /* the gradient image is 2.6x the section: its clear top covers the section first, its
+     solid bottom by the end, so the fog front rises up through the section */
   from {
     opacity: 0;
+    mask-position:
+      0 0,
+      0 0;
+  }
+  to {
+    opacity: 1;
+    mask-position:
+      0 100%,
+      60px -90px;
   }
 }

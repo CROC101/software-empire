@@ -1,6 +1,6 @@
 "use client";
 
-import { IsometricHexChart, spiral, useTokenColors } from "@empire/ui";
+import { IsometricHexChart, spiral, useTokenColors, ScrollFloat } from "@empire/ui";
 import codebase from "@/lib/codebase.json";
 
 const EYEBROW = "font-mono text-xs uppercase tracking-[0.2em]";
@@ -29,9 +29,11 @@ export function CodebaseHexes() {
         <div>
           <p className={`${EYEBROW} cw-blue`}>codebase</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">
-            {fmt.format(codebase.lines)} บรรทัด
-            <br />
-            <span className="cw-blue">ใน repo เดียว</span>
+            <ScrollFloat>
+              {fmt.format(codebase.lines)} บรรทัด
+              <br />
+              <span className="cw-blue">ใน repo เดียว</span>
+            </ScrollFloat>
           </h2>
         </div>
         <p className="text-sm text-muted-foreground">

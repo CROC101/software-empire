@@ -1,5 +1,6 @@
 "use client";
 
+import { ambientSkip } from "../lib/ambient";
 import { useEffect, useRef, type CSSProperties } from "react";
 import { whenNear } from "../lib/when-near";
 
@@ -838,6 +839,11 @@ export function PixelSnow({
       const frame = (now: number) => {
         raf = 0;
         if (!alive || !visible || document.hidden) return;
+        // falling snow at the ambient rate; the pointer pushing flakes gets every frame
+        if (last && !pointer.inside && ambientSkip(now, last)) {
+          raf = requestAnimationFrame(frame);
+          return;
+        }
         const s = settingsRef.current;
         const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
         last = now;

@@ -1,6 +1,6 @@
 "use client";
 
-import { ClothingRail, useTokenColors, type GarmentKind } from "@empire/ui";
+import { ClothingRail, useTokenColors, type GarmentKind, ScrollFloat } from "@empire/ui";
 import { PGTAP_TESTS } from "@/lib/facts";
 
 const EYEBROW = "font-mono text-xs uppercase tracking-[0.2em]";
@@ -94,7 +94,9 @@ export function Wardrobe() {
           eyebrow={<p className={`${EYEBROW} cw-blue`}>wardrobe</p>}
           heading={
             <h2 className="text-4xl font-black tracking-tight sm:text-6xl">
-              {ROLES.length} ชุดที่ผม <span className="cw-blue">สลับใส่ทุกวัน</span>
+              <ScrollFloat>
+                {ROLES.length} ชุดที่ผม <span className="cw-blue">สลับใส่ทุกวัน</span>
+              </ScrollFloat>
             </h2>
           }
           caption="ชี้ไปตามราวเพื่อหันเสื้อ กดเพื่อหยิบลงมาดูหน้าและหลัง"

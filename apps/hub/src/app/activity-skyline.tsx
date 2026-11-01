@@ -1,6 +1,6 @@
 "use client";
 
-import { ContributionSkyline, useTokenColors } from "@empire/ui";
+import { ContributionSkyline, useTokenColors, ScrollFloat } from "@empire/ui";
 import contributions from "@/lib/contributions.json";
 
 const EYEBROW = "font-mono text-xs uppercase tracking-[0.2em]";
@@ -19,9 +19,11 @@ export function ActivitySkyline() {
         <div>
           <p className={`${EYEBROW} cw-blue`}>activity</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">
-            ทุกแท่งคือวันที่ส่งงานจริง
-            <br />
-            <span className="cw-blue">ไม่ได้แต่งขึ้น</span>
+            <ScrollFloat>
+              ทุกแท่งคือวันที่ส่งงานจริง
+              <br />
+              <span className="cw-blue">ไม่ได้แต่งขึ้น</span>
+            </ScrollFloat>
           </h2>
         </div>
         <p className="text-sm text-muted-foreground">

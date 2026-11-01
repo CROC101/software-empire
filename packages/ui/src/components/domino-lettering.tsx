@@ -1,14 +1,6 @@
 import type { CSSProperties } from "react";
 import { cn } from "../lib/cn";
-
-/** Thai vowels and tone marks stay with their consonant: split by grapheme, not by code unit. */
-const graphemes = (word: string) =>
-  typeof Intl.Segmenter === "function"
-    ? Array.from(
-        new Intl.Segmenter("th", { granularity: "grapheme" }).segment(word),
-        (s) => s.segment,
-      )
-    : Array.from(word);
+import { graphemes } from "../lib/graphemes";
 
 /**
  * Letters stand like dominoes, topple one after another to the right, rest leaning, then stand

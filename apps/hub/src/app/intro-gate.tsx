@@ -1,11 +1,12 @@
 "use client";
 
-import "@fontsource/fleur-de-leah/400.css";
-import "@fontsource/caveat/500.css";
-import { SkeletonKeyPreloader, useTokenColors } from "@empire/ui";
+import { DitherVeil, useTokenColors } from "@empire/ui";
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 const SEEN = "em-intro-seen"; // same flag as public/intro-boot.js
+/** the logo knits in from dots (1.1 s), shimmers, then the scene opens into the hub */
+const HOLD_MS = 2600;
+const EXIT_MS = 900;
 
 // the boot script decides once, before paint; the server never shows the intro
 const noSubscribe = () => () => {};
@@ -13,35 +14,18 @@ const bootSaysIntro = () => document.documentElement.classList.contains("em-intr
 const serverSaysNo = () => false;
 
 /**
- * The first-visit intro. public/intro-boot.js puts `em-intro` on <html> before paint (home page,
- * first visit this session or ?intro, motion allowed); until this mounts, `.intro-cover` holds the
- * screen so the page never flashes. Skip with the button or Escape; the flag is set either way.
+ * The first-visit intro: the crocwork mark in 1-bit dither on ink, a window of real colour
+ * drifting across it (a glint on the chrome), then the whole scene flies past the camera into the
+ * hub (transform and opacity only, so it holds the screen's frame rate). public/intro-boot.js puts
+ * `em-intro` on <html> before paint (home page, first visit this session or ?intro, motion
+ * allowed); until this mounts, `.intro-cover` holds the screen. Skip with the button or Escape.
  */
 export function IntroGate() {
   const wanted = useSyncExternalStore(noSubscribe, bootSaysIntro, serverSaysNo);
   const [finished, setFinished] = useState(false);
-  const [fontsReady, setFontsReady] = useState(false);
+  const [leaving, setLeaving] = useState(false);
   const live = wanted && !finished;
-
-  // the script and hand faces must be in before the collage starts writing, or they swap
-  // mid-stroke; the cover holds the screen meanwhile, never longer than 1.2 s
-  useEffect(() => {
-    if (!wanted) return;
-    let alive = true;
-    const ready = () => {
-      if (alive) setFontsReady(true);
-    };
-    const timer = window.setTimeout(ready, 1200);
-    void Promise.all([
-      document.fonts.load('400 1em "Fleur De Leah"'),
-      document.fonts.load("500 1em Caveat"),
-    ]).then(ready, ready);
-    return () => {
-      alive = false;
-      window.clearTimeout(timer);
-    };
-  }, [wanted]);
-  const colors = useTokenColors(["--em-ink-975", "--em-ink-0"]);
+  const colors = useTokenColors(["--em-ink-975", "--em-ink-0", "--em-blue-500"]);
 
   const finish = useCallback(() => {
     try {
@@ -59,40 +43,43 @@ export function IntroGate() {
   }, []);
 
   useEffect(() => {
-    if (!live) return;
+    if (!live || !colors) return;
+    const out = window.setTimeout(() => setLeaving(true), HOLD_MS);
+    const done = window.setTimeout(finish, HOLD_MS + EXIT_MS);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") finish();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [live, finish]);
+    return () => {
+      window.clearTimeout(out);
+      window.clearTimeout(done);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [live, colors, finish]);
 
-  const [paper, ink] = colors ?? [];
-  if (!live || !fontsReady || !paper || !ink) return <div aria-hidden className="intro-cover" />;
+  const [ink, paper, glint] = colors ?? [];
+  if (!live || !ink || !paper || !glint) return <div aria-hidden className="intro-cover" />;
 
   return (
-    <div className="intro-layer">
-      <SkeletonKeyPreloader
-        greeting="welcome to"
-        word="crocwork"
-        tags={["#crocwork", "#solo", "#design", "#code"]}
-        name="crocwork.studio"
-        about={["software studio", "building systems", "that ship."]}
-        links={["crocwork.studio", "github.com/CROC101"]}
-        signature="crocwork"
-        release="1.0"
-        metal="gold"
-        paper={paper}
-        ink={ink}
-        durationMs={3400}
-        faces={{
-          grotesk: "var(--font-heading)",
-          script: '"Fleur De Leah", cursive',
-          hand: "Caveat, cursive",
-          mono: "ui-monospace, Menlo, Consolas, monospace",
-        }}
-        onComplete={finish}
-      />
+    <div className={leaving ? "intro-layer intro-layer--out" : "intro-layer"}>
+      <div aria-hidden className="intro-veil">
+        <DitherVeil
+          src="/crocwork-logo.webp"
+          fit="contain"
+          pattern="floyd"
+          pixelSize={2}
+          inkColor={ink}
+          paperColor={paper}
+          contrast={1.25}
+          revealRadius={160}
+          softness={0.7}
+          linger={0.8}
+          rimColor={glint}
+          rim={0.3}
+          wander
+        />
+      </div>
+      <p className="intro-name">crocwork.studio</p>
       <button type="button" className="intro-skip" onClick={finish}>
         ข้าม
       </button>
