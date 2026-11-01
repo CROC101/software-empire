@@ -32,7 +32,7 @@ import {
   User,
   Users,
 } from "lucide-react";
-import { Fragment, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
@@ -46,6 +46,7 @@ import { MobileMenu } from "./mobile-menu";
 import { BackToTop } from "./nav-spy";
 import { DepthSection } from "./depth-section";
 import { IntroGate } from "./intro-gate";
+import { Stage } from "./stage";
 import { ActivitySkyline } from "./activity-skyline";
 import { RhythmRing } from "./rhythm-ring";
 import { WhereSection } from "./where-section";
@@ -404,7 +405,7 @@ export default async function HomePage() {
           .sections()
           .filter((x) => x.visible)
           .map((x) => (
-            <Fragment key={x.key}>{SECTIONS[x.key]}</Fragment>
+            <Stage key={x.key}>{SECTIONS[x.key]}</Stage>
           ))}
       </main>
       <TideReveal />
