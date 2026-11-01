@@ -595,3 +595,15 @@ a.sw-app:focus-visible .sw-tile {
   font-size: 0.875rem;
   white-space: nowrap;
 }
+
+/* a section waking up (stage.tsx): a short fade, opacity only */
+@media (prefers-reduced-motion: no-preference) {
+  .em-stage-wake {
+    animation: em-stage-wake 0.45s ease-out;
+  }
+}
+@keyframes em-stage-wake {
+  from {
+    opacity: 0;
+  }
+}
