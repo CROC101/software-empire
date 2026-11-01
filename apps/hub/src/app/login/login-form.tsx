@@ -44,7 +44,7 @@ export function AuthPanel({
   const [title, lead] = HEADING[mode];
   return (
     <>
-      <h2 className="font-heading text-2xl font-black sm:text-3xl">{title}</h2>
+      <h1 className="font-heading text-2xl font-black sm:text-3xl">{title}</h1>
       <p className="mb-6 mt-2 text-base">{lead}</p>
       {alert && (
         <p role="alert" className="mb-4 text-sm text-destructive">

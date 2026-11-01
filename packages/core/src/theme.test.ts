@@ -89,7 +89,12 @@ describe("LITE mode", () => {
       { width: device.side, height: device.side * 2 },
       { connection: { saveData: device.saveData } },
     );
-    return { lite: html.dataset.lite, reduce: win.matchMedia("(prefers-reduced-motion: reduce)") };
+    const patched = win.matchMedia as typeof real & { real?: typeof real };
+    return {
+      lite: html.dataset.lite,
+      reduce: patched("(prefers-reduced-motion: reduce)"),
+      real: patched.real,
+    };
   }
   const phone = { coarse: true, side: 390 };
   const desktop = { coarse: false, side: 1440 };
@@ -106,8 +111,10 @@ describe("LITE mode", () => {
     expect(boot("em-lite=on", desktop).lite).toBe("on");
   });
 
-  it("makes every effect see reduced motion while on", () => {
-    expect(boot("em-lite=on", desktop).reduce.matches).toBe(true);
+  it("makes every effect see reduced motion while on, keeping the device's answer", () => {
+    const on = boot("em-lite=on", desktop);
+    expect(on.reduce.matches).toBe(true);
+    expect(on.real?.("(prefers-reduced-motion: reduce)").matches).toBe(false);
     expect(boot("em-lite=off", desktop).reduce.matches).toBe(false);
   });
 

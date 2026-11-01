@@ -11,7 +11,8 @@
     "./theme": "./src/theme.ts",
     "./cms": "./src/cms.ts",
     "./cms-pages": "./src/cms-pages.ts",
-    "./auth": "./src/auth.ts"
+    "./auth": "./src/auth.ts",
+    "./launch": "./src/launch.ts"
   },
   "scripts": {
     "lint": "eslint .",

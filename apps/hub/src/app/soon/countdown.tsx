@@ -32,7 +32,7 @@ export function Countdown({ target }: { target: number }) {
 
   const left = Math.max(0, target - (now ?? target));
   return (
-    <dl className="grid w-fit grid-cols-4 gap-x-4 sm:gap-x-10" aria-live="off">
+    <dl className="em-keep-motion grid w-fit grid-cols-4 gap-x-4 sm:gap-x-10" aria-live="off">
       {UNITS.map(({ label, ms, cap }) => (
         <div key={label} className="flex flex-col-reverse gap-2">
           <dt className="text-base text-[var(--em-ink-100)] sm:text-lg">{label}</dt>
@@ -44,6 +44,7 @@ export function Countdown({ target }: { target: number }) {
                 value={Math.floor(left / ms) % cap}
                 format={{ minimumIntegerDigits: 2 }}
                 intro={false}
+                lite={false}
               />
             )}
           </dd>

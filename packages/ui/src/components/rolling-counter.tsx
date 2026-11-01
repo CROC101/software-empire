@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../lib/cn";
+import { osReducedMotion } from "@empire/core/theme";
 import { reducedMotion } from "../lib/fade";
 
 type Slot = { key: string; digit: number; text?: undefined } | { key: string; text: string };
@@ -61,6 +62,7 @@ export function RollingCounter({
   bounce = 0.2,
   stagger = 0.04,
   intro = true,
+  lite = true,
   className,
 }: {
   value: number;
@@ -75,8 +77,11 @@ export function RollingCounter({
   /** seconds between neighbouring digits */
   stagger?: number;
   intro?: boolean;
+  /** false keeps rolling in LITE mode (the device's own reduced-motion setting still wins) */
+  lite?: boolean;
   className?: string;
 }) {
+  const still = lite ? reducedMotion : osReducedMotion;
   const formatter = React.useMemo(
     () => new Intl.NumberFormat(locale, { ...format, numberingSystem: "latn" }),
     [locale, JSON.stringify(format ?? {})],
@@ -176,7 +181,7 @@ export function RollingCounter({
       const item = e.items.get(el.dataset.slot ?? "");
       if (item) item.el = el;
     });
-    if (reducedMotion()) {
+    if (still()) {
       for (const item of e.items.values()) {
         item.target = mod(Math.round(item.target), 10);
         item.pos = item.target;
@@ -190,12 +195,12 @@ export function RollingCounter({
         item.wait = order * e.tune.stagger;
       });
     if (moving.length) kick();
-  }, [slots, value, kick]);
+  }, [slots, value, kick, still]);
 
   // first time on screen: every digit spins once and lands, left to right
   React.useEffect(() => {
     const root = rootRef.current;
-    if (!intro || !root || reducedMotion()) return;
+    if (!intro || !root || still()) return;
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries.some((x) => x.isIntersecting)) return;
@@ -211,7 +216,7 @@ export function RollingCounter({
     );
     io.observe(root);
     return () => io.disconnect();
-  }, [intro, kick]);
+  }, [intro, kick, still]);
 
   React.useEffect(() => () => cancelAnimationFrame(engine.current.raf), []);
 
