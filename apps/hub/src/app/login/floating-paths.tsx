@@ -3,13 +3,15 @@
 import { motion, useReducedMotion } from "motion/react";
 
 /**
- * 36 thin curves sweeping across the panel, each tracing itself slowly forever. Colour comes from
+ * 24 thin curves sweeping across the panel, each tracing itself slowly forever. Colour comes from
  * currentColor (the panel's foreground token). Reduced motion or LITE: the curves stand still.
  */
 export function FloatingPaths({ position }: { position: 1 | -1 }) {
   const still = useReducedMotion() === true;
-  const paths = Array.from({ length: 36 }, (_, i) => {
-    const x = (n: number) => n - i * 5 * position;
+  // 24 curves spread over the span the original 36 covered: half the paint work per frame
+  const paths = Array.from({ length: 24 }, (_, n) => {
+    const i = Math.round(n * 1.5);
+    const x = (v: number) => v - i * 5 * position;
     return {
       id: i,
       d: `M-${String(x(380))} -${String(189 + i * 6)}C-${String(x(380))} -${String(189 + i * 6)} -${String(x(312))} ${String(216 - i * 6)} ${String(x(152))} ${String(343 - i * 6)}C${String(x(616))} ${String(470 - i * 6)} ${String(x(684))} ${String(875 - i * 6)} ${String(x(684))} ${String(875 - i * 6)}`,
@@ -34,13 +36,11 @@ export function FloatingPaths({ position }: { position: 1 | -1 }) {
           d={path.d}
           stroke="currentColor"
           strokeWidth={path.width}
-          strokeOpacity={0.1 + path.id * 0.03}
-          initial={{ pathLength: 0.3, opacity: 0.6 }}
-          animate={
-            still
-              ? { pathLength: 1, opacity: 0.45 }
-              : { pathLength: 1, opacity: [0.3, 0.6, 0.3], pathOffset: [0, 1, 0] }
-          }
+          // fixed opacity: animating it per path gives every curve its own GPU layer, and 72 of
+          // them blanked the whole page in Edge
+          strokeOpacity={(0.1 + path.id * 0.03) * 0.5}
+          initial={{ pathLength: 0.3 }}
+          animate={still ? { pathLength: 1 } : { pathLength: 1, pathOffset: [0, 1, 0] }}
           transition={
             still ? { duration: 0 } : { duration: path.duration, repeat: Infinity, ease: "linear" }
           }
