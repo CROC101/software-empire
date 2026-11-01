@@ -422,8 +422,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       emoji-picker-react:
-        specifier: ^4.17.4
-        version: 4.22.3(react@19.3.0)
+        specifier: ^5.1.4
+        version: 5.1.4(react@19.3.0)
       firebase:
         specifier: ^12.8.0
         version: 12.19.0
@@ -3409,9 +3409,9 @@ packages:
   electron-to-chromium@1.5.454:
     resolution: {integrity: sha512-NqD5GhkXnxJpDQVCmmpc546qjH6kei2VI9m45CTF+sQU7bcS7YeVt7ba0cnjueMH1AXGRu/driZUP9iYVSv7vg==}
 
-  emoji-picker-react@4.22.3:
-    resolution: {integrity: sha512-jrAkkoN69l5lA2Xp6P5axqoK1YdHNS1+MKMlLxwltnnnaXrojUjZaolgI/U8vdx8vFWqG42yYqpLSR83f6pwiw==}
-    engines: {node: '>=10'}
+  emoji-picker-react@5.1.4:
+    resolution: {integrity: sha512-kWBAgDCFPcRJrINeRE7/o7VAVNc0Yeg1n7gMHSvJ54qffidCV8Jdmeb9iEHkx1CtClzhnutCax8bQFDTHAbyTg==}
+    engines: {node: '>=18'}
     peerDependencies:
       react: '>=16.8'
 
@@ -8192,7 +8192,7 @@ snapshots:
 
   electron-to-chromium@1.5.454: {}
 
-  emoji-picker-react@4.22.3(react@19.3.0):
+  emoji-picker-react@5.1.4(react@19.3.0):
     dependencies:
       react: 19.3.0
       shipstyles: 1.0.0
