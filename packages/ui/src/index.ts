@@ -136,3 +136,5 @@ export { PixelSnow, type PixelSnowProps } from "./components/pixel-snow";
 export { LightRays, type LightRaysOrigin, type LightRaysProps } from "./components/light-rays";
 export { BatNight } from "./components/bat-night";
 export { DominoLettering, dominoCount } from "./components/domino-lettering";
+export { ScrollFloat } from "./components/scroll-float";
+export { DitherVeil } from "./components/dither-veil";

@@ -3,16 +3,13 @@
 import { useEffect } from "react";
 import { arm, playFade, reducedMotion, staggerDelay, type FadeEffect } from "../lib/fade";
 
-// a block that is mostly a heading comes into focus; pictures develop; everything else rises
-const HEADING = ":scope > :is(h1, h2, h3), :scope > * > :is(h1, h2)";
-const MEDIA = "img, picture, video, canvas, figure";
+// every block rises through mist (lib/fade.ts); headings float their letters in (ScrollFloat)
 
 const presetFor = (el: HTMLElement): FadeEffect => {
   const own = el.dataset.fade as FadeEffect | undefined;
   if (own) return own;
-  if (/^H[1-3]$/.test(el.tagName) || el.querySelector(HEADING)) return "focus";
-  if (el.matches(MEDIA)) return "develop";
-  return "tide";
+  // everything rises through mist; headings bring their own letters (ScrollFloat)
+  return "mist";
 };
 
 // lists and grids of several items play item by item
@@ -79,7 +76,6 @@ export function TideReveal() {
       io.disconnect();
       for (const el of armed) {
         for (const a of el.getAnimations()) a.cancel();
-        el.classList.remove("fade-armed");
       }
     };
   }, []);

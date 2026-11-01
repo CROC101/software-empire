@@ -1,3 +1,4 @@
+import "@fontsource/caveat/500.css";
 import {
   BlueprintButton,
   BlueprintReveal,
@@ -19,6 +20,7 @@ import {
   GlassBucket,
   RollingCounter,
   SplitFlapText,
+  ScrollFloat,
 } from "@empire/ui";
 import { Haggle } from "./haggle";
 import {
@@ -297,9 +299,11 @@ export function StatusSection({
               status · live
             </p>
             <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-              {title1}
-              <br />
-              <span className="text-[var(--em-blue-500)]">{title2}</span>
+              <ScrollFloat>
+                {title1}
+                <br />
+                <span className="text-[var(--em-blue-500)]">{title2}</span>
+              </ScrollFloat>
             </h2>
             <p className="max-w-md text-[var(--em-ink-300)]">{intro}</p>
             <dl className="mt-4 grid grid-cols-3 gap-3 sm:gap-4">
@@ -558,9 +562,11 @@ export function WorkSection({ summaries }: { summaries: Record<string, string> }
         <div>
           <p className={`${EYEBROW} cw-blue`}>work</p>
           <h2 className="mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-            ระบบของผมเอง {subsystems.length} ตัว
-            <br />
-            <span className="cw-blue">เปิดให้ลองแล้ว {live} ตัว</span>
+            <ScrollFloat>
+              ระบบของผมเอง {subsystems.length} ตัว
+              <br />
+              <span className="cw-blue">เปิดให้ลองแล้ว {live} ตัว</span>
+            </ScrollFloat>
           </h2>
         </div>
         <p className="text-muted-foreground">
@@ -746,7 +752,9 @@ export function ShotsSection({ summaries }: { summaries: Record<string, string> 
         <div>
           <p className={`${EYEBROW} cw-blue`}>screens</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">
-            หน้าจอจริง <span className="cw-blue">ไม่ใช่ภาพตัวอย่าง</span>
+            <ScrollFloat>
+              หน้าจอจริง <span className="cw-blue">ไม่ใช่ภาพตัวอย่าง</span>
+            </ScrollFloat>
           </h2>
         </div>
         <p className="text-sm text-muted-foreground">
@@ -818,9 +826,11 @@ export function AboutSection() {
         <div>
           <p className={`${EYEBROW} cw-blue`}>about</p>
           <h2 className="mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-            ออกแบบเป็น เขียนโค้ดได้
-            <br />
-            <span className="cw-blue">แล้วส่งงานจนมีคนใช้</span>
+            <ScrollFloat>
+              ออกแบบเป็น เขียนโค้ดได้
+              <br />
+              <span className="cw-blue">แล้วส่งงานจนมีคนใช้</span>
+            </ScrollFloat>
           </h2>
           <div className="mt-8 flex max-w-xl flex-col gap-4 text-muted-foreground">
             <p>
@@ -963,7 +973,9 @@ export function SkillsSection() {
     <section data-tide id="skills" className="mx-auto max-w-6xl scroll-mt-16 px-4 pb-24 sm:px-6">
       <p className={`${EYEBROW} cw-blue`}>skills</p>
       <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
-        ของที่ใช้ <span className="cw-blue">ทุกวัน</span>
+        <ScrollFloat>
+          ของที่ใช้ <span className="cw-blue">ทุกวัน</span>
+        </ScrollFloat>
       </h2>
       <ul className="mt-10 grid border-l border-t sm:grid-cols-2 lg:grid-cols-4">
         {SKILLS.map(([area, chips]) => (
@@ -1059,7 +1071,9 @@ export function ServicesSection({ aside }: { aside: ReactNode }) {
         <div>
           <p className={`${EYEBROW} cw-blue`}>services</p>
           <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
-            รับทำ <span className="cw-blue">{SERVICES.length} อย่าง</span>
+            <ScrollFloat>
+              รับทำ <span className="cw-blue">{SERVICES.length} อย่าง</span>
+            </ScrollFloat>
           </h2>
           <p className="mt-4 max-w-md text-muted-foreground">
             งานส่วนใหญ่คิดเป็นก้อนตามขอบเขตที่ตกลงกัน ไม่คิดรายชั่วโมง
@@ -1151,9 +1165,11 @@ export function HowSection() {
         <div data-tide className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
           <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
             <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-              ผมถือว่างานจบ
-              <br />
-              <span className="text-[var(--em-blue-500)]">ตอนที่มีคนเปิดใช้</span>
+              <ScrollFloat>
+                ผมถือว่างานจบ
+                <br />
+                <span className="text-[var(--em-blue-500)]">ตอนที่มีคนเปิดใช้</span>
+              </ScrollFloat>
             </h2>
             <p className="text-[var(--em-ink-300)]">
               ทำเป็นรอบสั้น ๆ ถ้าเดินผิดทาง จะรู้ตั้งแต่รอบแรก ๆ ตอนที่เลี้ยวกลับยังง่าย
@@ -1255,7 +1271,9 @@ export function TeamSection() {
         <div>
           <p className={`${EYEBROW} cw-blue`}>team</p>
           <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
-            คนเดียว <span className="cw-blue">กับแมวหนึ่งตัว</span>
+            <ScrollFloat>
+              คนเดียว <span className="cw-blue">กับแมวหนึ่งตัว</span>
+            </ScrollFloat>
           </h2>
         </div>
         <p className="text-muted-foreground">
@@ -1315,7 +1333,9 @@ export function FaqSection() {
     >
       <div>
         <p className={`${EYEBROW} cw-blue`}>faq</p>
-        <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">ถามกันบ่อย</h2>
+        <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
+          <ScrollFloat>ถามกันบ่อย</ScrollFloat>
+        </h2>
         {/* the topics people actually ask about, one at a time */}
         <TextLoop
           staticText="ถามเรื่อง"

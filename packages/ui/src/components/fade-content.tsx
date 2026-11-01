@@ -119,7 +119,6 @@ export function FadeContent({
       io.disconnect();
       for (const t of targets) {
         for (const a of t.getAnimations()) a.cancel();
-        t.classList.remove("fade-armed");
       }
     };
   }, [

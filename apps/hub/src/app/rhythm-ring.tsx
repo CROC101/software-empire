@@ -1,6 +1,6 @@
 "use client";
 
-import { CirculariumRing, useTokenColors } from "@empire/ui";
+import { CirculariumRing, useTokenColors, ScrollFloat } from "@empire/ui";
 import rhythm from "@/lib/rhythm.json";
 
 const EYEBROW = "font-mono text-xs uppercase tracking-[0.2em]";
@@ -21,9 +21,11 @@ export function RhythmRing() {
         <div>
           <p className={`${EYEBROW} cw-blue`}>rhythm</p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">
-            ผมเขียนโค้ด
-            <br />
-            <span className="cw-blue">ช่วงไหนของวัน</span>
+            <ScrollFloat>
+              ผมเขียนโค้ด
+              <br />
+              <span className="cw-blue">ช่วงไหนของวัน</span>
+            </ScrollFloat>
           </h2>
         </div>
         <p className="text-sm text-muted-foreground">

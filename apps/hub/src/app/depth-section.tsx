@@ -1,6 +1,6 @@
 "use client";
 
-import { ParallaxLayers } from "@empire/ui";
+import { ParallaxLayers, ScrollFloat } from "@empire/ui";
 import { subsystems } from "@/lib/subsystems";
 
 const STARS = Array.from({ length: 60 }, (_, i) => ({
@@ -57,9 +57,11 @@ export function DepthSection() {
                 crocwork.studio
               </p>
               <h2 className="text-5xl font-black leading-none tracking-tight sm:text-8xl">
-                One-person
-                <br />
-                Enterprise
+                <ScrollFloat>
+                  One-person
+                  <br />
+                  Enterprise
+                </ScrollFloat>
               </h2>
               <p className="max-w-2xl text-sm text-[var(--em-ink-300)]">
                 PM · Tech Lead · AI Engineer · Designer · DBA · DevOps · QA

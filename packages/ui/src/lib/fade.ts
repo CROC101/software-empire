@@ -5,8 +5,10 @@
  * ScrollTrigger, no SVG noise filters (FadeContent's dissolve / mist / pixel re-render an SVG
  * filter on the main thread every frame; `mist` here is a blur-and-drift that costs nothing).
  *
- * An element is "armed" (`.fade-armed`: opacity 0) until it plays; when the animation ends it is
- * cancelled, so no filter, transform or layer lingers on the page.
+ * An element is "armed" (held at opacity 0 by a Web Animation) until it plays; when the animation
+ * ends it is cancelled, so no filter, transform or layer lingers on the page. Arming never touches
+ * an attribute: sections hydrate one by one (React Activity), and a class added to a section that
+ * has not hydrated yet would not match the server's HTML.
  */
 
 export type FadeEffect = "tide" | "focus" | "develop" | "mist" | "fade";
@@ -75,9 +77,12 @@ export const reducedMotion = () =>
   typeof window.matchMedia === "function" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** Hides an element until it plays (call before it would be seen). */
+const ARM = "fade-arm";
+
+/** Hides an element until it plays (call before it would be seen). Reduced motion: stays shown. */
 export function arm(el: HTMLElement) {
-  el.classList.add("fade-armed");
+  if (reducedMotion()) return;
+  el.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1, fill: "forwards" }).id = ARM;
 }
 
 /** Plays one element in. Resolves when it has landed (and its animation is cleared away). */
@@ -92,6 +97,7 @@ export function playFade(
   }: { delay?: number; duration?: number; blur?: number; from?: number } = {},
 ): Promise<void> {
   const look = LOOKS[effect];
+  for (const a of el.getAnimations()) if (a.id === ARM) a.cancel();
   const anim = el.animate(look.frames(blur, from), {
     duration: duration ?? look.ms,
     delay,
@@ -100,7 +106,6 @@ export function playFade(
   });
   return anim.finished.then(
     () => {
-      el.classList.remove("fade-armed");
       anim.cancel();
     },
     () => undefined,

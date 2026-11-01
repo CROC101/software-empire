@@ -1,6 +1,6 @@
 "use client";
 
-import { CobeGlobe, useAmbience, useTokenColors, type GlobePin } from "@empire/ui";
+import { CobeGlobe, useAmbience, useTokenColors, type GlobePin, ScrollFloat } from "@empire/ui";
 import { useEffect, useState, type CSSProperties } from "react";
 
 const EYEBROW = "font-mono text-xs uppercase tracking-[0.2em]";
@@ -55,9 +55,11 @@ export function WhereSection() {
         <div>
           <p className={`${EYEBROW} cw-blue`}>where</p>
           <h2 className="mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-            ทำงานจาก
-            <br />
-            <span className="cw-blue">กรุงเทพ</span>
+            <ScrollFloat>
+              ทำงานจาก
+              <br />
+              <span className="cw-blue">กรุงเทพ</span>
+            </ScrollFloat>
           </h2>
           <p className="mt-4 max-w-md text-muted-foreground">
             เวลาไทย UTC+7 คุยกันทางอีเมลหรือทักมาได้ ตอบภายใน 1 วันทำการ ภาษาไทยหรือ English
