@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { ambientSkip } from "../lib/ambient";
 import { cn } from "../lib/cn";
 import { whenNear } from "../lib/when-near";
 
@@ -359,6 +360,11 @@ export function SideRays({
       const frame = (now: number) => {
         raf = 0;
         if (lost) return;
+        // drifting light at the ambient rate; the pointer leaning the rays gets every frame
+        if (!pointer.inside && ambientSkip(now, last)) {
+          raf = requestAnimationFrame(frame);
+          return;
+        }
         const s = settingsRef.current;
         const dt = clamp((now - last) / 1000 || 0, 0, 0.05);
         last = Math.max(last, now);
