@@ -35,6 +35,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, import.meta.dirname, "VITE_");
 
   return {
+    // the version on the splash screen comes from package.json
+    define: { __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? "dev") },
     plugins: [
       react(),
       tailwindcss(),
