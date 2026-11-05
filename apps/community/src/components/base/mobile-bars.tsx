@@ -126,10 +126,10 @@ export function MobileTopBar() {
     <header className="sticky top-0 z-30 flex h-[3.25rem] shrink-0 items-center gap-3 border-b border-border bg-background px-3 lg:hidden">
       <Link
         href="/feed"
-        aria-label="Empire Community หน้าหลัก"
+        aria-label="crocwork community หน้าหลัก"
         className="flex shrink-0 items-center gap-2"
       >
-        <img src="/logo.jpg" alt="" className="size-8 rounded-full object-cover" />
+        <img src="/crocwork-logo.webp" alt="" className="size-8 object-contain" />
       </Link>
 
       {/* หน้าค้นหามีช่องค้นหาของตัวเองอยู่แล้ว — ถ้าคงช่องนี้ไว้จะเห็นสองช่องซ้อนกัน */}
@@ -180,7 +180,7 @@ export function MobileTopBar() {
             {CORE_HOME && (
               <a href={CORE_HOME} className={SHEET_ROW}>
                 <Shapes aria-hidden className="size-5" strokeWidth={1.9} />
-                บัญชีกลาง Software Empire
+                บัญชีกลาง crocwork
               </a>
             )}
           </nav>

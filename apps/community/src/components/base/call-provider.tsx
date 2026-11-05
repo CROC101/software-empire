@@ -1690,7 +1690,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     try {
       session.metadata = new MediaMetadata({
         title: call.group ? "สายกลุ่ม" : "กำลังคุยสาย",
-        artist: "Empire Community",
+        artist: "crocwork community",
       });
     } catch {
       // ไม่มี MediaMetadata — ปุ่มยังใช้ได้
