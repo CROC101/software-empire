@@ -1,0 +1,54 @@
+name: release
+
+# A signed release of main: a source archive plus its Sigstore bundle (keyless, tied to this
+# workflow's identity). Anyone can check it with
+#   sigstore verify github software-empire-<tag>.tar.gz --cert-identity …/release.yml@refs/tags/<tag>
+# Run: push a tag `v*` (git tag v2026.11.06 && git push origin v2026.11.06), or Actions → release.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: New tag, e.g. v2026.11.06
+        required: true
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # create the release and tag
+      id-token: write # Sigstore keyless signing
+    env:
+      TAG: ${{ github.event_name == 'push' && github.ref_name || inputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: check tag
+        run: |
+          [[ "$TAG" =~ ^v[0-9A-Za-z._-]+$ ]] || { echo "bad tag: $TAG"; exit 1; }
+
+      - name: source archive
+        run: git archive --format=tar.gz --prefix="software-empire-$TAG/" -o "software-empire-$TAG.tar.gz" HEAD
+
+      - name: sign
+        uses: sigstore/gh-action-sigstore-python@790bc6befb9d733738f18d8f895854b453640ec9 # v3.5.0
+        with:
+          inputs: software-empire-${{ env.TAG }}.tar.gz
+
+      - name: publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$TAG" --target "$GITHUB_SHA" --generate-notes --title "$TAG" \
+            "software-empire-$TAG.tar.gz" "software-empire-$TAG.tar.gz.sigstore.json"
