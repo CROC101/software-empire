@@ -40,19 +40,25 @@ export function dailyCard(who: string, day = bangkokDay()): Drawn {
 }
 
 /** `n` different cards, each reversed with a one-in-three chance. */
-export function draw(n: number, random: () => number = secureRandom): Drawn[] {
+export function draw(n: number, index: (below: number) => number = secureIndex): Drawn[] {
   const pool = [...DECK];
   const out: Drawn[] = [];
   for (let i = 0; i < n && pool.length; i++) {
-    const [card] = pool.splice(Math.floor(random() * pool.length), 1);
-    if (card) out.push({ card, reversed: random() < 1 / 3 });
+    const [card] = pool.splice(index(pool.length), 1);
+    if (card) out.push({ card, reversed: index(3) === 0 });
   }
   return out;
 }
 
-function secureRandom(): number {
-  const [x = 0] = crypto.getRandomValues(new Uint32Array(1));
-  return x / 2 ** 32;
+/** An unbiased whole number in [0, below): values past the last full multiple are redrawn. */
+export function secureIndex(below: number): number {
+  const limit = Math.floor(2 ** 32 / below) * below;
+  const buf = new Uint32Array(1);
+  for (;;) {
+    crypto.getRandomValues(buf);
+    const x = buf[0] ?? 0;
+    if (x < limit) return x % below;
+  }
 }
 
 /** What each suit says about a topic, upright and reversed. */

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { cardAt, DECK } from "./deck";
-import { bangkokDay, dailyCard, draw, interpret } from "./reading";
+import { bangkokDay, dailyCard, draw, interpret, secureIndex } from "./reading";
 
 describe("deck", () => {
   it("has 78 different cards, each with every meaning filled in", () => {
@@ -34,9 +34,16 @@ describe("daily card", () => {
 describe("draw", () => {
   it("never repeats a card in one spread", () => {
     let seed = 1;
-    const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    const cards = draw(10, rand).map((d) => d.card.id);
+    const index = (below: number) => (seed = (seed * 16807) % 2147483647) % below;
+    const cards = draw(10, index).map((d) => d.card.id);
     expect(new Set(cards).size).toBe(10);
+  });
+
+  it("draws unbiased indexes in range", () => {
+    for (let i = 0; i < 200; i++) {
+      const x = secureIndex(78);
+      expect(Number.isInteger(x) && x >= 0 && x < 78).toBe(true);
+    }
   });
 
   it("adds the topic lens after the card's own meaning", () => {
