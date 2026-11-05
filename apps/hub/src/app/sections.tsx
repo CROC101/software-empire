@@ -14,7 +14,7 @@ import {
   PolaroidLineCarousel,
   WaterRippleCarousel,
   ScrollAssemble,
-  TearFooter,
+  StringTieFooter,
   TextLoop,
   TidelineCta,
   GlassBucket,
@@ -1403,56 +1403,44 @@ export function ContactSection({ cta }: { cta: { href: string; label: string } }
 
 const GITHUB = "https://github.com/CROC101/software-empire";
 
+/** The closing envelope: the cord winds itself shut as it scrolls in; open it for the mail link. */
 export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
-    <TearFooter
-      brand="crocwork."
-      ink
-      name="crocwork.studio"
-      logo={
-        <Image src="/crocwork-logo.webp" alt="" width={42} height={48} style={{ width: "auto" }} />
-      }
-      logoHref="/"
-      socials={[{ icon: "github", label: "GitHub", href: GITHUB }]}
+    <StringTieFooter
+      meta={["crocwork.studio", `2569–${String(year + 543)}`, "Bangkok"]}
+      title="Thank"
+      titleAccent="You"
+      tapes={["ขอบคุณที่แวะมา", "มีงานไหน เล่าให้ผมฟัง"]}
       email={process.env.NEXT_PUBLIC_CONTACT_EMAIL}
-      corner={{ label: "CROC101/software-empire", href: GITHUB }}
-      invite={{ label: "มีไอเดียแล้ว? เล่าให้ผมฟัง", text: "เริ่มโปรเจกต์", href: "#contact" }}
-      status={{ label: "เปิดรับงาน · ตอบภายใน 1 วันทำการ", href: "#contact" }}
-      mark="since 2569"
-      timeZone="Asia/Bangkok"
-      timeLabel="BKK"
-      columns={[
-        {
-          title: "ผลงาน",
-          links: subsystems.slice(0, 3).map((s) => ({ label: s.name, href: `/go/${s.slug}` })),
-          cta: { label: "work.", href: "#subsystems" },
-        },
-        {
-          title: "ไปต่อ",
-          links: [
-            { label: "สถานะระบบ", href: "#status" },
-            { label: "ทำงานยังไง", href: "#how" },
-            { label: "ถามกันบ่อย", href: "#faq" },
-            { label: "เล่น intro อีกครั้ง", href: "/?intro" },
-          ],
-          cta: { label: "talk.", href: "#contact" },
-        },
+      links={[
+        { label: "github.com/CROC101", href: "https://github.com/CROC101" },
+        { label: "CROC101/software-empire", href: GITHUB },
       ]}
-      chat={{ label: "ทักผม", href: "#contact" }}
-      sideLinks={[
-        { icon: "globe", label: "สถานะ", href: "#status" },
-        { icon: "link", label: "GitHub", href: GITHUB },
-      ]}
-      copyright={`© ${String(year)} crocwork.studio`}
-      credit={`ทำคนเดียว · ทดสอบ ${String(PGTAP_TESTS)} ข้อ`}
-      handle={{ label: "@CROC101", href: "https://github.com/CROC101" }}
-      labels={{
-        top: "กลับขึ้นบนสุด",
-        pin: "ดึงหมุด ฉีกขอบใหม่",
-        copied: "คัดลอกแล้ว",
-        copy: "คัดลอก",
+      regards="ด้วยความขอบคุณ"
+      signatureText="crocwork"
+      signatureLabel="ลงชื่อ crocwork"
+      note={{
+        kicker: "จดหมายในซอง",
+        text: `เปิดรับงานอยู่ ตอบภายใน 1 วันทำการ · ทำคนเดียวทั้งระบบ ทดสอบ ${String(PGTAP_TESTS)} ข้อ`,
+        cta: "เขียนถึงผม",
       }}
+      copiedLabel="คัดลอกแล้ว"
+      emailLabel="อีเมล"
+      phoneLabel="โทร"
+      untieLabel="แกะเชือก เปิดซอง"
+      retieLabel="ผูกเชือกกลับ"
+      height="min(100svh, 56rem)"
+      paper="var(--em-ink-0)"
+      ink="var(--em-ink-975)"
+      bodyInk="var(--em-ink-100)"
+      accent="var(--em-blue-600)"
+      cord="var(--em-blue-500)"
+      onAccent="var(--em-ink-0)"
+      notePaper="var(--em-ink-25)"
+      fontDisplay="'Plus Jakarta Sans UI', 'Noto Sans Thai UI', sans-serif"
+      fontSans="'Noto Sans Thai UI', sans-serif"
+      fontScript="'Plus Jakarta Sans UI', cursive"
     />
   );
 }
