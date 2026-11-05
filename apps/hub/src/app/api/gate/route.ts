@@ -12,7 +12,9 @@ export async function GET() {
   if (launched()) return new Response(null, { status: 204, headers: NO_STORE });
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
-  const admin = data ? (await supabase.schema("cms").rpc("is_admin")).data === true : false;
+  // admins count only after the TOTP step (aal2); a stolen password alone opens nothing
+  const admin =
+    data?.claims.aal === "aal2" && (await supabase.schema("cms").rpc("is_admin")).data === true;
   return admin
     ? new Response(null, { status: 204, headers: NO_STORE })
     : Response.json({ hub: env.siteUrl }, { status: 403, headers: NO_STORE });

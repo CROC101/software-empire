@@ -34,7 +34,9 @@ async function gate(request: NextRequest) {
 
   // before launch (1 Jan 2570) only CMS admins get in; everyone else sees the hub's countdown
   if (!launched() && !/\.[a-z0-9]+$/i.test(pathname)) {
-    const admin = data ? (await supabase.schema("cms").rpc("is_admin")).data === true : false;
+    // aal2 only: the hub sends an admin without the TOTP step to /mfa
+    const admin =
+      data?.claims.aal === "aal2" && (await supabase.schema("cms").rpc("is_admin")).data === true;
     if (!admin) return carry(response, NextResponse.redirect(hubUrl));
   }
 
