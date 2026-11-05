@@ -18,7 +18,7 @@ const accepted = () => new RegExp(`(?:^|;\\s*)${CONSENT}=`).test(document.cookie
  * The cookie notice, in the water style of the menu: a glass card with water lapping along its
  * foot. The site only keeps necessary cookies, so it informs rather than asks; "เข้าใจแล้ว" fills
  * the card with water and remembers it (shared domain, so the other apps do not ask again).
- * Waits for the first-visit intro to finish.
+ * Waits for the first-visit build tour to finish.
  */
 export function CookieNotice({ cookieDomain }: { cookieDomain?: string }) {
   const [state, setState] = useState<"hidden" | "shown" | "leaving">("hidden");
@@ -28,7 +28,7 @@ export function CookieNotice({ cookieDomain }: { cookieDomain?: string }) {
     const html = document.documentElement;
     let timer = 0;
     const show = () => {
-      if (html.classList.contains("em-intro")) return;
+      if (html.classList.contains("em-intro") || html.classList.contains("em-touring")) return;
       watch.disconnect();
       timer = window.setTimeout(() => {
         setState("shown");

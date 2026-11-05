@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import { useRef, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
@@ -34,13 +34,14 @@ function Letter({
   offset: number;
   progress: MotionValue<number>;
 }) {
-  const x = useTransform(progress, [0, ASSEMBLED], [offset * 50, 0]);
-  const rotateX = useTransform(progress, [0, ASSEMBLED], [offset * 50, 0]);
+  // slide + fade only: a 3D turn re-rasterised each letter (and its depth shadow) every frame
+  const x = useTransform(progress, [0, ASSEMBLED], [offset * 40, 0]);
+  const opacity = useTransform(progress, [0, ASSEMBLED * 0.8], [0, 1]);
   return (
     <motion.span
       aria-hidden
       className={cn("inline-block", char === " " && "w-[0.3em]")}
-      style={{ x, rotateX }}
+      style={{ x, opacity }}
     >
       {char}
     </motion.span>
@@ -57,11 +58,10 @@ function Item({
   progress: MotionValue<number>;
 }) {
   const range = [0.15, ASSEMBLED + 0.1];
-  const x = useTransform(progress, range, [offset * 90, 0]);
-  const rotate = useTransform(progress, range, [offset * 50, 0]);
-  const y = useTransform(progress, range, [-Math.abs(offset) * 20, 0]);
-  const scale = useTransform(progress, range, [0.75, 1]);
-  return <motion.div style={{ x, rotate, y, scale }}>{children}</motion.div>;
+  const x = useTransform(progress, range, [offset * 60, 0]);
+  const y = useTransform(progress, range, [24, 0]);
+  const opacity = useTransform(progress, range, [0, 1]);
+  return <motion.div style={{ x, y, opacity }}>{children}</motion.div>;
 }
 
 export function ScrollAssemble({
@@ -84,7 +84,9 @@ export function ScrollAssemble({
 }) {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotionAfterMount();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const { scrollYProgress: raw } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  // a spring between the wheel and the letters: notched mouse wheels no longer step the motion
+  const scrollYProgress = useSpring(raw, { stiffness: 120, damping: 26, mass: 0.4 });
   const chars = graphemes(title);
   const mid = Math.floor(chars.length / 2);
   // group by word, keeping each letter's index in the whole title (the fan is centred on it)

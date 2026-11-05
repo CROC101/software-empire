@@ -1,6 +1,7 @@
 import {
   AmbienceButton,
   AppLauncher,
+  BuildTour,
   CrocReveal,
   TideReveal,
   LinkPreview,
@@ -45,7 +46,7 @@ import { CountUp } from "./count-up";
 import { MobileMenu } from "./mobile-menu";
 import { BackToTop } from "./nav-spy";
 import { DepthSection } from "./depth-section";
-import { IntroGate } from "./intro-gate";
+import { TourButton } from "./tour-button";
 import { Stage } from "./stage";
 import { ActivitySkyline } from "./activity-skyline";
 import { RhythmRing } from "./rhythm-ring";
@@ -56,7 +57,6 @@ import { SignOff } from "./sign-off";
 import { SiteNav } from "./site-nav";
 import { Wardrobe } from "./wardrobe";
 import { HiddenWork } from "./hidden-work";
-import { CrocPoster } from "./croc-poster";
 import {
   AboutSection,
   ContactSection,
@@ -209,6 +209,7 @@ export default async function HomePage() {
         hint="เลื่อนลง"
         stickyTop="4rem"
         height="calc(100svh - 4rem)"
+        scrollDistance="70svh"
         label="โปสเตอร์ CROCWORK ถูกฉีกออก จระเข้โผล่ขึ้นจากน้ำแล้วลืมตามอง"
       />
     ),
@@ -230,16 +231,15 @@ export default async function HomePage() {
     wardrobe: <Wardrobe />,
     faq: <FaqSection />,
     where: <WhereSection />,
-    "croc-poster": <CrocPoster />,
     contact: <ContactSection cta={cta} />,
     "sign-off": <SignOff />,
   };
 
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-background">
-      <IntroGate />
+      <BuildTour skipLabel="ข้ามการสร้าง" />
       <span id="top" aria-hidden className="absolute top-0 h-px w-px" />
-      <header className="vt-top sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
+      <header data-tour-root className="vt-top sticky top-0 z-40 border-b bg-background/95">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-extrabold">
             <Image
@@ -280,7 +280,7 @@ export default async function HomePage() {
         </div>
       </header>
 
-      <main>
+      <main data-tour-root>
         {/* phone: chip, headline, the scene, the buttons first; the rest below the fold (the text
             column dissolves into the grid below lg so its children can interleave with the tree) */}
         <section className="relative isolate mx-auto grid max-w-6xl items-center gap-6 px-4 pb-20 pt-8 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-12 lg:pt-16">
@@ -379,6 +379,7 @@ export default async function HomePage() {
               >
                 {claims ? "เปิดแดชบอร์ด" : "ลองเล่นดู"}
               </Link>
+              <TourButton />
             </div>
             {/* true numbers only */}
             <ul className="order-7 flex flex-wrap gap-2 text-xs font-semibold text-muted-foreground lg:order-none">
@@ -415,7 +416,9 @@ export default async function HomePage() {
           .map((x) => ({ label: x.label, href: x.href }))}
       />
       <BackToTop />
-      <SiteFooter />
+      <div data-tour-root>
+        <SiteFooter />
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-// Keyhole intro, decided before first paint: home page, first visit this session (or ?intro),
+// First-visit build tour, decided before first paint: home page, first visit this session (or ?intro),
 // motion allowed.
-// The flag name matches SEEN in apps/hub/src/app/intro-gate.tsx.
+// The flag name matches the one BuildTour (@empire/ui) sets when it finishes.
 try {
   if (
     location.pathname === "/" &&

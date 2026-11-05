@@ -34,13 +34,11 @@ export default function SoonPage() {
       <div className="my-auto flex flex-col gap-8 py-12">
         <div className="flex flex-col gap-3">
           <h1 className="font-heading text-4xl font-black leading-[1.15] sm:text-6xl lg:text-7xl">
-            {/* lite={false}: the owner wants this moving on phones too, LITE or not */}
-            <DominoLettering text={LINE_1} lite={false} />
+            <DominoLettering text={LINE_1} />
             <br />
             <DominoLettering
               text={LINE_2}
               offset={dominoCount(LINE_1)}
-              lite={false}
               className="text-[var(--em-sky-500)]"
             />
           </h1>

@@ -6,13 +6,12 @@ import { graphemes } from "../lib/graphemes";
  * Letters stand like dominoes, topple one after another to the right, rest leaning, then stand
  * back up in a wave, and again. Pure CSS (transform only), so it renders on the server and costs
  * nothing per frame on the main thread. Screen readers get the plain text.
- * `offset` continues the chain from an earlier line; `lite={false}` keeps it moving in LITE mode.
+ * `offset` continues the chain from an earlier line.
  */
 export function DominoLettering({
   text,
   offset = 0,
   step = 0.07,
-  lite = true,
   className,
 }: {
   text: string;
@@ -20,13 +19,12 @@ export function DominoLettering({
   offset?: number;
   /** seconds between neighbouring letters */
   step?: number;
-  lite?: boolean;
   className?: string;
 }) {
   let index = offset;
   const words = text.split(" ");
   return (
-    <span className={cn("em-domino", !lite && "em-keep-motion", className)}>
+    <span className={cn("em-domino", className)}>
       <span className="sr-only">{text}</span>
       {words.map((word, w) => (
         <span key={w} aria-hidden className="whitespace-nowrap">
