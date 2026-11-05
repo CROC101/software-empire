@@ -43,6 +43,8 @@ export interface MurmurationWordmarkProps {
   children?: React.ReactNode;
   /** Root height. A definite length, never a percentage. */
   height?: string;
+  /** No sky: only the birds, over whatever is behind (the Halloween ambience). */
+  transparent?: boolean;
   className?: string;
 }
 
@@ -139,6 +141,7 @@ export function MurmurationWordmark({
   fontFamily = SANS_STACK,
   children,
   height = "100svh",
+  transparent = false,
   className = "",
 }: MurmurationWordmarkProps) {
   const colors: MurmurationPalette = { ...PRESETS[preset], ...palette };
@@ -193,7 +196,7 @@ export function MurmurationWordmark({
       sky = document.createElement("canvas");
       sky.width = canvas.width;
       sky.height = canvas.height;
-      const s = sky.getContext("2d");
+      const s = transparent ? null : sky.getContext("2d");
       if (s) {
         s.setTransform(dpr, 0, 0, dpr, 0, 0);
         const g = s.createLinearGradient(0, 0, 0, h);
@@ -379,7 +382,8 @@ export function MurmurationWordmark({
       }
 
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      if (sky) ctx.drawImage(sky, 0, 0);
+      if (transparent) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      else if (sky) ctx.drawImage(sky, 0, 0);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       // two depth passes so near birds read darker and heavier
       for (let pass = 0; pass < 2; pass++) {
@@ -451,13 +455,13 @@ export function MurmurationWordmark({
       root.removeEventListener("pointermove", onMove);
       root.removeEventListener("pointerleave", onLeave);
     };
-  }, [word, birds, skyTop, skyLow, sunColor, ink, reeds, fontFamily]);
+  }, [word, birds, skyTop, skyLow, sunColor, ink, reeds, fontFamily, transparent]);
 
   return (
     <div
       ref={rootRef}
       className={`mmw-root ${className}`}
-      style={{ height, "--mmw-sky": skyTop } as React.CSSProperties}
+      style={{ height, "--mmw-sky": transparent ? "transparent" : skyTop } as React.CSSProperties}
     >
       <style>{MMW_CSS}</style>
       <canvas ref={canvasRef} aria-hidden="true" />

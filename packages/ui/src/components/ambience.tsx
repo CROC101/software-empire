@@ -29,7 +29,7 @@ import { cn } from "../lib/cn";
 import { useTokenColors } from "../lib/token-colors";
 import { AmbiencePicker } from "./ambience-picker";
 import { DataRain } from "./data-rain";
-import { BatNight } from "./bat-night";
+import { MurmurationWordmark } from "./murmuration-wordmark";
 import { PixelSnow } from "./pixel-snow";
 
 /**
@@ -113,7 +113,7 @@ const BATS_LIGHT = ["--em-ink-950", "--em-ink-800", "--em-gold-500"] as const;
  * `rich` (the portfolio): the rainy season becomes DataRain over the whole page, parting round
  * the pointer, and winter (cool season, Christmas) snows over the whole page in pixel crystals
  * (PixelSnow) that the pointer brushes aside and that settle in drifts along the bottom edge, and
- * Halloween sends bats with beating wings across it (BatNight). Without it (the working apps), the light CSS particles only.
+ * Halloween sends a flock of bats that keeps forming BOO (MurmurationWordmark, clear sky). Without it (the working apps), the light CSS particles only.
  */
 export function Ambience({ rich = false }: { rich?: boolean }) {
   const { season, dark } = useAmbience();
@@ -168,9 +168,23 @@ export function Ambience({ rich = false }: { rich?: boolean }) {
   // the pixel snow replaces the CSS flakes; two kinds of snow at once read as a glitch
   if (frost) return frost;
   if (rich && season === "halloween") {
-    const [body = "", wing = "", rim = ""] = batColors ?? [];
+    // a flock of bats that keeps closing into BOO, on a clear sky over the page
+    const [body = ""] = batColors ?? [];
     return batColors ? (
-      <BatNight body={body} wing={wing} rim={rim} glow="var(--em-coral-500)" />
+      <div aria-hidden className="vt-live pointer-events-none fixed inset-0 z-[60]">
+        <MurmurationWordmark
+          word="BOO"
+          birds={1600}
+          palette={{ ink: body }}
+          transparent
+          reeds={false}
+          interactive={false}
+          flyFor={7}
+          holdFor={3}
+          fontFamily='"Plus Jakarta Sans UI", sans-serif'
+          height="100svh"
+        />
+      </div>
     ) : null;
   }
   return (
