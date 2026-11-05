@@ -56,3 +56,17 @@ export function createServerSupabase(env: SupabaseEnv, cookies: CookieMethodsSer
     cookieOptions: authCookieOptions(env),
   });
 }
+
+/**
+ * Set-Cookie lines that expire host-only copies of the Supabase auth cookies. Sessions from
+ * before COOKIE_DOMAIN was set live in host-only cookies; a later Domain= login writes a second
+ * cookie of the same name and the old dead one kept winning, so admins stayed "logged out".
+ * Without a Domain attribute these lines touch only the host-only twins.
+ */
+export function expireHostOnlyAuthCookies(names: readonly string[], env: SupabaseEnv): string[] {
+  if (!env.cookieDomain) return [];
+  const secure = env.siteUrl.startsWith("https:") ? "; Secure" : "";
+  return names
+    .filter((name) => name.startsWith("sb-"))
+    .map((name) => `${name}=; Path=/; Max-Age=0; SameSite=Lax${secure}`);
+}

@@ -1,4 +1,4 @@
-import { createServerSupabase } from "@empire/core/supabase";
+import { createServerSupabase, expireHostOnlyAuthCookies } from "@empire/core/supabase";
 import { launched } from "@empire/core/launch";
 import { NextResponse, type NextRequest } from "next/server";
 import { env, hubUrl, signInUrl } from "@/lib/env";
@@ -8,6 +8,10 @@ const PROTECTED_PREFIXES = ["/orders", "/sell"];
 
 /** Refreshes the Supabase session on every request and sends guests to the hub to sign in. */
 export async function proxy(request: NextRequest) {
+  return dropStaleTwins(request, await gate(request));
+}
+
+async function gate(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerSupabase(env, {
@@ -38,6 +42,14 @@ export async function proxy(request: NextRequest) {
     return carry(response, NextResponse.redirect(signInUrl(pathname + search)));
   }
 
+  return response;
+}
+
+/** Expires host-only auth cookies left from before COOKIE_DOMAIN; they shadowed real logins. */
+function dropStaleTwins(request: NextRequest, response: NextResponse) {
+  const names = request.cookies.getAll().map((cookie) => cookie.name);
+  for (const line of expireHostOnlyAuthCookies(names, env))
+    response.headers.append("set-cookie", line);
   return response;
 }
 
