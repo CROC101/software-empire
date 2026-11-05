@@ -544,8 +544,6 @@ export function CrocReveal({
     let visible = true;
     let p = 0;
     let look: Pt = [0, 0];
-    let idle: Pt = [0, 0];
-    let nextIdle = 0;
     let nextBlink = performance.now() + 2500;
     let last: Frame | null = null;
 
@@ -561,8 +559,8 @@ export function CrocReveal({
       p = still ? (target > 0.3 ? 1 : 0) : p + (target - p) * 0.14;
       if (Math.abs(target - p) < 0.0005) p = target;
 
-      // where the eyes look: the pointer if there is one, else a slow wandering gaze
-      let want: Pt;
+      // where the eyes look: the pointer if there is one; no wandering gaze, so the SVG rests
+      let want: Pt = [0, 0];
       if (pointer.current) {
         const r = stage.getBoundingClientRect();
         want = [
@@ -572,13 +570,6 @@ export function CrocReveal({
             Math.min(1, (pointer.current.y - r.top - r.height * 0.5) / (r.height * 0.35)),
           ),
         ];
-      } else {
-        if (now > nextIdle && !still) {
-          const g = rng(Math.floor(now));
-          idle = [(g() - 0.5) * 1.4, (g() - 0.5) * 0.6];
-          nextIdle = now + 1800 + g() * 2200;
-        }
-        want = still ? [0, 0] : idle;
       }
       look = [look[0] + (want[0] - look[0]) * 0.12, look[1] + (want[1] - look[1]) * 0.12];
 
@@ -627,7 +618,8 @@ export function CrocReveal({
   const slit = Math.max(1.5, 13 - 8 * s.pop - 7 * f.squint);
   const blink = Math.max(1 - clamp01(pop), f.blink, f.squint * 0.35);
   const rise = (1 - s.rise) * 150;
-  const shake = reduced ? 0 : Math.sin(f.p * 900) * 6 * s.shake;
+  // no jolt: the rip shook the whole SVG every frame and read as lag
+  const shake = 0;
   const crackReach = s.crack * 620;
   const crack = line.filter(([x]) => Math.abs(x - CX) <= crackReach);
   const croc = `translate(${String(CX)} ${(CY + rise).toFixed(2)}) rotate(-7) scale(${(1.34 - 0.06 * s.rise).toFixed(4)})`;

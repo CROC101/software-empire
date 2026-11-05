@@ -3758,3 +3758,37 @@ a.lgn-app:focus-visible {
     transform: none;
   }
 }
+
+/* ── build tour (components/build-tour.tsx): layers wait unseen until an agent builds them ── */
+/* !important: beats reveal animations (Web Animations) that would otherwise show a layer early */
+[data-tour="wait"],
+[data-tour="build"] {
+  opacity: 0 !important;
+}
+[data-tour="done"] {
+  animation: em-tour-in 0.35s ease-out both;
+}
+@keyframes em-tour-in {
+  from {
+    opacity: 0;
+  }
+}
+/* first visit: the boot script hides the page before paint until the tour takes over; if the
+   tour never starts (script error), the page shows itself after 5 s */
+html.em-intro [data-tour-root] {
+  animation: em-tour-failsafe 0s linear 5s both;
+}
+@keyframes em-tour-failsafe {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.em-tour-hud {
+  border: 1px solid color-mix(in oklab, var(--em-ink-0) 14%, transparent);
+  background: color-mix(in oklab, var(--em-ink-975) 92%, transparent);
+  color: var(--em-ink-0);
+  box-shadow: 0 18px 40px -18px color-mix(in oklab, var(--em-ink-975) 80%, transparent);
+}
