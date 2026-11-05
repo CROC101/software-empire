@@ -131,6 +131,21 @@ export function Ambience({ rich = false }: { rich?: boolean }) {
     q.addEventListener("change", on);
     return () => q.removeEventListener("change", on);
   }, []);
+  // full-screen WebGL snow fights the scroll for the GPU; it rests while the page moves
+  const [scrolling, setScrolling] = useState(false);
+  useEffect(() => {
+    let timer = 0;
+    const on = () => {
+      setScrolling(true);
+      clearTimeout(timer);
+      timer = window.setTimeout(() => setScrolling(false), 200);
+    };
+    window.addEventListener("scroll", on, { passive: true });
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", on);
+    };
+  }, []);
   if (!season || reduced) return null;
   if (rich && season === "rain") {
     const [calm = "", mid = "", hot = ""] = rainColors ?? [];
@@ -152,7 +167,7 @@ export function Ambience({ rich = false }: { rich?: boolean }) {
           <PixelSnow
             color={snowColor}
             lightMode={!dark}
-            density={dark ? 0.2 : 0.16}
+            density={dark ? 0.1 : 0.08}
             speed={0.8}
             wind={0.18}
             flakeSize={0.85}
@@ -160,6 +175,7 @@ export function Ambience({ rich = false }: { rich?: boolean }) {
             fade={0.15}
             opacity={dark ? 0.9 : 0.75}
             accumulate
+            paused={scrolling}
           />
         </div>
       ) : null

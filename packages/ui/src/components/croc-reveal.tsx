@@ -225,7 +225,7 @@ const Hide = React.memo(function Hide({ id }: { id: string }) {
   return (
     <g>
       <rect x={-2600} y={-420} width={5200} height={840} style={fill("var(--em-croc-800)")} />
-      <g filter={`url(#${id}-rough)`}>
+      <g>
         <path d={scutes} style={fill("var(--em-croc-600)")} />
       </g>
       <rect x={-2600} y={-420} width={5200} height={840} fill={`url(#${id}-shade)`} />
@@ -596,11 +596,12 @@ export function CrocReveal({
       if (
         !last ||
         Math.abs(next.p - last.p) > 1e-4 ||
-        Math.abs(next.look[0] - last.look[0]) > 1e-3 ||
-        Math.abs(next.look[1] - last.look[1]) > 1e-3 ||
+        Math.abs(next.look[0] - last.look[0]) > 8e-3 ||
+        Math.abs(next.look[1] - last.look[1]) > 8e-3 ||
         next.blink !== last.blink ||
         next.squint !== last.squint
       ) {
+        // the whole SVG re-renders on each frame; tiny gaze drift is not worth one
         last = next;
         setF(next);
       }
@@ -885,17 +886,6 @@ export function CrocReveal({
             <filter id={`${id}-soft`} x="-20%" y="-50%" width="140%" height="200%">
               <feGaussianBlur stdDeviation="8" />
             </filter>
-            <filter id={`${id}-rough`} x="-10%" y="-10%" width="120%" height="120%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="4" />
-              <feDisplacementMap in="SourceGraphic" scale="6" />
-            </filter>
-            <filter id={`${id}-glow`} x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="8" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
           </defs>
 
           <g transform={`translate(${shake.toFixed(2)} ${(shake * 0.4).toFixed(2)})`}>
@@ -903,7 +893,7 @@ export function CrocReveal({
             {s.open > 0 && (
               <g transform={croc}>
                 <Hide id={id} />
-                <g filter={s.pop > 0.02 ? `url(#${id}-glow)` : undefined}>
+                <g>
                   {EYES.map(([x, y], i) => (
                     <Eye
                       key={i}
