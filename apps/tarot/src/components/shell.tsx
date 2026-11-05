@@ -1,11 +1,12 @@
 import { HubSwitcher, cn } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
 import { Coins, Layers, Sun, UserRound } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { useTarotData } from "@/lib/data";
 import { env } from "@/lib/env";
 import { useSession } from "@/lib/session";
+import { IntroSheet, Splash } from "./intro";
 import { ProfileForm } from "./profile-form";
 
 const NAV = [
@@ -17,6 +18,9 @@ const NAV = [
 /** Night sky, a top bar (hub switcher, coins) and a bottom tab bar like a phone app. */
 export function Shell() {
   const { status } = useTarotData();
+  // the profile question waits until the first-visit tour is closed: one dialog at a time
+  const [introDone, setIntroDone] = useState(false);
+  const onIntroDone = useCallback(() => setIntroDone(true), []);
   return (
     <div className="flex min-h-dvh flex-col text-[var(--em-ink-50)]">
       <div aria-hidden className="tt-sky">
@@ -69,7 +73,9 @@ export function Shell() {
           ))}
         </ul>
       </nav>
-      <Welcome />
+      <Splash />
+      <IntroSheet onDone={onIntroDone} />
+      {introDone && <Welcome />}
     </div>
   );
 }
