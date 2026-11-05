@@ -52,7 +52,6 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
-import { SoloFlock } from "./solo-flock";
 
 /*
  * Portfolio page sections, top to bottom. Layout rhythm: light → dark → light → dark,
@@ -1215,7 +1214,6 @@ export function HowSection() {
           </TornPanel>
         </div>
       </section>
-      <SoloFlock />
       <TornEdge color="var(--em-ink-975)" flip />
     </>
   );

@@ -56,7 +56,6 @@ import { SignOff } from "./sign-off";
 import { SiteNav } from "./site-nav";
 import { Wardrobe } from "./wardrobe";
 import { HiddenWork } from "./hidden-work";
-import { CrocPoster } from "./croc-poster";
 import {
   AboutSection,
   ContactSection,
@@ -230,7 +229,6 @@ export default async function HomePage() {
     wardrobe: <Wardrobe />,
     faq: <FaqSection />,
     where: <WhereSection />,
-    "croc-poster": <CrocPoster />,
     contact: <ContactSection cta={cta} />,
     "sign-off": <SignOff />,
   };

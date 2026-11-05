@@ -29,7 +29,6 @@ const HOME_SECTIONS: [key: string, label: string][] = [
   ["wardrobe", "ตู้เสื้อผ้า (บทบาท)"],
   ["faq", "คำถามที่พบบ่อย"],
   ["where", "อยู่ที่ไหน"],
-  ["croc-poster", "โปสเตอร์ปิดท้าย"],
   ["contact", "ติดต่อ"],
   ["sign-off", "ลายเซ็นท้ายหน้า"],
 ];
