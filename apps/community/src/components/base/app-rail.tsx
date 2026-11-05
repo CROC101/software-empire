@@ -201,12 +201,12 @@ export function AppRail() {
       >
         <Link
           href="/feed"
-          aria-label="Empire Community หน้าหลัก"
+          aria-label="crocwork community หน้าหลัก"
           className="nx-rail-item nx-rail-brand"
         >
           {/* โลโก้สาขาในวงกลมขาวแบบหัวแถบของ Core Hub */}
           <span className="nx-rail-icon nx-logo-badge size-9 p-0.5">
-            <img src="/logo.jpg" alt="" className="size-8 rounded-full object-cover" />
+            <img src="/crocwork-logo.webp" alt="" className="size-8 object-contain" />
           </span>
         </Link>
 
