@@ -414,21 +414,21 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   สีของหน้าจอ — ธีม "Aurora" ของ Software Empire (palette.css ใน @empire/ui)
+   สีของหน้าจอ — ธีม "Aurora" ของ crocwork (palette.css ใน @empire/ui)
    ม่วงหลวงเป็นสีหลัก · ไล่สีออโรรา ม่วง → บานเย็น → ปะการัง สำหรับตราและปุ่มเด่น
    · แถบเมนูซ้ายม่วงเที่ยงคืน · เทาอมม่วงจาง ๆ ให้ทั้งหน้าไปทางเดียวกับแบรนด์
    ค่าเริ่มต้นเป็นโหมดสว่าง · โหมดมืดใช้ .dark (theme-boot.js ตั้งให้ก่อนวาดหน้าแรก)
    ───────────────────────────────────────────────────────────────── */
 :root {
   /* ชื่อ --nx-* ยังอยู่ เพราะคอมโพเนนต์หลายตัวอ้างถึงตรง ๆ */
-  --nx-primary: var(--em-violet-600);
-  --nx-primary-soft: var(--em-violet-100);
+  --nx-primary: var(--em-blue-600);
+  --nx-primary-soft: color-mix(in oklch, var(--em-blue-500) 12%, var(--em-ink-0));
   --nx-ink: var(--em-ink-900);
   --nx-surface: var(--em-ink-0);
 
-  /* วงแหวนสตอรี่ที่ยังไม่ได้ดู — ไล่สีออโรรา */
-  --nx-story-ring-1: var(--em-violet-600);
-  --nx-story-ring-2: var(--em-fuchsia-500);
+  /* วงแหวนสตอรี่ที่ยังไม่ได้ดู — น้ำเงิน crocwork ไล่ฟ้า */
+  --nx-story-ring-1: var(--em-blue-600);
+  --nx-story-ring-2: var(--em-sky-500);
   --nx-story-ring-3: var(--em-coral-400);
 
   --background: var(--em-ink-25);
@@ -437,34 +437,34 @@
   --card-foreground: var(--em-ink-900);
   --popover: var(--em-ink-0);
   --popover-foreground: var(--em-ink-900);
-  --primary: var(--em-violet-600);
+  --primary: var(--em-blue-600);
   --primary-foreground: var(--em-ink-0);
   --secondary: var(--em-ink-100);
   --secondary-foreground: var(--em-ink-900);
   --muted: var(--em-ink-50);
   --muted-foreground: var(--em-ink-600);
-  --accent: oklch(0.535 0.245 284 / 0.07);
+  --accent: color-mix(in oklch, var(--em-blue-500) 7%, transparent);
   --accent-foreground: var(--em-ink-900);
   --destructive: var(--em-danger);
   --success: var(--em-success);
   --warning: var(--em-warning);
   --border: var(--em-ink-200);
   --input: var(--em-ink-300);
-  --ring: var(--em-violet-500);
-  --link: var(--em-violet-700);
-  --badge: var(--em-fuchsia-500);
-  --bubble-mine: var(--em-violet-600);
+  --ring: var(--em-blue-500);
+  --link: var(--em-blue-700);
+  --badge: var(--em-sky-500);
+  --bubble-mine: var(--em-blue-600);
   --bubble-theirs: var(--em-ink-100);
-  --chart-1: var(--em-violet-600);
-  --chart-2: var(--em-fuchsia-500);
+  --chart-1: var(--em-blue-600);
+  --chart-2: var(--em-sky-500);
   --chart-3: var(--em-sky-500);
   --chart-4: var(--em-gold-500);
   --chart-5: var(--em-teal-600);
-  --radius: 0.625rem;
+  --radius: 0.5rem; /* crocwork: crisp corners */
 
-  /* แถบเมนูซ้าย = ม่วงเที่ยงคืนไล่ไปบานเย็นที่ปลาย ทั้งสองโหมด */
+  /* แถบเมนูซ้าย = กระดาษเรียบตามหน้า (crocwork) */
   --sidebar: var(--em-ink-25);
-  --sidebar-gradient: var(--em-rail);
+  --sidebar-gradient: var(--em-ink-25);
   --sidebar-foreground: var(--em-ink-900);
   --sidebar-primary: var(--foreground);
   --sidebar-primary-foreground: var(--background);
@@ -473,28 +473,32 @@
   --sidebar-border: var(--border);
   --sidebar-ring: var(--em-gold-300);
 
-  --elevation-xs: 0 1px 2px oklch(0.2 0.05 286 / 0.06);
-  --elevation-sm: 0 1px 3px oklch(0.2 0.05 286 / 0.08), 0 1px 2px oklch(0.2 0.05 286 / 0.05);
+  --elevation-xs: 0 1px 2px color-mix(in oklch, var(--em-ink-975) 6%, transparent);
+  --elevation-sm:
+    0 1px 3px color-mix(in oklch, var(--em-ink-975) 8%, transparent),
+    0 1px 2px color-mix(in oklch, var(--em-ink-975) 5%, transparent);
   --elevation-md:
-    0 6px 16px -4px oklch(0.2 0.05 286 / 0.12), 0 2px 4px -2px oklch(0.2 0.05 286 / 0.08);
+    0 6px 16px -4px color-mix(in oklch, var(--em-ink-975) 12%, transparent),
+    0 2px 4px -2px color-mix(in oklch, var(--em-ink-975) 8%, transparent);
   --elevation-lg:
-    0 18px 40px -10px oklch(0.2 0.08 286 / 0.22), 0 8px 12px -6px oklch(0.2 0.05 286 / 0.1);
-  --elevation-glow: var(--em-glow);
+    0 18px 40px -10px color-mix(in oklch, var(--em-ink-975) 22%, transparent),
+    0 8px 12px -6px color-mix(in oklch, var(--em-ink-975) 10%, transparent);
+  --elevation-glow: 0 8px 28px color-mix(in oklch, var(--em-blue-600) 32%, transparent);
 
-  /* ปุ่มหลัก/ตราสัญลักษณ์ — ไล่สีออโรรา */
-  --nx-gradient: var(--em-aurora);
+  /* ปุ่มหลัก/ตราสัญลักษณ์ — น้ำเงิน crocwork ไล่ฟ้า */
+  --nx-gradient: linear-gradient(135deg, var(--em-blue-600), var(--em-sky-500));
 
-  --hairline: oklch(0.2 0.05 286 / 0.08);
+  --hairline: color-mix(in oklch, var(--em-ink-975) 8%, transparent);
 }
 
 .dark {
-  --nx-primary: var(--em-violet-400);
+  --nx-primary: var(--em-sky-500);
   --nx-primary-soft: var(--em-ink-850);
   --nx-ink: var(--em-ink-50);
   --nx-surface: var(--em-ink-975);
 
-  --nx-story-ring-1: var(--em-violet-400);
-  --nx-story-ring-2: var(--em-fuchsia-400);
+  --nx-story-ring-1: var(--em-sky-500);
+  --nx-story-ring-2: var(--em-sky-500);
   --nx-story-ring-3: var(--em-coral-400);
 
   --background: var(--em-ink-975);
@@ -503,31 +507,31 @@
   --card-foreground: var(--em-ink-50);
   --popover: var(--em-ink-900);
   --popover-foreground: var(--em-ink-50);
-  --primary: var(--em-violet-400);
+  --primary: var(--em-sky-500);
   --primary-foreground: var(--em-ink-975);
   --secondary: var(--em-ink-850);
   --secondary-foreground: var(--em-ink-50);
   --muted: var(--em-ink-900);
   --muted-foreground: var(--em-ink-400);
-  --accent: oklch(0.7 0.185 288 / 0.12);
+  --accent: color-mix(in oklch, var(--em-sky-500) 12%, transparent);
   --accent-foreground: var(--em-ink-50);
   --destructive: var(--em-danger-dark);
   --success: var(--em-success-dark);
   --warning: var(--em-warning-dark);
   --border: var(--em-ink-800);
   --input: var(--em-ink-700);
-  --ring: var(--em-violet-400);
-  --link: var(--em-violet-300);
-  --badge: var(--em-fuchsia-400);
-  --bubble-mine: var(--em-violet-600);
+  --ring: var(--em-sky-500);
+  --link: var(--em-sky-500);
+  --badge: var(--em-sky-500);
+  --bubble-mine: var(--em-blue-600);
   --bubble-theirs: var(--em-ink-850);
-  --chart-1: var(--em-violet-400);
-  --chart-2: var(--em-fuchsia-400);
+  --chart-1: var(--em-sky-500);
+  --chart-2: var(--em-sky-500);
   --chart-3: var(--em-sky-500);
   --chart-4: var(--em-gold-300);
   --chart-5: var(--em-teal-400);
   --sidebar: var(--em-ink-975);
-  --sidebar-gradient: var(--em-rail-dark);
+  --sidebar-gradient: var(--em-ink-975);
   /* rail follows the page in dark mode too: light ink on the dark surface */
   --sidebar-foreground: var(--em-ink-50);
   --sidebar-primary: var(--em-ink-50);
@@ -541,7 +545,7 @@
   --elevation-sm: 0 2px 8px oklch(0 0 0 / 0.4);
   --elevation-md: 0 6px 18px oklch(0 0 0 / 0.5);
   --elevation-lg: 0 16px 44px oklch(0 0 0 / 0.6);
-  --elevation-glow: var(--em-glow-dark);
+  --elevation-glow: 0 8px 28px color-mix(in oklch, var(--em-sky-500) 30%, transparent);
 
   --hairline: oklch(1 0 0 / 0.09);
 }
@@ -825,7 +829,7 @@
     display: grid;
     place-items: center;
     border-radius: 9999px;
-    background: var(--em-aurora);
+    background: var(--nx-gradient);
     box-shadow: var(--elevation-glow);
   }
 

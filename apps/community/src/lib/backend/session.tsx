@@ -95,9 +95,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 function SignInScreen() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-4 px-6 text-center">
-      <h1 className="font-heading text-2xl font-bold">Empire Community</h1>
+      <h1 className="font-heading text-2xl font-bold">crocwork community</h1>
       <p className="max-w-md text-muted-foreground">
-        เข้าสู่ระบบด้วยบัญชี Software Empire เพื่อดูฟีด แชท และห้องเสียงของชุมชน
+        เข้าสู่ระบบด้วยบัญชี crocwork เพื่อดูฟีด แชท และห้องเสียงของชุมชน
       </p>
       <a
         href={loginHref()}

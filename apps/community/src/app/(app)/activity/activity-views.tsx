@@ -1375,7 +1375,7 @@ const HISTORY: Record<
     title: "สร้างบัญชีแล้ว",
     body: (_detail, at) => (
       <>
-        คุณเข้าร่วม Empire Community เมื่อ{" "}
+        คุณเข้าร่วม crocwork community เมื่อ{" "}
         <b className="font-semibold text-foreground">
           {new Date(at).toLocaleDateString("th-TH", {
             day: "numeric",
@@ -1478,7 +1478,7 @@ export function AccountHistory() {
                 <HistoryRow
                   icon={KeyRound}
                   title="รหัสผ่าน อีเมล และชื่อผู้ใช้"
-                  body="จัดการที่บัญชีกลาง Software Empire"
+                  body="จัดการที่บัญชีกลาง crocwork"
                   href={CORE_HOME}
                   external
                 />
