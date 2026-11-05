@@ -32,10 +32,18 @@ async function gate(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // before launch only CMS admins see the site; everyone else gets the countdown at this URL
-  if (!launched() && !openBeforeLaunch(pathname)) {
+  const gated = !launched() && !openBeforeLaunch(pathname);
+  if (gated || pathname.startsWith("/admin")) {
     const admin = data ? (await supabase.schema("cms").rpc("is_admin")).data === true : false;
-    if (!admin) return carry(response, NextResponse.rewrite(new URL("/soon", request.url)));
+    // before launch only CMS admins see the site; everyone else gets the countdown at this URL
+    if (gated && !admin)
+      return carry(response, NextResponse.rewrite(new URL("/soon", request.url)));
+    // an admin's password alone is not enough: the session must have passed the TOTP code
+    if (admin && data?.claims.aal !== "aal2") {
+      const mfa = new URL("/mfa", request.url);
+      mfa.searchParams.set("next", pathname);
+      return carry(response, NextResponse.redirect(mfa));
+    }
   }
 
   if (!data && PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
