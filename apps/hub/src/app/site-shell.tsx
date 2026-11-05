@@ -30,7 +30,8 @@ import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
 import { MobileMenu } from "./mobile-menu";
 import { BackToTop } from "./nav-spy";
-import { SiteNav, PAGES } from "./site-nav";
+import { PAGES } from "@/lib/pages";
+import { SiteNav } from "./site-nav";
 import { SiteFooter, APP_ICON } from "./sections";
 
 // the nine-dot grid: every subsystem, open ones link through /go, the rest show as coming soon

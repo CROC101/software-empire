@@ -1,17 +1,9 @@
 "use client";
 
-import { AppLauncher, NimbusNavbar, useTokenColors, type NimbusFx } from "@empire/ui";
-import { Briefcase, Home, LayoutGrid, UserRound } from "lucide-react";
+import { AppLauncher, NimbusNavbar, useTokenColors } from "@empire/ui";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
-// one link per page; each plays its own little scene when tapped
-export const PAGES: { href: string; label: string; icon: React.ReactNode; fx: NimbusFx }[] = [
-  { href: "/", label: "หน้าแรก", icon: <Home aria-hidden />, fx: "drop" },
-  { href: "/work", label: "ผลงาน", icon: <LayoutGrid aria-hidden />, fx: "spin" },
-  { href: "/services", label: "รับทำอะไร", icon: <Briefcase aria-hidden />, fx: "pop" },
-  { href: "/about", label: "เกี่ยวกับ", icon: <UserRound aria-hidden />, fx: "wave" },
-];
+import { PAGES } from "@/lib/pages";
 
 /**
  * The header's water pill: the drop sits on the current page, its water tone follows the
