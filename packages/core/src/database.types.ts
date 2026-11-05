@@ -543,21 +543,21 @@ export type Database = {
     Views: {
       service_cards: {
         Row: {
-          category: string;
-          created_at: string;
-          delivery_days: number;
-          description: string;
-          id: string;
-          price_satang: number;
-          published: boolean;
+          category: string | null;
+          created_at: string | null;
+          delivery_days: number | null;
+          description: string | null;
+          id: string | null;
+          price_satang: number | null;
+          published: boolean | null;
           rating: number | null;
           review_count: number | null;
           seller_headline: string | null;
-          seller_id: string;
-          seller_name: string;
-          tags: string[];
-          title: string;
-          updated_at: string;
+          seller_id: string | null;
+          seller_name: string | null;
+          tags: string[] | null;
+          title: string | null;
+          updated_at: string | null;
         };
         ComputedFields: never;
         Relationships: [];
@@ -2102,12 +2102,12 @@ export type Database = {
       bookmark_collection_view: {
         Row: {
           cover: Json | null;
-          created_at: string;
-          id: string;
+          created_at: string | null;
+          id: string | null;
           item_count: number | null;
-          name: string;
-          owner_id: string;
-          updated_at: string;
+          name: string | null;
+          owner_id: string | null;
+          updated_at: string | null;
         };
         ComputedFields: never;
         Insert: {
@@ -2133,11 +2133,11 @@ export type Database = {
       bookmark_view: {
         Row: {
           author_id: string | null;
-          created_at: string;
-          target_id: string;
-          target_kind: string;
+          created_at: string | null;
+          target_id: string | null;
+          target_kind: string | null;
           title: string | null;
-          user_id: string;
+          user_id: string | null;
         };
         ComputedFields: never;
         Relationships: [];
@@ -2147,12 +2147,12 @@ export type Database = {
           cover_kind: string | null;
           cover_path: string | null;
           cover_story_id: string | null;
-          created_at: string;
-          id: string;
+          created_at: string | null;
+          id: string | null;
           item_count: number | null;
-          owner_id: string;
-          title: string;
-          updated_at: string;
+          owner_id: string | null;
+          title: string | null;
+          updated_at: string | null;
         };
         ComputedFields: never;
         Relationships: [
@@ -2175,15 +2175,15 @@ export type Database = {
       meeting_view: {
         Row: {
           agenda: string | null;
-          channel_id: string;
-          created_at: string;
+          channel_id: string | null;
+          created_at: string | null;
           created_by: string | null;
-          ends_at: string;
-          id: string;
+          ends_at: string | null;
+          id: string | null;
           joinable_now: boolean | null;
-          starts_at: string;
-          status: string;
-          title: string;
+          starts_at: string | null;
+          status: string | null;
+          title: string | null;
         };
         ComputedFields: never;
         Insert: {
@@ -2223,24 +2223,24 @@ export type Database = {
       message_view: {
         Row: {
           attachments: Json | null;
-          author_id: string;
+          author_id: string | null;
           call_log: Json | null;
-          channel_id: string;
-          client_nonce: string;
+          channel_id: string | null;
+          client_nonce: string | null;
           content: string | null;
-          created_at: string;
+          created_at: string | null;
           deleted_at: string | null;
           edited_at: string | null;
           embed_kind: string | null;
           embed_ref: string | null;
-          forwarded: boolean;
-          id: string;
+          forwarded: boolean | null;
+          id: string | null;
           parent_id: string | null;
           pinned_at: string | null;
           pinned_by: string | null;
-          reply_count: number;
+          reply_count: number | null;
           reply_to: Json | null;
-          seq: number;
+          seq: number | null;
           story_reply_emoji: string | null;
           story_reply_kind: string | null;
         };
@@ -2284,28 +2284,28 @@ export type Database = {
       };
       my_post_reactions: {
         Row: {
-          author_id: string;
-          content: string;
-          emoji: string;
+          author_id: string | null;
+          content: string | null;
+          emoji: string | null;
           media: Json | null;
-          post_id: string;
-          reacted_at: string;
-          title: string;
+          post_id: string | null;
+          reacted_at: string | null;
+          title: string | null;
         };
         ComputedFields: never;
         Relationships: [];
       };
       post_view: {
         Row: {
-          author_id: string;
+          author_id: string | null;
           can_comment: boolean | null;
-          comment_count: number;
-          content: string;
+          comment_count: number | null;
+          content: string | null;
           course_tag: string | null;
-          created_at: string;
-          id: string;
+          created_at: string | null;
+          id: string | null;
           media: Json | null;
-          title: string;
+          title: string | null;
         };
         ComputedFields: never;
         Insert: {
@@ -2336,7 +2336,7 @@ export type Database = {
         Row: {
           follower_count: number | null;
           following_count: number | null;
-          user_id: string;
+          user_id: string | null;
         };
         ComputedFields: never;
         Insert: {
@@ -2353,15 +2353,15 @@ export type Database = {
       };
       reel_comment_view: {
         Row: {
-          author_id: string;
-          content: string;
-          created_at: string;
-          id: string;
-          like_count: number;
+          author_id: string | null;
+          content: string | null;
+          created_at: string | null;
+          id: string | null;
+          like_count: number | null;
           liked_by_me: boolean | null;
           parent_id: string | null;
-          reel_id: string;
-          reply_count: number;
+          reel_id: string | null;
+          reply_count: number | null;
         };
         ComputedFields: never;
         Insert: {
@@ -2419,21 +2419,21 @@ export type Database = {
       };
       reel_view: {
         Row: {
-          asset_id: string;
-          author_id: string;
+          asset_id: string | null;
+          author_id: string | null;
           can_comment: boolean | null;
           caption: string | null;
           comment_count: number | null;
-          created_at: string;
-          duration_ms: number;
-          id: string;
-          like_count: number;
+          created_at: string | null;
+          duration_ms: number | null;
+          id: string | null;
+          like_count: number | null;
           liked_by_me: boolean | null;
-          repost_count: number;
+          repost_count: number | null;
           reposted_by_me: boolean | null;
-          title: string;
-          video_path: string;
-          view_count: number;
+          title: string | null;
+          video_path: string | null;
+          view_count: number | null;
         };
         ComputedFields: never;
         Relationships: [
@@ -2448,14 +2448,14 @@ export type Database = {
       };
       story_feed: {
         Row: {
-          asset_id: string;
-          author_id: string;
+          asset_id: string | null;
+          author_id: string | null;
           caption: string | null;
-          created_at: string;
-          expires_at: string;
-          id: string;
-          kind: string;
-          path: string;
+          created_at: string | null;
+          expires_at: string | null;
+          id: string | null;
+          kind: string | null;
+          path: string | null;
           view_count: number | null;
           viewed_by_me: boolean | null;
         };

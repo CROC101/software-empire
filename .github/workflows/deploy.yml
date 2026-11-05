@@ -139,7 +139,14 @@ jobs:
           if [ "${{ matrix.kind }}" = next ]; then
             pnpm exec opennextjs-cloudflare upload -- --preview-alias "pr-${{ github.event.number }}"
           else
-            pnpm exec wrangler versions upload --preview-alias "pr-${{ github.event.number }}"
+            # a brand-new app has no Worker until its first deploy from main: no preview yet
+            if ! out=$(pnpm exec wrangler versions upload --preview-alias "pr-${{ github.event.number }}" 2>&1); then
+              echo "$out"
+              grep -q "does not yet exist" <<<"$out" || exit 1
+              echo "::notice::${{ matrix.app }} is created on its first deploy from main; this PR has no preview"
+            else
+              echo "$out"
+            fi
           fi
 
       - name: deploy
