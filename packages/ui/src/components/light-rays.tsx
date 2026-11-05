@@ -1,5 +1,6 @@
 "use client";
 
+import { ambientSkip } from "../lib/ambient";
 import * as React from "react";
 import { cn } from "../lib/cn";
 import { whenNear } from "../lib/when-near";
@@ -374,6 +375,7 @@ export function LightRays({
       let time = 0;
       let opening = settingsRef.current.intro && !reduced ? 0 : 1;
       let raf = 0;
+      let drawnAt = 0;
       let last = 0;
       let visible = true;
       let pageVisible = document.visibilityState !== "hidden";
@@ -408,6 +410,12 @@ export function LightRays({
       const frame = (now: number) => {
         raf = 0;
         if (lost) return;
+        // idle rays: ambient frame rate, and none at all while the page scrolls
+        if (opening >= 1 && pulses.length === 0 && ambientSkip(now, drawnAt)) {
+          if (visible && pageVisible) raf = requestAnimationFrame(frame);
+          return;
+        }
+        drawnAt = now;
         const s = settingsRef.current;
         const dt = clamp((now - last) / 1000 || 0, 0, 0.05);
         last = Math.max(last, now);

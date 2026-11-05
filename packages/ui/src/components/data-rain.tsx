@@ -702,7 +702,7 @@ export function DataRain(props: DataRainProps) {
       const rect = root.getBoundingClientRect();
       const nw = Math.max(1, rect.width || window.innerWidth);
       const nh = Math.max(1, rect.height || window.innerHeight);
-      let d = Math.min(window.devicePixelRatio || 1, 2);
+      let d = Math.min(window.devicePixelRatio || 1, 1); // full-screen decoration
       if (nw * nh * d * d > 4.5e6) d = Math.sqrt(4.5e6 / (nw * nh));
       if (nw === w && nh === h && d === dpr) return;
 

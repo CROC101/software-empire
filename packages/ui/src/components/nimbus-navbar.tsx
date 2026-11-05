@@ -1,5 +1,6 @@
 "use client";
 
+import { ambientSkip } from "../lib/ambient";
 import * as React from "react";
 
 /**
@@ -114,6 +115,7 @@ function makeState() {
     reduce: false,
     raf: 0,
     last: 0,
+    drawn: 0,
     time: 0,
     glc: null as GLC | null,
   };
@@ -351,8 +353,12 @@ export function NimbusNavbar({
       const dt = Math.min((now - s.last) / 1000, 1 / 30);
       s.last = now;
       step(dt, now);
-      draw();
       const busy = s.moving || s.rips.length > 0 || s.sats.length > 0 || s.mouse.s > 0.01;
+      // at rest only the slow swell moves: draw it at the ambient rate, never while scrolling
+      if (busy || !ambientSkip(now, s.drawn)) {
+        draw();
+        s.drawn = now;
+      }
       // ambient water keeps moving while visible; reduced motion only animates on change
       if (s.visible && (!s.reduce || busy)) s.raf = requestAnimationFrame(tick);
       else s.raf = 0;
