@@ -10,11 +10,68 @@ export const TOPICS: { id: Topic; label: string }[] = [
   { id: "money", label: "การเงิน" },
 ];
 
+type Spread = {
+  label: string;
+  blurb: string;
+  positions: readonly string[];
+  /** coins; must match tarot.spread_cost() in the database, which is what actually charges */
+  cost: number;
+  /** a spread about one subject sets the topic itself */
+  topic?: Topic;
+};
+
 export const SPREADS = {
-  one: { label: "1 ใบ", positions: ["คำตอบ"] },
-  three: { label: "3 ใบ", positions: ["อดีต", "ปัจจุบัน", "อนาคต"] },
-} as const;
+  one: { label: "ไพ่ใบเดียว", blurb: "คำตอบสั้น ๆ สำหรับวันนี้", positions: ["คำตอบ"], cost: 0 },
+  three: {
+    label: "สามใบ",
+    blurb: "อดีต ปัจจุบัน อนาคต",
+    positions: ["อดีต", "ปัจจุบัน", "อนาคต"],
+    cost: 0,
+  },
+  yesno: {
+    label: "ใช่หรือไม่",
+    blurb: "ถามเรื่องเดียว ได้คำตอบเดียว",
+    positions: ["คำตอบ"],
+    cost: 0,
+  },
+  love: {
+    label: "ความรัก 5 ใบ",
+    blurb: "คุณ เขา และสิ่งที่อยู่ระหว่างกัน",
+    positions: ["ตัวคุณ", "อีกฝ่าย", "ความสัมพันธ์ตอนนี้", "สิ่งที่ขวางอยู่", "แนวโน้ม"],
+    cost: 10,
+    topic: "love",
+  },
+  celtic: {
+    label: "เซลติกครอส 10 ใบ",
+    blurb: "ดูเรื่องเดียวให้ลึกครบทุกด้าน",
+    positions: [
+      "สถานการณ์",
+      "สิ่งที่ท้าทาย",
+      "รากของเรื่อง",
+      "สิ่งที่เพิ่งผ่านไป",
+      "สิ่งที่หวัง",
+      "อนาคตอันใกล้",
+      "ตัวคุณ",
+      "คนรอบตัว",
+      "ความหวังและความกลัว",
+      "ผลลัพธ์",
+    ],
+    cost: 20,
+  },
+} as const satisfies Record<string, Spread>;
 export type SpreadId = keyof typeof SPREADS;
+export const SPREAD_IDS = Object.keys(SPREADS) as SpreadId[];
+
+/** Yes/no reads the card's direction, softened for cards that never give a flat answer. */
+export function yesNo({ card, reversed }: Drawn): { answer: string; note: string } {
+  // cards about waiting, change or the unknown answer "not yet" either way up
+  const unsure = ["m12", "m18", "m10", "swords02", "cups07"].includes(card.id);
+  if (unsure)
+    return { answer: "ยังไม่ชัด", note: "ไพ่ใบนี้บอกให้รอดูอีกสักพัก ยังไม่ใช่เวลาตัดสิน" };
+  return reversed
+    ? { answer: "ไม่ ตอนนี้", note: "ทางนี้ยังติดขัด ลองถามใหม่เมื่อสถานการณ์เปลี่ยน" }
+    : { answer: "ใช่", note: "พลังของไพ่หนุนเรื่องที่คุณถาม" };
+}
 
 /** Today's date in Bangkok as YYYY-MM-DD, the same day the database counts check-ins on. */
 export function bangkokDay(now = new Date()): string {

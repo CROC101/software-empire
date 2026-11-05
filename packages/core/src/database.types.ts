@@ -2837,6 +2837,43 @@ export type Database = {
         };
         Relationships: [];
       };
+      readings: {
+        Row: {
+          cards: NonNullable<Json>;
+          cost: number;
+          created_at: string;
+          hidden: boolean;
+          id: string;
+          question: string | null;
+          spread: string;
+          topic: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          cards: NonNullable<Json>;
+          cost: number;
+          created_at?: string;
+          hidden?: boolean;
+          id?: string;
+          question?: string | null;
+          spread: string;
+          topic: string;
+          user_id?: string;
+        };
+        Update: {
+          cards?: NonNullable<Json>;
+          cost?: number;
+          created_at?: string;
+          hidden?: boolean;
+          id?: string;
+          question?: string | null;
+          spread?: string;
+          topic?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -2859,6 +2896,11 @@ export type Database = {
           streak: number;
         }[];
       };
+      record_reading: {
+        Args: { cards: Json; question: string; spread: string; topic: string };
+        Returns: number;
+      };
+      spread_cost: { Args: { spread: string }; Returns: number };
       streak: { Args: { until: string; who: string }; Returns: number };
       today: { Args: Record<PropertyKey, never>; Returns: string };
     };
