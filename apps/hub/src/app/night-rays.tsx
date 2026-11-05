@@ -20,7 +20,7 @@ export function NightRays() {
     // own sky) but only adding light; it thins out toward the bottom so there is no edge
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-y-0 left-1/2 z-10 w-screen -translate-x-1/2 mix-blend-screen [mask-image:linear-gradient(to_bottom,#000_55%,transparent)]"
+      className="pointer-events-none absolute inset-y-0 left-1/2 z-10 w-screen -translate-x-1/2 [mask-image:linear-gradient(to_bottom,#000_55%,transparent)]"
     >
       <SideRays
         origin="top-right"

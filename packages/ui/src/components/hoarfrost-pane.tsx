@@ -756,7 +756,7 @@ export function HoarfrostPane({
       const rect = root.getBoundingClientRect();
       const nw = Math.max(1, Math.round(rect.width));
       const nh = Math.max(1, Math.round(rect.height));
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      dpr = Math.min(window.devicePixelRatio || 1, 1); // full-screen decoration
       if (nw === w && nh === h && tex.length) return;
       // over a page on a phone the URL bar shows and hides: keep the frost, just stretch it
       if (overlay && nw === w && Math.abs(nh - h) < 160 && tex.length) return;

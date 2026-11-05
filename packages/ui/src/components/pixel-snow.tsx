@@ -873,7 +873,8 @@ export function PixelSnow({
         const s = settingsRef.current;
         const width = Math.max(1, container.clientWidth);
         const height = Math.max(1, container.clientHeight);
-        const ratio = Math.min(s.dpr ?? window.devicePixelRatio, 1.5) || 1;
+        // full-screen decoration: 1x pixels look the same and halve the work on big screens
+        const ratio = Math.min(s.dpr ?? window.devicePixelRatio, 1) || 1;
         view.width = width;
         view.height = height;
         view.ratio = ratio;
