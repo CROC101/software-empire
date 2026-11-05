@@ -209,6 +209,7 @@ export default async function HomePage() {
         hint="เลื่อนลง"
         stickyTop="4rem"
         height="calc(100svh - 4rem)"
+        scrollDistance="70svh"
         label="โปสเตอร์ CROCWORK ถูกฉีกออก จระเข้โผล่ขึ้นจากน้ำแล้วลืมตามอง"
       />
     ),

@@ -219,7 +219,6 @@ html {
       color-mix(in oklab, var(--em-sky-500) 16%, transparent),
       transparent 70%
     );
-  filter: blur(8px);
 }
 .sw-floor {
   position: absolute;
@@ -272,7 +271,6 @@ a.sw-app:focus-visible {
     inset 0 1px 0 rgb(255 255 255 / 0.6),
     inset 0 -2px 6px rgb(0 0 0 / 0.18),
     0 14px 30px -12px color-mix(in oklab, var(--a) 70%, transparent);
-  -webkit-box-reflect: below 8px linear-gradient(transparent 60%, rgb(0 0 0 / 0.22));
   transition: box-shadow 0.35s ease;
 }
 a.sw-app:hover .sw-tile,
