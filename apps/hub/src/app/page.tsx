@@ -237,7 +237,7 @@ export default async function HomePage() {
     <div className="relative min-h-dvh overflow-x-clip bg-background">
       <IntroGate />
       <span id="top" aria-hidden className="absolute top-0 h-px w-px" />
-      <header className="vt-top sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
+      <header className="vt-top sticky top-0 z-40 border-b bg-background/95">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-extrabold">
             <Image
