@@ -31,3 +31,6 @@ minimumReleaseAgeExclude:
 # security: firebase 12 pins a @grpc/grpc-js with a published advisory; 1.13.6+ is the same API
 overrides:
   "@grpc/grpc-js": ">=1.13.6 <2"
+  # build/lint-time only (OpenNext minifier, ESLint); same named-export API in these majors
+  glob@>=9 <14.0.2: ">=14.0.2"
+  minimatch@>=7 <11.0.1: ">=11.0.1"

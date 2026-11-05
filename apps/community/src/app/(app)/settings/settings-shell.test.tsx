@@ -34,11 +34,11 @@ describe("เมนูการตั้งค่า", () => {
     render(<SettingsShell>เนื้อหา</SettingsShell>);
 
     for (const caption of [
-      "วิธีที่คุณใช้ Empire Community",
+      "วิธีที่คุณใช้ crocwork community",
       "ใครบ้างที่สามารถดูเนื้อหาของคุณได้",
       "วิธีที่คนอื่นๆ สามารถโต้ตอบกับคุณได้",
       "ส่วนตัว",
-      "บัญชีกลาง Software Empire",
+      "บัญชีกลาง crocwork",
     ]) {
       expect(screen.getByText(caption)).toBeInTheDocument();
     }

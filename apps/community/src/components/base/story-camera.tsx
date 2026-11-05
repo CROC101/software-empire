@@ -260,7 +260,7 @@ function CameraBody({ onClose }: { onClose: () => void }) {
     }
 
     const stamp = new Date().toISOString().replace(/[-:T]/g, "").slice(0, 14);
-    const file = new File([blob], `nexus-${stamp}.jpg`, { type: "image/jpeg" });
+    const file = new File([blob], `crocwork-${stamp}.jpg`, { type: "image/jpeg" });
 
     setShot({ file, url: URL.createObjectURL(blob) });
     setPhase("review");
