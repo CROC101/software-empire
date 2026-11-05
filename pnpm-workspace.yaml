@@ -27,3 +27,7 @@ minimumReleaseAgeExclude:
   - "@next/swc-linux-x64-musl@16.4.3"
   - "@next/swc-win32-arm64-msvc@16.4.3"
   - "@next/swc-win32-x64-msvc@16.4.3"
+
+# security: firebase 12 pins a @grpc/grpc-js with a published advisory; 1.13.6+ is the same API
+overrides:
+  "@grpc/grpc-js": ">=1.13.6 <2"
