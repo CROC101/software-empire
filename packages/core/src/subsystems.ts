@@ -22,8 +22,8 @@ export const subsystems = [
   },
   {
     slug: "tarot",
-    name: "AI Tarot",
-    summary: "ไพ่ทาโรต์ 3D ทำนายด้วย AI บน WebGPU",
+    name: "crocwork tarot",
+    summary: "ไพ่ประจำวัน อ่านไพ่ 1 หรือ 3 ใบ เช็กอินรับเหรียญ",
     accent: "var(--em-fuchsia-500)",
   },
   {

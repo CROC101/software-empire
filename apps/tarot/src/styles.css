@@ -1,0 +1,138 @@
+@import "@empire/ui/styles.css";
+
+@font-face {
+  font-family: "Noto Sans Thai UI";
+  src: url("/fonts/NotoSansThai-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans UI";
+  src: url("/fonts/PlusJakartaSans-Variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Noto Sans Thai UI", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans UI", "Noto Sans Thai UI", ui-sans-serif, sans-serif;
+}
+
+/* the night the readings happen in: deep water sky, one moon at the top right (house rule), a
+   bank of cloud low on the page. Painted once, fixed, never animated while scrolling. */
+.tt-sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      120% 70% at 50% 120%,
+      color-mix(in oklab, var(--em-blue-400) 45%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--em-ink-975) 0%, var(--em-blue-950) 55%, var(--em-blue-800) 100%);
+}
+.tt-moon {
+  position: absolute;
+  top: 9%;
+  right: 12%;
+  width: clamp(36px, 7vmin, 64px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--em-ink-0), var(--em-moon) 70%);
+  box-shadow: 0 0 40px 8px color-mix(in oklab, var(--em-moon) 35%, transparent);
+}
+.tt-stars {
+  position: absolute;
+  inset: 0 0 40% 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, var(--em-ink-0), transparent),
+    radial-gradient(1px 1px at 28% 42%, var(--em-ink-0), transparent),
+    radial-gradient(1.5px 1.5px at 46% 12%, var(--em-ink-0), transparent),
+    radial-gradient(1px 1px at 63% 33%, var(--em-ink-0), transparent),
+    radial-gradient(1px 1px at 78% 52%, var(--em-ink-0), transparent),
+    radial-gradient(1.5px 1.5px at 90% 24%, var(--em-ink-0), transparent),
+    radial-gradient(1px 1px at 36% 64%, var(--em-ink-0), transparent);
+  opacity: 0.7;
+}
+.tt-clouds {
+  position: absolute;
+  inset: auto -10% -6% -10%;
+  height: 34%;
+  background:
+    radial-gradient(
+      28% 60% at 15% 70%,
+      color-mix(in oklab, var(--em-blue-200) 55%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      30% 70% at 45% 85%,
+      color-mix(in oklab, var(--em-blue-100) 60%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      26% 55% at 80% 75%,
+      color-mix(in oklab, var(--em-blue-200) 50%, transparent),
+      transparent 70%
+    );
+}
+
+/* a card that turns over: back faces the reader until it is revealed */
+.tt-card {
+  perspective: 1000px;
+}
+.tt-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.tt-card[data-open="true"] .tt-card-inner {
+  transform: rotateY(180deg);
+}
+.tt-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  backface-visibility: hidden;
+  box-shadow: 0 18px 40px -16px color-mix(in oklab, var(--em-ink-975) 80%, transparent);
+}
+.tt-front {
+  transform: rotateY(180deg);
+  background: var(--em-ink-0);
+}
+.tt-back {
+  border: 2px solid color-mix(in oklab, var(--em-blue-300) 60%, transparent);
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      color-mix(in oklab, var(--em-moon) 55%, transparent) 0 9%,
+      transparent 10%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 10px,
+      color-mix(in oklab, var(--em-blue-300) 14%, transparent) 10px 11px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 10px,
+      color-mix(in oklab, var(--em-blue-300) 14%, transparent) 10px 11px
+    ),
+    linear-gradient(160deg, var(--em-blue-800), var(--em-ink-975));
+}
+@media (prefers-reduced-motion: reduce) {
+  .tt-card-inner {
+    transition: none;
+  }
+}
+
+/* glass panel on the night: the same material as the hub's water menu, without backdrop blur */
+.tt-panel {
+  border: 1px solid color-mix(in oklab, var(--em-ink-0) 12%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, var(--em-ink-975) 72%, transparent);
+  color: var(--em-ink-50);
+}

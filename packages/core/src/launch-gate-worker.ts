@@ -1,5 +1,5 @@
 /**
- * Worker in front of the static apps (toolboxes, canva, community) until launch.
+ * Worker in front of the static apps (toolboxes, canva, community, tarot) until launch.
  * wrangler.jsonc runs it first for everything except /assets/*, and it only checks page opens:
  * scripts, styles and fonts pass straight through. The hub decides (service binding HUB, so the
  * call never leaves Cloudflare): admins get the app, everyone else the hub's countdown.

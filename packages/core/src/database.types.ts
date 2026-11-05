@@ -2788,6 +2788,87 @@ export type Database = {
       [_ in never]: never;
     };
   };
+  tarot: {
+    Tables: {
+      checkins: {
+        Row: {
+          coins: number;
+          day: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          coins: number;
+          day: string;
+          user_id: string;
+        };
+        Update: {
+          coins?: number;
+          day?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      profiles: {
+        Row: {
+          birth_date: string | null;
+          created_at: string;
+          gender: string;
+          nickname: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          birth_date?: string | null;
+          created_at?: string;
+          gender?: string;
+          nickname: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          birth_date?: string | null;
+          created_at?: string;
+          gender?: string;
+          nickname?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      check_in: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          checked_today: boolean;
+          coins: number;
+          earned: number;
+          streak: number;
+        }[];
+      };
+      my_status: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          checked_today: boolean;
+          coins: number;
+          streak: number;
+        }[];
+      };
+      streak: { Args: { until: string; who: string }; Returns: number };
+      today: { Args: Record<PropertyKey, never>; Returns: string };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   toolboxes: {
     Tables: {
       favorites: {
@@ -2940,6 +3021,9 @@ export const Constants = {
     Enums: {},
   },
   public: {
+    Enums: {},
+  },
+  tarot: {
     Enums: {},
   },
   toolboxes: {

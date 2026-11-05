@@ -37,6 +37,7 @@ jobs:
           - { app: toolboxes, kind: spa }
           - { app: canva, kind: spa }
           - { app: community, kind: spa }
+          - { app: tarot, kind: spa }
     environment: ${{ github.event_name == 'push' && 'production' || 'preview' }}
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -52,6 +53,7 @@ jobs:
       SITE_TOOLBOXES: ${{ vars.SITE_TOOLBOXES }}
       SITE_CANVA: ${{ vars.SITE_CANVA }}
       SITE_COMMUNITY: ${{ vars.SITE_COMMUNITY }}
+      SITE_TAROT: ${{ vars.SITE_TAROT }}
       SITE_CROCBYTE: ${{ vars.SITE_CROCBYTE }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -78,6 +80,7 @@ jobs:
             echo "URL_TOOLBOXES=$(url toolboxes crocwork-toolboxes)"
             echo "URL_CANVA=$(url canva crocwork-canva)"
             echo "URL_COMMUNITY=$(url community crocwork-community)"
+            echo "URL_TAROT=$(url tarot crocwork-tarot)"
             echo "URL_CROCBYTE=$(url crocbyte crocbyte)"
           } >> "$GITHUB_ENV"
 
@@ -97,6 +100,7 @@ jobs:
             echo "APP_URL_TOOLBOXES=$URL_TOOLBOXES"
             echo "APP_URL_CANVA=$URL_CANVA"
             echo "APP_URL_COMMUNITY=$URL_COMMUNITY"
+            echo "APP_URL_TAROT=$URL_TAROT"
             echo "APP_URL_COMMERCE=$URL_COMMERCE"
             echo "APP_URL_CROCBYTE=$URL_CROCBYTE"
           } > .env.production
@@ -135,7 +139,14 @@ jobs:
           if [ "${{ matrix.kind }}" = next ]; then
             pnpm exec opennextjs-cloudflare upload -- --preview-alias "pr-${{ github.event.number }}"
           else
-            pnpm exec wrangler versions upload --preview-alias "pr-${{ github.event.number }}"
+            # a brand-new app has no Worker until its first deploy from main: no preview yet
+            if ! out=$(pnpm exec wrangler versions upload --preview-alias "pr-${{ github.event.number }}" 2>&1); then
+              echo "$out"
+              grep -q "does not yet exist" <<<"$out" || exit 1
+              echo "::notice::${{ matrix.app }} is created on its first deploy from main; this PR has no preview"
+            else
+              echo "$out"
+            fi
           fi
 
       - name: deploy
