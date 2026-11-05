@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { cn } from "../lib/cn";
-import { osReducedMotion } from "@empire/core/theme";
 import { reducedMotion } from "../lib/fade";
 
 type Slot = { key: string; digit: number; text?: undefined } | { key: string; text: string };
@@ -62,7 +61,6 @@ export function RollingCounter({
   bounce = 0.2,
   stagger = 0.04,
   intro = true,
-  lite = true,
   className,
 }: {
   value: number;
@@ -77,11 +75,9 @@ export function RollingCounter({
   /** seconds between neighbouring digits */
   stagger?: number;
   intro?: boolean;
-  /** false keeps rolling in LITE mode (the device's own reduced-motion setting still wins) */
-  lite?: boolean;
   className?: string;
 }) {
-  const still = lite ? reducedMotion : osReducedMotion;
+  const still = reducedMotion;
   const formatter = React.useMemo(
     () => new Intl.NumberFormat(locale, { ...format, numberingSystem: "latn" }),
     [locale, JSON.stringify(format ?? {})],

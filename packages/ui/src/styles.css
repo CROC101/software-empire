@@ -416,22 +416,6 @@
   }
 }
 
-/* LITE (<html data-lite="on">, set by theme-boot.js on phones or by choice): CSS cannot see the
-   reduced-motion answer the boot script gives JS, so the same calm comes from here. Animations
-   jump to their last frame (entrances still end visible) and the sky stays off. */
-html[data-lite="on"] .em-ambience {
-  display: none;
-}
-/* .em-keep-motion: the rare part the owner wants moving even in LITE (the launch countdown) */
-html[data-lite="on"] :not(.em-keep-motion, .em-keep-motion *),
-html[data-lite="on"] :not(.em-keep-motion, .em-keep-motion *)::before,
-html[data-lite="on"] :not(.em-keep-motion, .em-keep-motion *)::after {
-  animation-duration: 0.01ms !important;
-  animation-delay: 0s !important;
-  animation-iteration-count: 1 !important;
-  scroll-behavior: auto !important;
-}
-
 /* theme switch: elements marked .vt-live keep moving through the reveal instead of freezing in
    the old snapshot (they swap colour instantly; everything else reveals with the effect) */
 .vt-live {
@@ -3754,7 +3738,7 @@ a.lgn-app:focus-visible {
 }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    html:not([data-lite="on"]) .em-float-char {
+    .em-float-char {
       transform-origin: 50% 0%;
       animation: em-float linear both;
       animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
