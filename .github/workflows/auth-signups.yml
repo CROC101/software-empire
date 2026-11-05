@@ -1,0 +1,42 @@
+name: auth-signups
+
+# Opens or closes new sign-ups on the real Supabase project. Closed until launch: nobody can
+# create an account straight through the Supabase API, even past the launch gate. Existing
+# accounts (the owner) still sign in. Opens by itself at launch, 1 January 2570 00:05 Thai time.
+
+on:
+  workflow_dispatch:
+    inputs:
+      signups:
+        description: open or closed
+        type: choice
+        options: [closed, open]
+        default: closed
+  schedule:
+    - cron: "5 17 31 12 *" # 1 Jan 00:05 in Bangkok
+
+permissions: {}
+
+jobs:
+  set:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: production
+    steps:
+      - name: update disable_signup
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          REF: ${{ vars.SUPABASE_PROJECT_REF }}
+          # the schedule only ever opens
+          MODE: ${{ github.event_name == 'schedule' && 'open' || inputs.signups }}
+        run: |
+          set -euo pipefail
+          disable=$([ "$MODE" = open ] && echo false || echo true)
+          curl -fsS -X PATCH "https://api.supabase.com/v1/projects/$REF/config/auth" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data "{\"disable_signup\": $disable}" -o /dev/null
+          now=$(curl -fsS "https://api.supabase.com/v1/projects/$REF/config/auth" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" | jq -r .disable_signup)
+          echo "sign-ups: $MODE (disable_signup=$now)" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ "$now" = "$disable" ]
