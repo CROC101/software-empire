@@ -140,3 +140,4 @@ export { DominoLettering, dominoCount } from "./components/domino-lettering";
 export { ScrollFloat } from "./components/scroll-float";
 export { DitherVeil } from "./components/dither-veil";
 export { HalftoneReveal } from "./components/halftone-reveal";
+export { BuildTour, BUILD_TOUR_EVENT, layerKind } from "./components/build-tour";
