@@ -33,13 +33,13 @@
 :root {
   /* Brand — ธีม "Aurora" ของ Software Empire (palette.css ใน @empire/ui)
      ม่วงหลวงเป็นสีหลัก · หัวเรื่อง/ตราไล่ม่วง → บานเย็น · แถบซ้ายม่วงเที่ยงคืน · ค่าเริ่มต้นโหมดสว่าง */
-  --cv-color-primary: var(--em-violet-600);
-  --cv-color-primary-hover: var(--em-violet-700);
-  --cv-color-primary-active: var(--em-violet-800);
-  --cv-color-primary-soft: var(--em-violet-100);
-  --cv-color-primary-soft-hover: var(--em-violet-200);
-  --cv-color-focus-ring: var(--em-violet-500);
-  --cv-color-accent: var(--em-fuchsia-500);
+  --cv-color-primary: var(--em-blue-600);
+  --cv-color-primary-hover: var(--em-blue-700);
+  --cv-color-primary-active: var(--em-blue-800);
+  --cv-color-primary-soft: var(--em-blue-100);
+  --cv-color-primary-soft-hover: var(--em-blue-200);
+  --cv-color-focus-ring: var(--em-blue-500);
+  --cv-color-accent: var(--em-sky-500);
   --cv-color-accent-soft: oklch(0.64 0.25 338 / 0.1);
 
   /* พื้นผิว */
@@ -69,9 +69,9 @@
   --cv-color-danger-text: rgb(185 28 28);
   --cv-color-danger-bg: rgb(254 226 226);
   --cv-color-danger-border: rgb(252 165 165);
-  --cv-color-info-text: var(--em-violet-700);
-  --cv-color-info-bg: var(--em-violet-100);
-  --cv-color-info-border: var(--em-violet-200);
+  --cv-color-info-text: var(--em-blue-700);
+  --cv-color-info-bg: var(--em-blue-100);
+  --cv-color-info-border: var(--em-blue-200);
 
   /* พาสเทลของไทล์หมวดหมู่ (แบบ Canva) */
   --cv-pastel-peach: rgb(255 228 214);
@@ -106,8 +106,8 @@
   --cv-ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
   /* Chart palette — ใช้เป็นสีไอคอนประเภทงานด้วย (ห้ามสลับลำดับ) */
-  --cv-chart-1: var(--em-violet-600);
-  --cv-chart-2: var(--em-fuchsia-500);
+  --cv-chart-1: var(--em-blue-600);
+  --cv-chart-2: var(--em-sky-500);
   --cv-chart-3: rgb(20 184 166);
   --cv-chart-4: rgb(78 93 135);
   --cv-chart-5: rgb(245 158 11);
@@ -124,12 +124,12 @@
   --cv-hero-from: oklch(0.93 0.05 292);
   --cv-hero-mid: oklch(0.96 0.03 330);
   --cv-hero-to: oklch(0.94 0.05 30);
-  --cv-heading-from: var(--em-violet-600);
-  --cv-heading-to: var(--em-fuchsia-500);
+  --cv-heading-from: var(--em-blue-600);
+  --cv-heading-to: var(--em-sky-500);
   --cv-logo-from: rgb(255 255 255);
   --cv-logo-to: rgb(255 255 255);
   --cv-search-bg: var(--cv-color-surface);
-  --cv-search-border: var(--em-violet-200);
+  --cv-search-border: var(--em-blue-200);
   --cv-search-glow: oklch(0.61 0.225 286 / 0.25);
   --cv-sidebar-from: oklch(0.2 0.07 286);
   --cv-sidebar-to: oklch(0.33 0.16 318);
@@ -141,8 +141,8 @@
   --cv-hero-from: oklch(0.24 0.09 290);
   --cv-hero-mid: oklch(0.18 0.05 300);
   --cv-hero-to: oklch(0.26 0.1 330);
-  --cv-heading-from: var(--em-violet-300);
-  --cv-heading-to: var(--em-fuchsia-400);
+  --cv-heading-from: var(--em-blue-300);
+  --cv-heading-to: var(--em-sky-400);
   --cv-logo-from: rgb(255 255 255);
   --cv-logo-to: rgb(255 255 255);
   --cv-search-bg: var(--em-ink-950);
@@ -151,12 +151,12 @@
   --cv-sidebar-from: oklch(0.13 0.03 286);
   --cv-sidebar-to: oklch(0.24 0.11 315);
 
-  --cv-color-primary: var(--em-violet-400);
-  --cv-color-primary-hover: var(--em-violet-300);
-  --cv-color-primary-active: var(--em-violet-200);
+  --cv-color-primary: var(--em-blue-400);
+  --cv-color-primary-hover: var(--em-blue-300);
+  --cv-color-primary-active: var(--em-blue-200);
   --cv-color-primary-soft: oklch(0.7 0.185 288 / 0.16);
   --cv-color-primary-soft-hover: oklch(0.7 0.185 288 / 0.24);
-  --cv-color-focus-ring: var(--em-violet-400);
+  --cv-color-focus-ring: var(--em-blue-400);
   --cv-color-accent-soft: oklch(0.72 0.21 335 / 0.14);
   --cv-color-canvas: var(--em-ink-975);
   --cv-color-stage: oklch(0.11 0.018 286);
@@ -177,7 +177,7 @@
   --cv-color-danger-text: rgb(252 165 165);
   --cv-color-danger-border: rgb(127 29 29);
   --cv-color-info-bg: oklch(0.7 0.185 288 / 0.16);
-  --cv-color-info-text: var(--em-violet-200);
+  --cv-color-info-text: var(--em-blue-200);
   --cv-pastel-peach: rgb(74 46 36);
   --cv-pastel-pink: rgb(72 36 56);
   --cv-pastel-lilac: rgb(60 42 86);
@@ -197,8 +197,8 @@
     --cv-hero-from: oklch(0.24 0.09 290);
     --cv-hero-mid: oklch(0.18 0.05 300);
     --cv-hero-to: oklch(0.26 0.1 330);
-    --cv-heading-from: var(--em-violet-300);
-    --cv-heading-to: var(--em-fuchsia-400);
+    --cv-heading-from: var(--em-blue-300);
+    --cv-heading-to: var(--em-sky-400);
     --cv-logo-from: rgb(255 255 255);
   --cv-logo-to: rgb(255 255 255);
   --cv-search-bg: var(--em-ink-950);
@@ -207,12 +207,12 @@
   --cv-sidebar-from: oklch(0.13 0.03 286);
     --cv-sidebar-to: oklch(0.24 0.11 315);
 
-    --cv-color-primary: var(--em-violet-400);
-    --cv-color-primary-hover: var(--em-violet-300);
-    --cv-color-primary-active: var(--em-violet-200);
+    --cv-color-primary: var(--em-blue-400);
+    --cv-color-primary-hover: var(--em-blue-300);
+    --cv-color-primary-active: var(--em-blue-200);
     --cv-color-primary-soft: oklch(0.7 0.185 288 / 0.16);
     --cv-color-primary-soft-hover: oklch(0.7 0.185 288 / 0.24);
-    --cv-color-focus-ring: var(--em-violet-400);
+    --cv-color-focus-ring: var(--em-blue-400);
     --cv-color-accent-soft: oklch(0.72 0.21 335 / 0.14);
     --cv-color-canvas: var(--em-ink-975);
     --cv-color-stage: oklch(0.11 0.018 286);
@@ -233,7 +233,7 @@
     --cv-color-danger-text: rgb(252 165 165);
     --cv-color-danger-border: rgb(127 29 29);
     --cv-color-info-bg: oklch(0.7 0.185 288 / 0.16);
-    --cv-color-info-text: var(--em-violet-200);
+    --cv-color-info-text: var(--em-blue-200);
     --cv-pastel-peach: rgb(74 46 36);
     --cv-pastel-pink: rgb(72 36 56);
     --cv-pastel-lilac: rgb(60 42 86);

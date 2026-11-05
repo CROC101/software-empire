@@ -33,11 +33,20 @@
   --em-croc-600: oklch(0.45 0.085 135);
   --em-croc-800: oklch(0.3 0.055 140);
   --em-croc-950: oklch(0.17 0.03 145);
+  --em-sky-400: oklch(0.74 0.13 238);
   --em-sky-500: oklch(0.66 0.15 240);
-  /* crocwork.studio blue — from the S-wave logo */
+  /* crocwork.studio blue — from the S-wave logo; 500–700 are the logo, the rest stepped from them */
+  --em-blue-50: oklch(0.975 0.015 255);
+  --em-blue-100: oklch(0.94 0.04 256);
+  --em-blue-200: oklch(0.88 0.08 257);
+  --em-blue-300: oklch(0.8 0.125 257);
+  --em-blue-400: oklch(0.7 0.17 257);
   --em-blue-500: oklch(0.6 0.2 258);
   --em-blue-600: oklch(0.5 0.23 264);
   --em-blue-700: oklch(0.43 0.21 266);
+  --em-blue-800: oklch(0.36 0.17 266);
+  --em-blue-900: oklch(0.29 0.12 267);
+  --em-blue-950: oklch(0.21 0.08 268);
   /* sun / moon theme toggle skies */
   --em-sky-night: linear-gradient(
     180deg,

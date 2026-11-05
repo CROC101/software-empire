@@ -18,24 +18,24 @@
   --card-foreground: var(--foreground);
   --popover: var(--em-ink-0);
   --popover-foreground: var(--foreground);
-  --primary: var(--em-violet-600);
+  --primary: var(--em-blue-600);
   --primary-foreground: var(--em-ink-0);
-  --secondary: var(--em-violet-50);
-  --secondary-foreground: var(--em-violet-800);
-  --accent: var(--em-violet-100);
-  --accent-foreground: var(--em-violet-900);
+  --secondary: var(--em-blue-50);
+  --secondary-foreground: var(--em-blue-800);
+  --accent: var(--em-blue-100);
+  --accent-foreground: var(--em-blue-900);
   --destructive: var(--em-danger);
   --destructive-foreground: var(--em-ink-0);
   --success: var(--em-success);
   --warning: var(--em-warning);
   --border: var(--em-ink-200);
   --input: var(--em-ink-300);
-  --ring: var(--em-violet-500);
-  --aurora: var(--em-aurora);
-  --aurora-soft: var(--em-aurora-soft);
-  --rail: var(--em-rail);
-  --glow: var(--em-glow);
-  --radius: 0.75rem;
+  --ring: var(--em-blue-500);
+  --aurora: linear-gradient(135deg, var(--em-blue-600), var(--em-sky-500));
+  --aurora-soft: linear-gradient(135deg, var(--em-blue-50), var(--em-ink-0));
+  --rail: var(--em-ink-25);
+  --glow: 0 8px 28px color-mix(in oklch, var(--em-blue-600) 32%, transparent);
+  --radius: 0.5rem; /* crocwork: crisp corners */
 }
 
 /* dark: an explicit .dark class wins; otherwise follow the OS unless the app pinned .light */
@@ -47,20 +47,20 @@
     --muted-foreground: var(--em-ink-400);
     --card: var(--em-ink-950);
     --popover: var(--em-ink-900);
-    --primary: var(--em-violet-400);
+    --primary: var(--em-blue-400);
     --primary-foreground: var(--em-ink-975);
     --secondary: var(--em-ink-850);
-    --secondary-foreground: var(--em-violet-200);
-    --accent: oklch(0.7 0.185 288 / 0.14);
-    --accent-foreground: var(--em-violet-100);
+    --secondary-foreground: var(--em-blue-200);
+    --accent: color-mix(in oklch, var(--em-blue-400) 14%, transparent);
+    --accent-foreground: var(--em-blue-100);
     --destructive: var(--em-danger-dark);
     --success: var(--em-success-dark);
     --warning: var(--em-warning-dark);
     --border: var(--em-ink-800);
     --input: var(--em-ink-700);
-    --ring: var(--em-violet-400);
-    --rail: var(--em-rail-dark);
-    --glow: var(--em-glow-dark);
+    --ring: var(--em-blue-400);
+    --rail: var(--em-ink-975);
+    --glow: 0 8px 28px color-mix(in oklch, var(--em-sky-500) 30%, transparent);
   }
 }
 :root.dark {
@@ -70,20 +70,20 @@
   --muted-foreground: var(--em-ink-400);
   --card: var(--em-ink-950);
   --popover: var(--em-ink-900);
-  --primary: var(--em-violet-400);
+  --primary: var(--em-blue-400);
   --primary-foreground: var(--em-ink-975);
   --secondary: var(--em-ink-850);
-  --secondary-foreground: var(--em-violet-200);
-  --accent: oklch(0.7 0.185 288 / 0.14);
-  --accent-foreground: var(--em-violet-100);
+  --secondary-foreground: var(--em-blue-200);
+  --accent: color-mix(in oklch, var(--em-blue-400) 14%, transparent);
+  --accent-foreground: var(--em-blue-100);
   --destructive: var(--em-danger-dark);
   --success: var(--em-success-dark);
   --warning: var(--em-warning-dark);
   --border: var(--em-ink-800);
   --input: var(--em-ink-700);
-  --ring: var(--em-violet-400);
-  --rail: var(--em-rail-dark);
-  --glow: var(--em-glow-dark);
+  --ring: var(--em-blue-400);
+  --rail: var(--em-ink-975);
+  --glow: 0 8px 28px color-mix(in oklch, var(--em-sky-500) 30%, transparent);
 }
 
 @theme inline {
