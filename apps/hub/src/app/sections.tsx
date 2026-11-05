@@ -1191,7 +1191,7 @@ export function HowSection() {
             ))}
           </ol>
           {/* the plan, drawn: its frame draws itself on hover / focus */}
-          <BlueprintButton href="#contact" className="mt-8">
+          <BlueprintButton href="/services#contact" className="mt-8">
             เริ่มวางแผนกัน <span aria-hidden>→</span>
           </BlueprintButton>
 
@@ -1417,8 +1417,12 @@ export function SiteFooter() {
       socials={[{ icon: "github", label: "GitHub", href: GITHUB }]}
       email={process.env.NEXT_PUBLIC_CONTACT_EMAIL}
       corner={{ label: "CROC101/software-empire", href: GITHUB }}
-      invite={{ label: "มีไอเดียแล้ว? เล่าให้ผมฟัง", text: "เริ่มโปรเจกต์", href: "#contact" }}
-      status={{ label: "เปิดรับงาน · ตอบภายใน 1 วันทำการ", href: "#contact" }}
+      invite={{
+        label: "มีไอเดียแล้ว? เล่าให้ผมฟัง",
+        text: "เริ่มโปรเจกต์",
+        href: "/services#contact",
+      }}
+      status={{ label: "เปิดรับงาน · ตอบภายใน 1 วันทำการ", href: "/services#contact" }}
       mark="since 2569"
       timeZone="Asia/Bangkok"
       timeLabel="BKK"
@@ -1426,22 +1430,22 @@ export function SiteFooter() {
         {
           title: "ผลงาน",
           links: subsystems.slice(0, 3).map((s) => ({ label: s.name, href: `/go/${s.slug}` })),
-          cta: { label: "work.", href: "#subsystems" },
+          cta: { label: "work.", href: "/work#subsystems" },
         },
         {
           title: "ไปต่อ",
           links: [
-            { label: "สถานะระบบ", href: "#status" },
-            { label: "ทำงานยังไง", href: "#how" },
-            { label: "ถามกันบ่อย", href: "#faq" },
+            { label: "สถานะระบบ", href: "/#status" },
+            { label: "ทำงานยังไง", href: "/services#how" },
+            { label: "ถามกันบ่อย", href: "/services#faq" },
             { label: "เล่น intro อีกครั้ง", href: "/?intro" },
           ],
-          cta: { label: "talk.", href: "#contact" },
+          cta: { label: "talk.", href: "/services#contact" },
         },
       ]}
-      chat={{ label: "ทักผม", href: "#contact" }}
+      chat={{ label: "ทักผม", href: "/services#contact" }}
       sideLinks={[
-        { icon: "globe", label: "สถานะ", href: "#status" },
+        { icon: "globe", label: "สถานะ", href: "/#status" },
         { icon: "link", label: "GitHub", href: GITHUB },
       ]}
       copyright={`© ${String(year)} crocwork.studio`}

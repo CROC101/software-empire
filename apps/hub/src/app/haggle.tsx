@@ -20,7 +20,7 @@ export function Haggle() {
       {({ dodges, gave, caught }) => {
         const label = gave || caught ? TAUNTS.at(-1) : TAUNTS[Math.min(dodges, TAUNTS.length - 2)];
         return (
-          <a href="#contact" className="dodge-field__pill no-underline">
+          <a href="/services#contact" className="dodge-field__pill no-underline">
             {label}
           </a>
         );
