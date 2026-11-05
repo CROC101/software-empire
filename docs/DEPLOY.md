@@ -30,14 +30,14 @@
    - **Secrets:** `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
    - **Variables:** `CF_WORKERS_SUBDOMAIN` = ส่วน `<ชื่อ>` ของ `<ชื่อ>.workers.dev`
 
-แอปจะอยู่ที่ `https://crocwork-<แอป>.<ชื่อ>.workers.dev` (hub, commerce, toolboxes, canva, community)
+แอปจะอยู่ที่ `https://crocwork-<แอป>.<ชื่อ>.workers.dev` (hub, commerce, toolboxes, canva, community, tarot)
 
 ## 3. Supabase
 
 1. supabase.com → Continue with GitHub → New project · region **Southeast Asia (Singapore)** ·
    ตั้งรหัส DB ยาว ๆ แล้วจดไว้
 2. Project Settings → **API**: เพิ่ม schema ใน _Exposed schemas_:
-   `toolboxes, canva, community, commerce, cms`
+   `toolboxes, canva, community, commerce, cms, tarot`
 3. Authentication → URL Configuration: _Site URL_ = URL ของ hub · _Redirect URLs_ = `https://crocwork-*.<ชื่อ>.workers.dev/**`
 4. GitHub → Settings → Secrets and variables → Actions
    - **Variables:** `SUPABASE_URL` (Project URL), `SUPABASE_PUBLISHABLE_KEY` (publishable key),
