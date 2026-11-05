@@ -19,6 +19,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script src="/theme-boot.js" />
         {/* eslint-disable-next-line @next/next/no-sync-scripts -- the first-visit intro, decided before paint */}
         <script src="/intro-boot.js" />
+        {/* body text font: fetched with the HTML instead of after the CSS */}
+        <link
+          rel="preload"
+          href="/fonts/NotoSansThai-Variable.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="min-h-dvh">
         {children}

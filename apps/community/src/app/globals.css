@@ -23,25 +23,25 @@
 /* UI fonts (OFL, files in public/fonts) — replaces next/font/local from csmju-nexus */
 @font-face {
   font-family: "Geist UI";
-  src: url("/fonts/Geist-Variable.ttf") format("truetype");
+  src: url("/fonts/Geist-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
 @font-face {
   font-family: "Geist Mono UI";
-  src: url("/fonts/GeistMono-Variable.ttf") format("truetype");
+  src: url("/fonts/GeistMono-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
 @font-face {
   font-family: "Plus Jakarta Sans UI";
-  src: url("/fonts/PlusJakartaSans-Variable.ttf") format("truetype");
+  src: url("/fonts/PlusJakartaSans-Variable.woff2") format("woff2");
   font-weight: 200 800;
   font-display: swap;
 }
 @font-face {
   font-family: "Noto Sans Thai UI";
-  src: url("/fonts/NotoSansThai-Variable.ttf") format("truetype");
+  src: url("/fonts/NotoSansThai-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
