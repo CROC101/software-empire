@@ -23,9 +23,21 @@
   /* soft aurora glow behind hero sections; purely decorative */
   .hub-aurora-backdrop {
     background:
-      radial-gradient(60rem 30rem at 10% -10%, oklch(0.61 0.225 286 / 0.22), transparent 60%),
-      radial-gradient(50rem 28rem at 95% 0%, oklch(0.64 0.25 338 / 0.16), transparent 60%),
-      radial-gradient(40rem 24rem at 60% 110%, oklch(0.76 0.16 32 / 0.12), transparent 60%);
+      radial-gradient(
+        60rem 30rem at 0% 20%,
+        color-mix(in oklab, var(--em-orange-500) 20%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        50rem 28rem at 100% 10%,
+        color-mix(in oklab, var(--em-sky-400) 22%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        40rem 24rem at 60% 110%,
+        color-mix(in oklab, var(--em-blue-600) 16%, transparent),
+        transparent 60%
+      );
   }
 }
 
@@ -34,12 +46,13 @@
   .cw-blue {
     color: var(--em-blue-600);
   }
+  /* the main call to action: ember on teal water (the class name predates the palette) */
   .cw-btn-blue {
-    background: var(--em-blue-600);
+    background: var(--em-orange-600);
     color: var(--em-ink-0);
   }
   .cw-btn-blue:hover {
-    background: var(--em-blue-700);
+    background: var(--em-orange-700);
   }
   @media (prefers-reduced-motion: no-preference) {
     .cw-float {

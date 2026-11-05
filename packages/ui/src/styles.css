@@ -18,7 +18,7 @@
   --card-foreground: var(--foreground);
   --popover: var(--em-ink-0);
   --popover-foreground: var(--foreground);
-  --primary: var(--em-blue-600);
+  --primary: var(--em-orange-600);
   --primary-foreground: var(--em-ink-0);
   --secondary: var(--em-blue-50);
   --secondary-foreground: var(--em-blue-800);
@@ -47,7 +47,7 @@
     --muted-foreground: var(--em-ink-400);
     --card: var(--em-ink-950);
     --popover: var(--em-ink-900);
-    --primary: var(--em-blue-400);
+    --primary: var(--em-orange-500);
     --primary-foreground: var(--em-ink-975);
     --secondary: var(--em-ink-850);
     --secondary-foreground: var(--em-blue-200);
@@ -70,7 +70,7 @@
   --muted-foreground: var(--em-ink-400);
   --card: var(--em-ink-950);
   --popover: var(--em-ink-900);
-  --primary: var(--em-blue-400);
+  --primary: var(--em-orange-500);
   --primary-foreground: var(--em-ink-975);
   --secondary: var(--em-ink-850);
   --secondary-foreground: var(--em-blue-200);

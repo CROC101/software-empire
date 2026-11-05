@@ -14,8 +14,10 @@ font pair or corner style per app.
 
 - Colours: `packages/ui/src/palette.css` (`--em-*`) → semantic tokens in `styles.css`
   (`--background`, `--foreground`, `--primary`, `--muted-foreground`, …).
-  Accent = crocwork blue `--em-blue-500/600/700`; neutrals = `--em-ink-*`; dark bands =
-  `--em-ink-975`. Helpers in hub: `cw-blue` (text), `cw-btn-blue` (solid blue button).
+  Palette "teal & ember" (owner, 2026-11): accent = teal on the `--em-blue-*` names
+  (#2E6F73 = 600, #0F3D3E = 900, #7FB3B8 = 300); ember `--em-orange-*` (#C6601F = 500) only for
+  the main CTA and `--primary`; neutrals `--em-ink-*` run cream (#EADCC8 = 25) to night
+  (#0A0F14 = 975). Helpers in hub: `cw-blue` (teal text), `cw-btn-blue` (ember CTA button).
 - Fonts: body/headings **Noto Sans Thai UI** (heavy `font-black` for display), labels
   **Plus Jakarta Sans UI**, mono for eyebrows/terminals. Files live in each app's `public/fonts`.
 - Corners: crisp. Buttons and cards are square or lightly rounded (≤ 0.75rem). Pills only for

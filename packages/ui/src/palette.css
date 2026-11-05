@@ -33,20 +33,27 @@
   --em-croc-600: oklch(0.45 0.085 135);
   --em-croc-800: oklch(0.3 0.055 140);
   --em-croc-950: oklch(0.17 0.03 145);
-  --em-sky-400: oklch(0.74 0.13 238);
-  --em-sky-500: oklch(0.66 0.15 240);
-  /* crocwork.studio blue — from the S-wave logo; 500–700 are the logo, the rest stepped from them */
-  --em-blue-50: oklch(0.975 0.015 255);
-  --em-blue-100: oklch(0.94 0.04 256);
-  --em-blue-200: oklch(0.88 0.08 257);
-  --em-blue-300: oklch(0.8 0.125 257);
-  --em-blue-400: oklch(0.7 0.17 257);
-  --em-blue-500: oklch(0.6 0.2 258);
-  --em-blue-600: oklch(0.5 0.23 264);
-  --em-blue-700: oklch(0.43 0.21 266);
-  --em-blue-800: oklch(0.36 0.17 266);
-  --em-blue-900: oklch(0.29 0.12 267);
-  --em-blue-950: oklch(0.21 0.08 268);
+  /* the light end of the water: pale teal */
+  --em-sky-400: oklch(0.78 0.05 205);
+  --em-sky-500: oklch(0.7 0.06 204);
+  /* crocwork accent — "teal & ember" (owner's palette, 2026-11): #0F3D3E 900, #2E6F73 600,
+     #7FB3B8 300. The names stay --em-blue-* so every app follows without a rename. */
+  --em-blue-50: oklch(0.97 0.012 200);
+  --em-blue-100: oklch(0.935 0.022 201);
+  --em-blue-200: oklch(0.86 0.038 203);
+  --em-blue-300: oklch(0.732 0.055 204);
+  --em-blue-400: oklch(0.64 0.065 203);
+  --em-blue-500: oklch(0.57 0.07 202);
+  --em-blue-600: oklch(0.502 0.066 201);
+  --em-blue-700: oklch(0.43 0.06 200);
+  --em-blue-800: oklch(0.38 0.054 198);
+  --em-blue-900: oklch(0.33 0.048 197);
+  --em-blue-950: oklch(0.24 0.035 200);
+  /* ember: #C6601F is 500; buttons sit on 600 so white text keeps 4.5:1 */
+  --em-orange-400: oklch(0.68 0.14 52);
+  --em-orange-500: oklch(0.603 0.149 48);
+  --em-orange-600: oklch(0.54 0.14 46);
+  --em-orange-700: oklch(0.47 0.12 45);
   /* sun / moon theme toggle skies */
   --em-sky-night: linear-gradient(
     180deg,
@@ -71,22 +78,23 @@
   --em-danger: oklch(0.56 0.22 22);
   --em-danger-dark: oklch(0.7 0.19 22);
 
-  /* neutrals — a whisper of violet so greys sit with the brand instead of against it */
-  --em-ink-0: oklch(1 0 0);
-  --em-ink-25: oklch(0.987 0.004 292);
-  --em-ink-50: oklch(0.972 0.007 292);
-  --em-ink-100: oklch(0.948 0.01 292);
-  --em-ink-200: oklch(0.912 0.014 292);
-  --em-ink-300: oklch(0.84 0.018 291);
-  --em-ink-400: oklch(0.7 0.022 290);
-  --em-ink-500: oklch(0.56 0.025 289);
-  --em-ink-600: oklch(0.45 0.028 288);
-  --em-ink-700: oklch(0.34 0.03 287);
-  --em-ink-800: oklch(0.265 0.032 286);
-  --em-ink-850: oklch(0.225 0.03 286);
-  --em-ink-900: oklch(0.19 0.028 286);
-  --em-ink-950: oklch(0.155 0.024 286);
-  --em-ink-975: oklch(0.13 0.02 286);
+  /* neutrals — cream paper (#EADCC8 is 25) down to night ink (#0A0F14 is 975); the light end
+     is warm, the dark end leans toward the teal */
+  --em-ink-0: oklch(0.985 0.008 80);
+  --em-ink-25: oklch(0.9 0.031 77);
+  --em-ink-50: oklch(0.875 0.03 76);
+  --em-ink-100: oklch(0.85 0.028 75);
+  --em-ink-200: oklch(0.8 0.025 74);
+  --em-ink-300: oklch(0.72 0.02 72);
+  --em-ink-400: oklch(0.6 0.015 230);
+  --em-ink-500: oklch(0.47 0.016 240);
+  --em-ink-600: oklch(0.4 0.016 243);
+  --em-ink-700: oklch(0.32 0.016 245);
+  --em-ink-800: oklch(0.255 0.015 247);
+  --em-ink-850: oklch(0.22 0.014 248);
+  --em-ink-900: oklch(0.195 0.014 248);
+  --em-ink-950: oklch(0.18 0.013 249);
+  --em-ink-975: oklch(0.166 0.013 249);
 
   /* signature gradients */
   --em-aurora: linear-gradient(
