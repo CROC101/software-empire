@@ -5,4 +5,4 @@
  * here and the new private key into Cloudflare; every browser then has to subscribe again.
  */
 export const VAPID_PUBLIC_KEY =
-  "BFrZrudtbvr_AfrnnsdvUlcp6TSpC6IRQL3WHHuWhuMwd5IveQxSfBx_5zIdJsLrJif7nlISb1HJo1j0EMOuK58";
+  "BBqEx-_oOAvJOA5WGPme35BdlYKJtcsxDK0zUSkb2LAQul7i_ni5YNyH2-e6qv1MbUegD7KVmQL97zkmY3xmx3U";
