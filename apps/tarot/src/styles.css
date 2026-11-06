@@ -238,3 +238,11 @@
   border-radius: 50%;
   box-shadow: inset -6px 3px 0 0 var(--em-moon);
 }
+
+/* a sideways strip that scrolls by touch or wheel without showing a bar */
+.tt-no-scrollbar {
+  scrollbar-width: none;
+}
+.tt-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
