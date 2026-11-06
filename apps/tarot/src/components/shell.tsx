@@ -1,4 +1,4 @@
-import { HubSwitcher, cn } from "@empire/ui";
+import { HubSwitcher, MeshMascot, cn } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
 import { Coins, History, Layers, Sun, UserRound } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -6,6 +6,7 @@ import { NavLink, Outlet } from "react-router";
 import { useTarotData } from "@/lib/data";
 import { env } from "@/lib/env";
 import { useSession } from "@/lib/session";
+import { Bell } from "./bell";
 import { IntroSheet, Splash } from "./intro";
 import { ProfileForm } from "./profile-form";
 
@@ -16,9 +17,21 @@ const NAV = [
   { to: "/me", label: "ฉัน", icon: UserRound },
 ];
 
-/** Night sky, a top bar (hub switcher, coins) and a bottom tab bar like a phone app. */
+/** Good morning / afternoon / evening, by the Bangkok clock. */
+function greeting() {
+  const h = Number(
+    new Intl.DateTimeFormat("en-GB", {
+      hour: "numeric",
+      hourCycle: "h23",
+      timeZone: "Asia/Bangkok",
+    }).format(new Date()),
+  );
+  return h < 12 ? "สวัสดีตอนเช้า" : h < 17 ? "สวัสดีตอนบ่าย" : "สวัสดีตอนเย็น";
+}
+
+/** Night sky, a top bar (owl greeting, coins, bell) and a bottom tab bar like a phone app. */
 export function Shell() {
-  const { status } = useTarotData();
+  const { status, profile } = useTarotData();
   // the profile question waits until the first-visit tour is closed: one dialog at a time
   const [introDone, setIntroDone] = useState(false);
   const onIntroDone = useCallback(() => setIntroDone(true), []);
@@ -38,7 +51,15 @@ export function Shell() {
           iconOnly
           className="size-11 justify-center rounded-md text-[var(--em-ink-0)] hover:bg-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)]"
         />
-        <p className="mr-auto font-heading font-bold text-[var(--em-ink-0)]">crocwork tarot</p>
+        <div className="mr-auto flex min-w-0 items-center gap-2">
+          <MeshMascot kind="owl" className="size-9 shrink-0" />
+          <p className="min-w-0 leading-tight">
+            <span className="block text-xs text-[var(--em-ink-300)]">{greeting()}</span>
+            <span className="block truncate font-heading font-bold text-[var(--em-ink-0)]">
+              {profile?.nickname ?? "crocwork tarot"}
+            </span>
+          </p>
+        </div>
         {status && (
           <p className="flex items-center gap-1 rounded-full bg-[color-mix(in_oklab,var(--em-ink-975)_60%,transparent)] px-3 py-1 font-heading text-sm font-bold tabular-nums text-[var(--em-gold-300)]">
             <Coins className="size-4" aria-hidden />
@@ -46,6 +67,7 @@ export function Shell() {
             {status.coins}
           </p>
         )}
+        <Bell />
       </header>
       <main id="content" className="flex-1">
         <Outlet />

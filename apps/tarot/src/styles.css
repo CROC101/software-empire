@@ -136,3 +136,112 @@
   background: color-mix(in oklab, var(--em-ink-975) 72%, transparent);
   color: var(--em-ink-50);
 }
+
+/* FlipCard (components/flip-card.tsx, after React Bits): size comes from the caller's classes */
+.flip-card {
+  --fc-radius: 14px;
+  position: relative;
+  display: block;
+  border-radius: var(--fc-radius);
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+}
+.flip-card:focus-visible {
+  outline: 2px solid var(--em-blue-300);
+  outline-offset: 4px;
+}
+.flip-card[data-axis="x"] {
+  touch-action: pan-x;
+}
+.flip-card[data-draggable] {
+  cursor: grab;
+}
+.flip-card[data-dragging] {
+  cursor: grabbing;
+}
+.flip-card[data-disabled] {
+  cursor: default;
+  opacity: 0.6;
+}
+.flip-card__shadow {
+  position: absolute;
+  inset: 12% 9% -5%;
+  border-radius: var(--fc-radius);
+  background: color-mix(in oklab, var(--em-ink-975) 70%, transparent);
+  filter: blur(22px);
+  pointer-events: none;
+}
+.flip-card__rotor {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.flip-card__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--fc-radius);
+  background: var(--em-ink-950);
+  color: var(--em-ink-50);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-card__face img {
+  -webkit-user-drag: none;
+}
+.flip-card__face--back {
+  transform: rotateY(180deg);
+}
+.flip-card[data-axis="x"] .flip-card__face--back {
+  transform: rotateX(180deg);
+}
+.flip-card__glare {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle farthest-side at var(--fc-gx, 50%) var(--fc-gy, 50%),
+    color-mix(in oklab, var(--em-ink-0) 22%, transparent),
+    color-mix(in oklab, var(--em-ink-0) 8%, transparent) 40%,
+    transparent 100%
+  );
+  opacity: var(--fc-sheen, 0);
+  pointer-events: none;
+}
+.flip-card[data-fade] .flip-card__face {
+  transform: none;
+  opacity: 0;
+  backface-visibility: visible;
+  transition: opacity 200ms ease;
+}
+.flip-card[data-fade="front"] .flip-card__face--front,
+.flip-card[data-fade="back"] .flip-card__face--back {
+  opacity: 1;
+}
+
+/* home: the day's card sits in a thin orbit with a crescent moon riding on it */
+.tt-orbit {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: min(22rem, 92vw);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--em-blue-200) 30%, transparent);
+  box-shadow:
+    0 0 0 14px color-mix(in oklab, var(--em-blue-300) 5%, transparent),
+    inset 0 0 60px color-mix(in oklab, var(--em-blue-400) 12%, transparent);
+  pointer-events: none;
+}
+.tt-orbit::after {
+  content: "";
+  position: absolute;
+  top: 6%;
+  right: 12%;
+  width: 22px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset -6px 3px 0 0 var(--em-moon);
+}

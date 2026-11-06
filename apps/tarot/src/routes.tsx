@@ -1,6 +1,7 @@
 import { createBrowserRouter, Link } from "react-router";
 import { HistoryPage } from "@/components/history-page";
-import { DailyPage, MePage } from "@/components/pages";
+import { HomePage } from "@/components/home-page";
+import { MePage } from "@/components/pages";
 import { ReadPage } from "@/components/read-page";
 import { Shell } from "@/components/shell";
 
@@ -15,7 +16,7 @@ export const router = createBrowserRouter([
         element: (
           <>
             {title("ไพ่ประจำวัน")}
-            <DailyPage />
+            <HomePage />
           </>
         ),
       },

@@ -1,5 +1,6 @@
 import { Coins, RotateCcw, Shuffle } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 import { recordReading } from "@/lib/api";
 import { useTarotData } from "@/lib/data";
 import {
@@ -29,8 +30,16 @@ const choice =
 export function ReadPage() {
   const { user } = useSession();
   const { status, setStatus } = useTarotData();
-  const [spread, setSpread] = useState<SpreadId>("three");
-  const [pickedTopic, setTopic] = useState<Topic>("general");
+  // the home page's topic tiles link here with ?topic= or ?spread= preset
+  const [params] = useSearchParams();
+  const [spread, setSpread] = useState<SpreadId>(() => {
+    const s = params.get("spread");
+    return s && s in SPREADS ? (s as SpreadId) : "three";
+  });
+  const [pickedTopic, setTopic] = useState<Topic>(() => {
+    const t = params.get("topic");
+    return TOPICS.find((x) => x.id === t)?.id ?? "general";
+  });
   const [question, setQuestion] = useState("");
   const [stage, setStage] = useState<Stage>({ name: "setup" });
   const [error, setError] = useState("");
@@ -38,7 +47,8 @@ export function ReadPage() {
   const def = SPREADS[spread];
   const topic: Topic = "topic" in def ? def.topic : pickedTopic;
   const positions = def.positions;
-  const short = def.cost > 0 && (status?.coins ?? 0) < def.cost;
+  // guests get the sign-in button instead of a balance warning
+  const short = Boolean(user) && def.cost > 0 && (status?.coins ?? 0) < def.cost;
 
   const shuffle = () => {
     setError("");
