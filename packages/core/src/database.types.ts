@@ -2790,6 +2790,107 @@ export type Database = {
   };
   tarot: {
     Tables: {
+      chat_messages: {
+        Row: {
+          body: string;
+          cards: Json | null;
+          chat_id: string;
+          cost: number;
+          created_at: string;
+          engine: string | null;
+          id: number;
+          mode: string;
+          role: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          body: string;
+          cards?: Json | null;
+          chat_id: string;
+          cost?: number;
+          created_at?: string;
+          engine?: string | null;
+          id?: never;
+          mode: string;
+          role: string;
+          user_id: string;
+        };
+        Update: {
+          body?: string;
+          cards?: Json | null;
+          chat_id?: string;
+          cost?: number;
+          created_at?: string;
+          engine?: string | null;
+          id?: never;
+          mode?: string;
+          role?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_chat_id_fkey";
+            columns: ["chat_id"];
+            isOneToOne: false;
+            referencedRelation: "chats";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      chat_settings: {
+        Row: {
+          length: string;
+          remember_notes: boolean;
+          remember_profile: boolean;
+          tone: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          length?: string;
+          remember_notes?: boolean;
+          remember_profile?: boolean;
+          tone?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          length?: string;
+          remember_notes?: boolean;
+          remember_profile?: boolean;
+          tone?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      chats: {
+        Row: {
+          created_at: string;
+          id: string;
+          title: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          title?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          title?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       checkins: {
         Row: {
           coins: number;
@@ -2805,6 +2906,28 @@ export type Database = {
         Update: {
           coins?: number;
           day?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      memories: {
+        Row: {
+          created_at: string;
+          id: string;
+          note: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          note: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          note?: string;
           user_id?: string;
         };
         Relationships: [];
@@ -2904,6 +3027,36 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      ask_cost: {
+        Args: { length: string; mode: string; who: string };
+        Returns: number;
+      };
+      ask_quote: {
+        Args: { length: string; mode: string; who: string };
+        Returns: {
+          balance: number;
+          cost: number;
+        }[];
+      };
+      ask_record: {
+        Args: {
+          answer: string;
+          cards: Json;
+          engine: string;
+          length: string;
+          mode: string;
+          notes: string[];
+          question: string;
+          room: string;
+          who: string;
+        };
+        Returns: {
+          balance: number;
+          chat_id: string;
+          cost: number;
+        }[];
+      };
+      balance_of: { Args: { who: string }; Returns: number };
       check_in: {
         Args: Record<PropertyKey, never>;
         Returns: {

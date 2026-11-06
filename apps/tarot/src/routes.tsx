@@ -1,5 +1,6 @@
 import { createBrowserRouter, Link } from "react-router";
 import { HistoryPage } from "@/components/history-page";
+import { AskPage } from "@/components/ask-page";
 import { HomePage } from "@/components/home-page";
 import { MePage } from "@/components/pages";
 import { ReadPage } from "@/components/read-page";
@@ -27,6 +28,15 @@ export const router = createBrowserRouter([
           <>
             {title("อ่านไพ่")}
             <ReadPage />
+          </>
+        ),
+      },
+      {
+        path: "/ask",
+        element: (
+          <>
+            {title("ถามนกฮูก")}
+            <AskPage />
           </>
         ),
       },
