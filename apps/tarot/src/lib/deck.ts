@@ -659,3 +659,43 @@ export function cardAt(i: number): Card {
   if (!c) throw new RangeError("the deck is empty");
   return c;
 }
+
+export type Element = "fire" | "water" | "air" | "earth";
+export const ELEMENT_TH: Record<Element, string> = {
+  fire: "ธาตุไฟ",
+  water: "ธาตุน้ำ",
+  air: "ธาตุลม",
+  earth: "ธาตุดิน",
+};
+// the traditional (Golden Dawn) element of each major arcanum, 0–21
+const MAJOR_ELEMENT: Element[] = [
+  "air",
+  "air",
+  "water",
+  "earth",
+  "fire",
+  "earth",
+  "air",
+  "water",
+  "fire",
+  "earth",
+  "fire",
+  "air",
+  "water",
+  "water",
+  "fire",
+  "earth",
+  "fire",
+  "air",
+  "water",
+  "fire",
+  "fire",
+  "earth",
+];
+const SUIT_ELEMENT = { wands: "fire", cups: "water", swords: "air", pentacles: "earth" } as const;
+
+/** The element a card belongs to: by suit for the minors, by tradition for the majors. */
+export function elementOf(c: Card): Element {
+  if (c.suit !== "major") return SUIT_ELEMENT[c.suit];
+  return MAJOR_ELEMENT[Number(c.id.slice(1))] ?? "air";
+}
