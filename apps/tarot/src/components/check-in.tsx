@@ -1,6 +1,7 @@
 import { Coins } from "lucide-react";
 import { useState } from "react";
 import { checkIn } from "@/lib/api";
+import { CheckInCalendar } from "./calendar";
 import { useTarotData } from "@/lib/data";
 import { signInUrl, useSession } from "@/lib/session";
 
@@ -10,6 +11,8 @@ export function CheckIn() {
   const { status, setStatus } = useTarotData();
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState("");
+  // bumps after a check-in so the calendar re-reads this month
+  const [refresh, setRefresh] = useState(0);
 
   if (!user) {
     return (
@@ -25,10 +28,8 @@ export function CheckIn() {
     );
   }
 
-  // where today sits in the current run of seven
   const streak = status?.streak ?? 0;
   const done = status?.checked_today ?? false;
-  const filled = done ? ((streak - 1) % 7) + 1 : streak % 7;
 
   const onCheckIn = async () => {
     setBusy(true);
@@ -36,6 +37,7 @@ export function CheckIn() {
     try {
       const r = await checkIn();
       setStatus(r);
+      setRefresh((n) => n + 1);
       setNote(r.earned > 0 ? `ได้รับ ${String(r.earned)} เหรียญ` : "วันนี้เช็กอินไปแล้ว");
     } catch (error) {
       console.error(error);
@@ -61,21 +63,7 @@ export function CheckIn() {
           {status?.coins ?? 0}
         </p>
       </div>
-      <ol className="grid grid-cols-7 gap-1.5" aria-label="7 วันของรอบนี้">
-        {Array.from({ length: 7 }, (_, i) => (
-          <li
-            key={i}
-            className={`flex aspect-square flex-col items-center justify-center rounded-md text-xs font-semibold ${
-              i < filled
-                ? "bg-[var(--em-blue-500)] text-[var(--em-ink-0)]"
-                : "bg-[color-mix(in_oklab,var(--em-ink-0)_8%,transparent)] text-[var(--em-ink-300)]"
-            }`}
-          >
-            <span>{i === 6 ? "+30" : "+10"}</span>
-            <span className="sr-only">{i < filled ? "เช็กอินแล้ว" : "ยังไม่เช็กอิน"}</span>
-          </li>
-        ))}
-      </ol>
+      <CheckInCalendar refresh={refresh} />
       <button
         type="button"
         onClick={() => void onCheckIn()}

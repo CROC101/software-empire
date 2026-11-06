@@ -1,22 +1,27 @@
 import { HubSwitcher, cn } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
-import { Coins, Layers, Sun, UserRound } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Coins, History, Layers, Sun, UserRound } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { useTarotData } from "@/lib/data";
 import { env } from "@/lib/env";
 import { useSession } from "@/lib/session";
+import { IntroSheet, Splash } from "./intro";
 import { ProfileForm } from "./profile-form";
 
 const NAV = [
   { to: "/", label: "ไพ่ประจำวัน", icon: Sun },
   { to: "/read", label: "อ่านไพ่", icon: Layers },
+  { to: "/history", label: "ประวัติ", icon: History },
   { to: "/me", label: "ฉัน", icon: UserRound },
 ];
 
 /** Night sky, a top bar (hub switcher, coins) and a bottom tab bar like a phone app. */
 export function Shell() {
   const { status } = useTarotData();
+  // the profile question waits until the first-visit tour is closed: one dialog at a time
+  const [introDone, setIntroDone] = useState(false);
+  const onIntroDone = useCallback(() => setIntroDone(true), []);
   return (
     <div className="flex min-h-dvh flex-col text-[var(--em-ink-50)]">
       <div aria-hidden className="tt-sky">
@@ -49,7 +54,7 @@ export function Shell() {
         aria-label="เมนูหลัก"
         className="fixed inset-x-0 bottom-0 z-30 border-t border-[color-mix(in_oklab,var(--em-ink-0)_12%,transparent)] bg-[color-mix(in_oklab,var(--em-ink-975)_92%,transparent)] pb-[env(safe-area-inset-bottom)]"
       >
-        <ul className="mx-auto grid max-w-md grid-cols-3">
+        <ul className="mx-auto grid max-w-md grid-cols-4">
           {NAV.map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <NavLink
@@ -69,7 +74,9 @@ export function Shell() {
           ))}
         </ul>
       </nav>
-      <Welcome />
+      <Splash />
+      <IntroSheet onDone={onIntroDone} />
+      {introDone && <Welcome />}
     </div>
   );
 }

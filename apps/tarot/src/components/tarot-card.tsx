@@ -1,5 +1,6 @@
 import { cn } from "@empire/ui";
 import { cardImage } from "@/lib/deck";
+import { CardTools } from "./card-tools";
 import type { Drawn } from "@/lib/reading";
 
 /**
@@ -103,6 +104,7 @@ export function CardMeaning({
         <span className="font-semibold text-[var(--em-gold-300)]">คำแนะนำ · </span>
         {card.advice}
       </p>
+      <CardTools drawn={drawn} />
     </div>
   );
 }

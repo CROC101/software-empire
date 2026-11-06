@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { cardAt, DECK } from "./deck";
-import { bangkokDay, dailyCard, draw, interpret, secureIndex } from "./reading";
+import { bangkokDay, dailyCard, draw, interpret, secureIndex, SPREADS, yesNo } from "./reading";
 
 describe("deck", () => {
   it("has 78 different cards, each with every meaning filled in", () => {
@@ -51,5 +51,21 @@ describe("draw", () => {
     expect(interpret(drawn, "general")).toBe(cardAt(0).up);
     expect(interpret(drawn, "love")).toContain(cardAt(0).up);
     expect(interpret(drawn, "love").length).toBeGreaterThan(cardAt(0).up.length);
+  });
+});
+
+describe("spreads", () => {
+  it("cost what tarot.spread_cost() charges in the database", () => {
+    const costs = Object.fromEntries(Object.entries(SPREADS).map(([id, s]) => [id, s.cost]));
+    expect(costs).toEqual({ one: 0, three: 0, yesno: 0, love: 10, celtic: 20 });
+    expect(SPREADS.celtic.positions).toHaveLength(10);
+    expect(SPREADS.love.positions).toHaveLength(5);
+  });
+
+  it("answers yes upright, not now reversed, and unsure for cards about waiting", () => {
+    const sun = { card: cardAt(19), reversed: false };
+    expect(yesNo(sun).answer).toBe("ใช่");
+    expect(yesNo({ ...sun, reversed: true }).answer).toBe("ไม่ ตอนนี้");
+    expect(yesNo({ card: cardAt(12), reversed: false }).answer).toBe("ยังไม่ชัด");
   });
 });
