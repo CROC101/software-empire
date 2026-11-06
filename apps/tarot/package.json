@@ -12,6 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.5.0",
     "@empire/core": "workspace:*",
     "@empire/ui": "workspace:*",
     "@supabase/supabase-js": "^2.118.0",

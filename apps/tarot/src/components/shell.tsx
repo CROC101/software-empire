@@ -1,6 +1,6 @@
 import { HubSwitcher, MeshMascot, cn } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
-import { Coins, History, Layers, Sun, UserRound } from "lucide-react";
+import { Coins, History, Layers, MessageCircle, Sun, UserRound } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { useTarotData } from "@/lib/data";
@@ -13,6 +13,7 @@ import { ProfileForm } from "./profile-form";
 const NAV = [
   { to: "/", label: "ไพ่ประจำวัน", icon: Sun },
   { to: "/read", label: "อ่านไพ่", icon: Layers },
+  { to: "/ask", label: "ถามนกฮูก", icon: MessageCircle },
   { to: "/history", label: "ประวัติ", icon: History },
   { to: "/me", label: "ฉัน", icon: UserRound },
 ];
@@ -76,7 +77,7 @@ export function Shell() {
         aria-label="เมนูหลัก"
         className="fixed inset-x-0 bottom-0 z-30 border-t border-[color-mix(in_oklab,var(--em-ink-0)_12%,transparent)] bg-[color-mix(in_oklab,var(--em-ink-975)_92%,transparent)] pb-[env(safe-area-inset-bottom)]"
       >
-        <ul className="mx-auto grid max-w-md grid-cols-4">
+        <ul className="mx-auto grid max-w-md grid-cols-5">
           {NAV.map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <NavLink

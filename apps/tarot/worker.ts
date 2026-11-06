@@ -10,9 +10,10 @@
 import gate from "../../packages/core/src/launch-gate-worker";
 import { VAPID_PUBLIC_KEY } from "./src/lib/vapid-public";
 import { vapidHeaders } from "./src/lib/vapid";
+import { handleAsk, type AskEnv } from "./server/ask";
 
 type Fetcher = { fetch: (input: Request | string, init?: RequestInit) => Promise<Response> };
-type Env = {
+type Env = AskEnv & {
   ASSETS: Fetcher;
   HUB: Fetcher;
   SUPABASE_URL?: string;
@@ -23,7 +24,12 @@ type Env = {
 type Ctx = { waitUntil: (p: Promise<unknown>) => void };
 
 export default {
-  fetch: (request: Request, env: Env) => gate.fetch(request, env),
+  fetch(request: Request, env: Env) {
+    const { pathname } = new URL(request.url);
+    // the owl's chat: an API call, not a page, so it skips the launch gate (it checks the session)
+    if (pathname === "/api/ask" && request.method === "POST") return handleAsk(request, env);
+    return gate.fetch(request, env);
+  },
   scheduled(_event: unknown, env: Env, ctx: Ctx) {
     ctx.waitUntil(remind(env));
   },
