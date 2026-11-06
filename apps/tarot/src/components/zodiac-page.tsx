@@ -3,6 +3,7 @@ import { useTarotData } from "@/lib/data";
 import { cardImage, elementOf, ELEMENT_TH } from "@/lib/deck";
 import { bangkokDay, dailyCard, interpret } from "@/lib/reading";
 import { harmony, signOf, SIGNS, type Sign } from "@/lib/zodiac";
+import { CardBack } from "./card-back";
 import { FlipCard } from "./flip-card";
 
 const HARMONY = {
@@ -82,7 +83,7 @@ export function ZodiacPage() {
                 open ? `ไพ่ราศี${sign.th} ${drawn.card.th}` : `แตะเพื่อเปิดไพ่ราศี${sign.th}`
               }
               className="aspect-[420/731] w-40"
-              front={<span aria-hidden className="tt-back block size-full" />}
+              front={<CardBack />}
               back={
                 <img
                   src={cardImage(drawn.card)}

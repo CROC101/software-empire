@@ -1,5 +1,6 @@
 import { cn } from "@empire/ui";
 import { cardImage } from "@/lib/deck";
+import { CardBack } from "./card-back";
 import { CardTools } from "./card-tools";
 import type { Drawn } from "@/lib/reading";
 
@@ -26,7 +27,9 @@ export function TarotCard({
     : "ไพ่";
   const face = (
     <span className="tt-card-inner block">
-      <span aria-hidden className="tt-face tt-back block" />
+      <span aria-hidden className="tt-face tt-back-face block">
+        <CardBack />
+      </span>
       <span className="tt-face tt-front block">
         {drawn && open && (
           <img

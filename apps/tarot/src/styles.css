@@ -103,25 +103,18 @@
   transform: rotateY(180deg);
   background: var(--em-ink-0);
 }
-.tt-back {
-  border: 2px solid color-mix(in oklab, var(--em-blue-300) 60%, transparent);
-  background:
-    radial-gradient(
-      circle at 50% 50%,
-      color-mix(in oklab, var(--em-moon) 55%, transparent) 0 9%,
-      transparent 10%
-    ),
-    repeating-linear-gradient(
-      45deg,
-      transparent 0 10px,
-      color-mix(in oklab, var(--em-blue-300) 14%, transparent) 10px 11px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent 0 10px,
-      color-mix(in oklab, var(--em-blue-300) 14%, transparent) 10px 11px
-    ),
-    linear-gradient(160deg, var(--em-blue-800), var(--em-ink-975));
+/* card back art (components/card-back.tsx): cream line work on deep plum */
+:root {
+  /* plum: violet warmed with fuchsia, then sunk toward ink */
+  --tt-back-bg: color-mix(
+    in oklab,
+    color-mix(in oklab, var(--em-fuchsia-500) 22%, var(--em-violet-950)) 60%,
+    var(--em-ink-975)
+  );
+  --tt-back-ink: color-mix(in oklab, var(--em-gold-300) 45%, var(--em-ink-0));
+}
+.tt-back-face {
+  background: var(--tt-back-bg);
 }
 @media (prefers-reduced-motion: reduce) {
   .tt-card-inner {
