@@ -69,7 +69,7 @@ const storedCard = z.object({ id: z.string(), reversed: z.boolean() });
 const readingSchema = z.object({
   id: z.uuid(),
   spread: z.string(),
-  topic: z.enum(["general", "love", "work", "money"]),
+  topic: z.enum(["general", "love", "work", "money", "study", "health"]),
   question: z.string().nullable(),
   cards: z.array(storedCard),
   cost: z.number().int(),

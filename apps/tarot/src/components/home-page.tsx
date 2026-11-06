@@ -3,10 +3,13 @@ import {
   ChevronRight,
   CircleHelp,
   Coins,
+  GraduationCap,
   Heart,
+  HeartPulse,
   Layers,
   Maximize2,
   Sparkles,
+  Star,
   Sun,
   Wallet,
 } from "lucide-react";
@@ -31,6 +34,9 @@ const TOPICS = [
   { to: "/read?topic=love", label: "ความรัก", blurb: "ใจเขาใจเรา", icon: Heart },
   { to: "/read?topic=work", label: "การงาน", blurb: "งานและเป้าหมาย", icon: Layers },
   { to: "/read?topic=money", label: "การเงิน", blurb: "รายรับรายจ่าย", icon: Wallet },
+  { to: "/read?topic=study", label: "การเรียน", blurb: "สอบและสมาธิ", icon: GraduationCap },
+  { to: "/read?topic=health", label: "สุขภาพ", blurb: "กายและใจ", icon: HeartPulse },
+  { to: "/zodiac", label: "ดวงราศี", blurb: "ไพ่ประจำราศี", icon: Star },
   { to: "/read?spread=yesno", label: "ใช่หรือไม่", blurb: "ถามเรื่องเดียว", icon: CircleHelp },
   { to: "/read?spread=celtic", label: "เซลติกครอส", blurb: "ดูลึกครบทุกด้าน", icon: Sparkles },
 ] as const;
@@ -178,19 +184,19 @@ export function HomePage() {
           </span>
           <ChevronRight className="size-5 text-[var(--em-blue-300)]" aria-hidden />
         </Link>
-        <ul className="grid grid-cols-2 gap-3">
+        <ul className="grid grid-cols-3 gap-2">
           {TOPICS.map(({ to, label, blurb, icon: Icon }) => (
             <li key={to}>
               <Link
                 to={to}
-                className="tt-panel flex min-h-16 items-center gap-3 p-3 hover:border-[var(--em-blue-300)]"
+                className="tt-panel flex min-h-24 flex-col items-center justify-center gap-1.5 p-2 text-center hover:border-[var(--em-blue-300)]"
               >
                 <span className="grid size-10 shrink-0 place-items-center rounded-md bg-[color-mix(in_oklab,var(--em-blue-400)_22%,transparent)] text-[var(--em-blue-200)]">
                   <Icon className="size-5" aria-hidden />
                 </span>
-                <span className="min-w-0">
-                  <span className="block font-semibold text-[var(--em-ink-0)]">{label}</span>
-                  <span className="block text-xs text-[var(--em-ink-300)]">{blurb}</span>
+                <span className="block text-sm font-semibold text-[var(--em-ink-0)]">{label}</span>
+                <span className="block text-[11px] leading-tight text-[var(--em-ink-300)]">
+                  {blurb}
                 </span>
               </Link>
             </li>

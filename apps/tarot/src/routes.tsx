@@ -3,6 +3,7 @@ import { HistoryPage } from "@/components/history-page";
 import { HomePage } from "@/components/home-page";
 import { MePage } from "@/components/pages";
 import { ReadPage } from "@/components/read-page";
+import { ZodiacPage } from "@/components/zodiac-page";
 import { Shell } from "@/components/shell";
 
 const title = (name: string) => <title>{`${name} · crocwork tarot`}</title>;
@@ -35,6 +36,15 @@ export const router = createBrowserRouter([
           <>
             {title("ประวัติ")}
             <HistoryPage />
+          </>
+        ),
+      },
+      {
+        path: "/zodiac",
+        element: (
+          <>
+            {title("ดวงราศี")}
+            <ZodiacPage />
           </>
         ),
       },

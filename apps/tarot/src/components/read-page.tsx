@@ -137,7 +137,7 @@ export function ReadPage() {
           {!("topic" in def) && (
             <fieldset>
               <legend className="mb-2 text-sm font-semibold">เรื่องที่อยากรู้</legend>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {TOPICS.map((t) => (
                   <button
                     key={t.id}
