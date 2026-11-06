@@ -1,7 +1,7 @@
 -- Readings history and coin spending for the tarot schema · run: pnpm db:test
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(15);
+select plan(17);
 
 insert into auth.users (id, email) values
   ('11111111-1111-1111-1111-111111111111', 'a@test.local'),
@@ -72,6 +72,17 @@ select throws_ok(
   'an unknown spread is refused'
 );
 select is((select count(*)::int from tarot.readings), 2, 'refused readings leave no row');
+
+select is(
+  tarot.record_reading('one', 'study', null, '[{"id":"pentacles08","reversed":false}]'),
+  5,
+  'study is a topic'
+);
+select throws_ok(
+  $$select tarot.record_reading('one', 'astrology', null, '[{"id":"m00","reversed":false}]')$$,
+  '23514', null,
+  'an unknown topic is refused'
+);
 
 select lives_ok(
   $$update tarot.readings set hidden = true where spread = 'love'$$,

@@ -111,8 +111,9 @@ export function FlipCard({
   const gx = useMotionValue(50);
   const gy = useMotionValue(50);
 
-  const sumX = useTransform(() => turn.get() + tiltX.get());
-  const sumY = useTransform(() => turn.get() + tiltY.get());
+  // the array form subscribes to both values; the () => form missed turn.jump() on a keyboard flip
+  const sumX = useTransform([turn, tiltX], ([t = 0, x = 0]: number[]) => t + x);
+  const sumY = useTransform([turn, tiltY], ([t = 0, y = 0]: number[]) => t + y);
   const turnY = useMotionTemplate`perspective(${perspective}px) scale(${lift}) rotateX(${tiltX}deg) rotateY(${sumY}deg)`;
   const turnX = useMotionTemplate`perspective(${perspective}px) scale(${lift}) rotateY(${tiltY}deg) rotateX(${sumX}deg)`;
   const facing = useTransform(turn, (t) => Math.abs(Math.cos((t * Math.PI) / 180)));
