@@ -19,6 +19,7 @@ import { cardAt, cardImage, elementOf, ELEMENT_TH } from "@/lib/deck";
 import { bangkokDay, dailyCard, interpret, type Drawn } from "@/lib/reading";
 import { useSession } from "@/lib/session";
 import { Announcement } from "./announce";
+import { CardBack as CardBackArt } from "./card-back";
 import { CheckIn } from "./check-in";
 import { FlipCard } from "./flip-card";
 
@@ -43,7 +44,7 @@ const TOPICS = [
 
 /** The back every card shares: the night pattern with the moon in the middle. */
 function CardBack() {
-  return <span aria-hidden className="tt-back block size-full" />;
+  return <CardBackArt />;
 }
 
 function CardFace({ drawn }: { drawn: Drawn }) {
