@@ -52,6 +52,69 @@ export async function getProfile(): Promise<Profile | null> {
   return data ? profileSchema.parse(data) : null;
 }
 
+/** Days in [from, to] the reader checked in, with what each paid. */
+export async function getCheckins(from: string, to: string) {
+  const { data, error } = await (
+    await tarot()
+  )
+    .from("checkins")
+    .select("day, coins")
+    .gte("day", from)
+    .lte("day", to);
+  if (error) throw error;
+  return z.array(z.object({ day: z.iso.date(), coins: z.number().int() })).parse(data);
+}
+
+const storedCard = z.object({ id: z.string(), reversed: z.boolean() });
+const readingSchema = z.object({
+  id: z.uuid(),
+  spread: z.string(),
+  topic: z.enum(["general", "love", "work", "money"]),
+  question: z.string().nullable(),
+  cards: z.array(storedCard),
+  cost: z.number().int(),
+  created_at: z.string(),
+});
+export type StoredReading = z.infer<typeof readingSchema>;
+
+/** Keep a reading and pay for it in one step; the database refuses it if coins are short. */
+export async function recordReading(
+  spread: string,
+  topic: string,
+  question: string,
+  cards: { id: string; reversed: boolean }[],
+): Promise<number> {
+  const { data, error } = await (
+    await tarot()
+  ).rpc("record_reading", {
+    spread,
+    topic,
+    question,
+    cards,
+  });
+  if (error) throw error;
+  return z.number().int().parse(data);
+}
+
+export async function getReadings(): Promise<StoredReading[]> {
+  const { data, error } = await (
+    await tarot()
+  )
+    .from("readings")
+    .select("id, spread, topic, question, cards, cost, created_at")
+    .eq("hidden", false)
+    .order("created_at", { ascending: false })
+    .limit(50);
+  if (error) throw error;
+  return z.array(readingSchema).parse(data);
+}
+
+/** Take a reading out of the history; its coins stay spent. */
+export async function hideReading(id: string) {
+  const { error } = await (await tarot()).from("readings").update({ hidden: true }).eq("id", id);
+  if (error) throw error;
+}
+
 /** Insert the first time, update after: only nickname, birthday and gender may be updated. */
 export async function saveProfile(userId: string, profile: Profile, exists: boolean) {
   const row = profileSchema.parse(profile);

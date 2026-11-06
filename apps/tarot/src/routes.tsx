@@ -1,5 +1,7 @@
 import { createBrowserRouter, Link } from "react-router";
-import { DailyPage, MePage, ReadPage } from "@/components/pages";
+import { HistoryPage } from "@/components/history-page";
+import { DailyPage, MePage } from "@/components/pages";
+import { ReadPage } from "@/components/read-page";
 import { Shell } from "@/components/shell";
 
 const title = (name: string) => <title>{`${name} · crocwork tarot`}</title>;
@@ -23,6 +25,15 @@ export const router = createBrowserRouter([
           <>
             {title("อ่านไพ่")}
             <ReadPage />
+          </>
+        ),
+      },
+      {
+        path: "/history",
+        element: (
+          <>
+            {title("ประวัติ")}
+            <HistoryPage />
           </>
         ),
       },

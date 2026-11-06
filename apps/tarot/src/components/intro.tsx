@@ -1,5 +1,5 @@
 import { MeshMascot } from "@empire/ui";
-import { CalendarCheck, Layers, Sun, UserRound } from "lucide-react";
+import { CalendarCheck, History, Layers, Sun } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const SPLASH_SEEN = "tt-splash"; // per tab session: the splash greets a visit, not every page
@@ -58,13 +58,17 @@ export function Splash() {
 
 const FEATURES = [
   { icon: Sun, title: "ไพ่ประจำวัน", body: "วันละหนึ่งใบสำหรับคุณ เปิดดูได้ทุกเช้า" },
-  { icon: Layers, title: "อ่านไพ่", body: "ใบเดียวหรือสามใบ เรื่องรัก งาน เงิน หรือภาพรวม" },
+  {
+    icon: Layers,
+    title: "อ่านไพ่หลายแบบ",
+    body: "ใบเดียว สามใบ ใช่หรือไม่ ความรัก ไปจนถึงเซลติกครอส",
+  },
   {
     icon: CalendarCheck,
     title: "เช็กอินรับเหรียญ",
-    body: "แวะมาทุกวันรับเหรียญ วันที่เจ็ดติดกันได้มากกว่า",
+    body: "แวะมาทุกวันรับเหรียญ ใช้เปิดกระดานไพ่พิเศษ",
   },
-  { icon: UserRound, title: "โปรไฟล์ของคุณ", body: "ชื่อเล่นและวันเกิด ให้นกฮูกทักคุณถูกคน" },
+  { icon: History, title: "เก็บประวัติ", body: "ทุกครั้งที่เปิดไพ่ ย้อนกลับมาอ่านได้เสมอ" },
 ];
 
 /** First visit on this device: what the app does, in four lines, as a bottom sheet. */
