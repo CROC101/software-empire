@@ -51,6 +51,19 @@
    insert into cms.admins (user_id) select id from auth.users where email = '<อีเมลคุณ>';
    ```
 
+## 3b. แจ้งเตือนทุกเช้าของ tarot (ทำครั้งเดียว)
+
+Worker `crocwork-tarot` ส่งแจ้งเตือน 08:00 ทุกวัน ต้องมี secret 2 ตัว (ไม่ใส่ = ข้ามเงียบ ๆ ไม่พัง):
+
+1. **VAPID_PRIVATE_KEY** — เปิดไฟล์ `apps/tarot/.dev.vars` ในเครื่อง (ไม่อยู่ใน git) คัดลอกค่าหลัง
+   `VAPID_PRIVATE_KEY=` · ไฟล์หาย: ลบแล้วรัน `node apps/tarot/scripts/vapid-keys.mjs` ใหม่ และแก้ public key
+   ใน `apps/tarot/src/lib/vapid-public.ts` ให้ตรง
+2. **SUPABASE_SERVICE_ROLE_KEY** — Supabase → Project Settings → **API Keys** → _Secret keys_ → คัดลอก
+   (ขึ้นต้น `sb_secret_`) · ห้ามใส่ในไฟล์หรือ GitHub
+3. Cloudflare → Workers & Pages → **crocwork-tarot** → Settings → **Variables and Secrets** → Add →
+   Type = **Secret** → ใส่ชื่อและค่าทีละตัว → Deploy
+4. ทดสอบ: แอป tarot → แท็บ “ฉัน” → เปิด “เตือนทุกเช้า 8 โมง” แล้วรอ 08:00 · ดู log ได้ที่ Worker → Logs
+
 ## 4. โดเมนของตัวเอง (ทีหลัง)
 
 `*.workers.dev` อยู่ใน Public Suffix List → cookie ข้ามแอปไม่ได้ (ล็อกอินแยกต่อแอป) ได้โดเมนแล้ว:

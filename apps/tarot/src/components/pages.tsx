@@ -7,6 +7,7 @@ import { signInUrl, signOut, useSession } from "@/lib/session";
 import { Announcement, Help } from "./announce";
 import { CheckIn } from "./check-in";
 import { ProfileForm } from "./profile-form";
+import { Reminder } from "./reminder";
 import { CardMeaning, TarotCard } from "./tarot-card";
 
 const thaiDate = new Intl.DateTimeFormat("th-TH", {
@@ -119,6 +120,7 @@ export function MePage() {
           )}
         </div>
       )}
+      <Reminder />
       <Help />
     </div>
   );
