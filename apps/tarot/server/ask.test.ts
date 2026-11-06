@@ -32,7 +32,7 @@ function fakeBackend({ balance = 50, cost = 0 } = {}) {
         if (fn === "ask_record") return reply([{ chat_id: "c-1", cost, balance: balance - cost }]);
       }
       if (url.includes("/rest/v1/")) return reply([]);
-      if (url.includes("generativelanguage.googleapis.com"))
+      if (new URL(url).hostname === "generativelanguage.googleapis.com")
         return reply({
           candidates: [
             {
