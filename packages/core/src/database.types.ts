@@ -2837,6 +2837,31 @@ export type Database = {
         };
         Relationships: [];
       };
+      push_subscriptions: {
+        Row: {
+          auth: string;
+          created_at: string;
+          endpoint: string;
+          p256dh: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          auth: string;
+          created_at?: string;
+          endpoint: string;
+          p256dh: string;
+          user_id?: string;
+        };
+        Update: {
+          auth?: string;
+          created_at?: string;
+          endpoint?: string;
+          p256dh?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       readings: {
         Row: {
           cards: NonNullable<Json>;
@@ -2888,6 +2913,7 @@ export type Database = {
           streak: number;
         }[];
       };
+      drop_push: { Args: { push_endpoint: string }; Returns: undefined };
       my_status: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2899,6 +2925,10 @@ export type Database = {
       record_reading: {
         Args: { cards: Json; question: string; spread: string; topic: string };
         Returns: number;
+      };
+      save_push: {
+        Args: { push_auth: string; push_endpoint: string; push_p256dh: string };
+        Returns: undefined;
       };
       spread_cost: { Args: { spread: string }; Returns: number };
       streak: { Args: { until: string; who: string }; Returns: number };

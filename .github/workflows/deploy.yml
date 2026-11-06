@@ -156,5 +156,8 @@ jobs:
           if [ "${{ matrix.kind }}" = next ]; then
             pnpm exec opennextjs-cloudflare deploy
           else
-            pnpm exec wrangler deploy
+            # tarot's Worker sends the daily reminder and reads Supabase for it
+            extra=()
+            if [ "${{ matrix.app }}" = tarot ]; then extra=(--var "SUPABASE_URL:$SUPABASE_URL"); fi
+            pnpm exec wrangler deploy "${extra[@]}"
           fi

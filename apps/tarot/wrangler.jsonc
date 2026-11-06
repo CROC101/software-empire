@@ -7,7 +7,11 @@
   "compatibility_date": "2026-10-01",
   // until launch (1 Jan 2570) a small Worker asks the hub whether the visitor is an admin before
   // serving a page; bundles under /assets/ skip it. After launch it passes everything through.
-  "main": "../../packages/core/src/launch-gate-worker.ts",
+  "main": "./worker.ts",
+  // 08:00 Bangkok: the daily reminder push (worker.ts → scheduled)
+  "triggers": { "crons": ["0 1 * * *"] },
+  // public values; the secrets (SUPABASE_SERVICE_ROLE_KEY, VAPID_PRIVATE_KEY) are set in Cloudflare
+  "vars": { "VAPID_SUBJECT": "https://crocwork-tarot.crocwork.workers.dev" },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
