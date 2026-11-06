@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useTarotData } from "@/lib/data";
 import { bangkokDay, dailyCard, interpret } from "@/lib/reading";
 import { signInUrl, signOut, useSession } from "@/lib/session";
+import { Announcement, Help } from "./announce";
 import { CheckIn } from "./check-in";
 import { ProfileForm } from "./profile-form";
 import { CardMeaning, TarotCard } from "./tarot-card";
@@ -37,6 +38,7 @@ export function DailyPage() {
         <p className="text-sm text-[var(--em-ink-300)]">{thaiDate.format(new Date())}</p>
       </header>
 
+      <Announcement />
       <TarotCard
         drawn={drawn}
         open={open}
@@ -75,6 +77,9 @@ export function MePage() {
         >
           เข้าสู่ระบบ
         </a>
+        <div className="w-full space-y-4 text-left">
+          <Help />
+        </div>
       </div>
     );
   }
@@ -114,6 +119,7 @@ export function MePage() {
           )}
         </div>
       )}
+      <Help />
     </div>
   );
 }
