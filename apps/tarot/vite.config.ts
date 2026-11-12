@@ -46,7 +46,7 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: "jsdom",
       setupFiles: ["./src/test-setup.ts"],
-      include: ["src/**/*.test.{ts,tsx}"],
+      include: ["src/**/*.test.{ts,tsx}", "server/**/*.test.ts"],
       restoreMocks: true,
       // threads start without spawning a process — forks timed out while turbo ran builds in parallel
       pool: "threads",

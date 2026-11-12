@@ -64,6 +64,18 @@ Worker `crocwork-tarot` ส่งแจ้งเตือน 08:00 ทุกว�
    Type = **Secret** → ใส่ชื่อและค่าทีละตัว → Deploy
 4. ทดสอบ: แอป tarot → แท็บ “ฉัน” → เปิด “เตือนทุกเช้า 8 โมง” แล้วรอ 08:00 · ดู log ได้ที่ Worker → Logs
 
+## 3c. ถามนกฮูก (AI) ของ tarot
+
+Worker `crocwork-tarot` เรียก AI ที่ `/api/ask` · ดูดวง = Claude Haiku 5.5 · คุยทั่วไป = Gemini รุ่นถูกสุด
+(แต่ละตัวสำรองให้อีกตัวเมื่อล่ม) · ไม่มี key = แชตตอบ "ยังไม่เปิดใช้งาน" ไม่พัง
+
+1. **ANTHROPIC_API_KEY** — console.anthropic.com → API Keys → Create key · Settings → Limits → ตั้ง
+   **monthly spend limit** ก่อนใช้ (กันบิลบาน)
+2. **GEMINI_API_KEY** — aistudio.google.com → Get API key → Create · (แพ็กเกจ Gemini ในแอปใช้กับเซิร์ฟเวอร์ไม่ได้)
+3. Cloudflare → crocwork-tarot → Settings → Variables and Secrets → Add → ติ๊ก **Secret** ทีละตัว → Deploy
+4. เปลี่ยนรุ่น Gemini ได้ด้วยตัวแปรธรรมดา `GEMINI_MODEL` (ค่าเริ่มต้น `gemini-2.5-flash-lite`)
+5. ห้ามพิมพ์ key ลงแชต อีเมล หรือไฟล์ใด ๆ
+
 ## 4. โดเมนของตัวเอง (ทีหลัง)
 
 `*.workers.dev` อยู่ใน Public Suffix List → cookie ข้ามแอปไม่ได้ (ล็อกอินแยกต่อแอป) ได้โดเมนแล้ว:
