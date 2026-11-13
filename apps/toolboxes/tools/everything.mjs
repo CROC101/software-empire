@@ -106,12 +106,15 @@ function brandApp(dir) {
     let next = brand(text);
     // every page, not just index.html (cap-table and inventory ship docs sites): no analytics,
     // and "/docs/", "/assets/x.css", "/" mean this app's own folder, not our site root
-    if (f.name.endsWith(".html"))
-      next = next
-        .replace(/<script[^>]*plausible\.io[^>]*><\/script>\s*/g, "")
-        .replace(/((?:href|src|content)=")\/(?!\/|everything\/)([^"#?]*)/g, (m, attr, path) =>
-          existsSync(join(dir, path)) ? `${attr}/everything/${name}/${path}` : m,
-        );
+    if (f.name.endsWith(".html")) {
+      // until nothing changes: removing one tag must not leave another behind
+      for (let prev; prev !== next;)
+        [prev, next] = [next, next.replace(/<script[^>]*plausible\.io[^>]*><\/script>\s*/g, "")];
+      next = next.replace(
+        /((?:href|src|content)=")\/(?!\/|everything\/)([^"#?]*)/g,
+        (m, attr, path) => (existsSync(join(dir, path)) ? `${attr}/everything/${name}/${path}` : m),
+      );
+    }
     if (next !== text) writeFileSync(file, next);
   }
 }
