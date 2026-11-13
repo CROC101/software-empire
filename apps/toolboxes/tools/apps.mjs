@@ -73,7 +73,7 @@ export function themeHtml(html) {
   return (
     html
       // an opening tag split over lines (whiteboard's analytics) goes on one line first
-      .replace(/<script\b[^>]*>/g, (tag) => tag.replace(/\s+/g, " "))
+      .replace(/<script\b[^>]*>/gi, (tag) => tag.replace(/\s+/g, " "))
       .split("\n")
       .filter((line) => !drop.test(line))
       .map((line) => (sdk.test(line) ? '    <script src="../crocwork-sdk.js"></script>' : line))

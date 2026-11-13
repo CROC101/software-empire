@@ -87,7 +87,7 @@ describe("crocwork apps", () => {
       if (!/\.(html|js|json|webmanifest)$/.test(f)) continue;
       const text = read(slug, f);
       expect(text, f).not.toMatch(/\bPuter\b/);
-      expect(text, f).not.toMatch(/github\.com\/heyputer/i);
+      expect(text.toLowerCase(), f).not.toContain("github.com/heyputer");
       // only an AGPL app may carry AGPL code
       if (!isAgpl(slug)) expect(text, f).not.toMatch(/GNU Affero/i);
       // shortcut: puter.com/privacy, /terms and the developer docs stay until crocwork has its own
