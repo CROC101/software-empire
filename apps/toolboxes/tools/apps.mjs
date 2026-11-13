@@ -63,17 +63,18 @@ export function themeHtml(html) {
   // first in <head>, so inline loaders (3d) already see window.puter
   if (!/js\.puter\.com[^>]*><\/script>/.test(html))
     html = html.replace(/<head[^>]*>/, '$&\n    <script src="../crocwork-sdk.js"></script>');
+  // whole lines, not tag replaces: each tag sits on its own line upstream, and the guard test
+  // fails if one stays. No third-party traffic: upstream's analytics (its inline stub stays
+  // and only queues in memory), connection hints to Puter's CDN, canonical links upstream
+  const sdk = /^\s*<script[^>]*js\.puter\.com[^>]*><\/script>\s*$/;
+  const drop =
+    /^\s*(<script[^>]*plausible\.io[^>]*><\/script>|<link[^>]*js\.puter\.com[^>]*>|<link rel="canonical"[^>]*>)\s*$/;
   return (
     html
-      .replace(
-        /<script[^>]*js\.puter\.com[^>]*><\/script>\s*/g,
-        '<script src="../crocwork-sdk.js"></script>\n',
-      )
-      .replace(/<link rel="canonical"[^>]*>\s*/g, "")
-      // no third-party traffic: upstream's analytics (its inline stub stays and only queues
-      // in memory) and connection hints to Puter's CDN
-      .replace(/<script[^>]*plausible\.io[^>]*><\/script>\s*/g, "")
-      .replace(/<link[^>]*js\.puter\.com[^>]*>\s*/g, "")
+      .split("\n")
+      .filter((line) => !drop.test(line))
+      .map((line) => (sdk.test(line) ? '    <script src="../crocwork-sdk.js"></script>' : line))
+      .join("\n")
       // inline scripts that inject the SDK themselves (3d) get the shim, a no-op the second time
       .replaceAll("https://js.puter.com/v2/", "../crocwork-sdk.js")
       .replace("</head>", '  <link rel="stylesheet" href="../crocwork.css" />\n</head>')
