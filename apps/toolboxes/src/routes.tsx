@@ -2,6 +2,7 @@ import { buttonVariants } from "@empire/ui";
 import { lazy, Suspense, type ComponentType } from "react";
 import { createBrowserRouter, Link, useParams } from "react-router";
 import { DirectoryView } from "@/components/pages/directory-view";
+import { EverythingView } from "@/components/pages/everything-view";
 import { FavoritesView } from "@/components/pages/favorites-view";
 import { HomeView } from "@/components/pages/home-view";
 import { ToolView } from "@/components/pages/tool-view";
@@ -112,6 +113,15 @@ export const router = createBrowserRouter([
           <>
             {title("รายการโปรด")}
             <FavoritesView />
+          </>
+        ),
+      },
+      {
+        path: "everything",
+        element: (
+          <>
+            {title("แอปทำงานครบชุด")}
+            <EverythingView />
           </>
         ),
       },

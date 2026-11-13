@@ -10,3 +10,7 @@ apps/crocbyte/src/app/
 apps/crocbyte/src/components/
 supabase/.temp/
 supabase/templates/
+# Everything apps: built upstream output, rebuilt by apps/toolboxes/tools/everything.mjs
+apps/toolboxes/public/everything/*/
+apps/toolboxes/public/everything/palette.css
+apps/toolboxes/src/lib/everything-apps.json
