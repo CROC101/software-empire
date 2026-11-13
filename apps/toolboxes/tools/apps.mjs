@@ -2,7 +2,8 @@
 //   node tools/apps.mjs [path-to-source-clone] [app ...]
 // Without a path it clones the pinned commit into a temp folder. The apps are crocwork's
 // (public/apps/LICENSE); the MIT notice of the code they started from stays in
-// public/apps/THIRD_PARTY_NOTICES.txt. AGPL code can't be relicensed, so it is never built.
+// public/apps/THIRD_PARTY_NOTICES.txt. AGPL apps can't be relicensed: they keep their LICENSE
+// in their folder and the gallery links their source (REPO at COMMIT plus this script).
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
@@ -71,6 +72,8 @@ export function themeHtml(html) {
     /^\s*(<script[^>]*plausible\.io[^>]*><\/script>|<link[^>]*js\.puter\.com[^>]*>|<link rel="canonical"[^>]*>)\s*$/;
   return (
     html
+      // an opening tag split over lines (whiteboard's analytics) goes on one line first
+      .replace(/<script\b[^>]*>/gi, (tag) => tag.replace(/\s+/g, " "))
       .split("\n")
       .filter((line) => !drop.test(line))
       .map((line) => (sdk.test(line) ? '    <script src="../crocwork-sdk.js"></script>' : line))
@@ -154,10 +157,7 @@ for (const name of readdirSync(join(src, "src")).sort()) {
   const dir = join(src, "src", name);
   if (!existsSync(join(dir, "package.json")) || (only.length && !only.includes(name))) continue;
   const pkg = JSON.parse(readFileSync(join(dir, "package.json"), "utf8"));
-  if (licenceOf(dir) !== "MIT") {
-    console.error(`!! ${name} is not MIT, skipped (its code can't become crocwork's)`);
-    continue;
-  }
+  const licence = licenceOf(dir);
   const dest = join(out, name);
   console.log(`\n== ${name}`);
   try {
@@ -188,6 +188,8 @@ for (const name of readdirSync(join(src, "src")).sort()) {
   // calendar's guest pages answer booking links served by Puter Workers, which the shim never
   // creates, and they would call *.puter.work
   for (const f of ["book.html", "rsvp.html"]) rmSync(join(dest, f), { force: true });
+  // upstream's icon is not ours (parametric shows it with alt=""): gone until crocwork's arrive
+  rmSync(join(dest, "icon-128.png"), { force: true });
   // a worker registered at "/sw.js" is written for the site root (it caches "/" as its shell):
   // under /apps/<app>/ it would cache our home page, so it is not registered at all
   for (const f of readdirSync(join(dest, "assets")).filter((f) => f.endsWith(".js"))) {
@@ -202,26 +204,37 @@ for (const name of readdirSync(join(src, "src")).sort()) {
     if (fixed !== js) writeFileSync(join(dest, "assets", f), fixed);
   }
   brandApp(dest);
+  // AGPL §4: its licence goes with every copy (brandApp leaves LICENSE untouched)
+  if (licence !== "MIT")
+    cpSync(
+      join(
+        dir,
+        readdirSync(dir).find((f) => /^licen[cs]e/i.test(f)),
+      ),
+      join(dest, "LICENSE"),
+    );
   const title = /<title>([^<]*)<\/title>/.exec(html)?.[1].trim() || name;
   const description = pkg.description ?? "";
-  apps.push(
-    known[name] ?? {
-      slug: name,
-      category: "other",
-      name: { th: title, en: title },
-      description: { th: description, en: description },
-    },
-  );
+  // the build decides the licence
+  const { licence: _, ...entry } = known[name] ?? {
+    slug: name,
+    category: "other",
+    name: { th: title, en: title },
+    description: { th: description, en: description },
+  };
+  apps.push(licence === "MIT" ? entry : { ...entry, licence });
 }
 stamp();
 // the MIT licence asks for its notice in every copy: one file for all the apps (older commits of
 // the source repo still have it as their root LICENSE)
 const notices = join(src, "THIRD_PARTY_NOTICES.txt");
+const agpl = `\n\nApps with a LICENSE file in their folder (/apps/<app>/LICENSE) are licensed under the GNU Affero General Public License v3.0 only. Their complete source: ${REPO}/tree/${COMMIT}/src/<app>, built by https://github.com/CROC101/software-empire/blob/main/apps/toolboxes/tools/apps.mjs\n`;
 writeFileSync(
   join(out, "THIRD_PARTY_NOTICES.txt"),
-  existsSync(notices)
+  (existsSync(notices)
     ? readFileSync(notices, "utf8")
-    : `Notices for third-party code used in the crocwork apps.\n\n${readFileSync(join(src, "LICENSE"), "utf8")}`,
+    : `Notices for third-party code used in the crocwork apps.\n\n${readFileSync(join(src, "LICENSE"), "utf8")}`
+  ).trimEnd() + agpl,
 );
 
 mkdirSync(join(out, "fonts"), { recursive: true });
