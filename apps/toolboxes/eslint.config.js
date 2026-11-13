@@ -12,5 +12,5 @@ export default [
       "@typescript-eslint/no-misused-spread": "off",
     },
   },
-  globalIgnores(["dist/**", "public/everything/*/"]),
+  globalIgnores(["dist/**", "public/apps/*/"]),
 ];

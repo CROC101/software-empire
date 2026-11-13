@@ -33,9 +33,9 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           queries: security-extended
-          # built third-party apps (HeyPuter/everything, minified, rebuilt by
-          # apps/toolboxes/tools/everything.mjs); the shim and theme beside them stay scanned
+          # built crocwork apps (minified, rebuilt by apps/toolboxes/tools/apps.mjs);
+          # the SDK and theme beside them stay scanned
           config: |
             paths-ignore:
-              - apps/toolboxes/public/everything/*/**
+              - apps/toolboxes/public/apps/*/**
       - uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3

@@ -1,0 +1,422 @@
+[
+  {
+    "slug": "accounting",
+    "category": "business",
+    "name": {
+      "th": "บัญชี",
+      "en": "Accounting"
+    },
+    "description": {
+      "th": "บัญชีคู่: ใบแจ้งหนี้ ค่าใช้จ่าย กระทบยอดธนาคาร และงบการเงิน",
+      "en": "Double-entry books: invoices, expenses, bank reconciliation and statements"
+    }
+  },
+  {
+    "slug": "api-client",
+    "category": "engineering",
+    "name": {
+      "th": "ทดสอบ API",
+      "en": "API Client"
+    },
+    "description": {
+      "th": "สร้าง ส่ง และทดสอบ HTTP request จัดเป็นชุดได้",
+      "en": "Build, send and test HTTP requests, grouped into collections"
+    }
+  },
+  {
+    "slug": "backgammon",
+    "category": "games",
+    "name": {
+      "th": "แบ็กแกมมอน",
+      "en": "Backgammon"
+    },
+    "description": {
+      "th": "แบ็กแกมมอนเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว",
+      "en": "Backgammon against the computer or a friend on the same device"
+    }
+  },
+  {
+    "slug": "calendar",
+    "category": "team",
+    "name": {
+      "th": "ปฏิทิน",
+      "en": "Calendar"
+    },
+    "description": {
+      "th": "ปฏิทินเร็ว เรียบ จัดนัดและกิจกรรม",
+      "en": "A fast, clean calendar for meetings and events"
+    }
+  },
+  {
+    "slug": "cap-table",
+    "category": "business",
+    "name": {
+      "th": "ตารางผู้ถือหุ้น",
+      "en": "Cap Table"
+    },
+    "description": {
+      "th": "ตารางผู้ถือหุ้น ออปชัน และรอบระดมทุนของสตาร์ทอัป",
+      "en": "Shareholders, options and funding rounds for a startup"
+    }
+  },
+  {
+    "slug": "checkers",
+    "category": "games",
+    "name": {
+      "th": "หมากฮอส",
+      "en": "Checkers"
+    },
+    "description": {
+      "th": "หมากฮอสเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว",
+      "en": "Checkers against the computer or a friend on the same device"
+    }
+  },
+  {
+    "slug": "chess",
+    "category": "games",
+    "name": {
+      "th": "หมากรุกสากล",
+      "en": "Chess"
+    },
+    "description": {
+      "th": "หมากรุกสากลเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว",
+      "en": "Chess against the computer or a friend on the same device"
+    }
+  },
+  {
+    "slug": "childcare",
+    "category": "operations",
+    "name": {
+      "th": "ศูนย์เด็กเล็ก",
+      "en": "Childcare"
+    },
+    "description": {
+      "th": "ศูนย์เด็กเล็ก: เช็กอิน รายงานประจำวัน ข้อความถึงผู้ปกครอง และค่าเล่าเรียน",
+      "en": "Childcare centre: check-in, daily reports, parent messages and tuition"
+    }
+  },
+  {
+    "slug": "contacts",
+    "category": "team",
+    "name": {
+      "th": "รายชื่อติดต่อ",
+      "en": "Contacts"
+    },
+    "description": {
+      "th": "สมุดรายชื่อติดต่อ ค้นหาเร็ว",
+      "en": "An address book with fast search"
+    }
+  },
+  {
+    "slug": "contracts",
+    "category": "business",
+    "name": {
+      "th": "จัดการสัญญา",
+      "en": "Contract Manager"
+    },
+    "description": {
+      "th": "เก็บสัญญา ติดตามวันต่ออายุ และข้อผูกพัน",
+      "en": "Store contracts, track renewal dates and obligations"
+    }
+  },
+  {
+    "slug": "crm",
+    "category": "team",
+    "name": {
+      "th": "CRM งานขาย",
+      "en": "Sales CRM"
+    },
+    "description": {
+      "th": "ลูกค้าเป้าหมาย บริษัท ดีล งานติดตาม และพยากรณ์ยอดขาย",
+      "en": "Leads, companies, deals, follow-ups and sales forecasts"
+    }
+  },
+  {
+    "slug": "documents",
+    "category": "documents",
+    "name": {
+      "th": "เอกสาร",
+      "en": "Documents"
+    },
+    "description": {
+      "th": "โปรแกรมเอกสาร เปิดและบันทึกไฟล์ .docx ได้",
+      "en": "A word processor that opens and saves .docx files"
+    }
+  },
+  {
+    "slug": "expense",
+    "category": "business",
+    "name": {
+      "th": "ค่าใช้จ่าย",
+      "en": "Expenses"
+    },
+    "description": {
+      "th": "บันทึกค่าใช้จ่าย ใบเสร็จ และรายงานเบิกจ่าย",
+      "en": "Record expenses, receipts and expense reports"
+    }
+  },
+  {
+    "slug": "field-service",
+    "category": "operations",
+    "name": {
+      "th": "งานบริการนอกสถานที่",
+      "en": "Field Service"
+    },
+    "description": {
+      "th": "งานบริการนอกสถานที่: ลูกค้า ใบเสนอราคา ใบงาน ตารางนัด และใบแจ้งหนี้",
+      "en": "On-site service: customers, quotes, jobs, schedules and invoices"
+    }
+  },
+  {
+    "slug": "fleet",
+    "category": "operations",
+    "name": {
+      "th": "ยานพาหนะ",
+      "en": "Fleet"
+    },
+    "description": {
+      "th": "ยานพาหนะ การตรวจสภาพ ซ่อมบำรุง น้ำมัน อะไหล่ และค่าใช้จ่าย",
+      "en": "Vehicles, inspections, maintenance, fuel, parts and costs"
+    }
+  },
+  {
+    "slug": "help-desk",
+    "category": "team",
+    "name": {
+      "th": "ศูนย์ช่วยเหลือลูกค้า",
+      "en": "Help Desk"
+    },
+    "description": {
+      "th": "ทิกเก็ตลูกค้า กล่องข้อความรวม และศูนย์ช่วยเหลือ",
+      "en": "Customer tickets, a shared inbox and a help centre"
+    }
+  },
+  {
+    "slug": "hiring",
+    "category": "team",
+    "name": {
+      "th": "รับสมัครงาน",
+      "en": "Hiring"
+    },
+    "description": {
+      "th": "รับสมัครงาน: ผู้สมัคร นัดสัมภาษณ์ ใบให้คะแนน ข้อเสนอ และรับเข้าทำงาน",
+      "en": "Recruiting: candidates, interviews, scorecards, offers and onboarding"
+    }
+  },
+  {
+    "slug": "inventory",
+    "category": "business",
+    "name": {
+      "th": "สต็อกสินค้า",
+      "en": "Inventory"
+    },
+    "description": {
+      "th": "สต็อกสินค้า คลัง ซัพพลายเออร์ และแจ้งเตือนของใกล้หมด",
+      "en": "Stock, warehouses, suppliers and low-stock alerts"
+    }
+  },
+  {
+    "slug": "invoicing",
+    "category": "business",
+    "name": {
+      "th": "ใบเสนอราคาและใบแจ้งหนี้",
+      "en": "Invoicing & Estimates"
+    },
+    "description": {
+      "th": "ใบเสนอราคา ใบแจ้งหนี้ และใบเสร็จ",
+      "en": "Quotes, invoices and receipts"
+    }
+  },
+  {
+    "slug": "legal",
+    "category": "business",
+    "name": {
+      "th": "สำนักงานกฎหมาย",
+      "en": "Legal"
+    },
+    "description": {
+      "th": "สำนักงานกฎหมาย: คดี ผู้ติดต่อ ลงเวลา ค่าใช้จ่าย และวางบิล",
+      "en": "Law practice: matters, contacts, time, expenses and billing"
+    }
+  },
+  {
+    "slug": "meetings",
+    "category": "team",
+    "name": {
+      "th": "ห้องประชุม",
+      "en": "Meetings"
+    },
+    "description": {
+      "th": "ห้องประชุมวิดีโอ (ประชุมออนไลน์ยังไม่เปิดใช้)",
+      "en": "Video meeting rooms (online meetings not switched on yet)"
+    }
+  },
+  {
+    "slug": "music-studio",
+    "category": "media",
+    "name": {
+      "th": "สตูดิโอเพลง",
+      "en": "Music Studio"
+    },
+    "description": {
+      "th": "ทำเพลงในเบราว์เซอร์: จังหวะ เปียโนโรล และมิกซ์",
+      "en": "Make music in the browser: beats, piano roll and mixing"
+    }
+  },
+  {
+    "slug": "pos",
+    "category": "business",
+    "name": {
+      "th": "ขายหน้าร้าน",
+      "en": "Point of Sale"
+    },
+    "description": {
+      "th": "ขายหน้าร้าน: สินค้า คิดเงิน ใบเสร็จ และรายงานยอดขาย",
+      "en": "Shop counter: products, checkout, receipts and sales reports"
+    }
+  },
+  {
+    "slug": "projects",
+    "category": "team",
+    "name": {
+      "th": "จัดการโปรเจกต์",
+      "en": "Project Management"
+    },
+    "description": {
+      "th": "บอร์ดคัมบัง ไทม์ไลน์ และไมล์สโตนของโปรเจกต์",
+      "en": "Kanban boards, timelines and project milestones"
+    }
+  },
+  {
+    "slug": "property-management",
+    "category": "operations",
+    "name": {
+      "th": "บริหารอสังหาให้เช่า",
+      "en": "Property Management"
+    },
+    "description": {
+      "th": "อสังหาให้เช่า: ยูนิต สัญญาเช่า ผู้เช่า ค่าเช่า และงานซ่อม",
+      "en": "Rentals: units, leases, tenants, rent and repairs"
+    }
+  },
+  {
+    "slug": "records",
+    "category": "operations",
+    "name": {
+      "th": "ตารางข้อมูล",
+      "en": "Records"
+    },
+    "description": {
+      "th": "ตารางข้อมูลเชื่อมกัน มุมมอง และฟอร์ม",
+      "en": "Linked data tables, views and forms"
+    }
+  },
+  {
+    "slug": "shifts",
+    "category": "team",
+    "name": {
+      "th": "จัดกะงาน",
+      "en": "Shifts"
+    },
+    "description": {
+      "th": "จัดกะงาน: เวลาว่างพนักงาน สลับกะ และการเข้างาน",
+      "en": "Shift planning: availability, shift swaps and attendance"
+    }
+  },
+  {
+    "slug": "signatures",
+    "category": "documents",
+    "name": {
+      "th": "เซ็นเอกสาร",
+      "en": "Signatures"
+    },
+    "description": {
+      "th": "ส่งเอกสารให้เซ็น และเก็บเอกสารที่เซ็นแล้ว",
+      "en": "Send documents for signature and keep the signed copies"
+    }
+  },
+  {
+    "slug": "solitaire",
+    "category": "games",
+    "name": {
+      "th": "โซลิแทร์",
+      "en": "Solitaire"
+    },
+    "description": {
+      "th": "ไพ่โซลิแทร์ Klondike ย้อนตาได้ทุกตา",
+      "en": "Klondike solitaire with undo on every move"
+    }
+  },
+  {
+    "slug": "sudoku",
+    "category": "games",
+    "name": {
+      "th": "ซูโดกุ",
+      "en": "Sudoku"
+    },
+    "description": {
+      "th": "ซูโดกุหลายระดับความยาก",
+      "en": "Sudoku at several levels of difficulty"
+    }
+  },
+  {
+    "slug": "survey",
+    "category": "documents",
+    "name": {
+      "th": "แบบสอบถาม",
+      "en": "Surveys"
+    },
+    "description": {
+      "th": "สร้างแบบสอบถาม และสรุปผลคำตอบ",
+      "en": "Build questionnaires and summarise the answers"
+    }
+  },
+  {
+    "slug": "tasks",
+    "category": "team",
+    "name": {
+      "th": "งานที่ต้องทำ",
+      "en": "Tasks"
+    },
+    "description": {
+      "th": "รายการสิ่งที่ต้องทำ",
+      "en": "A to-do list"
+    }
+  },
+  {
+    "slug": "teamchat",
+    "category": "team",
+    "name": {
+      "th": "แชตทีม",
+      "en": "Team Chat"
+    },
+    "description": {
+      "th": "แชตทีม: ห้อง เธรด และข้อความส่วนตัว",
+      "en": "Team chat: rooms, threads and direct messages"
+    }
+  },
+  {
+    "slug": "time-tracking",
+    "category": "team",
+    "name": {
+      "th": "ลงเวลางาน",
+      "en": "Time Tracking"
+    },
+    "description": {
+      "th": "ลงเวลาทำงานแยกตามลูกค้า โปรเจกต์ และงาน",
+      "en": "Log work time by client, project and task"
+    }
+  },
+  {
+    "slug": "wiki",
+    "category": "documents",
+    "name": {
+      "th": "วิกิ",
+      "en": "Wiki"
+    },
+    "description": {
+      "th": "หน้าวิกิ เอกสาร และฐานข้อมูลของทีม",
+      "en": "Wiki pages, documents and databases for the team"
+    }
+  }
+]
