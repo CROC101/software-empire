@@ -1,10 +1,10 @@
 // legal-team-worker build=3
 /**
  * Shared firm server: one worker per firm, running in the firm owner's own
- * Puter account (the app deploys it there with puter.workers.create). Its KV
+ * crocwork account (the app deploys it there with puter.workers.create). Its KV
  * is the firm's shared database, so the owner owns and pays for the data;
  * firm members reach it through puter.workers.exec(), which forwards their
- * own Puter session.
+ * own crocwork session.
  *
  * The key layout is the one the app uses in a single account
  * (lg1:r:<collection>:<id>, lg1:meta, lg1:seq, lg1:settings), so the app's
@@ -373,7 +373,7 @@ router.post('/api', async (ctx) => {
   }
   const op = body && typeof body.op === 'string' ? body.op : '';
   const c = await caller(ctx);
-  if (!c) return fail(401, 'sign_in_required', 'Sign in to Puter to continue.');
+  if (!c) return fail(401, 'sign_in_required', 'Sign in to crocwork to continue.');
   if (op === 'join') return join(ctx, c, body);
   if (!c.role && c.ownerUnknown) return fail(503, 'unavailable', 'The firm server is starting. Try again in a moment.');
   if (!c.role) return fail(403, 'not_a_member', 'You are not a member of this firm.');

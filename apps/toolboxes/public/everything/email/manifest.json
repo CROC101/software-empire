@@ -1,7 +1,7 @@
 {
-  "name": "Puter Mail",
-  "short_name": "Puter Mail",
-  "description": "A fast, private email client for your Puter account.",
+  "name": "crocwork Mail",
+  "short_name": "crocwork Mail",
+  "description": "A fast, private email client for your crocwork account.",
   "lang": "en",
   "dir": "ltr",
   "categories": ["productivity", "utilities"],

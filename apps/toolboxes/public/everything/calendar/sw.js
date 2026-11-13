@@ -1,8 +1,8 @@
 /**
  * Calendar service worker — makes the app installable and lets the static shell
  * load offline. It is deliberately conservative: it caches ONLY the static app
- * shell (own-origin build output) plus the Puter SDK script, and NEVER touches
- * Puter's data/auth API. That boundary is what keeps offline support from ever
+ * shell (own-origin build output) plus the crocwork script, and NEVER touches
+ * crocwork's data/auth API. That boundary is what keeps offline support from ever
  * creating sync issues — no user data ever passes through this cache.
  *
  * Shipped verbatim from public/ to the dist root by Vite, so it registers at
@@ -32,8 +32,8 @@
 const CACHE = 'cal-shell-v2';
 const SDK_ORIGIN = 'https://js.puter.com';
 
-// Puter push notifications (see src/js/push.js). It only adds push, message
-// and notificationclick listeners, and ignores pushes that aren't Puter's.
+// crocwork push notifications (see src/js/push.js). It only adds push, message
+// and notificationclick listeners, and ignores pushes that aren't crocwork's.
 importScripts(`${SDK_ORIGIN}/push-sw.js`);
 
 // Minimal, always-present shell. Hashed JS/CSS are cached lazily on first fetch

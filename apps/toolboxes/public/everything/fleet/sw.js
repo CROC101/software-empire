@@ -1,12 +1,12 @@
 /*
  * Offline support for the app shell. Data never goes through here: records
- * come from Puter and are cached by the app itself in IndexedDB.
+ * come from crocwork and are cached by the app itself in IndexedDB.
  *
  * - Page loads: network first, falling back to the cached shell offline.
  * - Hashed build assets: cache first (their names change with every build).
  * - Other same-origin files (icons, manifest): stale while revalidate.
- * - The Puter SDK: network first, with a copy for starting offline.
- * - Other cross-origin requests (Puter's API) are never touched, and
+ * - The crocwork: network first, with a copy for starting offline.
+ * - Other cross-origin requests (crocwork's API) are never touched, and
  *   neither is the team worker source, which owners deploy from here.
  */
 const SDK = 'https://js.puter.com/v2/';

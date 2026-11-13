@@ -1,12 +1,12 @@
-import{K as y,aK as g,a as o,b as a,aR as w,h as t,o as h,i as d,J as $,n as C}from"./index-DJd6RqZ6.js";function T(){return o.demo?(a("Invitations work once you sign in and turn on staff and family access.",{type:"info"}),!1):$()?o.team?.url?!0:(h({title:"Turn on staff and family access",size:"narrow",body:t("p","Families and staff sign in with their own Puter accounts and see your school through a small server in your Puter account. Turn it on once in Settings, then invite people from here."),footer:({close:n})=>[t("button.btn",{type:"button",onClick:()=>n()},"Not now"),t("button.btn.primary",{type:"button",onClick:()=>(n(),C("/settings/access"))},"Go to settings")]}),!1):(a("Only the director or an admin can invite people.",{type:"error"}),!1)}async function f({role:n,guardianId:l,staffId:m,name:e,email:u}){if(!T())return;let p;try{p=await g(o.team.url,"invite",{role:n,guardianId:l,staffId:m,label:e})}catch(i){a(i.message||"The invitation could not be created.",{type:"error"});return}const s=w(o.team.url,p.token),r=o.settings().school.name||"our school",b=n==="parent"?`Join ${r} on Childcare`:`Join the ${r} team`,k=n==="parent"?`Hi ${e.split(" ")[0]},
+import{K as y,aK as g,a as o,b as a,aR as w,h as t,o as h,i as d,J as $,n as C}from"./index-DJd6RqZ6.js";function T(){return o.demo?(a("Invitations work once you sign in and turn on staff and family access.",{type:"info"}),!1):$()?o.team?.url?!0:(h({title:"Turn on staff and family access",size:"narrow",body:t("p","Families and staff sign in with their own crocwork accounts and see your school through a small server in your crocwork account. Turn it on once in Settings, then invite people from here."),footer:({close:n})=>[t("button.btn",{type:"button",onClick:()=>n()},"Not now"),t("button.btn.primary",{type:"button",onClick:()=>(n(),C("/settings/access"))},"Go to settings")]}),!1):(a("Only the director or an admin can invite people.",{type:"error"}),!1)}async function f({role:n,guardianId:l,staffId:m,name:e,email:u}){if(!T())return;let p;try{p=await g(o.team.url,"invite",{role:n,guardianId:l,staffId:m,label:e})}catch(i){a(i.message||"The invitation could not be created.",{type:"error"});return}const s=w(o.team.url,p.token),r=o.settings().school.name||"our school",b=n==="parent"?`Join ${r} on Childcare`:`Join the ${r} team`,k=n==="parent"?`Hi ${e.split(" ")[0]},
 
-You can now see your child's day at ${r}: photos, meals, naps, messages, and statements. Open this link and sign in with a free Puter account:
+You can now see your child's day at ${r}: photos, meals, naps, messages, and statements. Open this link and sign in with a free crocwork account:
 
 ${s}
 
 The link works once and expires in 14 days.`:`Hi ${e.split(" ")[0]},
 
-Here is your link to join ${r} on Childcare. Open it and sign in with a free Puter account:
+Here is your link to join ${r} on Childcare. Open it and sign in with a free crocwork account:
 
 ${s}
 

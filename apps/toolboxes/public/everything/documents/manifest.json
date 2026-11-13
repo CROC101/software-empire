@@ -1,7 +1,7 @@
 {
   "name": "Documents",
   "short_name": "Documents",
-  "description": "A fast, private word processor. Real .docx files, saved to your own Puter cloud.",
+  "description": "A fast, private word processor. Real .docx files, saved to your own crocwork cloud.",
   "id": "puter-documents",
   "start_url": "./",
   "scope": "./",

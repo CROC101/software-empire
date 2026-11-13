@@ -520,10 +520,10 @@ export function questionNumbers(survey) {\r
   return out;\r
 }\r
 `,collector:r=`/**\r
- * Response collector: a Puter serverless worker deployed into the survey\r
+ * Response collector: a crocwork serverless worker deployed into the survey\r
  * creator's own account (see src/data/collector-client.js for deployment).\r
  *\r
- * Respondents have no Puter account and cannot reach the creator's storage,\r
+ * Respondents have no crocwork account and cannot reach the creator's storage,\r
  * so this worker stands between them: it serves published surveys and stores\r
  * responses in the creator's KV. It serves no HTML. The respondent page\r
  * (r/index.html on the app's own hosting) calls this JSON API.\r

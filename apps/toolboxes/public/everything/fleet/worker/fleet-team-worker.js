@@ -1,10 +1,10 @@
 // fleet-team-worker build=3
 /**
  * Team access for Fleet: one worker per fleet, running in the fleet owner's
- * own Puter account (the app deploys it there with puter.workers.create).
+ * own crocwork account (the app deploys it there with puter.workers.create).
  * Its KV is the fleet's shared database, so the owner pays for and owns the
  * data; team members reach it through puter.workers.exec(), which forwards
- * their own Puter session.
+ * their own crocwork session.
  *
  * The key layout is the same one the app uses in a single-user account
  * (fl1:r:<bucket>:<id>, fl1:meta, fl1:seq, fl1:settings), so the app's
@@ -426,7 +426,7 @@ router.post('/api', async (ctx) => {
   }
   const op = body && typeof body.op === 'string' ? body.op : '';
   const c = await caller(ctx);
-  if (!c) return fail(401, 'sign_in_required', 'Sign in to Puter to continue.');
+  if (!c) return fail(401, 'sign_in_required', 'Sign in to crocwork to continue.');
   if (op === 'join') return join(ctx, c, body);
   if (!c.role) return fail(403, 'not_a_member', 'You are not a member of this fleet.');
   const fn = Object.prototype.hasOwnProperty.call(OPS, op) ? OPS[op] : null;

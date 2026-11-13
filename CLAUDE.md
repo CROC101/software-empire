@@ -49,7 +49,7 @@ pnpm db:test         # pgTAP ใน supabase/tests — RLS ทุกตารา
 pnpm db:types        # สร้าง packages/core/src/database.types.ts ใหม่หลังแก้ migration
 pnpm --filter @empire/hub dev        # http://localhost:3000
 pnpm --filter @empire/toolboxes dev  # http://localhost:3003
-node apps/toolboxes/tools/everything.mjs [clone] [app...]  # สร้างแอปจาก fork CROC101/everything ใหม่ลง public/everything (Node 22.12+) · `... stamp` = ต่อ ?v= ใหม่หลังแก้ shim/css
+node apps/toolboxes/tools/everything.mjs [clone] [app...]  # สร้างแอปจาก fork CROC101/everything ใหม่ลง public/everything (Node 22.12+) · `... stamp` = ต่อ ?v= ใหม่หลังแก้ shim/css · `... brand` = เปลี่ยนชื่อ Puter เป็น crocwork + ลิงก์หน้าเอกสารให้อยู่ใต้ /everything/<app>/ (build ทำให้เอง)
 pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็อกอิน)
 pnpm --filter @empire/community dev  # http://localhost:3001 (ต้องล็อกอิน)
 pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จริง (ต้อง db:start)

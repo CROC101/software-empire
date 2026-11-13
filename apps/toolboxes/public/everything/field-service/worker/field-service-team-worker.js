@@ -1,10 +1,10 @@
 // field-service-team-worker build=4
 /**
  * Team access for Field Service: one worker per business, running in the
- * business owner's own Puter account (the app deploys it there with
+ * business owner's own crocwork account (the app deploys it there with
  * puter.workers.create). Its KV is the business's shared database, so the
  * owner pays for and owns the data; team members reach it through
- * puter.workers.exec(), which forwards their own Puter session.
+ * puter.workers.exec(), which forwards their own crocwork session.
  *
  * The key layout is the same one the app uses in a single-user account
  * (fs1:r:<collection>:<id>, fs1:meta, fs1:seq, fs1:settings), so the app's
@@ -323,7 +323,7 @@ router.post('/api', async (ctx) => {
   }
   const op = body && typeof body.op === 'string' ? body.op : '';
   const c = await caller(ctx);
-  if (!c) return fail(401, 'sign_in_required', 'Sign in to Puter to continue.');
+  if (!c) return fail(401, 'sign_in_required', 'Sign in to crocwork to continue.');
   if (op === 'join') return join(ctx, c, body);
   if (!c.role) return fail(403, 'not_a_member', 'You are not a member of this business.');
   const fn = Object.prototype.hasOwnProperty.call(OPS, op) ? OPS[op] : null;

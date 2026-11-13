@@ -16,7 +16,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { platform, tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { basename, join, resolve } from "node:path";
 import { argv, exit } from "node:process";
 import console from "node:console";
 
@@ -29,6 +29,12 @@ const root = resolve(here, "../..");
 const manifest = join(here, "src/lib/everything-apps.json");
 if (argv[2] === "stamp") {
   stamp();
+  exit(0);
+}
+if (argv[2] === "brand") {
+  for (const d of readdirSync(out, { withFileTypes: true }))
+    if (d.isDirectory() && d.name !== "fonts") brandApp(join(out, d.name));
+  console.log("branded");
   exit(0);
 }
 const [src = cloneEverything(), ...only] = argv.slice(2);
@@ -72,6 +78,42 @@ export function themeHtml(html) {
       .replaceAll("https://js.puter.com/v2/", "../puter-shim.js")
       .replace("</head>", '  <link rel="stylesheet" href="../crocwork.css" />\n</head>')
   );
+}
+
+// The apps are crocwork's: Puter's name becomes ours in what users read, and links to Puter's
+// app store or an app's own puter.com site lead back here. Upstream credit stays in LICENSE,
+// SOURCE.md and the gallery. Whole word only: PuterOCR, PuterParagraph (pdf internals) keep theirs.
+// (a declaration, not a const: "brand" mode at the top runs before the module body gets here)
+export function brand(text) {
+  const sites = { captable: "cap-table", inventory: "inventory" };
+  return text
+    .replace(/\bPuter(?:\.js| SDK)?\b/g, "crocwork")
+    .replace(/https:\/\/(?:www\.|apps\.|builder\.)?puter\.com\/?(?=["'`])/g, "/everything/")
+    .replace(
+      /https:\/\/(captable|inventory)\.puter\.com\/?/g,
+      (_, s) => `/everything/${sites[s]}/`,
+    );
+}
+
+// shortcut: bundle names keep their hash, so an app's service worker may show its cached copy
+// (old wording) until it updates; fine before launch, rebuild from the fork to get new hashes
+function brandApp(dir) {
+  const name = basename(dir);
+  for (const f of readdirSync(dir, { withFileTypes: true, recursive: true })) {
+    if (!f.isFile() || !/\.(html|js|json|webmanifest)$/.test(f.name)) continue;
+    const file = join(f.parentPath, f.name);
+    const text = readFileSync(file, "utf8");
+    let next = brand(text);
+    // every page, not just index.html (cap-table and inventory ship docs sites): no analytics,
+    // and "/docs/", "/assets/x.css", "/" mean this app's own folder, not our site root
+    if (f.name.endsWith(".html"))
+      next = next
+        .replace(/<script[^>]*plausible\.io[^>]*><\/script>\s*/g, "")
+        .replace(/((?:href|src|content)=")\/(?!\/|everything\/)([^"#?]*)/g, (m, attr, path) =>
+          existsSync(join(dir, path)) ? `${attr}/everything/${name}/${path}` : m,
+        );
+    if (next !== text) writeFileSync(file, next);
+  }
 }
 
 // The apps' service workers cache ../puter-shim.js and ../crocwork.css; a content hash in the
@@ -151,6 +193,7 @@ for (const name of readdirSync(join(src, "src")).sort()) {
       );
     if (fixed !== js) writeFileSync(join(dest, "assets", f), fixed);
   }
+  brandApp(dest);
   const own = readdirSync(dir).find((f) => /^licen[cs]e/i.test(f));
   cpSync(own ? join(dir, own) : join(src, "LICENSE"), join(dest, "LICENSE"));
   writeFileSync(

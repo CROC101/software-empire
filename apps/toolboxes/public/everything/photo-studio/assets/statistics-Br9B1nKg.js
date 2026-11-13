@@ -3,7 +3,7 @@ import{et as S,c as h,_ as A,eu as g,es as L}from"./index-DFfxJV5E.js";/* empty 
     <h2>Statistics</h2>
     <p class="muted">Each pixel of the result is a statistic of the same pixel across the images. The images stay inside an embedded object, so the mode can be changed later from Layer → Embedded Objects → Stack Mode.</p>
     <section class="processor-step"><h3><span>1</span>Images</h3>
-      <div class="processor-buttons"><button type="button" data-act="local" title="Choose image files on this device">Add from this device…</button><button type="button" data-act="cloud" title="Choose image files on Puter">Add from Puter…</button>${c.sessions.some(a=>a.hasDocument)?'<button type="button" data-act="open" title="Use the documents open in Photo Studio">Add open documents</button>':""}<button type="button" data-act="clear" title="Remove every image from the list">Clear</button></div>
+      <div class="processor-buttons"><button type="button" data-act="local" title="Choose image files on this device">Add from this device…</button><button type="button" data-act="cloud" title="Choose image files on crocwork">Add from crocwork…</button>${c.sessions.some(a=>a.hasDocument)?'<button type="button" data-act="open" title="Use the documents open in Photo Studio">Add open documents</button>':""}<button type="button" data-act="clear" title="Remove every image from the list">Clear</button></div>
       <ul class="processor-list" aria-label="Images to combine"></ul>
     </section>
     <section class="processor-step"><h3><span>2</span>Combine</h3>

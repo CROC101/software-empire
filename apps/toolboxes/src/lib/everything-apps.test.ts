@@ -31,6 +31,34 @@ describe("everything apps", () => {
     }
   });
 
+  it.each(apps.map((a) => a.slug))("%s pages stay on this site", (slug) => {
+    // docs sites (cap-table, inventory) have their own pages beside index.html
+    const dir = join(root, slug);
+    for (const f of readdirSync(dir, { recursive: true, encoding: "utf8" })) {
+      if (!f.endsWith(".html")) continue;
+      const html = read(slug, f);
+      expect(html, f).not.toMatch(/["']https:\/\/plausible\.io/);
+      for (const [, path = ""] of html.matchAll(
+        /(?:href|src|content)="\/(?!\/|everything\/)([^"#?]*)"/g,
+      ))
+        expect(existsSync(join(dir, path)), `${f}: "/${path}"`).toBe(false);
+    }
+  });
+
+  it.each(apps.map((a) => a.slug))("%s speaks as crocwork, not Puter", (slug) => {
+    // the credit lives in LICENSE and SOURCE.md; what users read is ours (tools/everything.mjs brand)
+    const dir = join(root, slug);
+    for (const f of readdirSync(dir, { recursive: true, encoding: "utf8" })) {
+      if (!/\.(html|js|json|webmanifest)$/.test(f)) continue;
+      const text = read(slug, f);
+      expect(text, f).not.toMatch(/\bPuter\b/);
+      // shortcut: puter.com/privacy, /terms and the developer docs stay until crocwork has its own
+      expect(text, f).not.toMatch(
+        /https:\/\/(www\.|apps\.|builder\.)?puter\.com\/?["'`]|(captable|inventory)\.puter\.com/,
+      );
+    }
+  });
+
   it("lists every AGPL app with its licence text", () => {
     const agpl = apps.filter((a) => read(a.slug, "SOURCE.md").includes("AGPL"));
     expect(agpl).toHaveLength(15);
