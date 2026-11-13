@@ -1,7 +1,8 @@
-// Builds the MIT apps of HeyPuter/everything into public/everything/<app>/ (Tier B modules).
+// Builds the apps of HeyPuter/everything into public/everything/<app>/ (Tier B modules).
 //   node tools/everything.mjs [path-to-everything-clone] [app ...]
-// Without a path it clones the pinned commit into a temp folder. AGPL apps are skipped on
-// purpose: hosting them would oblige us to publish their source.
+// Without a path it clones the pinned commit into a temp folder. 15 apps are AGPL-3.0: users
+// reach them over the network, so each keeps its licence and SOURCE.md names where the
+// corresponding source is (AGPL section 13).
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
@@ -19,7 +20,8 @@ import { join, resolve } from "node:path";
 import { argv, exit } from "node:process";
 import console from "node:console";
 
-const REPO = "https://github.com/HeyPuter/everything";
+// our fork of HeyPuter/everything: change the apps there, then bump COMMIT
+const REPO = "https://github.com/CROC101/everything";
 const COMMIT = "ae8af993";
 const here = resolve(import.meta.dirname, "..");
 const out = join(here, "public/everything");
@@ -41,19 +43,20 @@ function cloneEverything() {
   return dir;
 }
 
-const isAgpl = (dir) => {
+const licenceOf = (dir) => {
   const pkg = JSON.parse(readFileSync(join(dir, "package.json"), "utf8"));
   const licence = readdirSync(dir).find((f) => /^licen[cs]e/i.test(f));
-  return (
+  const agpl =
     /AGPL/i.test(pkg.license ?? "") ||
-    (licence && /AFFERO/.test(readFileSync(join(dir, licence), "utf8")))
-  );
+    (licence && /AFFERO/.test(readFileSync(join(dir, licence), "utf8")));
+  return agpl ? "AGPL-3.0-only" : "MIT";
 };
 
 export function themeHtml(html) {
   // the games (backgammon, chess, checkers) inject Puter's SDK only when window.puter is missing
+  // first in <head>, so inline loaders (3d) already see window.puter
   if (!/js\.puter\.com[^>]*><\/script>/.test(html))
-    html = html.replace("</head>", '  <script src="../puter-shim.js"></script>\n</head>');
+    html = html.replace(/<head[^>]*>/, '$&\n    <script src="../puter-shim.js"></script>');
   return (
     html
       .replace(
@@ -65,6 +68,8 @@ export function themeHtml(html) {
       // in memory) and connection hints to Puter's CDN
       .replace(/<script[^>]*plausible\.io[^>]*><\/script>\s*/g, "")
       .replace(/<link[^>]*js\.puter\.com[^>]*>\s*/g, "")
+      // inline scripts that inject the SDK themselves (3d) get the shim, a no-op the second time
+      .replaceAll("https://js.puter.com/v2/", "../puter-shim.js")
       .replace("</head>", '  <link rel="stylesheet" href="../crocwork.css" />\n</head>')
   );
 }
@@ -102,7 +107,6 @@ const apps = [];
 for (const name of readdirSync(join(src, "src")).sort()) {
   const dir = join(src, "src", name);
   if (!existsSync(join(dir, "package.json")) || (only.length && !only.includes(name))) continue;
-  if (isAgpl(dir)) continue;
   const pkg = JSON.parse(readFileSync(join(dir, "package.json"), "utf8"));
   const dest = join(out, name);
   console.log(`\n== ${name}`);
@@ -138,14 +142,20 @@ for (const name of readdirSync(join(src, "src")).sort()) {
   // under /everything/<app>/ it would cache our home page, so it is not registered at all
   for (const f of readdirSync(join(dest, "assets")).filter((f) => f.endsWith(".js"))) {
     const js = readFileSync(join(dest, "assets", f), "utf8");
-    const fixed = js.replace(/\.register\((["'`])\/sw\.js\1\)/g, ".getRegistration()");
+    // "/app-icon.png", "/photo-engine.wasm": files at the app's own root, which here is
+    // /everything/<app>/ (pages and workers alike)
+    const fixed = js
+      .replace(/\.register\((["'`])\/sw\.js\1\)/g, ".getRegistration()")
+      .replace(/(["'`])\/([\w.-]+\.\w+)\1/g, (m, q, file) =>
+        existsSync(join(dest, file)) ? `${q}/everything/${name}/${file}${q}` : m,
+      );
     if (fixed !== js) writeFileSync(join(dest, "assets", f), fixed);
   }
   const own = readdirSync(dir).find((f) => /^licen[cs]e/i.test(f));
   cpSync(own ? join(dir, own) : join(src, "LICENSE"), join(dest, "LICENSE"));
   writeFileSync(
     join(dest, "SOURCE.md"),
-    `${pkg.name} from ${REPO}/tree/${COMMIT}/src/${name} (MIT). Built by apps/toolboxes/tools/everything.mjs.\n`,
+    `${pkg.name} from ${REPO}/tree/${COMMIT}/src/${name} (${licenceOf(dir)}). Built by apps/toolboxes/tools/everything.mjs.\n`,
   );
   if (existsSync(join(dir, "icon-128.png")))
     cpSync(join(dir, "icon-128.png"), join(dest, "icon-128.png"));

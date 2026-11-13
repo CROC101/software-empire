@@ -10,8 +10,8 @@ export function EverythingView() {
         </p>
         <h1 className="mt-2 font-display text-3xl font-bold">แอปทำงานครบชุด</h1>
         <p className="mt-2 max-w-2xl text-on-surface-variant">
-          {apps.length} แอปจาก HeyPuter/everything (MIT) ข้อมูลเก็บในเบราว์เซอร์นี้เท่านั้น
-          ไม่มีการส่งขึ้นเซิร์ฟเวอร์
+          {apps.length} แอปจาก HeyPuter/everything (MIT และ AGPL-3.0)
+          ข้อมูลเก็บในเบราว์เซอร์นี้เท่านั้น ไม่มีการส่งขึ้นเซิร์ฟเวอร์
         </p>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {apps.map((app) => (
@@ -40,7 +40,13 @@ export function EverythingView() {
           ))}
         </ul>
         <p className="mt-8 text-sm text-on-surface-variant">
-          สัญญาอนุญาตและต้นทางของแต่ละแอปอยู่ในไฟล์ LICENSE และ SOURCE.md ในโฟลเดอร์ของแอปนั้น
+          สัญญาอนุญาตและต้นทางของแต่ละแอปอยู่ในไฟล์ LICENSE และ SOURCE.md ในโฟลเดอร์ของแอปนั้น ·{" "}
+          <a
+            href="https://github.com/CROC101/everything"
+            className="font-medium text-primary underline underline-offset-4"
+          >
+            ซอร์สโค้ดทั้งหมด
+          </a>
         </p>
       </div>
     </main>

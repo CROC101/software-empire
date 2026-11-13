@@ -271,7 +271,7 @@ Rules:
     <div class="app-shell" data-mobile="list">
       <header class="topbar">
         <div class="topbar__brand">
-          <span class="topbar__logo"><img src="/icon.svg" width="24" height="24" alt="" /></span>
+          <span class="topbar__logo"><img src="/everything/contacts/icon.svg" width="24" height="24" alt="" /></span>
           <span class="topbar__name">Contacts</span>
         </div>
         <div class="topbar__actions">
@@ -334,7 +334,7 @@ Discuss the autumn studio launch and share the latest creative brief.`}));s.push
     </div>`}function dr(){Z.removeAttribute("aria-busy"),Z.innerHTML=`
     <div class="gate">
       <div class="gate__card">
-        <img class="gate__mark" src="/icon.svg" width="76" height="76" alt="" />
+        <img class="gate__mark" src="/everything/contacts/icon.svg" width="76" height="76" alt="" />
         <h1 class="gate__title">Contacts</h1>
         <p class="gate__lead">Your private address book, synced to your Puter cloud. Free, no ads — your data stays in your account.</p>
         <button class="btn btn--primary btn--lg" data-signin>Sign in</button>
@@ -343,7 +343,7 @@ Discuss the autumn studio launch and share the latest creative brief.`}));s.push
     </div>`;const e=Z.querySelector("[data-signin]"),t=Z.querySelector("[data-signin-error]");e.addEventListener("click",async()=>{e.disabled=!0,e.classList.add("is-loading"),t.hidden=!0;try{await window.puter.auth.signIn(),ea()}catch{t.textContent="Sign-in didn’t complete. Please try again.",t.hidden=!1,e.disabled=!1,e.classList.remove("is-loading")}})}let ne={callerApp:"",serviceMode:!1,inPuterApp:!1};async function ea(){let e="";try{const t=await window.puter.auth.getUser();e=t&&(t.email||t.username)||""}catch{}Ao(Z,{email:e}),ta("Contacts"),ne.callerApp&&na(ne.callerApp);try{await u.load()}catch{}}const ur=300*1e3;function ta(e){try{window.puter.ui&&typeof window.puter.ui.setWindowTitle=="function"&&window.puter.ui.setWindowTitle(e)}catch{}}function na(e,{onActivity:t}={}){let n=null;try{n=window.puter.ui.parentApp()}catch{return null}return n?or({connection:n,callerApp:e,methods:jo({store:u}),subscribe:a=>u.subscribe(a),revision:()=>u.revision(),onActivity:t}):null}function fr(){pr(),ta("Contacts");let e=null,t=null;const n=()=>{e&&clearTimeout(e),e=setTimeout(()=>{t&&t.stop(),fn()},ur)};if(t=na(ne.callerApp,{onActivity:n}),!t){console.warn(`[contacts] "${ne.callerApp||"an unidentified app"}" is not allowed to use the contacts API`),un(ne.callerApp,!1),fn()||mr();return}un(ne.callerApp,!0),n()}function un(e,t){Z.removeAttribute("aria-busy"),Z.innerHTML=`
     <div class="gate">
       <div class="gate__card">
-        <img class="gate__mark" src="/icon.svg" width="76" height="76" alt="" />
+        <img class="gate__mark" src="/everything/contacts/icon.svg" width="76" height="76" alt="" />
         <h1 class="gate__title">Contacts</h1>
         <p class="gate__lead" data-service-lead></p>
       </div>

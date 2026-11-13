@@ -4,6 +4,7 @@
 // shortcut: cloud-only parts (ai, email, workers, peer, hosting) reject; wire them to our Workers
 // when an app needs them.
 (() => {
+  if (window.puter) return; // loaded twice (an app's own loader points here too)
   const app = location.pathname.split("/")[2] || "app"; // /everything/<app>/...
   // shared crocwork theme cookie wins over the app's own saved theme
   const theme = /(?:^|; )em-theme=(light|dark)/.exec(document.cookie)?.[1];
@@ -176,6 +177,7 @@
       signIn: async () => user,
       signOut: async () => {},
       getUser: async () => user,
+      whoami: async () => user,
       getProfilePicture: async () => null,
     },
     fs,

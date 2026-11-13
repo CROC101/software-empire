@@ -1,5 +1,10 @@
 [
   {
+    "slug": "3d",
+    "name": "3D",
+    "description": "แก้ฉาก 3 มิติ: วางวัตถุ แสง กล้อง และวัสดุ"
+  },
+  {
     "slug": "accounting",
     "name": "Accounting",
     "description": "บัญชีคู่: ใบแจ้งหนี้ ค่าใช้จ่าย กระทบยอดธนาคาร และงบการเงิน"
@@ -10,9 +15,24 @@
     "description": "สร้าง ส่ง และทดสอบ HTTP request จัดเป็นชุดได้"
   },
   {
+    "slug": "audio-studio",
+    "name": "Audio Studio",
+    "description": "อัด ตัดต่อ และมิกซ์เสียงหลายแทร็ก พร้อมฟื้นฟูเสียง"
+  },
+  {
     "slug": "backgammon",
     "name": "Backgammon",
     "description": "แบ็กแกมมอนเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว"
+  },
+  {
+    "slug": "building-design",
+    "name": "Building Design",
+    "description": "ออกแบบอาคาร (BIM): ผนัง ประตู หน้าต่าง พื้น และหลังคา"
+  },
+  {
+    "slug": "cad",
+    "name": "CAD",
+    "description": "เขียนแบบ 2 มิติแม่นยำ: เลเยอร์ บล็อก ป้ายกำกับ เปิด/บันทึก DWG และ DXF"
   },
   {
     "slug": "calendar",
@@ -40,6 +60,11 @@
     "description": "ศูนย์เด็กเล็ก: เช็กอิน รายงานประจำวัน ข้อความถึงผู้ปกครอง และค่าเล่าเรียน"
   },
   {
+    "slug": "circuits",
+    "name": "Circuits",
+    "description": "วาดวงจร (schematic) และวางลายแผ่น PCB"
+  },
+  {
     "slug": "contacts",
     "name": "Contacts",
     "description": "สมุดรายชื่อติดต่อ ค้นหาเร็ว"
@@ -58,6 +83,11 @@
     "slug": "documents",
     "name": "Documents",
     "description": "โปรแกรมเอกสาร เปิดและบันทึกไฟล์ .docx ได้"
+  },
+  {
+    "slug": "email",
+    "name": "Mail",
+    "description": "อ่านและเขียนอีเมล (ส่งจริงยังไม่รองรับ)"
   },
   {
     "slug": "expense",
@@ -110,9 +140,34 @@
     "description": "ทำเพลงในเบราว์เซอร์: จังหวะ เปียโนโรล และมิกซ์"
   },
   {
+    "slug": "notes",
+    "name": "Notes",
+    "description": "สมุดโน้ต: แบ่งเล่ม หมวด หน้า แท็ก เขียนมือ และค้นหา"
+  },
+  {
+    "slug": "parametric",
+    "name": "Parametric",
+    "description": "ออกแบบชิ้นงาน 3 มิติแบบพารามิเตอร์: สเก็ตช์มีเงื่อนไข อัด หมุน ลบมุม"
+  },
+  {
+    "slug": "pdf",
+    "name": "PDF Editor",
+    "description": "เปิด แก้ไข ใส่คำอธิบาย และจัดหน้าไฟล์ PDF"
+  },
+  {
+    "slug": "photo-studio",
+    "name": "Photo Studio",
+    "description": "แต่งรูปแบบเลเยอร์: ปรับสี ครอป รีทัช และฟิลเตอร์"
+  },
+  {
     "slug": "pos",
     "name": "Point of Sale",
     "description": "ขายหน้าร้าน: สินค้า คิดเงิน ใบเสร็จ และรายงานยอดขาย"
+  },
+  {
+    "slug": "presentation",
+    "name": "Presentation",
+    "description": "ทำสไลด์นำเสนอ เปิดและบันทึกไฟล์ PPTX ได้"
   },
   {
     "slug": "projects",
@@ -145,6 +200,11 @@
     "description": "ไพ่โซลิแทร์ Klondike ย้อนตาได้ทุกตา"
   },
   {
+    "slug": "spreadsheet",
+    "name": "Spreadsheet",
+    "description": "ตารางคำนวณ: สูตร จัดรูปแบบ เปิดและบันทึกไฟล์ .xlsx"
+  },
+  {
     "slug": "sudoku",
     "name": "Sudoku",
     "description": "ซูโดกุหลายระดับความยาก"
@@ -168,6 +228,21 @@
     "slug": "time-tracking",
     "name": "Hourly",
     "description": "ลงเวลาทำงานแยกตามลูกค้า โปรเจกต์ และงาน"
+  },
+  {
+    "slug": "vector-studio",
+    "name": "Vector Studio",
+    "description": "วาดภาพเวกเตอร์: ปากกา รูปทรง แปรง และเอฟเฟกต์"
+  },
+  {
+    "slug": "video-studio",
+    "name": "Video Studio",
+    "description": "ตัดต่อวิดีโอหลายแทร็ก: ข้อความ เอฟเฟกต์ ทรานซิชัน และคีย์เฟรม"
+  },
+  {
+    "slug": "whiteboard",
+    "name": "Whiteboard",
+    "description": "กระดานไวต์บอร์ด: วาด แปะโน้ต ผังความคิด และไดอะแกรม"
   },
   {
     "slug": "wiki",
