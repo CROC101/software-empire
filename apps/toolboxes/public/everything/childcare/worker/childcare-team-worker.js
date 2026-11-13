@@ -1,11 +1,11 @@
 // childcare-team-worker build=3
 /**
  * Staff and family access for Childcare: one worker per school, running in
- * the director's own Puter account (the app deploys it there with
+ * the director's own crocwork account (the app deploys it there with
  * puter.workers.create). Its KV is the school's shared database and its
  * drive holds the photos, so the director owns the data and pays for it.
  * Staff and families reach it through puter.workers.exec(), which forwards
- * their own Puter session.
+ * their own crocwork session.
  *
  * The key layout is the one the app uses in a single account (see
  * src/core/keys.js, mirrored below and checked by tests/keys-parity.test.js),
@@ -823,7 +823,7 @@ async function handleDownload(ctx, c) {
 
 async function guarded(ctx, fn) {
   const c = await caller(ctx);
-  if (!c) return fail(401, 'sign_in_required', 'Sign in to Puter to continue.');
+  if (!c) return fail(401, 'sign_in_required', 'Sign in to crocwork to continue.');
   if (!c.role) return fail(403, 'not_a_member', 'You are not a member of this school.');
   try {
     return await fn(c);
@@ -845,7 +845,7 @@ router.post('/api', async (ctx) => {
   const op = body && typeof body.op === 'string' ? body.op : '';
   if (op === 'join') {
     const c = await caller(ctx);
-    if (!c) return fail(401, 'sign_in_required', 'Sign in to Puter to continue.');
+    if (!c) return fail(401, 'sign_in_required', 'Sign in to crocwork to continue.');
     try {
       return await join(ctx, c, body);
     } catch {

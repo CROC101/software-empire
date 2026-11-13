@@ -1,7 +1,7 @@
 /**
  * The register must OPEN without a network, not just keep running: a tablet
  * that rebooted during an outage is exactly the moment the offline promise
- * matters most. This worker caches the built shell and a copy of the Puter
+ * matters most. This worker caches the built shell and a copy of the crocwork
  * SDK so the app boots from disk; the data layer then falls back to its own
  * local snapshot (see store.initFromBootCache).
  *
@@ -16,9 +16,9 @@
  *  - other same-origin files (manifest, icons): cached copy at once,
  *    refreshed behind it - their names never change, so cache-first would
  *    freeze the first-ever copy for the life of the install;
- *  - the Puter SDK (that exact URL): cached copy first, refreshed in the
+ *  - the crocwork (that exact URL): cached copy first, refreshed in the
  *    background;
- *  - everything else (Puter API traffic): straight to the network, never
+ *  - everything else (crocwork API traffic): straight to the network, never
  *    intercepted.
  */
 
@@ -204,5 +204,5 @@ self.addEventListener('fetch', (event) => {
   if (url.origin === self.location.origin) {
     event.respondWith(url.pathname.includes('/assets/') ? immutable(request) : revalidated(request));
   }
-  // Anything else - Puter API calls above all - goes straight through.
+  // Anything else - crocwork API calls above all - goes straight through.
 });

@@ -2,7 +2,7 @@ const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./index-DFfxJV5E.js","
 import{gj as j,f as k,c as S,_ as D,a as I,gk as L,an as F}from"./index-DFfxJV5E.js";import{gl as be,gm as ge}from"./index-DFfxJV5E.js";import{canEncodeAvif as N,fitSize as R}from"./encode-D4EBWrJb.js";import{d as _,o as B}from"./open-Q8MYa7Uo.js";import{l as P,b as q,f as M,j as T,a as z,n as H,d as O}from"./pipeline-DZn-2wvZ.js";import{pickCloudFiles as U}from"./cloud-CF-ejomB.js";import{zipStore as W,uniqueName as G}from"./zip-D_jIKcq_.js";import{saveToCloudFolder as Q}from"./layers-export-BuayjYFH.js";import{r as V}from"./png--18QwIed.js";import"./jpeg-markers-BOGzNGF2.js";import"./pako.esm-O8RoEeE4.js";import"./tiff-Bwl7IdmU.js";import"./bytes-Bld9ulzd.js";import"./color-ClNWn2GM.js";import"./resample-DIj4nQzf.js";import"./apng-CJ9zNFcM.js";const A=["jpeg","png","webp","avif","tiff","bmp","tga","gif"];async function ue(t,l){const s=P(),p=await N(),r=[],i=document.createElement("dialog");i.className="files-dialog files-processor",i.setAttribute("aria-label",l?"Batch":"Image Processor");const h=[...j.values()],b=A.includes(s.format)&&(s.format!=="avif"||p)?s.format:"jpeg";i.innerHTML=`<form method="dialog">
     <h2>${l?"Batch":"Image Processor"}</h2>
     <section class="processor-step"><h3><span>1</span>Select images</h3>
-      <div class="processor-buttons"><button type="button" data-act="local">Add from this device…</button><button type="button" data-act="cloud">Add from Puter…</button>${t.sessions.some(n=>n.hasDocument)?'<button type="button" data-act="open">Add open documents</button>':""}<button type="button" data-act="clear">Clear</button></div>
+      <div class="processor-buttons"><button type="button" data-act="local">Add from this device…</button><button type="button" data-act="cloud">Add from crocwork…</button>${t.sessions.some(n=>n.hasDocument)?'<button type="button" data-act="open">Add open documents</button>':""}<button type="button" data-act="clear">Clear</button></div>
       <ul class="processor-list" aria-label="Images to process"></ul>
     </section>
     <section class="processor-step"><h3><span>2</span>Resize</h3>
@@ -17,7 +17,7 @@ import{gj as j,f as k,c as S,_ as D,a as I,gk as L,an as F}from"./index-DFfxJV5E
     </section>
     ${h.length?`<section class="processor-step"><h3><span>4</span>Steps</h3>${h.map(n=>`<label class="dialog-field checkbox-field">${S(n.label)}<input type="checkbox" name="step:${S(n.id)}" ${l?"checked":""}></label>`).join("")}</section>`:""}
     <section class="processor-step"><h3><span>${h.length?5:4}</span>Save</h3>
-      <label class="dialog-field">Destination<select name="dest"><option value="zip">Download as ZIP archive</option><option value="puter">Save to a Puter folder…</option></select></label>
+      <label class="dialog-field">Destination<select name="dest"><option value="zip">Download as ZIP archive</option><option value="puter">Save to a crocwork folder…</option></select></label>
     </section>
     <p class="processor-status" aria-live="polite"></p>
     <div class="dialog-actions"><button type="button" data-act="cancel">Cancel</button><button type="submit" class="primary" disabled>Run</button></div>

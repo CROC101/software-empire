@@ -1,7 +1,7 @@
 import{es as C,cz as D,b7 as E,c as b}from"./index-DFfxJV5E.js";import{pickCloudFiles as q}from"./cloud-CF-ejomB.js";import{d as k}from"./open-Q8MYa7Uo.js";const L=".tif,.tiff,.bmp,.dib,.gif,.tga,.pbm,.pgm,.ppm,.pnm,.pam,image/*";function F(s,n,r,i={}){const l=i.min??2,o=[],t=document.createElement("dialog");t.className="files-dialog files-processor comp-dialog",t.setAttribute("aria-label",n);const d=s.sessions.some(e=>e.hasDocument);t.innerHTML=`<form method="dialog">
     <h2>${b(n)}</h2>
     <section class="processor-step"><h3><span>1</span>Source images</h3>
-      <div class="processor-buttons"><button type="button" data-act="local">Add from this device…</button><button type="button" data-act="cloud">Add from Puter…</button>${d?'<button type="button" data-act="open">Add open documents</button>':""}<button type="button" data-act="clear">Clear</button></div>
+      <div class="processor-buttons"><button type="button" data-act="local">Add from this device…</button><button type="button" data-act="cloud">Add from crocwork…</button>${d?'<button type="button" data-act="open">Add open documents</button>':""}<button type="button" data-act="clear">Clear</button></div>
       <ul class="processor-list" aria-label="Source images"></ul>
     </section>
     ${r}

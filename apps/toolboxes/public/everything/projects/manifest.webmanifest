@@ -1,7 +1,7 @@
 {
   "name": "Project Management",
   "short_name": "Projects",
-  "description": "Kanban boards, timelines, and milestones. Lightweight project management on your own Puter cloud.",
+  "description": "Kanban boards, timelines, and milestones. Lightweight project management on your own crocwork cloud.",
   "start_url": "./index.html",
   "scope": "./",
   "id": "puter-project-management",

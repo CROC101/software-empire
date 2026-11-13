@@ -14,7 +14,7 @@
  * refreshed. So the first visit needs the network; every one after it
  * doesn't.
  *
- * What is never cached: Puter's own API. Auth and KV calls must fail fast
+ * What is never cached: crocwork's own API. Auth and KV calls must fail fast
  * offline so the app's outbox takes over - a stale cached answer there
  * would be a lie about the user's data.
  */
@@ -32,11 +32,11 @@ const SHELL_URLS = [
   './favicon.ico',
 ];
 
-/** Puter's own services: never served from cache. */
+/** crocwork's own services: never served from cache. */
 const isPuterAPI = (url) => /(^|\.)puter\.(com|localhost)$/i.test(url.hostname)
   && !/^js\./i.test(url.hostname);
 
-/** The SDK itself, from Puter's CDN: cacheable, and needed to boot at all. */
+/** The SDK itself, from crocwork's CDN: cacheable, and needed to boot at all. */
 const isPuterSDK = (url) => /^js\.puter\.com$/i.test(url.hostname);
 
 self.addEventListener('install', (event) => {

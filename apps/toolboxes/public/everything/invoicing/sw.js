@@ -18,7 +18,7 @@ const SHELL = [
   "./assets/share-page-DaCkgyoa.js",
   "./assets/index-CSSRh8Jj.css"
 ];
-/* The Puter SDK is loaded from its own origin. It is runtime-cached so an
+/* The crocwork is loaded from its own origin. It is runtime-cached so an
    installed app has it offline, but nothing about the offline path may
    depend on it resolving: the app boots from its own local snapshot. */
 const SDK = 'https://js.puter.com/';

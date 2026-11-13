@@ -5,13 +5,13 @@ const ASSETS = ["./assets/index-DljHxiZa.js","./assets/emoji-data-CKyw0RC8.js","
 const SHELL = `teamchat-shell-${VERSION}`;
 const EXT = 'teamchat-ext';
 
-// Puter's push handling: shows Puter pushes and routes their taps. Only
-// listens, and only to pushes Puter sent; a blocked load must not cost the
+// crocwork's push handling: shows crocwork pushes and routes their taps. Only
+// listens, and only to pushes crocwork sent; a blocked load must not cost the
 // offline shell, so it is allowed to fail.
 try {
   importScripts('https://js.puter.com/push-sw.js');
 } catch {
-  /* pushes through Puter are unavailable on this device */
+  /* pushes through crocwork are unavailable on this device */
 }
 const fromPuter = (data) => !!(data && (data.puter || data.data?.puter));
 /** How long a navigation waits on the network for the SDK before the cached copy is used. */
@@ -38,7 +38,7 @@ self.addEventListener('message', (event) => {
 /**
  * Navigations: the network first, so a new deployment shows up, and the
  * cached shell when offline. Hashed assets: cache first (their names change
- * with their content). The Puter SDK: network first, the cached copy so the app can
+ * with their content). The crocwork: network first, the cached copy so the app can
  * boot offline. API traffic goes through puter.workers.exec and is not
  * touched here.
  */
@@ -82,7 +82,7 @@ self.addEventListener('fetch', (event) => {
   if (url.hostname === 'js.puter.com') {
     event.respondWith((async () => {
       const cache = await caches.open(EXT);
-      // The network first: a page running an SDK older than Puter's pushes
+      // The network first: a page running an SDK older than crocwork's pushes
       // holds every push back while it is open, so the cached copy is only
       // for booting offline, or past a few seconds' wait. The SDK is a plain
       // cross-origin script tag, so its response is opaque (status 0, ok
@@ -153,7 +153,7 @@ function pageTag(data) {
   return `${ref}:${tag}`;
 }
 
-/** Pushes signed by a workspace's own worker, from devices subscribed before pushes went through Puter. */
+/** Pushes signed by a workspace's own worker, from devices subscribed before pushes went through crocwork. */
 self.addEventListener('push', (event) => {
   let data = {};
   try {
