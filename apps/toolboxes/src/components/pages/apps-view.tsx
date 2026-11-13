@@ -34,7 +34,12 @@ const COPY = {
   categories: { th: "หมวดหมู่", en: "Categories" },
   apps: { th: "แอป", en: "apps" },
   notices: { th: "ประกาศซอฟต์แวร์บุคคลที่สาม", en: "Third-party notices" },
+  agpl: { th: "แอปที่มีป้าย AGPL เป็นโอเพนซอร์ส:", en: "Apps tagged AGPL are open source:" },
+  source: { th: "ซอร์สโค้ด", en: "source code" },
 } satisfies Record<string, Text>;
+
+// AGPL §13: users of the AGPL apps get their source (the commit tools/apps.mjs builds)
+export const SOURCE_URL = "https://github.com/CROC101/crocwork-apps/tree/ae8af993/src";
 
 const chip = (on: boolean) =>
   `inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm whitespace-nowrap ${on ? "border-primary-container bg-primary-container text-on-primary" : "border-outline-variant bg-surface-container-lowest hover:bg-surface-container"}`;
@@ -128,8 +133,13 @@ export function AppsView() {
                         <c.icon aria-hidden className="size-5" />
                       </span>
                       <span className="min-w-0">
-                        <span className="block font-semibold leading-snug text-on-surface">
+                        <span className="flex items-center gap-2 font-semibold leading-snug text-on-surface">
                           {app.name[lang]}
+                          {"licence" in app && (
+                            <span className="rounded border border-outline-variant px-1.5 font-mono text-[10px] font-normal text-on-surface-variant">
+                              AGPL
+                            </span>
+                          )}
                         </span>
                         <span className="mt-1 line-clamp-2 block text-sm leading-relaxed text-on-surface-variant">
                           {app.description[lang]}
@@ -149,6 +159,10 @@ export function AppsView() {
             className="font-medium text-primary underline underline-offset-4"
           >
             {COPY.notices[lang]}
+          </a>{" "}
+          · {COPY.agpl[lang]}{" "}
+          <a href={SOURCE_URL} className="font-medium text-primary underline underline-offset-4">
+            {COPY.source[lang]}
           </a>
         </p>
       </div>

@@ -1,5 +1,18 @@
 [
   {
+    "slug": "3d",
+    "category": "media",
+    "name": {
+      "th": "สามมิติ",
+      "en": "3D"
+    },
+    "description": {
+      "th": "ปั้นและจัดฉากโมเดลสามมิติ ใส่วัสดุ แสง แล้วส่งออกไฟล์",
+      "en": "Model and stage 3D scenes with materials and lights, then export"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
     "slug": "accounting",
     "category": "business",
     "name": {
@@ -24,6 +37,19 @@
     }
   },
   {
+    "slug": "audio-studio",
+    "category": "media",
+    "name": {
+      "th": "สตูดิโอเสียง",
+      "en": "Audio studio"
+    },
+    "description": {
+      "th": "อัด ตัด ซ่อม มิกซ์ และมาสเตอร์เสียงหลายแทร็ก",
+      "en": "Record, edit, restore, mix and master multitrack audio"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
     "slug": "backgammon",
     "category": "games",
     "name": {
@@ -34,6 +60,32 @@
       "th": "แบ็กแกมมอนเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว",
       "en": "Backgammon against the computer or a friend on the same device"
     }
+  },
+  {
+    "slug": "building-design",
+    "category": "engineering",
+    "name": {
+      "th": "ออกแบบอาคาร",
+      "en": "Building design"
+    },
+    "description": {
+      "th": "ออกแบบอาคารแบบ BIM: ผนัง ประตู หน้าต่าง พื้น หลังคา บันได แล้วดูแปลน รูปด้าน รูปตัด และสามมิติ",
+      "en": "BIM in the browser: walls, doors, windows, floors, roofs and stairs, seen as plans, elevations, sections and 3D"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
+    "slug": "cad",
+    "category": "engineering",
+    "name": {
+      "th": "CAD",
+      "en": "CAD"
+    },
+    "description": {
+      "th": "เขียนแบบสองมิติอย่างแม่นยำ เลเยอร์ บล็อก ใส่ขนาด เปิดและส่งออก DWG/DXF",
+      "en": "Precise 2D drafting with layers, blocks and dimensions, DWG and DXF in and out"
+    },
+    "licence": "AGPL-3.0-only"
   },
   {
     "slug": "calendar",
@@ -96,6 +148,19 @@
     }
   },
   {
+    "slug": "circuits",
+    "category": "engineering",
+    "name": {
+      "th": "วงจรไฟฟ้า",
+      "en": "Circuits"
+    },
+    "description": {
+      "th": "วาดวงจร (schematic) วางลายแผ่น PCB ตรวจกฎออกแบบ และส่งออกไฟล์ Gerber",
+      "en": "Draw schematics, lay out PCBs, check design rules and export Gerber files"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
     "slug": "contacts",
     "category": "team",
     "name": {
@@ -142,6 +207,19 @@
       "th": "โปรแกรมเอกสาร เปิดและบันทึกไฟล์ .docx ได้",
       "en": "A word processor that opens and saves .docx files"
     }
+  },
+  {
+    "slug": "email",
+    "category": "team",
+    "name": {
+      "th": "อีเมล",
+      "en": "Email"
+    },
+    "description": {
+      "th": "อ่าน เขียน และจัดกล่องอีเมล",
+      "en": "Read, write and sort your email"
+    },
+    "licence": "AGPL-3.0-only"
   },
   {
     "slug": "expense",
@@ -264,6 +342,58 @@
     }
   },
   {
+    "slug": "notes",
+    "category": "documents",
+    "name": {
+      "th": "โน้ต",
+      "en": "Notes"
+    },
+    "description": {
+      "th": "สมุดโน้ตอิสระ: สมุด หมวด หน้า แท็ก เขียนมือ และค้นหา",
+      "en": "A free-form notebook: notebooks, sections, pages, tags, ink and search"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
+    "slug": "parametric",
+    "category": "engineering",
+    "name": {
+      "th": "โมเดลพาราเมตริก",
+      "en": "Parametric"
+    },
+    "description": {
+      "th": "ออกแบบชิ้นงานสามมิติแบบพาราเมตริก: สเก็ตช์มีข้อกำหนด อัดขึ้นรูป หมุน ลบมุม แล้วส่งออก STEP/STL",
+      "en": "Parametric 3D parts: constrained sketches, extrude, revolve, fillet, then export STEP or STL"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
+    "slug": "pdf",
+    "category": "documents",
+    "name": {
+      "th": "PDF",
+      "en": "PDF"
+    },
+    "description": {
+      "th": "เปิด ใส่หมายเหตุ รวม และแยกไฟล์ PDF",
+      "en": "Open, annotate, merge and split PDFs"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
+    "slug": "photo-studio",
+    "category": "media",
+    "name": {
+      "th": "สตูดิโอภาพ",
+      "en": "Photo studio"
+    },
+    "description": {
+      "th": "แต่งภาพด้วยเลเยอร์ ฟิลเตอร์ และเครื่องมือปรับสี",
+      "en": "Edit photos with layers, filters and colour tools"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
     "slug": "pos",
     "category": "business",
     "name": {
@@ -274,6 +404,19 @@
       "th": "ขายหน้าร้าน: สินค้า คิดเงิน ใบเสร็จ และรายงานยอดขาย",
       "en": "Shop counter: products, checkout, receipts and sales reports"
     }
+  },
+  {
+    "slug": "presentation",
+    "category": "documents",
+    "name": {
+      "th": "งานนำเสนอ",
+      "en": "Presentation"
+    },
+    "description": {
+      "th": "ทำสไลด์ จัดธีม นำเสนอเต็มจอ และเปิดหรือบันทึกไฟล์ PPTX",
+      "en": "Build slides, theme them, present full screen, open and save PPTX"
+    },
+    "licence": "AGPL-3.0-only"
   },
   {
     "slug": "projects",
@@ -348,6 +491,19 @@
     }
   },
   {
+    "slug": "spreadsheet",
+    "category": "documents",
+    "name": {
+      "th": "สเปรดชีต",
+      "en": "Spreadsheet"
+    },
+    "description": {
+      "th": "ตารางคำนวณพร้อมสูตร จัดรูปแบบ และเปิดหรือบันทึกไฟล์ .xlsx",
+      "en": "Spreadsheets with formulas, formatting and .xlsx files"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
     "slug": "sudoku",
     "category": "games",
     "name": {
@@ -406,6 +562,45 @@
       "th": "ลงเวลาทำงานแยกตามลูกค้า โปรเจกต์ และงาน",
       "en": "Log work time by client, project and task"
     }
+  },
+  {
+    "slug": "vector-studio",
+    "category": "media",
+    "name": {
+      "th": "สตูดิโอเวกเตอร์",
+      "en": "Vector studio"
+    },
+    "description": {
+      "th": "วาดภาพเวกเตอร์ด้วยปากกา รูปทรง แปรง เอฟเฟกต์ อาร์ตบอร์ด ส่งออก SVG/PDF",
+      "en": "Vector illustration with pen, shapes, brushes, effects and artboards, SVG and PDF export"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
+    "slug": "video-studio",
+    "category": "media",
+    "name": {
+      "th": "สตูดิโอวิดีโอ",
+      "en": "Video studio"
+    },
+    "description": {
+      "th": "ตัดต่อวิดีโอหลายแทร็ก ใส่ข้อความ เอฟเฟกต์ ทรานซิชัน คำบรรยาย แล้วส่งออก",
+      "en": "Multitrack video editing with text, effects, transitions and captions, then export"
+    },
+    "licence": "AGPL-3.0-only"
+  },
+  {
+    "slug": "whiteboard",
+    "category": "team",
+    "name": {
+      "th": "ไวต์บอร์ด",
+      "en": "Whiteboard"
+    },
+    "description": {
+      "th": "กระดานวาดและระดมความคิดแบบอิสระ",
+      "en": "A free-form board for sketching and brainstorming"
+    },
+    "licence": "AGPL-3.0-only"
   },
   {
     "slug": "wiki",
