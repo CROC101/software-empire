@@ -9,6 +9,7 @@
     "./redirect": "./src/redirect.ts",
     "./subsystems": "./src/subsystems.ts",
     "./theme": "./src/theme.ts",
+    "./lang": "./src/lang.ts",
     "./cms": "./src/cms.ts",
     "./cms-pages": "./src/cms-pages.ts",
     "./auth": "./src/auth.ts",

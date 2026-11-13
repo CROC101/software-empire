@@ -1,1 +1,0 @@
-export{n as openShareDialog}from"./editor-BSIzxuPc.js";

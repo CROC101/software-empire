@@ -1,0 +1,86 @@
+/* crocwork theme over the crocwork apps: their accent becomes crocwork blue, their text
+   Noto Sans Thai UI. Loaded last in each app's <head>; !important beats the app's own
+   light/dark selectors without having to match each one. The apps name their accent
+   differently (--accent-soft, --accent-tint, ... and accounting's --primary), so every
+   name they use is mapped here. --brand is left alone: it is the app's logo colour. */
+@import url("./palette.css");
+
+@font-face {
+  font-family: "Noto Sans Thai UI";
+  src: url("./fonts/NotoSansThai-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --accent: var(--em-blue-600) !important;
+  --accent-strong: var(--em-blue-700) !important;
+  --accent-hover: var(--em-blue-700) !important;
+  --accent-active: var(--em-blue-800) !important;
+  --accent-text: var(--em-blue-600) !important;
+  --accent-on-wash: var(--em-blue-700) !important;
+  --accent-ink: var(--em-ink-0) !important;
+  --accent-fg: var(--em-ink-0) !important;
+  --accent-contrast: var(--em-ink-0) !important;
+  --accent-wash: color-mix(in oklch, var(--em-blue-500) 12%, transparent) !important;
+  --accent-soft: var(--em-blue-50) !important;
+  --accent-weak: var(--em-blue-50) !important;
+  --accent-soft-2: var(--em-blue-100) !important;
+  --accent-tint: color-mix(in oklch, var(--em-blue-500) 14%, transparent) !important;
+  --primary: var(--em-blue-600) !important;
+  --primary-hover: var(--em-blue-700) !important;
+  --primary-press: var(--em-blue-800) !important;
+  --primary-soft: var(--em-blue-50) !important;
+  --primary-text: var(--em-ink-0) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme-resolved="light"]) {
+    --accent: var(--em-blue-500) !important;
+    --accent-strong: var(--em-blue-300) !important;
+    --accent-hover: var(--em-blue-300) !important;
+    --accent-active: var(--em-blue-200) !important;
+    --accent-text: var(--em-blue-300) !important;
+    --accent-on-wash: var(--em-blue-200) !important;
+    --accent-ink: var(--em-ink-975) !important;
+    --accent-fg: var(--em-ink-975) !important;
+    --accent-contrast: var(--em-ink-975) !important;
+    --accent-wash: color-mix(in oklch, var(--em-blue-500) 18%, transparent) !important;
+    --accent-soft: var(--em-blue-950) !important;
+    --accent-weak: var(--em-blue-950) !important;
+    --accent-soft-2: var(--em-blue-900) !important;
+    --accent-tint: color-mix(in oklch, var(--em-blue-500) 20%, transparent) !important;
+    --primary: var(--em-blue-500) !important;
+    --primary-hover: var(--em-blue-300) !important;
+    --primary-press: var(--em-blue-200) !important;
+    --primary-soft: var(--em-blue-950) !important;
+    --primary-text: var(--em-ink-975) !important;
+  }
+}
+
+:root[data-theme="dark"],
+:root[data-theme-resolved="dark"] {
+  --accent: var(--em-blue-500) !important;
+  --accent-strong: var(--em-blue-300) !important;
+  --accent-hover: var(--em-blue-300) !important;
+  --accent-active: var(--em-blue-200) !important;
+  --accent-text: var(--em-blue-300) !important;
+  --accent-on-wash: var(--em-blue-200) !important;
+  --accent-ink: var(--em-ink-975) !important;
+  --accent-fg: var(--em-ink-975) !important;
+  --accent-contrast: var(--em-ink-975) !important;
+  --accent-wash: color-mix(in oklch, var(--em-blue-500) 18%, transparent) !important;
+  --accent-soft: var(--em-blue-950) !important;
+  --accent-weak: var(--em-blue-950) !important;
+  --accent-soft-2: var(--em-blue-900) !important;
+  --accent-tint: color-mix(in oklch, var(--em-blue-500) 20%, transparent) !important;
+  --primary: var(--em-blue-500) !important;
+  --primary-hover: var(--em-blue-300) !important;
+  --primary-press: var(--em-blue-200) !important;
+  --primary-soft: var(--em-blue-950) !important;
+  --primary-text: var(--em-ink-975) !important;
+}
+
+body {
+  font-family: "Noto Sans Thai UI", system-ui, sans-serif;
+}

@@ -10,7 +10,7 @@ import { FavoritesSync } from "@/lib/tools/favorites-sync";
 const NAV = [
   { to: "/", label: "หน้าหลัก", icon: House },
   { to: "/tools", label: "เครื่องมือ", icon: LayoutGrid },
-  { to: "/everything", label: "แอป", icon: AppWindow },
+  { to: "/apps", label: "แอป", icon: AppWindow },
   { to: "/favorites", label: "รายการโปรด", icon: Star },
 ];
 
