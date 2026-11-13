@@ -1,7 +1,7 @@
 import { Button, cn } from "@empire/ui";
 import { HubSwitcher } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
-import { House, LayoutGrid, LogIn, LogOut, Star } from "lucide-react";
+import { AppWindow, House, LayoutGrid, LogIn, LogOut, Star } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router";
 import { env } from "@/lib/env";
 import { signInUrl, signOut, useSession } from "@/lib/session";
@@ -10,6 +10,7 @@ import { FavoritesSync } from "@/lib/tools/favorites-sync";
 const NAV = [
   { to: "/", label: "หน้าหลัก", icon: House },
   { to: "/tools", label: "เครื่องมือ", icon: LayoutGrid },
+  { to: "/everything", label: "แอป", icon: AppWindow },
   { to: "/favorites", label: "รายการโปรด", icon: Star },
 ];
 

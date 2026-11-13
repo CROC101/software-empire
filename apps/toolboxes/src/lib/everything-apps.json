@@ -1,0 +1,177 @@
+[
+  {
+    "slug": "accounting",
+    "name": "Accounting",
+    "description": "บัญชีคู่: ใบแจ้งหนี้ ค่าใช้จ่าย กระทบยอดธนาคาร และงบการเงิน"
+  },
+  {
+    "slug": "api-client",
+    "name": "API Client",
+    "description": "สร้าง ส่ง และทดสอบ HTTP request จัดเป็นชุดได้"
+  },
+  {
+    "slug": "backgammon",
+    "name": "Backgammon",
+    "description": "แบ็กแกมมอนเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว"
+  },
+  {
+    "slug": "calendar",
+    "name": "Calendar",
+    "description": "ปฏิทินเร็ว เรียบ จัดนัดและกิจกรรม"
+  },
+  {
+    "slug": "cap-table",
+    "name": "Cap Table",
+    "description": "ตารางผู้ถือหุ้น ออปชัน และรอบระดมทุนของสตาร์ทอัป"
+  },
+  {
+    "slug": "checkers",
+    "name": "Checkers",
+    "description": "หมากฮอสเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว"
+  },
+  {
+    "slug": "chess",
+    "name": "Chess",
+    "description": "หมากรุกสากลเล่นกับคอมพิวเตอร์ หรือกับเพื่อนในเครื่องเดียว"
+  },
+  {
+    "slug": "childcare",
+    "name": "Childcare",
+    "description": "ศูนย์เด็กเล็ก: เช็กอิน รายงานประจำวัน ข้อความถึงผู้ปกครอง และค่าเล่าเรียน"
+  },
+  {
+    "slug": "contacts",
+    "name": "Contacts",
+    "description": "สมุดรายชื่อติดต่อ ค้นหาเร็ว"
+  },
+  {
+    "slug": "contracts",
+    "name": "Contract Manager",
+    "description": "เก็บสัญญา ติดตามวันต่ออายุ และข้อผูกพัน"
+  },
+  {
+    "slug": "crm",
+    "name": "Sales CRM",
+    "description": "ลูกค้าเป้าหมาย บริษัท ดีล งานติดตาม และพยากรณ์ยอดขาย"
+  },
+  {
+    "slug": "documents",
+    "name": "Documents",
+    "description": "โปรแกรมเอกสาร เปิดและบันทึกไฟล์ .docx ได้"
+  },
+  {
+    "slug": "expense",
+    "name": "Expenses",
+    "description": "บันทึกค่าใช้จ่าย ใบเสร็จ และรายงานเบิกจ่าย"
+  },
+  {
+    "slug": "field-service",
+    "name": "Field Service",
+    "description": "งานบริการนอกสถานที่: ลูกค้า ใบเสนอราคา ใบงาน ตารางนัด และใบแจ้งหนี้"
+  },
+  {
+    "slug": "fleet",
+    "name": "Fleet",
+    "description": "ยานพาหนะ การตรวจสภาพ ซ่อมบำรุง น้ำมัน อะไหล่ และค่าใช้จ่าย"
+  },
+  {
+    "slug": "help-desk",
+    "name": "Help Desk",
+    "description": "ทิกเก็ตลูกค้า กล่องข้อความรวม และศูนย์ช่วยเหลือ"
+  },
+  {
+    "slug": "hiring",
+    "name": "Hiring",
+    "description": "รับสมัครงาน: ผู้สมัคร นัดสัมภาษณ์ ใบให้คะแนน ข้อเสนอ และรับเข้าทำงาน"
+  },
+  {
+    "slug": "inventory",
+    "name": "Inventory",
+    "description": "สต็อกสินค้า คลัง ซัพพลายเออร์ และแจ้งเตือนของใกล้หมด"
+  },
+  {
+    "slug": "invoicing",
+    "name": "Invoicing & Estimates",
+    "description": "ใบเสนอราคา ใบแจ้งหนี้ และใบเสร็จ"
+  },
+  {
+    "slug": "legal",
+    "name": "Legal",
+    "description": "สำนักงานกฎหมาย: คดี ผู้ติดต่อ ลงเวลา ค่าใช้จ่าย และวางบิล"
+  },
+  {
+    "slug": "meetings",
+    "name": "Meetings",
+    "description": "ห้องประชุมวิดีโอ (ประชุมออนไลน์ยังไม่เปิดใช้)"
+  },
+  {
+    "slug": "music-studio",
+    "name": "Music Studio",
+    "description": "ทำเพลงในเบราว์เซอร์: จังหวะ เปียโนโรล และมิกซ์"
+  },
+  {
+    "slug": "pos",
+    "name": "Point of Sale",
+    "description": "ขายหน้าร้าน: สินค้า คิดเงิน ใบเสร็จ และรายงานยอดขาย"
+  },
+  {
+    "slug": "projects",
+    "name": "Project Management",
+    "description": "บอร์ดคัมบัง ไทม์ไลน์ และไมล์สโตนของโปรเจกต์"
+  },
+  {
+    "slug": "property-management",
+    "name": "Property Management",
+    "description": "อสังหาให้เช่า: ยูนิต สัญญาเช่า ผู้เช่า ค่าเช่า และงานซ่อม"
+  },
+  {
+    "slug": "records",
+    "name": "Records",
+    "description": "ตารางข้อมูลเชื่อมกัน มุมมอง และฟอร์ม"
+  },
+  {
+    "slug": "shifts",
+    "name": "Shifts",
+    "description": "จัดกะงาน: เวลาว่างพนักงาน สลับกะ และการเข้างาน"
+  },
+  {
+    "slug": "signatures",
+    "name": "Signatures",
+    "description": "ส่งเอกสารให้เซ็น และเก็บเอกสารที่เซ็นแล้ว"
+  },
+  {
+    "slug": "solitaire",
+    "name": "Solitaire",
+    "description": "ไพ่โซลิแทร์ Klondike ย้อนตาได้ทุกตา"
+  },
+  {
+    "slug": "sudoku",
+    "name": "Sudoku",
+    "description": "ซูโดกุหลายระดับความยาก"
+  },
+  {
+    "slug": "survey",
+    "name": "Surveys",
+    "description": "สร้างแบบสอบถาม และสรุปผลคำตอบ"
+  },
+  {
+    "slug": "tasks",
+    "name": "Tasks",
+    "description": "รายการสิ่งที่ต้องทำ"
+  },
+  {
+    "slug": "teamchat",
+    "name": "Teamchat",
+    "description": "แชตทีม: ห้อง เธรด และข้อความส่วนตัว"
+  },
+  {
+    "slug": "time-tracking",
+    "name": "Hourly",
+    "description": "ลงเวลาทำงานแยกตามลูกค้า โปรเจกต์ และงาน"
+  },
+  {
+    "slug": "wiki",
+    "name": "Wiki",
+    "description": "หน้าวิกิ เอกสาร และฐานข้อมูลของทีม"
+  }
+]
