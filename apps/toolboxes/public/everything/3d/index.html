@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script src="../puter-shim.js?v=ccb208f6"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#17191d" />
+    <meta
+      name="description"
+      content="3D is a focused browser-based workspace for creating and arranging 3D scenes."
+    />
+    <title>3D · Scene editor</title>
+    <link rel="icon" href="./favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="./favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="icon" href="./favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="./favicon-48x48.png" type="image/png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="./manifest.json" />
+    <!-- The app works without Puter (offline, blocked): a failed load only leaves out the account menu,
+         and the assistant tries again when it is used (src/assistant/puter.ts). With Preferences ▸
+         System ▸ Network ▸ Allow Online Access off nothing is fetched. -->
+    <script>
+      (function () {
+        var online = true;
+        try {
+          var p = JSON.parse(localStorage.getItem('p3d.preferences.v1') || 'null');
+          online = !p || p.use_online_access !== false;
+        } catch (e) {}
+        if (!online) return;
+        var s = document.createElement('script');
+        s.src = '../puter-shim.js?v=ccb208f6';
+        s.async = true;
+        s.onerror = function () {
+          window.__puterFailed = true;
+        };
+        // arriving after the app started: the top bar adds the account menu (src/ui/shell.ts)
+        s.onload = function () {
+          dispatchEvent(new Event('puter-loaded'));
+        };
+        document.head.appendChild(s);
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-_Hi-9A9x.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/three.module-B1Z0yb-D.js">
+    <link rel="modulepreload" crossorigin href="./assets/driverexpr-qpipmUyv.js">
+    <link rel="modulepreload" crossorigin href="./assets/curves-CwXj8iRc.js">
+    <link rel="modulepreload" crossorigin href="./assets/rna-BfyIrdK6.js">
+    <link rel="modulepreload" crossorigin href="./assets/prefs-K1qXE-s6.js">
+    <link rel="modulepreload" crossorigin href="./assets/cow-CWVjdE_V.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-B9ociJjn.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-BPolcadx.css">
+    <link rel="stylesheet" href="../crocwork.css?v=ccb208f6" />
+</head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
