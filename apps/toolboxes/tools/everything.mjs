@@ -78,9 +78,9 @@ function stamp() {
     .update(readFileSync(join(out, "crocwork.css")))
     .digest("hex")
     .slice(0, 8);
-  for (const name of readdirSync(out)) {
-    const index = join(out, name, "index.html");
-    if (!existsSync(index)) continue;
+  for (const d of readdirSync(out, { withFileTypes: true })) {
+    if (!d.isDirectory() || d.name === "fonts") continue;
+    const index = join(out, d.name, "index.html");
     const html = readFileSync(index, "utf8");
     writeFileSync(
       index,
@@ -91,9 +91,13 @@ function stamp() {
 }
 
 // names and Thai descriptions in the manifest are edited by hand: keep them on a rebuild
-const known = existsSync(manifest)
-  ? Object.fromEntries(JSON.parse(readFileSync(manifest, "utf8")).map((a) => [a.slug, a]))
-  : {};
+let saved = "[]";
+try {
+  saved = readFileSync(manifest, "utf8");
+} catch (e) {
+  if (e.code !== "ENOENT") throw e;
+}
+const known = Object.fromEntries(JSON.parse(saved).map((a) => [a.slug, a]));
 const apps = [];
 for (const name of readdirSync(join(src, "src")).sort()) {
   const dir = join(src, "src", name);
@@ -127,6 +131,9 @@ for (const name of readdirSync(join(src, "src")).sort()) {
   const index = join(dest, "index.html");
   const html = readFileSync(index, "utf8");
   writeFileSync(index, themeHtml(html));
+  // calendar's guest pages answer booking links served by Puter Workers, which the shim never
+  // creates, and they would call *.puter.work
+  for (const f of ["book.html", "rsvp.html"]) rmSync(join(dest, f), { force: true });
   // a worker registered at "/sw.js" is written for the site root (it caches "/" as its shell):
   // under /everything/<app>/ it would cache our home page, so it is not registered at all
   for (const f of readdirSync(join(dest, "assets")).filter((f) => f.endsWith(".js"))) {
