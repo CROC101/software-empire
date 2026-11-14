@@ -1,3 +1,4 @@
+import { contacts } from "@empire/core/subsystems";
 import { useId, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { Ambience, AmbienceButton } from "./ambience";
@@ -59,7 +60,8 @@ export function HubSwitcher({
         id={id}
         popover="auto"
         aria-label="ระบบทั้งหมดใน hub"
-        className="fixed inset-x-0 top-16 m-auto w-[min(26rem,calc(100vw-2rem))] rounded-2xl border bg-popover p-3 text-popover-foreground shadow-xl backdrop:bg-black/20"
+        // short phones (landscape) would cut the list off: the panel scrolls inside the screen
+        className="fixed inset-x-0 top-16 m-auto max-h-[calc(100dvh-5rem)] w-[min(26rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-2xl border bg-popover p-3 text-popover-foreground shadow-xl backdrop:bg-black/20"
       >
         {/* every app carries this panel, so the shared theme switch lives here too */}
         <div className="mb-2 flex items-center gap-2">
@@ -102,6 +104,22 @@ export function HubSwitcher({
             );
           })}
         </ul>
+        <nav aria-label="ติดต่อเจ้าของ" className="mt-2 border-t pt-2">
+          <p className="px-1 pb-1 text-xs text-muted-foreground">ติดต่อ crocwork</p>
+          <ul className="flex flex-wrap gap-1">
+            {contacts.map((c) => (
+              <li key={c.label}>
+                <a
+                  href={c.href}
+                  {...(c.href.startsWith("https:") && { target: "_blank", rel: "noopener" })}
+                  className="inline-flex min-h-10 items-center rounded-lg px-3 text-sm font-medium hover:bg-accent"
+                >
+                  {c.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </>
   );

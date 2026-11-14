@@ -51,3 +51,12 @@ export const subsystems = [
     accent: "var(--em-violet-800)",
   },
 ] as const;
+
+/** The owner's public contact channels, shown in every app (HubSwitcher panel, hub footer). */
+export const contactEmail = "skizzkat@gmail.com";
+export const contacts = [
+  { label: "Facebook", href: "https://www.facebook.com/sarawut.phusee" },
+  { label: "Discord", href: "https://discord.gg/sNYsVbh3v" },
+  { label: "Instagram", href: "https://www.instagram.com/sxrx_wut.18/" },
+  { label: "อีเมล", href: `mailto:${contactEmail}` },
+] as const;

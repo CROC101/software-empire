@@ -51,6 +51,7 @@ import {
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { appUrl } from "@/lib/apps";
+import { contactEmail, contacts } from "@empire/core/subsystems";
 import { subsystems } from "@/lib/subsystems";
 
 /*
@@ -1368,7 +1369,7 @@ export function FaqSection() {
 /* ── contact + footer ───────────────────────────────────────── */
 
 export function ContactSection({ cta }: { cta: { href: string; label: string } }) {
-  const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
+  const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? contactEmail;
   const live = subsystems.filter((s) => appUrl(s.slug)).length;
   const share = live / subsystems.length;
   return (
@@ -1410,10 +1411,11 @@ export function SiteFooter() {
       title="Thank"
       titleAccent="You"
       tapes={["ขอบคุณที่แวะมา", "มีงานไหน เล่าให้ผมฟัง"]}
-      email={process.env.NEXT_PUBLIC_CONTACT_EMAIL}
+      email={process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? contactEmail}
       links={[
         { label: "github.com/CROC101", href: "https://github.com/CROC101" },
         { label: "CROC101/software-empire", href: GITHUB },
+        ...contacts.filter((c) => c.href.startsWith("https:")),
       ]}
       regards="ด้วยความขอบคุณ"
       signatureText="crocwork"
