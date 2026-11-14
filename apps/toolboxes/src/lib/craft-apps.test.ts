@@ -49,6 +49,13 @@ describe("crocwork Craft apps", () => {
     });
     for (const a of CRAFT_APPS.filter((a) => a.asset)) expect(downloads(a), a.slug).toBeDefined();
     expect(downloads({ ...CRAFT_APPS[0], tag: "latest" })).toBeUndefined();
+    // crocwork Cut (Concat) ships an Inno setup EXE and a WiX MSI, no zip
+    const cut = CRAFT_APPS.find((a) => a.slug === "cut");
+    expect(cut && downloads(cut)).toEqual({
+      msi: "https://github.com/CROC101/crocwork-cut/releases/download/v0.2.11-crocwork.1/crocwork-cut-0.2.11-windows-x86_64.msi",
+      setup:
+        "https://github.com/CROC101/crocwork-cut/releases/download/v0.2.11-crocwork.1/crocwork-cut-0.2.11-windows-x86_64-setup.exe",
+    });
     // web-only releases (crocwork Video) show no Windows button
     const video = CRAFT_APPS.find((a) => a.slug === "video");
     expect(video?.web).toBe("/craft/video/");
