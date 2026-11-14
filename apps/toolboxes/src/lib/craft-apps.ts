@@ -262,10 +262,26 @@ export const CRAFT_APPS: CraftApp[] = [
     },
     web: "/icons",
   },
+  {
+    slug: "video",
+    icon: Film,
+    word: "Video",
+    kind: { th: "ตัดต่อวิดีโอ", en: "Video editor" },
+    description: {
+      th: "ตัดต่อหลายแทร็ก ใส่ข้อความ เสียง และเอฟเฟกต์ งานทั้งหมดอยู่ในเครื่องคุณ ไม่ต้องอัปโหลด",
+      en: "Multi-track editing with text, audio and effects. Your footage stays on your device, nothing is uploaded.",
+    },
+    web: "/craft/video/",
+    repo: "CROC101/crocwork-video",
+    tag: "v0.3.0-crocwork.1",
+  },
 ];
 
+/** the release page; only apps with a Windows build (an `asset`) have one worth showing */
 export const releaseUrl = (app: CraftApp) =>
-  app.repo && app.tag ? `https://github.com/${app.repo}/releases/tag/${app.tag}` : undefined;
+  app.repo && app.tag && app.asset
+    ? `https://github.com/${app.repo}/releases/tag/${app.tag}`
+    : undefined;
 
 /** Direct download links of a release: the MSI installer and the portable zip (no install). */
 export function downloads(app: CraftApp) {
