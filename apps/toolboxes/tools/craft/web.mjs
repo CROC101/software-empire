@@ -42,10 +42,10 @@ export function releases(source) {
 
 // what a Craft web build holds; anything else (a symlink, a server config, a stray binary) stops the run
 export const ALLOWED =
-  /^(index\.html|[\w-]+-[0-9a-f]{16}\.(ico|png)|[\w-]+-web(-boot)?-[0-9a-f]+(\.js|_bg\.wasm)|[\w-]+-ocr-worker-[0-9a-f]+(\.js|_loader\.js|_bg\.wasm)|models\/([\w-]+\.onnx(\.LICENCE\.txt)?|ATTRIBUTION\.txt)|[a-z]+_web(\.js|_bg\.wasm)|(worker|sw|audio-worklet)\.js|favicon\.svg|icon-\d+\.png|manifest\.webmanifest|app\/(parts\.txt|[\w-]+\.js|[\w-]+-[0-9a-f]+\.part-[a-z]{2})|snippets\/[\w./-]+\.js|icons\/(\d+\/)?[\w.]+\.(png|svg)|fonts\/(list\.txt|[a-z0-9-]+\/(OFL\.txt|[\w-]+\.[ot]tf))|licenses\/([\w-]+\/)+[\w-]+(\.txt)?|(ATTRIBUTION|ASSETS)\.md|OFL-[\w-]+\.txt|NOTICE|LICENSE-(MIT|APACHE))$/;
+  /^(index\.html|[\w.-]+-[0-9a-f]{16}\.(ico|png)|[a-z]+_zh_hans\.otf|[\w-]+-web(-boot)?-[0-9a-f]+(\.js|_bg\.wasm)|[\w-]+-ocr-worker-[0-9a-f]+(\.js|_loader\.js|_bg\.wasm)|models\/([\w-]+\.onnx(\.LICENCE\.txt)?|ATTRIBUTION\.txt)|[a-z]+_web(\.js|_bg\.wasm)|(worker|sw|audio-worklet)\.js|favicon\.svg|icon-\d+\.png|manifest\.webmanifest|app\/(parts\.txt|[\w-]+\.js|[\w-]+-[0-9a-f]+\.part-[a-z]{2})|snippets\/[\w./-]+\.js|icons\/(\d+\/)?[\w.]+\.(png|svg)|fonts\/(list\.txt|[a-z0-9-]+\/(OFL\.txt|[\w-]+\.[ot]tf))|licenses\/([\w-]+\/)+[\w-]+(\.txt)?|(ATTRIBUTION|ASSETS)\.md|OFL-[\w-]+\.txt|NOTICE|LICENSE-(MIT|APACHE))$/;
 // host configs and hosting notes for other servers: this site has its own (public/_headers);
 // README.md is the upstream project page (its name, its links), not a licence text
-export const DROP = /^(_headers|\.htaccess|HOSTING\.md|README\.md)$/;
+export const DROP = /^(_headers|\.htaccess|HOSTING\.md|README\.md|.+\.(gz|br))$/;
 
 export function check(files) {
   for (const f of files)
@@ -63,15 +63,16 @@ export const PART = 20 * 1024 * 1024;
 
 /**
  * Rewrites index.html to load `wasm` from `parts`; throws if the page is not a shape we know:
- * Trunk (`init({ module_or_path: './x_bg.wasm' })`) or EffectCraft's (`fetch(wasmUrl)`, it compiles
- * the module once and hands it to its workers).
+ * Trunk (`init({ module_or_path: './x_bg.wasm' })`), EffectCraft's (`fetch(wasmUrl)`) or LightCraft's
+ * (`fetch("./x_bg.wasm")`); the last two compile the module once and hand it to their workers.
  */
 export function bootFromParts(html, wasm, parts) {
   const trunk = `init({ module_or_path: './${wasm}' })`;
-  const direct =
+  const effect =
     html.includes(`new URL("${wasm}", location.href)`) && html.includes("fetch(wasmUrl)");
+  const light = `fetch("./${wasm}")`;
   assert.ok(
-    html.split(trunk).length === 2 || direct,
+    html.split(trunk).length === 2 || effect || html.split(light).length === 2,
     `${wasm}: index.html does not start the app the way we know`,
   );
   const list = JSON.stringify(parts.map((p) => `./${p}`));
@@ -91,8 +92,9 @@ export function bootFromParts(html, wasm, parts) {
     out.includes("const craftWasm"),
     `${wasm}: no module script with imports to start from`,
   );
-  return direct
-    ? out.replaceAll("fetch(wasmUrl)", "craftWasm()")
+  if (effect) return out.replaceAll("fetch(wasmUrl)", "craftWasm()");
+  return out.includes(light)
+    ? out.replace(light, "craftWasm()")
     : out.replace(trunk, "init({ module_or_path: craftWasm() })");
 }
 
@@ -277,6 +279,12 @@ const wasm = await init({ module_or_path: './x-web-0a_bg.wasm' });
       fx.split("craftWasm()").length === 3 &&
       fx.indexOf("const craftWasm") > fx.indexOf("import init"),
   );
+  const light = bootFromParts(
+    `<script type="module">\n    import init, { start } from "./l_web.js";\n    (async () => { await init({ module_or_path: await WebAssembly.compileStreaming(fetch("./l_web_bg.wasm")) }); })();\n</script>`,
+    "l_web_bg.wasm",
+    ["l_web_bg.part-aa"],
+  );
+  assert.ok(light.includes("compileStreaming(craftWasm())") && !light.includes("l_web_bg.wasm"));
   check([
     "index.html",
     "NOTICE",
