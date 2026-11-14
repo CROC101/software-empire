@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://captable.puter.com/sitemap.xml
+Sitemap: /apps/cap-table/sitemap.xml

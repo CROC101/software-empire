@@ -139,3 +139,112 @@
     }
   }
 }
+
+/* home hero after the glassmorphism trust hero: a water band (the only gradient), glass cards
+   resting on it, copy rising out of the water. Transform / opacity only; reduced motion = still. */
+@layer components {
+  .tb-hero {
+    color: var(--em-ink-0);
+    background-image:
+      radial-gradient(
+        60% 70% at 85% 0%,
+        color-mix(in oklab, var(--em-sky-500) 45%, transparent),
+        transparent 70%
+      ),
+      linear-gradient(160deg, var(--em-sky-500), var(--em-blue-500) 45%, var(--em-blue-700));
+  }
+  .dark .tb-hero {
+    background-image:
+      radial-gradient(
+        60% 70% at 85% 0%,
+        color-mix(in oklab, var(--em-blue-500) 35%, transparent),
+        transparent 70%
+      ),
+      linear-gradient(160deg, var(--em-blue-700), var(--em-ink-975) 75%);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) .tb-hero {
+      background-image:
+        radial-gradient(
+          60% 70% at 85% 0%,
+          color-mix(in oklab, var(--em-blue-500) 35%, transparent),
+          transparent 70%
+        ),
+        linear-gradient(160deg, var(--em-blue-700), var(--em-ink-975) 75%);
+    }
+  }
+  /* a faint blueprint grid that fades out toward the edges */
+  .tb-hero-grid {
+    background-image:
+      linear-gradient(color-mix(in oklab, var(--em-ink-0) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--em-ink-0) 7%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 44px 44px;
+    mask-image: radial-gradient(70% 80% at 50% 30%, #000, transparent);
+  }
+  .tb-muted {
+    color: color-mix(in oklab, var(--em-ink-0) 80%, transparent);
+  }
+  .tb-glass {
+    border: 1px solid color-mix(in oklab, var(--em-ink-0) 20%, transparent);
+    background: color-mix(in oklab, var(--em-ink-0) 10%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, var(--em-ink-0) 30%, transparent),
+      0 24px 60px -30px color-mix(in oklab, var(--em-ink-975) 60%, transparent);
+    backdrop-filter: blur(14px);
+  }
+  .tb-depth {
+    text-shadow:
+      -1px 1px 0 color-mix(in oklab, var(--em-blue-700) 60%, transparent),
+      -2px 2px 0 color-mix(in oklab, var(--em-blue-700) 45%, transparent),
+      -3px 3px 0 color-mix(in oklab, var(--em-blue-700) 30%, transparent),
+      -6px 10px 24px color-mix(in oklab, var(--em-ink-975) 35%, transparent);
+  }
+  .tb-bar {
+    background: linear-gradient(90deg, var(--em-ink-0), var(--em-sky-500));
+  }
+  .tb-live {
+    background: var(--em-sky-500);
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--em-sky-500) 70%, transparent);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tb-rise {
+      opacity: 0;
+      animation: tb-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+      animation-delay: calc(var(--i, 0) * 100ms);
+    }
+    .tb-marquee {
+      animation: tb-marquee 40s linear infinite;
+    }
+    .tb-marquee:hover {
+      animation-play-state: paused;
+    }
+    .tb-live {
+      animation: tb-ping 2s ease-out infinite;
+    }
+  }
+  @keyframes tb-rise {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes tb-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes tb-ping {
+    70%,
+    100% {
+      box-shadow: 0 0 0 6px transparent;
+    }
+  }
+}

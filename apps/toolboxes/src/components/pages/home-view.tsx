@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { ArrowRight, Clock, LayoutGrid, LockKeyhole, Star, Wifi, Zap } from "lucide-react";
+import { ArrowRight, Clock, Star } from "lucide-react";
 import { readLang, type Lang } from "@empire/core/lang";
 import { CraftLineup } from "@/components/apps/craft-lineup";
-import { CRAFT_APPS } from "@/lib/craft-apps";
 import { Link } from "react-router";
 import { ToolCard, ToolGrid } from "@/components/tools/tool-card";
-import { ToolSearch } from "@/components/tools/tool-search";
+import { HomeHero } from "./home-hero";
 import { TOOLBOXES_HOME } from "@empire/core/cms-pages";
 import { useCmsContent } from "@/lib/cms";
 import { useSession } from "@/lib/session";
 import { CATEGORIES } from "@/lib/tools/categories";
 import { useFavorites, useRecent } from "@/lib/tools/prefs";
-import { findTool, toolsIn, TOOLS } from "@/lib/tools/registry";
+import { findTool, toolsIn } from "@/lib/tools/registry";
 import type { Tool } from "@/lib/tools/types";
 
 /// ทางลัดที่ทีมเลือกให้ (ไม่ได้อ้างว่าเป็นสถิติยอดนิยม)
@@ -24,14 +23,6 @@ const PICKS = [
   "image-compressor",
   "pdf-to-word",
   "timestamp-converter",
-];
-
-/// where each app tile floats round the hero
-const TILE_SPOTS = [
-  { top: "12%", left: "7%" },
-  { top: "18%", right: "8%" },
-  { bottom: "14%", left: "12%" },
-  { bottom: "18%", right: "11%" },
 ];
 
 function resolve(slugs: readonly string[]): Tool[] {
@@ -51,63 +42,12 @@ export function HomeView() {
   return (
     <main className="px-4 py-6 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-7xl">
-        <section className="relative overflow-hidden rounded-3xl border border-outline-variant bg-surface-container-lowest px-5 py-14 text-center sm:px-10 sm:py-20">
-          {/* the apps float round the hero (decoration; links are in the lineup below) */}
-          <ul aria-hidden className="pointer-events-none absolute inset-0 hidden md:block">
-            {CRAFT_APPS.slice(0, TILE_SPOTS.length).map((app, i) => (
-              <li
-                key={app.slug}
-                className="float-tile water-tile absolute grid size-14 place-items-center rounded-xl shadow-md vt-live"
-                style={{ ...TILE_SPOTS[i], animationDelay: `${i * -1.7}s` }}
-              >
-                <app.icon className="size-7" strokeWidth={1.75} />
-              </li>
-            ))}
-          </ul>
-          <p className="relative text-on-surface-variant">
-            {name ? `สวัสดี ${name}` : "ยินดีต้อนรับ"}
-          </p>
-          <h1 className="relative mt-2 font-display text-4xl font-black leading-tight sm:text-6xl">
-            {cms.text("hero.title")}
-            <span className="block text-primary">{TOOLS.length} ชิ้นในที่เดียว</span>
-          </h1>
-          <p className="relative mx-auto mt-4 max-w-2xl text-lg text-on-surface-variant">
-            {cms.text("hero.intro")}
-          </p>
-          <div className="relative mx-auto mt-7 max-w-2xl text-left">
-            <ToolSearch autoFocus />
-          </div>
-          <div className="relative mt-5 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/apps"
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary-container px-5 font-medium text-on-primary"
-            >
-              <LayoutGrid aria-hidden className="size-4" />
-              ดูแอปทั้งหมด
-            </Link>
-            <Link
-              to="/tools"
-              className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-outline-variant px-5 hover:bg-surface-container"
-            >
-              เครื่องมือทั้งหมด
-              <ArrowRight aria-hidden className="size-4" />
-            </Link>
-          </div>
-          <ul className="relative mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-on-surface-variant">
-            <li className="flex items-center gap-2">
-              <LockKeyhole aria-hidden className="size-4" />
-              {cms.text("hero.perk1")}
-            </li>
-            <li className="flex items-center gap-2">
-              <Zap aria-hidden className="size-4" />
-              {cms.text("hero.perk2")}
-            </li>
-            <li className="flex items-center gap-2">
-              <Wifi aria-hidden className="size-4" />
-              {cms.text("hero.perk3")}
-            </li>
-          </ul>
-        </section>
+        <HomeHero
+          name={name}
+          title={cms.text("hero.title")}
+          intro={cms.text("hero.intro")}
+          perks={[cms.text("hero.perk1"), cms.text("hero.perk2"), cms.text("hero.perk3")]}
+        />
 
         <section aria-labelledby="lineup" className="mt-12">
           <p className="font-mono text-xs tracking-[0.2em] text-on-surface-variant uppercase">

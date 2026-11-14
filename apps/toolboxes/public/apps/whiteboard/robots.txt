@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://whiteboard.puter.com/sitemap.xml
+Sitemap: /apps/whiteboard/sitemap.xml

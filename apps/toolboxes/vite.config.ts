@@ -44,6 +44,16 @@ export default defineConfig(({ mode }) => {
       contentSecurityPolicy(env.VITE_SUPABASE_URL ?? "http://localhost:54321"),
     ],
     resolve: { alias: { "@": `${import.meta.dirname}/src` } },
+    build: {
+      rollupOptions: {
+        // cloud save also runs inside /craft/* and /apps/* pages, which load it from a fixed URL
+        input: { main: "index.html", sync: "src/sync/main.ts" },
+        output: {
+          entryFileNames: (chunk) =>
+            chunk.name === "sync" ? "sync/crocwork-sync.js" : "assets/[name]-[hash].js",
+        },
+      },
+    },
     test: {
       environment: "jsdom",
       setupFiles: ["./src/test-setup.ts"],
