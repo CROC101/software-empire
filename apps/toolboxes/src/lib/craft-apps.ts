@@ -238,7 +238,7 @@ export const releaseUrl = (app: CraftApp) =>
 /** Direct download links of a release: the MSI installer and the portable zip (no install). */
 export function downloads(app: CraftApp) {
   if (!app.repo || !app.tag || !app.asset) return undefined;
-  const version = /^v(d+.d+.d+)/.exec(app.tag)?.[1];
+  const version = /^v(\d+\.\d+\.\d+)/.exec(app.tag)?.[1];
   if (!version) return undefined;
   const base = `https://github.com/${app.repo}/releases/download/${app.tag}/${app.asset}-${version}-windows-x64`;
   return { msi: `${base}.msi`, zip: `${base}-portable.zip` };
