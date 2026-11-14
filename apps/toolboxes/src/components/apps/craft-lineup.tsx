@@ -15,8 +15,7 @@ const COPY = {
   },
 } satisfies Record<string, Record<Lang, string>>;
 
-const tag =
-  "rounded-sm border border-outline-variant px-1.5 py-0.5 text-[11px]";
+const tag = "rounded-sm border border-outline-variant px-1.5 py-0.5 text-[11px]";
 
 /** Lineup of crocwork's own apps, in a hairline grid (each card: number, kind, tile, name, actions,
  * and the quick everything app for the same job). */
@@ -78,7 +77,8 @@ export function CraftLineup({ lang }: { lang: Lang }) {
                   className="mt-4 inline-flex min-h-10 items-center gap-1.5 border-t border-outline-variant pt-3 text-sm text-on-surface-variant hover:text-primary"
                 >
                   <Zap aria-hidden className="size-4 text-primary" />
-                  {COPY.light[lang]} <span className="font-medium text-on-surface">{light.name[lang]}</span>
+                  {COPY.light[lang]}{" "}
+                  <span className="font-medium text-on-surface">{light.name[lang]}</span>
                 </a>
               )}
             </li>

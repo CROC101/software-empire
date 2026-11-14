@@ -15,17 +15,23 @@ describe.skipIf(!existsSync(root))("crocwork Craft web builds", () => {
     for (const a of built) {
       expect(a.web).toBe(`/craft/${a.slug}/`);
       // tools/craft/web.mjs writes it; rerun it after bumping the tag
-      expect(readFileSync(join(root, a.slug, "VERSION"), "utf8").trim(), a.slug).toBe(`${a.repo}@${a.tag}`);
+      expect(readFileSync(join(root, a.slug, "VERSION"), "utf8").trim(), a.slug).toBe(
+        `${a.repo}@${a.tag}`,
+      );
     }
   });
 
-  it.each(built.map((a) => a.slug))("%s keeps its licences and loads nothing from outside", (slug) => {
-    for (const f of ["NOTICE", "LICENSE-MIT", "LICENSE-APACHE"]) expect(existsSync(join(root, slug, f)), f).toBe(true);
-    const html = readFileSync(join(root, slug, "index.html"), "utf8");
-    expect(html).not.toMatch(/(?:src|href)="(?:https?:)?\/\//);
-    // relative URLs only, so the build works under /craft/<slug>/
-    expect(html).not.toMatch(/(?:src|href)="\//);
-  });
+  it.each(built.map((a) => a.slug))(
+    "%s keeps its licences and loads nothing from outside",
+    (slug) => {
+      for (const f of ["NOTICE", "LICENSE-MIT", "LICENSE-APACHE"])
+        expect(existsSync(join(root, slug, f)), f).toBe(true);
+      const html = readFileSync(join(root, slug, "index.html"), "utf8");
+      expect(html).not.toMatch(/(?:src|href)="(?:https?:)?\/\//);
+      // relative URLs only, so the build works under /craft/<slug>/
+      expect(html).not.toMatch(/(?:src|href)="\//);
+    },
+  );
 });
 
 describe("crocwork Craft apps", () => {

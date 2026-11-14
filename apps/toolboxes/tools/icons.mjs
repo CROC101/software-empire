@@ -5,14 +5,7 @@
 // only. The logos stay their owners' trademarks: the page and NOTICE.txt say so, and each
 // icon shows its licence. Files that could run code or load from elsewhere are left out.
 import { execFileSync } from "node:child_process";
-import {
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { argv } from "node:process";
@@ -33,7 +26,14 @@ function clone() {
   const git = (...a) => execFileSync("git", a, { cwd: dir, stdio: "inherit" });
   git("init", "-q");
   git("remote", "add", "origin", REPO);
-  git("sparse-checkout", "set", "--no-cone", "/LICENSE", "/src/data/icons.json", "/public/icons/*/default.svg");
+  git(
+    "sparse-checkout",
+    "set",
+    "--no-cone",
+    "/LICENSE",
+    "/src/data/icons.json",
+    "/public/icons/*/default.svg",
+  );
   git("fetch", "-q", "--depth=1", "--filter=blob:none", "origin", COMMIT);
   git("checkout", "-q", "FETCH_HEAD");
   return dir;

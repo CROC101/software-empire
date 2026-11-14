@@ -51,7 +51,8 @@ export const APPS = {
     title: "crocwork Word",
     repo: "CROC101/crocwork-word",
     webFonts: true,
-    glyph: '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/>',
+    glyph:
+      '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/>',
   },
   anicraft: {
     upstream: "AniCraft",
@@ -72,7 +73,8 @@ export const APPS = {
     upstream: "DeckCraft",
     title: "crocwork Slides",
     repo: "CROC101/crocwork-slides",
-    glyph: '<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>',
+    glyph:
+      '<path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/>',
   },
   designcraft: {
     upstream: "DesignCraft",
@@ -142,21 +144,33 @@ export function rebrandText(text, id, { inflected = false } = {}) {
             // code names stay: Rust paths and enum variants (FileKind::FigCraft, "FigCraft,"), PowerShell
             // types ([DeckCraft.Shell], -Namespace DeckCraft), JS globals (var AniCraft =) and macOS bundles (PhotoCraft.app)
             .replace(
-              new RegExp(`(?<!::|-Namespace |(?:var|let|const|function|class) )${lead}${app.upstream}${tail}(?!::|\\.\\p{L}|,\\s*$)`, "gu"),
+              new RegExp(
+                `(?<!::|-Namespace |(?:var|let|const|function|class) )${lead}${app.upstream}${tail}(?!::|\\.\\p{L}|,\\s*$)`,
+                "gu",
+              ),
               app.title,
             )
             // "PdfCraft PDF workbench" would read "crocwork PDF PDF workbench"
             .replaceAll(`${app.title} ${app.title.split(" ").pop()} `, `${app.title} `)
             // lower-case tail: declined forms in inline translation tables ("ArtCrafts"), not identifiers
-            .replace(new RegExp(`${lead}ArtCraft${inflected ? tail : String.raw`\p{Ll}*\b`}`, "gu"), "crocwork")
+            .replace(
+              new RegExp(`${lead}ArtCraft${inflected ? tail : String.raw`\p{Ll}*\b`}`, "gu"),
+              "crocwork",
+            )
             .replace(/\bLearning Machines LLC\b/g, "crocwork")
             .replace(/https:\/\/getartcraft\.com[\w./-]*/g, url)
             .replace(/https:\/\/discord\.gg\/artcraft\b/g, url)
             // the same addresses shown as link text
-            .replace(/(?<![\w./])(?:getartcraft\.com(?:\/apps\/\w+)?|discord\.gg\/artcraft)\b/g, url.slice(8))
+            .replace(
+              /(?<![\w./])(?:getartcraft\.com(?:\/apps\/\w+)?|discord\.gg\/artcraft)\b/g,
+              url.slice(8),
+            )
             // links to upstream's own pull requests, issues and runs stay: that history is theirs
             .replace(
-              new RegExp(`github\\.com/storytold/${id}(?![\\w-]|/(?:pull|issues|actions|commits?|blob|tree|compare)/)`, "g"),
+              new RegExp(
+                `github\\.com/storytold/${id}(?![\\w-]|/(?:pull|issues|actions|commits?|blob|tree|compare)/)`,
+                "g",
+              ),
               `github.com/${app.repo}`,
             )
             // shortcut: issues stay off on our forks (no public inbox before launch), so "report a
@@ -260,7 +274,10 @@ async function reskin(src, id) {
       writeFileSync(f, await png(head.readUInt32BE(0), head.readUInt32BE(4)));
     } else if (f.endsWith(".ico")) {
       const sizes = [16, 24, 32, 48, 64, 128, 256];
-      writeFileSync(f, packIco(await Promise.all(sizes.map(async (size) => ({ size, data: await png(size) })))));
+      writeFileSync(
+        f,
+        packIco(await Promise.all(sizes.map(async (size) => ({ size, data: await png(size) })))),
+      );
     } else if (f.endsWith(".icns")) rmSync(f); // macOS only; this fork ships web and Windows
   }
   // the folder's notes describe upstream's drawing, which is gone
@@ -285,10 +302,20 @@ function vendorI18n(src, id) {
   const rev = readFileSync(join(src, "craft-i18n.rev"), "utf8").trim();
   const dir = mkdtempSync(join(tmpdir(), "craft-i18n-"));
   // byte for byte: language-data is pinned by sha256, and Windows git would otherwise write CRLF
-  const git = (...a) => execFileSync("git", ["-c", "core.autocrlf=false", ...a], { cwd: dir, stdio: "inherit" });
+  const git = (...a) =>
+    execFileSync("git", ["-c", "core.autocrlf=false", ...a], { cwd: dir, stdio: "inherit" });
   git("init", "-q");
   git("remote", "add", "origin", "https://github.com/storytold/craft-i18n");
-  git("sparse-checkout", "set", "--no-cone", "/LICENSE-*", "/language-data/", "/ATTRIBUTION.md", "/locales/*/common.tsv", `/locales/*/${id}.tsv`);
+  git(
+    "sparse-checkout",
+    "set",
+    "--no-cone",
+    "/LICENSE-*",
+    "/language-data/",
+    "/ATTRIBUTION.md",
+    "/locales/*/common.tsv",
+    `/locales/*/${id}.tsv`,
+  );
   git("fetch", "-q", "--depth=1", "--filter=blob:none", "origin", rev);
   git("checkout", "-q", "FETCH_HEAD");
   const out = join(src, "craft-i18n");
@@ -307,7 +334,7 @@ of this repository. Only the shared catalog, this app's and language-data/ (unmo
 // keeps or drops each "# >name" ... "# <name" block of the release template ("!name": when off)
 export function cut(yml, flags) {
   const on = (k) => (k[0] === "!" ? !flags[k.slice(1)] : flags[k]);
-  for (let prev; prev !== yml; ) {
+  for (let prev; prev !== yml;) {
     prev = yml;
     yml = yml.replace(/^ *# >(!?\w+)\n([\s\S]*?)^ *# <\1\n/m, (_, k, body) => (on(k) ? body : ""));
   }
@@ -320,7 +347,8 @@ export async function rebrand(src, id) {
   assert(app, `unknown app ${id}; one of ${Object.keys(APPS).join(", ")}`);
   const workflows = join(src, ".github/workflows");
   // the fonts commit upstream's release names; read before its workflows go
-  const read = (f) => (existsSync(join(workflows, f)) ? readFileSync(join(workflows, f), "utf8") : "");
+  const read = (f) =>
+    existsSync(join(workflows, f)) ? readFileSync(join(workflows, f), "utf8") : "";
   const fonts =
     /craft-fonts-ref: (\w+)/.exec(read("release.yml"))?.[1] ??
     /CRAFT_FONTS_REF: (\w+)/.exec(read("crocwork-release.yml"))?.[1];
@@ -330,7 +358,8 @@ export async function rebrand(src, id) {
 
   // integration-testing: records of upstream's PRs and CI runs
   // language-data: third-party dictionaries pinned by sha256 upstream; kept byte for byte
-  const keep = /^(\.git|target|dist|node_modules|contributors|integration-testing|language-data|Cargo\.lock|craft-i18n\.rev)$|^(LICEN[CS]E|NOTICE|COPYING)/i;
+  const keep =
+    /^(\.git|target|dist|node_modules|contributors|integration-testing|language-data|Cargo\.lock|craft-i18n\.rev)$|^(LICEN[CS]E|NOTICE|COPYING)/i;
   // upstream's UpgradeCode also sits in the policy check and in <Upgrade Id>: left there, our MSI
   // fails its own policy or removes an installed upstream app
   const policy = join(src, "packaging/windows/install-policy.json");
@@ -343,7 +372,8 @@ export async function rebrand(src, id) {
     if (buf.subarray(0, 8000).includes(0)) continue; // binary
     const text = buf.toString("utf8");
     let next = rebrandText(text, id, { inflected: /craft-i18n[\\/]locales[\\/].*\.tsv$/.test(f) });
-    if (f.endsWith(".wxs")) next = next.replace(/UpgradeCode="[^"]+"/, `UpgradeCode="${upgradeCode(id)}"`);
+    if (f.endsWith(".wxs"))
+      next = next.replace(/UpgradeCode="[^"]+"/, `UpgradeCode="${upgradeCode(id)}"`);
     if (theirsRe) next = next.replace(theirsRe, upgradeCode(id));
     // the self-updater checks our releases, under our name
     if (basename(f) === "lib.rs" && !next.includes(`repo: "${app.repo}"`))
@@ -362,7 +392,12 @@ export async function rebrand(src, id) {
   // builds everything itself (tools/craft/release.yml)
   for (const f of existsSync(workflows) ? readdirSync(workflows) : []) rmSync(join(workflows, f));
   rmSync(join(src, ".github/dependabot.yml"), { force: true });
-  const flags = { web: app.web !== false, webFonts: !!app.webFonts && !!fonts, fonts: !!fonts, i18n };
+  const flags = {
+    web: app.web !== false,
+    webFonts: !!app.webFonts && !!fonts,
+    fonts: !!fonts,
+    i18n,
+  };
   const release = cut(readFileSync(join(import.meta.dirname, "release.yml"), "utf8"), flags)
     .replaceAll("__APP__", id)
     .replaceAll("__FONTS__", fonts);
@@ -384,29 +419,65 @@ function selfTest() {
   assert.equal(oklchHex(0, 0, 0), "#000000");
   assert.equal(upgradeCode("photocraft"), upgradeCode("photocraft"));
   assert.notEqual(upgradeCode("photocraft"), "D9660F32-2D0A-4ABE-B73D-17BE25F1542C");
-  assert.match(upgradeCode("pdfcraft"), /^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/);
+  assert.match(
+    upgradeCode("pdfcraft"),
+    /^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/,
+  );
   const t = (s) => rebrandText(s, "photocraft");
   assert.equal(t('APP_NAME: &str = "PhotoCraft";'), 'APP_NAME: &str = "crocwork Photo";');
-  assert.equal(t("PhotocraftApp PHOTOCRAFT_VERSION PhotoCraftData"), "PhotocraftApp PHOTOCRAFT_VERSION PhotoCraftData");
-  assert.equal(t("Copyright (c) 2026 Learning Machines LLC, ArtCraft"), "Copyright (c) 2026 Learning Machines LLC, ArtCraft");
-  assert.equal(t('"https://getartcraft.com/apps/photocraft"'), '"https://github.com/CROC101/crocwork-photo"');
+  assert.equal(
+    t("PhotocraftApp PHOTOCRAFT_VERSION PhotoCraftData"),
+    "PhotocraftApp PHOTOCRAFT_VERSION PhotoCraftData",
+  );
+  assert.equal(
+    t("Copyright (c) 2026 Learning Machines LLC, ArtCraft"),
+    "Copyright (c) 2026 Learning Machines LLC, ArtCraft",
+  );
+  assert.equal(
+    t('"https://getartcraft.com/apps/photocraft"'),
+    '"https://github.com/CROC101/crocwork-photo"',
+  );
   assert.equal(t("http://ns.getartcraft.com/x/1.0/"), "http://ns.getartcraft.com/x/1.0/");
-  assert.equal(t('"github.com/storytold/photocraft/issues"'), '"github.com/CROC101/crocwork-photo"');
+  assert.equal(
+    t('"github.com/storytold/photocraft/issues"'),
+    '"github.com/CROC101/crocwork-photo"',
+  );
   assert.equal(t('"https://discord.gg/artcraft"'), '"https://github.com/CROC101/crocwork-photo"');
-  assert.equal(t('hyperlink_to("getartcraft.com/apps/photocraft", u)'), 'hyperlink_to("github.com/CROC101/crocwork-photo", u)');
+  assert.equal(
+    t('hyperlink_to("getartcraft.com/apps/photocraft", u)'),
+    'hyperlink_to("github.com/CROC101/crocwork-photo", u)',
+  );
   assert.equal(t('"discord.gg/artcraft — help"'), '"github.com/CROC101/crocwork-photo — help"');
-  assert.equal(t('("Website", "ArtCrafts webbplats") ArtCraftTheme'), '("Website", "crocwork webbplats") ArtCraftTheme');
+  assert.equal(
+    t('("Website", "ArtCrafts webbplats") ArtCraftTheme'),
+    '("Website", "crocwork webbplats") ArtCraftTheme',
+  );
   assert.equal(t("github.com/storytold/craft-libs"), "github.com/storytold/craft-libs");
-  assert.equal(t("github.com/storytold/photocraft/pull/9703"), "github.com/storytold/photocraft/pull/9703");
-  assert.equal(t('"https://github.com/storytold/photocraft"'), '"https://github.com/CROC101/crocwork-photo"');
+  assert.equal(
+    t("github.com/storytold/photocraft/pull/9703"),
+    "github.com/storytold/photocraft/pull/9703",
+  );
+  assert.equal(
+    t('"https://github.com/storytold/photocraft"'),
+    '"https://github.com/CROC101/crocwork-photo"',
+  );
   assert.equal(t("made by the ArtCraft team"), "made by the crocwork team");
   assert.equal(t('author = "PhotoCraft contributors"'), 'author = "PhotoCraft contributors"');
   assert.equal(t("    PhotoCraft,"), "    PhotoCraft,");
-assert.equal(t("var PhotoCraft = (function () {"), "var PhotoCraft = (function () {");
-assert.equal(t('"x" => Kind::PhotoCraft, // PhotoCraft file'), '"x" => Kind::PhotoCraft, // crocwork Photo file');
-assert.equal(t("Add-Type -Namespace PhotoCraft -Name S; [PhotoCraft.S]::X()"), "Add-Type -Namespace PhotoCraft -Name S; [PhotoCraft.S]::X()");
-assert.equal(t("PhotoCraft is a photo editor. Use PhotoCraft, then"), "crocwork Photo is a photo editor. Use crocwork Photo, then");
-assert.equal(t("/Applications/PhotoCraft.app/Contents"), "/Applications/PhotoCraft.app/Contents");
+  assert.equal(t("var PhotoCraft = (function () {"), "var PhotoCraft = (function () {");
+  assert.equal(
+    t('"x" => Kind::PhotoCraft, // PhotoCraft file'),
+    '"x" => Kind::PhotoCraft, // crocwork Photo file',
+  );
+  assert.equal(
+    t("Add-Type -Namespace PhotoCraft -Name S; [PhotoCraft.S]::X()"),
+    "Add-Type -Namespace PhotoCraft -Name S; [PhotoCraft.S]::X()",
+  );
+  assert.equal(
+    t("PhotoCraft is a photo editor. Use PhotoCraft, then"),
+    "crocwork Photo is a photo editor. Use crocwork Photo, then",
+  );
+  assert.equal(t("/Applications/PhotoCraft.app/Contents"), "/Applications/PhotoCraft.app/Contents");
   assert.equal(rebrandText("PdfCraft PDF workbench", "pdfcraft"), "crocwork PDF workbench");
   const ico = packIco([{ size: 16, data: Buffer.from("png") }]);
   assert.equal(ico.readUInt16LE(4), 1);

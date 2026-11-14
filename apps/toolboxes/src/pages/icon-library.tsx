@@ -101,7 +101,12 @@ export default function IconLibrary() {
         </label>
 
         <nav className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
-          <button type="button" aria-pressed={!collection} onClick={() => setCollection(undefined)} className={chip(!collection)}>
+          <button
+            type="button"
+            aria-pressed={!collection}
+            onClick={() => setCollection(undefined)}
+            className={chip(!collection)}
+          >
             {COPY.all[lang]}
           </button>
           {COLLECTIONS.map((c) => (
@@ -125,7 +130,11 @@ export default function IconLibrary() {
             aria-live="polite"
             className="mt-6 flex flex-wrap items-center gap-4 rounded-2xl border border-outline-variant bg-surface-container-lowest p-4"
           >
-            <img src={`/icons/${picked[0]}.svg`} alt="" className="size-20 rounded-xl bg-white p-3" />
+            <img
+              src={`/icons/${picked[0]}.svg`}
+              alt=""
+              className="size-20 rounded-xl bg-white p-3"
+            />
             <div className="min-w-0 flex-1">
               <h2 className="text-lg font-semibold">{picked[1]}</h2>
               <p className="font-mono text-xs text-on-surface-variant">
@@ -137,7 +146,11 @@ export default function IconLibrary() {
               onClick={() => void copy(picked[0])}
               className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-primary-container px-4 text-sm text-on-primary"
             >
-              {copied ? <Check aria-hidden className="size-4" /> : <Copy aria-hidden className="size-4" />}
+              {copied ? (
+                <Check aria-hidden className="size-4" />
+              ) : (
+                <Copy aria-hidden className="size-4" />
+              )}
               {copied ? COPY.copied[lang] : COPY.copy[lang]}
             </button>
             <a
@@ -167,7 +180,12 @@ export default function IconLibrary() {
                   onClick={() => setPicked(r)}
                   className="lift flex w-full flex-col items-center gap-2 rounded-xl border border-outline-variant/70 bg-surface-container-lowest p-3 aria-pressed:border-primary"
                 >
-                  <img src={`/icons/${r[0]}.svg`} alt="" loading="lazy" className="size-10 object-contain" />
+                  <img
+                    src={`/icons/${r[0]}.svg`}
+                    alt=""
+                    loading="lazy"
+                    className="size-10 object-contain"
+                  />
                   <span className="line-clamp-1 w-full text-center text-xs">{r[1]}</span>
                 </button>
               </li>
@@ -186,7 +204,10 @@ export default function IconLibrary() {
 
         <p className="mt-10 max-w-3xl text-sm text-on-surface-variant">
           {COPY.trademark[lang]} ·{" "}
-          <a href="/icons/NOTICE.txt" className="font-medium text-primary underline underline-offset-4">
+          <a
+            href="/icons/NOTICE.txt"
+            className="font-medium text-primary underline underline-offset-4"
+          >
             {COPY.notice[lang]}
           </a>
         </p>

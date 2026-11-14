@@ -41,9 +41,14 @@ export function AppShell() {
             iconOnly
             className="size-9 justify-center rounded-md hover:bg-accent"
           />
-          <Link to="/" className="mr-auto flex items-baseline gap-1.5 rounded-md px-1 font-black tracking-tight">
+          <Link
+            to="/"
+            className="mr-auto flex items-baseline gap-1.5 rounded-md px-1 font-black tracking-tight"
+          >
             crocwork
-            <span className="hidden font-mono text-xs font-medium text-primary uppercase sm:inline">toolboxes</span>
+            <span className="hidden font-mono text-xs font-medium text-primary uppercase sm:inline">
+              toolboxes
+            </span>
           </Link>
           <nav aria-label="เมนูหลัก" className="flex items-center">
             {NAV.map((item) => {
