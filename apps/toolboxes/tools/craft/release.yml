@@ -1,0 +1,147 @@
+# crocwork's build of this app: web (WebAssembly zip) and Windows x64 (MSI + portable zip),
+# published as a GitHub release of this repository. Written by rebrand.mjs in
+# CROC101/software-empire (apps/toolboxes/tools/craft); change it there, not here.
+# Every action is pinned to a commit and nothing calls another repository's workflow.
+# The builds are unsigned: Windows SmartScreen warns on first run.
+# rebrand.mjs keeps or cuts each "# >name" ... "# <name" block for the app ("!name": when off).
+name: crocwork release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, e.g. v0.3.0-crocwork.1 (empty: build only)"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: crocwork-release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  # >fonts
+  CRAFT_FONTS_REF: __FONTS__
+  # <fonts
+  TRUNK_VERSION: 0.21.14
+  TRUNK_SHA256: f2b4680cd239693a646a2795e4633c625328d7b2a044fbe749fa3a2fe9e7036b
+
+jobs:
+  # >web
+  web:
+    name: Web (wasm)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      # >i18n
+      CRAFT_I18N_DIR: ${{ github.workspace }}/craft-i18n
+      CRAFT_I18N_REQUIRED: "1"
+      # <i18n
+      # >webFonts
+      CRAFT_FONTS_DIR: ${{ github.workspace }}/craft-fonts
+      CRAFT_FONTS_REQUIRED: "1"
+      # <webFonts
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # >webFonts
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: storytold/craft-fonts
+          ref: ${{ env.CRAFT_FONTS_REF }}
+          path: craft-fonts
+          persist-credentials: false
+      # <webFonts
+      - uses: step-security/dtolnay-rust-toolchain@8dd607977d06adf4ed49b190381e74c17a9dd25f # v1.0.0
+        with:
+          toolchain: stable
+          targets: wasm32-unknown-unknown
+      - uses: step-security/rust-cache@8871c8ba063416da7c32246932ea6ae08700453e # v2.9.2
+        with:
+          key: crocwork-web
+      - name: Install trunk (checksum pinned)
+        run: |
+          curl -fsSLo trunk.tgz "https://github.com/trunk-rs/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz"
+          echo "${TRUNK_SHA256}  trunk.tgz" | sha256sum -c -
+          tar -xzf trunk.tgz -C "$HOME/.cargo/bin" trunk
+          rm trunk.tgz
+      - run: packaging/web/package.sh
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-web
+          path: dist/release/*
+          if-no-files-found: error
+  # <web
+
+  windows:
+    name: Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 120
+    env:
+      # >i18n
+      CRAFT_I18N_DIR: ${{ github.workspace }}\craft-i18n
+      CRAFT_I18N_REQUIRED: "1"
+      # <i18n
+      # >fonts
+      CRAFT_FONTS_DIR: ${{ github.workspace }}\craft-fonts
+      CRAFT_FONTS_REQUIRED: "1"
+      # <fonts
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # >fonts
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: storytold/craft-fonts
+          ref: ${{ env.CRAFT_FONTS_REF }}
+          path: craft-fonts
+          persist-credentials: false
+      # <fonts
+      - uses: step-security/dtolnay-rust-toolchain@8dd607977d06adf4ed49b190381e74c17a9dd25f # v1.0.0
+        with:
+          toolchain: stable
+          targets: x86_64-pc-windows-msvc
+      - uses: step-security/rust-cache@8871c8ba063416da7c32246932ea6ae08700453e # v2.9.2
+        with:
+          key: crocwork-windows-x64
+      - name: Install WiX 5.0.2
+        run: |
+          dotnet tool install --global wix --version 5.0.2
+          wix extension add -g WixToolset.UI.wixext/5.0.2 WixToolset.Util.wixext/5.0.2
+      - run: packaging/windows/package.ps1 -Arch x64
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-windows-x64
+          path: dist/release/*
+          if-no-files-found: error
+
+  release:
+    if: inputs.tag != ''
+    # >web
+    needs: [web, windows]
+    # <web
+    # >!web
+    needs: [windows]
+    # <!web
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          cd dist && sha256sum * > SHA256SUMS
+          gh release create "$TAG" * --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "$TAG" \
+            --notes "Unsigned builds of this app (see the workflow for which). Checksums in SHA256SUMS."

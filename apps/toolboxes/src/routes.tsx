@@ -13,6 +13,7 @@ import { findTool, IMAGE_TOOL_SLUGS } from "@/lib/tools/registry";
 
 // tools with their own page are split out — the home page doesn't download a PDF parser
 const ImageTool = lazy(() => import("@/pages/image-tool"));
+const IconLibrary = lazy(() => import("@/pages/icon-library"));
 const PAGE_TOOLS: Record<string, ComponentType> = {
   "image-compressor": lazy(() => import("@/pages/image-compressor")),
   "file-comparison": lazy(() => import("@/pages/file-comparison")),
@@ -122,6 +123,17 @@ export const router = createBrowserRouter([
           <>
             {title("แอปทำงานครบชุด")}
             <AppsView />
+          </>
+        ),
+      },
+      {
+        path: "icons",
+        element: (
+          <>
+            {title("คลังไอคอน")}
+            <Suspense fallback={<Loading />}>
+              <IconLibrary />
+            </Suspense>
           </>
         ),
       },

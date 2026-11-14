@@ -12,5 +12,6 @@ export default [
       "@typescript-eslint/no-misused-spread": "off",
     },
   },
-  globalIgnores(["dist/**", "public/apps/*/"]),
+  // public/craft: release builds (minified, downloaded by tools/craft/web.mjs)
+  globalIgnores(["dist/**", "public/apps/*/", "public/craft/"]),
 ];

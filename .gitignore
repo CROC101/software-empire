@@ -41,3 +41,6 @@ graphify-out/
 
 # design-taste-frontend working files (screenshots, reports)
 .taste-skill/
+
+# Craft web builds: downloaded by apps/toolboxes/tools/craft/web.mjs (deploy runs it), never committed
+apps/toolboxes/public/craft/
