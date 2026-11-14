@@ -50,6 +50,9 @@ pnpm db:types        # สร้าง packages/core/src/database.types.ts ใ�
 pnpm --filter @empire/hub dev        # http://localhost:3000
 pnpm --filter @empire/toolboxes dev  # http://localhost:3003
 node apps/toolboxes/tools/apps.mjs [clone] [app...]  # สร้างแอปจาก CROC101/crocwork-apps ใหม่ลง public/apps (Node 22.12+) · `... stamp` = ต่อ ?v= ใหม่หลังแก้ sdk/css · `... brand` = เปลี่ยนชื่อ Puter เป็น crocwork + ลิงก์หน้าเอกสารให้อยู่ใต้ /apps/<app>/ (build ทำให้เอง)
+node apps/toolboxes/tools/icons.mjs   # สร้างคลังไอคอน /icons ใหม่จาก theSVG (เฉพาะไอคอนที่สัญญาอนุญาตให้แจกต่อ) ลง public/icons
+node apps/toolboxes/tools/craft/rebrand.mjs <clone> <app>  # ทำ fork ของแอป storytold Craft ให้เป็น crocwork (ชื่อ ไอคอน ตัวติดตั้ง คำแปล) · --self-test
+node apps/toolboxes/tools/craft/web.mjs [slug]  # ลงเว็บบิลด์ของแอป Craft จาก release ของ fork (tag ใน src/lib/craft-apps.ts) ลง public/craft/<slug>/ ตรวจ SHA256 ก่อน · public/craft ไม่อยู่ใน git (deploy.yml รันให้เอง) · wasm ใหญ่ถูกบีบเป็นชิ้นละ ≤ 20 MiB เพราะ Cloudflare รับไฟล์ละไม่เกิน 25 MiB (รู้จัก index.html 2 แบบ: Trunk และ EffectCraft; แบบอื่น web.mjs หยุดเอง)
 pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็อกอิน)
 pnpm --filter @empire/community dev  # http://localhost:3001 (ต้องล็อกอิน)
 pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จริง (ต้อง db:start)

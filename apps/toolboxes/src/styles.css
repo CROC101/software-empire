@@ -100,3 +100,42 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* water tile behind an app's glyph: water is the only gradient (crocwork-design 2b) */
+@layer components {
+  .water-tile {
+    background-image: linear-gradient(
+      160deg,
+      var(--em-sky-500),
+      var(--em-blue-500) 55%,
+      var(--em-blue-700)
+    );
+    color: white;
+  }
+  .dark .water-tile {
+    background-image: linear-gradient(
+      160deg,
+      var(--em-blue-500),
+      var(--em-blue-700) 60%,
+      var(--em-ink-975)
+    );
+  }
+}
+
+/* app tiles bob on the hero's water: a slow swell, transform only */
+@layer components {
+  .float-tile {
+    animation: float-tile 7s ease-in-out infinite;
+  }
+  @keyframes float-tile {
+    50% {
+      translate: 0 -10px;
+      rotate: 2deg;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .float-tile {
+      animation: none;
+    }
+  }
+}

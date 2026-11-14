@@ -19,7 +19,7 @@ export const TOOLBOXES_HOME: CmsPage = {
           kind: "text",
           label: "คำอธิบาย",
           multiline: true,
-          default: "สำหรับนักพัฒนาและทุกคน — แปลง คำนวณ สร้าง ตรวจ ทำงานในเบราว์เซอร์ทั้งหมด",
+          default: "สำหรับนักพัฒนาและทุกคน: แปลง คำนวณ สร้าง ตรวจ ทำงานในเบราว์เซอร์ทั้งหมด",
         },
         perk1: { kind: "text", label: "จุดเด่น 1", default: "ข้อมูลไม่ออกจากเครื่อง" },
         perk2: { kind: "text", label: "จุดเด่น 2", default: "ผลลัพธ์ทันทีขณะพิมพ์" },

@@ -11,6 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { readLang, setLang, type Lang } from "@empire/core/lang";
+import { CraftLineup } from "@/components/apps/craft-lineup";
 import apps from "@/lib/apps.json";
 
 type Text = Record<Lang, string>;
@@ -36,6 +37,12 @@ const COPY = {
   notices: { th: "ประกาศซอฟต์แวร์บุคคลที่สาม", en: "Third-party notices" },
   agpl: { th: "แอปที่มีป้าย AGPL เป็นโอเพนซอร์ส:", en: "Apps tagged AGPL are open source:" },
   source: { th: "ซอร์สโค้ด", en: "source code" },
+  lineup: { th: "แอปหลักของ crocwork", en: "crocwork's own apps" },
+  lineupIntro: {
+    th: "ใช้ในเว็บได้เลย หรือติดตั้งลงเครื่อง Windows ก็ได้",
+    en: "Use them on the web, or install them on Windows.",
+  },
+  more: { th: "แอปทำงานอื่นๆ", en: "More work apps" },
 } satisfies Record<string, Text>;
 
 // AGPL §13: users of the AGPL apps get their source (the commit tools/apps.mjs builds)
@@ -87,6 +94,24 @@ export function AppsView() {
             ))}
           </div>
         </header>
+
+        <section aria-labelledby="lineup" className="mt-8">
+          <p className="font-mono text-xs tracking-[0.2em] text-on-surface-variant uppercase">
+            01 / lineup
+          </p>
+          <h2 id="lineup" className="mt-1 font-display text-2xl font-black">
+            {COPY.lineup[lang]}
+          </h2>
+          <p className="mt-1 mb-5 text-on-surface-variant">{COPY.lineupIntro[lang]}</p>
+          <CraftLineup lang={lang} />
+        </section>
+
+        <h2 className="mt-12 font-display text-2xl font-black">
+          <span className="block font-mono text-xs font-normal tracking-[0.2em] text-on-surface-variant uppercase">
+            02 / apps
+          </span>
+          {COPY.more[lang]}
+        </h2>
 
         <nav
           aria-label={COPY.categories[lang]}

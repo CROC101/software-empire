@@ -111,6 +111,12 @@ jobs:
         if: matrix.kind == 'next'
         run: pnpm --filter @empire/${{ matrix.app }} cf:build
 
+      # the Craft web builds are not in git: fetch each fork's release (SHA256-checked) into
+      # public/craft before vite copies public/
+      - name: Craft web builds (toolboxes)
+        if: matrix.app == 'toolboxes'
+        run: node apps/toolboxes/tools/craft/web.mjs
+
       - name: build (spa)
         if: matrix.kind == 'spa'
         run: |

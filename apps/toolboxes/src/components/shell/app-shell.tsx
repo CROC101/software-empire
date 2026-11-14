@@ -1,7 +1,6 @@
-import { Button, cn } from "@empire/ui";
-import { HubSwitcher } from "@empire/ui";
+import { Button, cn, HubSwitcher, TearFooter } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
-import { AppWindow, House, LayoutGrid, LogIn, LogOut, Star } from "lucide-react";
+import { AppWindow, House, LayoutGrid, LogIn, LogOut, Shapes, Star } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router";
 import { env } from "@/lib/env";
 import { signInUrl, signOut, useSession } from "@/lib/session";
@@ -11,6 +10,7 @@ const NAV = [
   { to: "/", label: "หน้าหลัก", icon: House },
   { to: "/tools", label: "เครื่องมือ", icon: LayoutGrid },
   { to: "/apps", label: "แอป", icon: AppWindow },
+  { to: "/icons", label: "ไอคอน", icon: Shapes },
   { to: "/favorites", label: "รายการโปรด", icon: Star },
 ];
 
@@ -31,7 +31,7 @@ export function AppShell() {
       >
         ข้ามไปเนื้อหา
       </a>
-      <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
+      <header className="vt-top sticky top-0 z-40 border-b border-border/60 bg-background/75 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-1 px-2 sm:gap-2 sm:px-6">
           <HubSwitcher
             hubUrl={env.hubUrl}
@@ -41,8 +41,9 @@ export function AppShell() {
             iconOnly
             className="size-9 justify-center rounded-md hover:bg-accent"
           />
-          <Link to="/" className="mr-auto rounded-md px-1 font-bold tracking-tight">
-            Toolboxes
+          <Link to="/" className="mr-auto flex items-baseline gap-1.5 rounded-md px-1 font-black tracking-tight">
+            crocwork
+            <span className="hidden font-mono text-xs font-medium text-primary uppercase sm:inline">toolboxes</span>
           </Link>
           <nav aria-label="เมนูหลัก" className="flex items-center">
             {NAV.map((item) => {
@@ -53,7 +54,7 @@ export function AppShell() {
                   to={item.to}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "inline-flex h-10 items-center gap-2 rounded-md px-3 text-sm hover:bg-muted",
+                    "inline-flex h-10 items-center gap-2 rounded-md px-2.5 text-sm hover:bg-muted sm:px-3",
                     active ? "font-semibold text-foreground" : "text-muted-foreground",
                   )}
                 >
@@ -69,8 +70,51 @@ export function AppShell() {
       <div id="content" className="flex-1">
         <Outlet />
       </div>
+      <SiteFooter />
       <FavoritesSync />
     </div>
+  );
+}
+
+const year = new Date().getFullYear();
+
+/** The studio's torn-poster footer, shared by every page of the toolbox. */
+function SiteFooter() {
+  return (
+    <TearFooter
+      brand="crocwork"
+      ink
+      name="toolboxes"
+      logo={<AppWindow aria-hidden className="size-6" />}
+      logoHref="/"
+      columns={[
+        {
+          title: "ในกล่อง",
+          links: [
+            { label: "เครื่องมือ", href: "/tools" },
+            { label: "แอป", href: "/apps" },
+          ],
+          // two links: on phones the torn paper covers a third line
+          cta: { label: "ไอคอน", href: "/icons" },
+        },
+        {
+          title: "crocwork",
+          links: [
+            { label: "หน้าหลัก crocwork", href: env.hubUrl },
+            { label: "ซอร์สแอป", href: "https://github.com/CROC101" },
+          ],
+          cta: { label: "กลับ hub", href: env.hubUrl },
+        },
+      ]}
+      sideLinks={[
+        { label: "GitHub", href: "https://github.com/CROC101", icon: "github" },
+        { label: "crocwork", href: env.hubUrl, icon: "globe" },
+      ]}
+      timeZone="Asia/Bangkok"
+      timeLabel="กรุงเทพฯ"
+      copyright={`© ${String(year + 543)} crocwork · ประกาศลิขสิทธิ์ของโค้ดต้นทางอยู่ในแต่ละแอป`}
+      labels={{ top: "กลับขึ้นบน", pin: "หมุด", copied: "คัดลอกแล้ว", copy: "คัดลอก" }}
+    />
   );
 }
 
