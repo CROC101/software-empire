@@ -15,3 +15,6 @@ createRoot(root).render(
     </SessionProvider>
   </StrictMode>,
 );
+
+// cloud save: brings work saved on other devices back while no app page is open
+void import("./sync/main");

@@ -1,10 +1,13 @@
-import { Button, cn, HubSwitcher, TearFooter } from "@empire/ui";
+import { Button, cn, HubSwitcher } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
 import { AppWindow, House, LayoutGrid, LogIn, LogOut, Shapes, Star } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router";
 import { env } from "@/lib/env";
 import { signInUrl, signOut, useSession } from "@/lib/session";
 import { FavoritesSync } from "@/lib/tools/favorites-sync";
+import { Dock } from "@/components/ui/dock";
+import { KineticMenu } from "@/components/ui/kinetic-menu";
+import SignaturePenFooter from "./signature-pen-footer";
 
 const NAV = [
   { to: "/", label: "หน้าหลัก", icon: House },
@@ -12,6 +15,16 @@ const NAV = [
   { to: "/apps", label: "แอป", icon: AppWindow },
   { to: "/icons", label: "ไอคอน", icon: Shapes },
   { to: "/favorites", label: "รายการโปรด", icon: Star },
+];
+
+// the full-screen menu: every page, plus the ones too small for the bar
+const MENU = [
+  { to: "/", label: "หน้าหลัก", hint: "home" },
+  { to: "/tools", label: "เครื่องมือ", hint: "tools" },
+  { to: "/apps", label: "แอป", hint: "apps" },
+  { to: "/icons", label: "ไอคอน", hint: "icons" },
+  { to: "/favorites", label: "รายการโปรด", hint: "favorites" },
+  { to: "/licenses", label: "สัญญาอนุญาต", hint: "licenses" },
 ];
 
 function isActive(pathname: string, to: string) {
@@ -24,7 +37,8 @@ export function AppShell() {
   const { pathname } = useLocation();
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    // pb: the phone dock floats over the bottom of the page
+    <div className="flex min-h-dvh flex-col pb-24 sm:pb-0">
       <a
         href="#content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-card focus:px-4 focus:py-2"
@@ -50,7 +64,8 @@ export function AppShell() {
               toolboxes
             </span>
           </Link>
-          <nav aria-label="เมนูหลัก" className="flex items-center">
+          {/* phones get the dock at the bottom instead */}
+          <nav aria-label="เมนูหลัก" className="hidden items-center sm:flex">
             {NAV.map((item) => {
               const active = isActive(pathname, item.to);
               return (
@@ -64,16 +79,36 @@ export function AppShell() {
                   )}
                 >
                   <item.icon aria-hidden className="size-4" />
-                  <span className="sr-only sm:not-sr-only">{item.label}</span>
+                  <span className="sr-only lg:not-sr-only">{item.label}</span>
                 </Link>
               );
             })}
           </nav>
+          <KineticMenu
+            links={MENU}
+            footer={
+              <>
+                ทุกเครื่องมือทำงานในเบราว์เซอร์ของคุณ ·{" "}
+                <a
+                  href={env.hubUrl}
+                  className="font-medium text-primary underline underline-offset-4"
+                >
+                  crocwork hub
+                </a>
+              </>
+            }
+          />
           <Account />
         </div>
       </header>
       <div id="content" className="flex-1">
         <Outlet />
+      </div>
+      <div className="vt-top pointer-events-none fixed inset-x-0 bottom-3 z-40 flex justify-center sm:hidden">
+        <Dock
+          className="pointer-events-auto"
+          items={NAV.map((item) => ({ ...item, active: isActive(pathname, item.to) }))}
+        />
       </div>
       <SiteFooter />
       <FavoritesSync />
@@ -83,42 +118,35 @@ export function AppShell() {
 
 const year = new Date().getFullYear();
 
-/** The studio's torn-poster footer, shared by every page of the toolbox. */
+/** The closing sign-off shared by every page: the pen writes "crocwork", then the links settle in. */
 function SiteFooter() {
+  const { user } = useSession();
+  const { pathname, search } = useLocation();
   return (
-    <TearFooter
-      brand="crocwork"
-      ink
-      name="toolboxes"
-      logo={<AppWindow aria-hidden className="size-6" />}
-      logoHref="/"
-      columns={[
-        {
-          title: "ในกล่อง",
-          links: [
-            { label: "เครื่องมือ", href: "/tools" },
-            { label: "แอป", href: "/apps" },
-          ],
-          // two links: on phones the torn paper covers a third line
-          cta: { label: "ไอคอน", href: "/icons" },
-        },
-        {
-          title: "crocwork",
-          links: [
-            { label: "หน้าหลัก crocwork", href: env.hubUrl },
-            { label: "ซอร์สแอป", href: "https://github.com/CROC101" },
-          ],
-          cta: { label: "กลับ hub", href: env.hubUrl },
-        },
+    <SignaturePenFooter
+      word="crocwork"
+      title="ขอบคุณที่แวะมาใช้กล่องเครื่องมือ"
+      description={
+        user
+          ? "งานในแอปของคุณซิงก์เข้าบัญชีแล้ว เปิดเครื่องไหนก็ทำต่อได้"
+          : "ทุกอย่างทำงานในเบราว์เซอร์ของคุณ ล็อกอินที่ hub ครั้งเดียว แล้วงานในแอปจะตามไปทุกเครื่อง"
+      }
+      actions={[
+        user
+          ? { label: "กลับ hub", href: env.hubUrl }
+          : { label: "เข้าสู่ระบบ", href: signInUrl(new URL(pathname + search, env.siteUrl).href) },
+        { label: "ดูแอปทั้งหมด", href: "/apps" },
       ]}
-      sideLinks={[
-        { label: "GitHub", href: "https://github.com/CROC101", icon: "github" },
-        { label: "crocwork", href: env.hubUrl, icon: "globe" },
+      brand="crocwork toolboxes"
+      links={[
+        { label: "เครื่องมือ", href: "/tools" },
+        { label: "แอป", href: "/apps" },
+        { label: "ไอคอน", href: "/icons" },
+        { label: "สัญญาอนุญาต", href: "/licenses" },
+        { label: "crocwork hub", href: env.hubUrl },
       ]}
-      timeZone="Asia/Bangkok"
-      timeLabel="กรุงเทพฯ"
-      copyright={`© ${String(year + 543)} crocwork · ประกาศลิขสิทธิ์ของโค้ดต้นทางอยู่ในแต่ละแอป`}
-      labels={{ top: "กลับขึ้นบน", pin: "หมุด", copied: "คัดลอกแล้ว", copy: "คัดลอก" }}
+      legal={`© ${String(year + 543)} crocwork`}
+      height="min(88svh, 760px)"
     />
   );
 }

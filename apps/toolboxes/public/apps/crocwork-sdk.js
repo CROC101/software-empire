@@ -9,6 +9,11 @@
   // shared crocwork theme cookie wins over the app's own saved theme
   const theme = /(?:^|; )em-theme=(light|dark)/.exec(document.cookie)?.[1];
   if (theme) document.documentElement.dataset.theme = theme;
+  // cloud save (src/sync): signed in at the hub, this app's data follows the account
+  const sync = document.createElement("script");
+  sync.type = "module";
+  sync.src = new URL("../sync/crocwork-sync.js", document.currentScript?.src ?? location.href).href;
+  (document.head || document.documentElement).append(sync);
   const db = new Promise((ok, fail) => {
     const req = indexedDB.open(`crocwork-${app}`, 1);
     req.onupgradeneeded = () => {

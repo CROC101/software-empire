@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import apps from "./apps.json";
-import { CRAFT_APPS } from "./craft-apps";
+import { CRAFT_APPS, downloads } from "./craft-apps";
 
 const root = join(import.meta.dirname, "../../public/craft");
 // apps with a web build; AniCraft ships only the Windows installer
@@ -38,5 +38,14 @@ describe("crocwork Craft apps", () => {
   it("pairs each Pro app with a quick everything app that exists", () => {
     const slugs = new Set(apps.map((a) => a.slug));
     for (const a of CRAFT_APPS) if (a.light) expect(slugs.has(a.light), a.slug).toBe(true);
+  });
+
+  it("links every released app's MSI and portable zip at its tag", () => {
+    expect(downloads(CRAFT_APPS[0])).toEqual({
+      msi: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.3/photocraft-0.23.1-windows-x64.msi",
+      zip: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.3/photocraft-0.23.1-windows-x64-portable.zip",
+    });
+    for (const a of CRAFT_APPS.filter((a) => a.repo)) expect(downloads(a), a.slug).toBeDefined();
+    expect(downloads({ ...CRAFT_APPS[0], tag: "latest" })).toBeUndefined();
   });
 });

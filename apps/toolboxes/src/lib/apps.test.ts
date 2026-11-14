@@ -90,10 +90,12 @@ describe("crocwork apps", () => {
       expect(text.toLowerCase(), f).not.toContain("github.com/heyputer");
       // only an AGPL app may carry AGPL code
       if (!isAgpl(slug)) expect(text, f).not.toMatch(/GNU Affero/i);
-      // shortcut: puter.com/privacy, /terms and the developer docs stay until crocwork has its own
+      // no hosted puter.com page; js.puter.com is only probed for (never loaded), and the
+      // spreadsheet's relationship URI is an identifier written into its files, not a link
       expect(text, f).not.toMatch(
-        /https:\/\/(www\.|apps\.|builder\.)?puter\.com\/?["'`]|(captable|inventory)\.puter\.com/,
+        /https:\/\/(?!js\.)([a-z-]+\.)?puter\.com(?!\/spreadsheet\/relationships\/)/,
       );
+      expect(text.toLowerCase(), f).not.toMatch(/storytold|getartcraft/);
     }
   });
 });
