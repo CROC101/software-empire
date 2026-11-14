@@ -123,7 +123,27 @@ export const APPS = {
     glyph:
       '<path d="m18 13-.654-4.736a4 4 0 00-2.756-3.266l-9.163-2.9a2 2 0 00-2.017.493l-.82.819a2 2 0 00-.492 2.017l2.9 9.163a4 4 0 003.266 2.756L13 18"/><path d="M18.648 12.352a1.205 1.205 0 011.704 0l1.296 1.296a1.205 1.205 0 010 1.704l-6.296 6.296a1.205 1.205 0 01-1.704 0l-1.296-1.296a1.205 1.205 0 010-1.704z"/><path d="m3 3 6.586 6.586"/><circle cx="11" cy="11" r="2"/>',
   },
+  lightcraft: {
+    upstream: "LightCraft",
+    title: "crocwork Darkroom",
+    repo: "CROC101/crocwork-darkroom",
+    webFonts: true,
+    glyph:
+      '<circle cx="12" cy="12" r="10"/><path d="m14.31 8 5.74 9.94"/><path d="M9.69 8h11.48"/><path d="m7.38 12 5.74-9.94"/><path d="M9.69 16 3.95 6.06"/><path d="M14.31 16H2.83"/><path d="m16.62 12-5.74 9.94"/>',
+  },
+  soundcraft: {
+    upstream: "SoundCraft",
+    title: "crocwork Sound",
+    repo: "CROC101/crocwork-sound",
+    glyph:
+      '<path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2"/>',
+  },
 };
+
+// community links go to the owner's server, the one every crocwork app shows
+export const DISCORD = /"Discord", href: "(https:\/\/discord\.gg\/\w+)"/.exec(
+  readFileSync(join(root, "packages/core/src/subsystems.ts"), "utf8"),
+)[1];
 
 // Whole words only: PhotocraftApp, PHOTOCRAFT_VERSION and ns.getartcraft.com (an XMP namespace
 // saved inside files) stay as they are.
@@ -159,12 +179,10 @@ export function rebrandText(text, id, { inflected = false } = {}) {
             )
             .replace(/\bLearning Machines LLC\b/g, "crocwork")
             .replace(/https:\/\/getartcraft\.com[\w./-]*/g, url)
-            .replace(/https:\/\/discord\.gg\/artcraft\b/g, url)
+            .replace(/https:\/\/discord\.gg\/artcraft\b/g, DISCORD)
             // the same addresses shown as link text
-            .replace(
-              /(?<![\w./])(?:getartcraft\.com(?:\/apps\/\w+)?|discord\.gg\/artcraft)\b/g,
-              url.slice(8),
-            )
+            .replace(/(?<![\w./])getartcraft\.com(?:\/apps\/\w+)?\b/g, url.slice(8))
+            .replace(/(?<![\w./])discord\.gg\/artcraft\b/g, DISCORD.slice(8))
             // links to upstream's own pull requests, issues and runs stay: that history is theirs
             .replace(
               new RegExp(
@@ -442,12 +460,12 @@ function selfTest() {
     t('"github.com/storytold/photocraft/issues"'),
     '"github.com/CROC101/crocwork-photo"',
   );
-  assert.equal(t('"https://discord.gg/artcraft"'), '"https://github.com/CROC101/crocwork-photo"');
+  assert.equal(t('"https://discord.gg/artcraft"'), '"https://discord.gg/sNYsVbh3v"');
   assert.equal(
     t('hyperlink_to("getartcraft.com/apps/photocraft", u)'),
     'hyperlink_to("github.com/CROC101/crocwork-photo", u)',
   );
-  assert.equal(t('"discord.gg/artcraft — help"'), '"github.com/CROC101/crocwork-photo — help"');
+  assert.equal(t('"discord.gg/artcraft — help"'), '"discord.gg/sNYsVbh3v — help"');
   assert.equal(
     t('("Website", "ArtCrafts webbplats") ArtCraftTheme'),
     '("Website", "crocwork webbplats") ArtCraftTheme',
