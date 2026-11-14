@@ -85,7 +85,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "documents",
     repo: "CROC101/crocwork-word",
     asset: "wordcraft",
-    tag: "v0.18.1-crocwork.3",
+    tag: "v0.18.1-crocwork.4",
   },
   {
     slug: "slides",
