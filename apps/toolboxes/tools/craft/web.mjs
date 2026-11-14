@@ -45,11 +45,16 @@ export const ALLOWED =
   /^(index\.html|[\w.-]+-[0-9a-f]{16}\.(ico|png)|[a-z]+_zh_hans\.otf|[\w-]+-web(-boot)?-[0-9a-f]+(\.js|_bg\.wasm)|[\w-]+-ocr-worker-[0-9a-f]+(\.js|_loader\.js|_bg\.wasm)|models\/([\w-]+\.onnx(\.LICENCE\.txt)?|ATTRIBUTION\.txt)|[a-z]+_web(\.js|_bg\.wasm)|(worker|sw|audio-worklet)\.js|favicon\.svg|icon-\d+\.png|manifest\.webmanifest|app\/(parts\.txt|[\w-]+\.js|[\w-]+-[0-9a-f]+\.part-[a-z]{2})|snippets\/[\w./-]+\.js|icons\/(\d+\/)?[\w.]+\.(png|svg)|fonts\/(list\.txt|[a-z0-9-]+\/(OFL\.txt|[\w-]+\.[ot]tf))|licenses\/([\w-]+\/)+[\w-]+(\.txt)?|(ATTRIBUTION|ASSETS)\.md|OFL-[\w-]+\.txt|NOTICE|LICENSE-(MIT|APACHE))$/;
 // host configs and hosting notes for other servers: this site has its own (public/_headers);
 // README.md is the upstream project page (its name, its links), not a licence text
-export const DROP = /^(_headers|\.htaccess|HOSTING\.md|README\.md|.+\.(gz|br))$/;
+export const DROP = /^(_headers|\.htaccess|HOSTING\.md|README\.md|.+\.(gz|br|map))$/;
+// a Next.js static export (crocwork Video): one folder per page with its RSC .txt files, hashed
+// chunks under _next/static, and the public/ folders the editor draws from
+export const NEXT_ALLOWED =
+  /^((([\w-]+)\/)?(index\.(html|txt)|__next\.[\w.-]+\.txt)|404\.html|_next\/static\/(chunks\/[\w-]+\.(js|css|wasm)|media\/[\w.-]+\.(woff2?|png|svg|jpg|webp)|[\w-]+\/(_buildManifest\.js|_ssgManifest\.js|_clientMiddlewareManifest\.json))|(flags|shapes|effects|platform-guides|icons|logos\/[\w-]+)\/[\w.-]+\.(svg|png|jpg|webp)|favicon\.ico|manifest\.json|browserconfig\.xml|NOTICE|LICENSE-(MIT|APACHE))$/;
 
 export function check(files) {
+  const allowed = files.some((f) => f.startsWith("_next/static/")) ? NEXT_ALLOWED : ALLOWED;
   for (const f of files)
-    assert.ok(DROP.test(f) || ALLOWED.test(f), `unexpected file in the web build: ${f}`);
+    assert.ok(DROP.test(f) || allowed.test(f), `unexpected file in the web build: ${f}`);
   assert.ok(files.includes("index.html") && files.includes("NOTICE"), "not a Craft web build");
   // models are third-party (pdf OCR: CC-BY-SA-4.0): each ships with its licence text
   for (const f of files.filter((f) => f.endsWith(".onnx")))
@@ -170,6 +175,11 @@ async function place(slug, repo, tag) {
     const page = readFileSync(html, "utf8");
     const title = /<title>([^<]*)<\/title>/.exec(page)?.[1].trim() || `crocwork ${slug}`;
     writeFileSync(html, installable(page));
+    // a Next export opens on any page (/craft/video/editor/...): each one gets the cloud-save script
+    for (const sub of files.filter((f) => /^(?!404\/|_not-found\/)[\w-]+\/index\.html$/.test(f))) {
+      const p = join(dest, sub);
+      writeFileSync(p, installable(readFileSync(p, "utf8"), "../../../"));
+    }
     // EffectCraft ships its own manifest and service worker: keep them
     if (!/rel="manifest"/.test(page))
       writeFileSync(join(dest, "manifest.webmanifest"), manifest(title));
@@ -204,13 +214,13 @@ function manifest(name) {
 
 /** Adds the manifest, an icon when the build has none, and the cloud-save script to <head>.
  *  Paths stay relative: the page is served from /craft/<slug>/. Running it twice changes nothing. */
-function installable(page) {
+function installable(page, up = "../../") {
   const tags = [];
   if (!/rel="manifest"/.test(page)) tags.push(`<link rel="manifest" href="manifest.webmanifest">`);
   if (!/rel="(?:shortcut )?icon"/.test(page))
     tags.push(`<link rel="icon" href="app-icon.svg" type="image/svg+xml">`);
   if (!page.includes("crocwork-sync.js"))
-    tags.push(`<script src="../../sync/crocwork-sync.js" type="module"></script>`);
+    tags.push(`<script src="${up}sync/crocwork-sync.js" type="module"></script>`);
   if (!tags.length) return page;
   assert.ok(page.includes("</head>"), "index.html: no </head>");
   return page.replace("</head>", `${tags.join("\n")}\n</head>`);
@@ -244,6 +254,7 @@ function selfTest() {
       inst.includes('src="../../sync/crocwork-sync.js"'),
   );
   assert.equal(installable(inst), inst);
+  assert.ok(installable(head, "../../../").includes('src="../../../sync/crocwork-sync.js"'));
   const own = installable(
     '<link rel="manifest" href="m.json"><link rel="icon" href="f.svg"></head>',
   );
@@ -331,6 +342,29 @@ const wasm = await init({ module_or_path: './x-web-0a_bg.wasm' });
   ]);
   assert.throws(() => check(["index.html", "NOTICE", "fonts/../x.ttf"]));
   assert.throws(() => check(["index.html", "NOTICE", "fonts/a/b/c.ttf"]));
+  // a Next.js export (crocwork Video)
+  const next = [
+    "index.html",
+    "index.txt",
+    "__next.__PAGE__.txt",
+    "NOTICE",
+    "LICENSE-MIT",
+    "404.html",
+    "editor/index.html",
+    "editor/__next.editor.__PAGE__.txt",
+    "_next/static/chunks/a20c247e837f9fd3.wasm",
+    "_next/static/chunks/a6dad97d9634a72d.js.map",
+    "_next/static/media/inter-s.p.woff2",
+    "_next/static/jgKzMs1fDsYhr3-P9-B1h/_buildManifest.js",
+    "flags/th.svg",
+    "logos/crocwork/logo.svg",
+    "manifest.json",
+  ];
+  check(next);
+  assert.throws(() => check([...next, "editor/run.exe"]));
+  assert.throws(() => check([...next, "_next/static/chunks/../x.js"]));
+  assert.throws(() => check([...next, "a/b/index.html"]));
+  assert.throws(() => check(["index.html", "NOTICE", "editor/index.html"]));
   console.log("web self-test ok");
 }
 
