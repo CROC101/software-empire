@@ -128,8 +128,8 @@
               <h3>crocwork</h3>\r
               <ul>\r
                 <li><a href="/apps/">crocwork.com</a></li>\r
-                <li><a href="https://developer.puter.com">Developers</a></li>\r
-                <li><a href="https://docs.puter.com">crocwork</a></li>\r
+                <li><a href="/apps/">Developers</a></li>\r
+                <li><a href="/apps/">crocwork</a></li>\r
                 <li><a href="/apps/">App Store</a></li>\r
               </ul>\r
             </div>\r
@@ -148,8 +148,8 @@
             <div>\r
               <h3>Legal</h3>\r
               <ul>\r
-                <li><a href="https://puter.com/privacy">Privacy Policy</a></li>\r
-                <li><a href="https://puter.com/terms">Terms of Service</a></li>\r
+                <li><a href="/licenses">Privacy Policy</a></li>\r
+                <li><a href="/licenses">Terms of Service</a></li>\r
               </ul>\r
             </div>\r
           </div>\r

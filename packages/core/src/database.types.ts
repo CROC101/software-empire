@@ -2962,6 +2962,31 @@ export type Database = {
         };
         Relationships: [];
       };
+      sync_items: {
+        Row: {
+          path: string;
+          sha256: string;
+          size_bytes: number;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          path: string;
+          sha256: string;
+          size_bytes: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          path?: string;
+          sha256?: string;
+          size_bytes?: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;

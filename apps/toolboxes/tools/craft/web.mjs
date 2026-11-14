@@ -42,9 +42,10 @@ export function releases(source) {
 
 // what a Craft web build holds; anything else (a symlink, a server config, a stray binary) stops the run
 export const ALLOWED =
-  /^(index\.html|[\w-]+-[0-9a-f]{16}\.(ico|png)|[\w-]+-web(-boot)?-[0-9a-f]+(\.js|_bg\.wasm)|[\w-]+-ocr-worker-[0-9a-f]+(\.js|_loader\.js|_bg\.wasm)|models\/([\w-]+\.onnx(\.LICENCE\.txt)?|ATTRIBUTION\.txt)|[a-z]+_web(\.js|_bg\.wasm)|(worker|sw|audio-worklet)\.js|favicon\.svg|icon-\d+\.png|manifest\.webmanifest|app\/(parts\.txt|[\w-]+\.js|[\w-]+-[0-9a-f]+\.part-[a-z]{2})|snippets\/[\w./-]+\.js|icons\/(\d+\/)?[\w.]+\.(png|svg)|fonts\/[0-9a-f]{16}\/(OFL\.txt|[\w-]+\.ttf)|licenses\/([\w-]+\/)+[\w-]+(\.txt)?|(ATTRIBUTION|ASSETS)\.md|OFL-[\w-]+\.txt|NOTICE|LICENSE-(MIT|APACHE)|README\.md)$/;
-// host configs and hosting notes for other servers: this site has its own (public/_headers)
-export const DROP = /^(_headers|\.htaccess|HOSTING\.md)$/;
+  /^(index\.html|[\w-]+-[0-9a-f]{16}\.(ico|png)|[\w-]+-web(-boot)?-[0-9a-f]+(\.js|_bg\.wasm)|[\w-]+-ocr-worker-[0-9a-f]+(\.js|_loader\.js|_bg\.wasm)|models\/([\w-]+\.onnx(\.LICENCE\.txt)?|ATTRIBUTION\.txt)|[a-z]+_web(\.js|_bg\.wasm)|(worker|sw|audio-worklet)\.js|favicon\.svg|icon-\d+\.png|manifest\.webmanifest|app\/(parts\.txt|[\w-]+\.js|[\w-]+-[0-9a-f]+\.part-[a-z]{2})|snippets\/[\w./-]+\.js|icons\/(\d+\/)?[\w.]+\.(png|svg)|fonts\/[0-9a-f]{16}\/(OFL\.txt|[\w-]+\.ttf)|licenses\/([\w-]+\/)+[\w-]+(\.txt)?|(ATTRIBUTION|ASSETS)\.md|OFL-[\w-]+\.txt|NOTICE|LICENSE-(MIT|APACHE))$/;
+// host configs and hosting notes for other servers: this site has its own (public/_headers);
+// README.md is the upstream project page (its name, its links), not a licence text
+export const DROP = /^(_headers|\.htaccess|HOSTING\.md|README\.md)$/;
 
 export function check(files) {
   for (const f of files)
@@ -135,36 +136,82 @@ async function place(slug, repo, tag) {
 
   // downloaded data: its own empty folder, nothing run from inside it
   const tmp = mkdtempSync(join(tmpdir(), "craft-web-"));
-  writeFileSync(join(tmp, "web.zip"), zip);
-  const x = join(tmp, "x");
-  mkdirSync(x);
-  // bsdtar (Windows, macOS) reads zips; Linux runners have unzip. Both refuse ../ paths.
-  if (platform() === "linux")
-    execFileSync("unzip", ["-q", "web.zip", "-d", "x"], { cwd: tmp, stdio: "inherit" });
-  // Git Bash puts GNU tar (no zip support) first on PATH: on Windows name the system bsdtar
-  else
-    execFileSync(
-      platform() === "win32"
-        ? join(process.env.SystemRoot ?? "C:/Windows", "System32", "tar.exe")
-        : "tar",
-      ["-xf", "web.zip", "-C", "x"],
-      { cwd: tmp, stdio: "inherit" },
-    );
-  const [top] = readdirSync(x);
-  const dir = join(x, top);
-  const files = readdirSync(dir, { recursive: true, encoding: "utf8" })
-    .map((f) => f.replaceAll("\\", "/"))
-    .filter((f) => !lstatSync(join(dir, f)).isDirectory());
-  for (const f of files) assert.ok(lstatSync(join(dir, f)).isFile(), `${f}: not a plain file`);
-  check(files);
+  try {
+    writeFileSync(join(tmp, "web.zip"), zip);
+    const x = join(tmp, "x");
+    mkdirSync(x);
+    // bsdtar (Windows, macOS) reads zips; Linux runners have unzip. Both refuse ../ paths.
+    if (platform() === "linux")
+      execFileSync("unzip", ["-q", "web.zip", "-d", "x"], { cwd: tmp, stdio: "inherit" });
+    // Git Bash puts GNU tar (no zip support) first on PATH: on Windows name the system bsdtar
+    else
+      execFileSync(
+        platform() === "win32"
+          ? join(process.env.SystemRoot ?? "C:/Windows", "System32", "tar.exe")
+          : "tar",
+        ["-xf", "web.zip", "-C", "x"],
+        { cwd: tmp, stdio: "inherit" },
+      );
+    const [top] = readdirSync(x);
+    const dir = join(x, top);
+    const files = readdirSync(dir, { recursive: true, encoding: "utf8" })
+      .map((f) => f.replaceAll("\\", "/"))
+      .filter((f) => !lstatSync(join(dir, f)).isDirectory());
+    for (const f of files) assert.ok(lstatSync(join(dir, f)).isFile(), `${f}: not a plain file`);
+    check(files);
 
-  const dest = join(out, slug);
-  rmSync(dest, { recursive: true, force: true });
-  for (const f of files.filter((f) => !DROP.test(f))) cpSync(join(dir, f), join(dest, f));
-  splitBigWasm(dest);
-  writeFileSync(join(dest, "VERSION"), `${repo}@${tag}\n`);
-  rmSync(tmp, { recursive: true, force: true });
+    const dest = join(out, slug);
+    rmSync(dest, { recursive: true, force: true });
+    for (const f of files.filter((f) => !DROP.test(f))) cpSync(join(dir, f), join(dest, f));
+    splitBigWasm(dest);
+    const html = join(dest, "index.html");
+    const page = readFileSync(html, "utf8");
+    const title = /<title>([^<]*)<\/title>/.exec(page)?.[1].trim() || `crocwork ${slug}`;
+    writeFileSync(html, installable(page));
+    // EffectCraft ships its own manifest and service worker: keep them
+    if (!/rel="manifest"/.test(page))
+      writeFileSync(join(dest, "manifest.webmanifest"), manifest(title));
+    writeFileSync(join(dest, "app-icon.svg"), ICON);
+    writeFileSync(join(dest, "VERSION"), `${repo}@${tag}\n`);
+  } finally {
+    rmSync(tmp, { recursive: true, force: true });
+  }
   console.log(`${slug}: ${name} from ${repo}@${tag}`);
+}
+
+// Water gradient tile with a toolbox: the app's install icon when the build ships none we can use.
+const ICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="w" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset=".55" stop-color="#3b6cf0"/><stop offset="1" stop-color="#2329b8"/></linearGradient></defs><rect width="512" height="512" rx="96" fill="url(#w)"/><g fill="none" stroke="#fff" stroke-width="28" stroke-linejoin="round"><rect x="112" y="200" width="288" height="184" rx="20"/><path d="M200 200v-40a24 24 0 0 1 24-24h64a24 24 0 0 1 24 24v40M112 272h288"/></g></svg>\n`;
+
+/** Web app manifest: opening /craft/<slug>/ in Chrome or Edge offers "Install" as its own window. */
+function manifest(name) {
+  return `${JSON.stringify(
+    {
+      name,
+      short_name: name.replace(/^crocwork /, ""),
+      start_url: "./",
+      scope: "./",
+      display: "standalone",
+      background_color: "#0b1020",
+      theme_color: "#2329b8",
+      icons: [{ src: "app-icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" }],
+    },
+    null,
+    2,
+  )}\n`;
+}
+
+/** Adds the manifest, an icon when the build has none, and the cloud-save script to <head>.
+ *  Paths stay relative: the page is served from /craft/<slug>/. Running it twice changes nothing. */
+function installable(page) {
+  const tags = [];
+  if (!/rel="manifest"/.test(page)) tags.push(`<link rel="manifest" href="manifest.webmanifest">`);
+  if (!/rel="(?:shortcut )?icon"/.test(page))
+    tags.push(`<link rel="icon" href="app-icon.svg" type="image/svg+xml">`);
+  if (!page.includes("crocwork-sync.js"))
+    tags.push(`<script src="../../sync/crocwork-sync.js" type="module"></script>`);
+  if (!tags.length) return page;
+  assert.ok(page.includes("</head>"), "index.html: no </head>");
+  return page.replace("</head>", `${tags.join("\n")}\n</head>`);
 }
 
 function selfTest() {
@@ -184,6 +231,24 @@ function selfTest() {
   assert.throws(() => check(["index.html", "NOTICE", "run.exe"]));
   assert.throws(() => check(["index.html", "NOTICE", "../evil.js"]));
   assert.throws(() => check(["README.md"]));
+  // the upstream README passes the check but is never copied
+  check(["index.html", "NOTICE", "README.md"]);
+  assert.ok(DROP.test("README.md") && !ALLOWED.test("README.md"));
+  const head = "<html><head><title>crocwork x</title></head></html>";
+  const inst = installable(head);
+  assert.ok(
+    inst.includes('href="manifest.webmanifest"') &&
+      inst.includes('href="app-icon.svg"') &&
+      inst.includes('src="../../sync/crocwork-sync.js"'),
+  );
+  assert.equal(installable(inst), inst);
+  const own = installable(
+    '<link rel="manifest" href="m.json"><link rel="icon" href="f.svg"></head>',
+  );
+  assert.ok(
+    !own.includes("webmanifest") && !own.includes("app-icon") && own.includes("crocwork-sync"),
+  );
+  assert.equal(JSON.parse(manifest("crocwork photo")).short_name, "photo");
   const page = `<script type="module">
 import init, * as bindings from './x-web-0a.js';
 const wasm = await init({ module_or_path: './x-web-0a_bg.wasm' });

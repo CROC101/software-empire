@@ -89,13 +89,30 @@ export function themeHtml(html) {
 // Whole word only: internal names like PuterOCR keep theirs.
 // (a declaration, not a const: "brand" mode at the top runs before the module body gets here)
 export function brand(text) {
-  const sites = { captable: "cap-table", inventory: "inventory" };
-  return text
-    .replace(/\bPuter(?:\.js| SDK)?\b/g, "crocwork")
-    .replace(/https:\/\/(?:www\.|apps\.|builder\.)?puter\.com\/?(?=["'`])/g, "/apps/")
-    .replace(/https:\/\/github\.com\/heyputer\/[\w-]+/gi, "/apps/")
-    .replaceAll("-//Everything//", "-//crocwork//")
-    .replace(/https:\/\/(captable|inventory)\.puter\.com\/?/g, (_, s) => `/apps/${sites[s]}/`);
+  const sites = {
+    captable: "cap-table",
+    as: "audio-studio",
+    ms: "music-studio",
+    sign: "signatures",
+  };
+  return (
+    text
+      // push notifications would come from Puter's servers: off until crocwork runs its own
+      .replace(/importScripts\(\s*["']https:\/\/js\.puter\.com\/push-sw\.js["']\s*\);?/g, "")
+      .replaceAll("https://js.puter.com/v2/", "../crocwork-sdk.js")
+      .replace(/https:\/\/puter\.com\/(?:terms|privacy)\/?/g, "/licenses")
+      .replace(/https:\/\/(?:developer|docs)\.puter\.com[^"'`\s)<]*/g, "/apps/")
+      .replace(/https:\/\/puter\.com\/(?:embed\/apps|#apps)/g, "/apps/")
+      // an app's own site (canonical, og:image, sitemap, share links) is its folder here
+      .replace(
+        /https:\/\/(?!js\.|schemas\.|api\.|www\.|apps\.|builder\.)([a-z-]+)\.puter\.com\/?/g,
+        (_, s) => `/apps/${sites[s] ?? s}/`,
+      )
+      .replace(/\bPuter(?:\.js| SDK)?\b/g, "crocwork")
+      .replace(/https:\/\/(?:www\.|apps\.|builder\.)?puter\.com\/?(?=["'`])/g, "/apps/")
+      .replace(/https:\/\/github\.com\/heyputer\/[\w-]+/gi, "/apps/")
+      .replaceAll("-//Everything//", "-//crocwork//")
+  );
 }
 
 // shortcut: bundle names keep their hash, so an app's service worker may show its cached copy
@@ -103,7 +120,8 @@ export function brand(text) {
 function brandApp(dir) {
   const name = basename(dir);
   for (const f of readdirSync(dir, { withFileTypes: true, recursive: true })) {
-    if (!f.isFile() || !/\.(html|js|json|webmanifest)$/.test(f.name)) continue;
+    if (!f.isFile() || !/\.(html|js|json|webmanifest|txt|xml)$/.test(f.name)) continue;
+    if (/LICEN[CS]E|NOTICE/i.test(f.name)) continue;
     const file = join(f.parentPath, f.name);
     const text = readFileSync(file, "utf8");
     let next = brand(text);

@@ -9,7 +9,7 @@ const EXT = 'teamchat-ext';
 // listens, and only to pushes crocwork sent; a blocked load must not cost the
 // offline shell, so it is allowed to fail.
 try {
-  importScripts('https://js.puter.com/push-sw.js');
+  
 } catch {
   /* pushes through crocwork are unavailable on this device */
 }

@@ -5,6 +5,7 @@ import { DirectoryView } from "@/components/pages/directory-view";
 import { AppsView } from "@/components/pages/apps-view";
 import { FavoritesView } from "@/components/pages/favorites-view";
 import { HomeView } from "@/components/pages/home-view";
+import { LicensesView } from "@/components/pages/licenses-view";
 import { ToolView } from "@/components/pages/tool-view";
 import { AppShell } from "@/components/shell/app-shell";
 import { RememberRecent } from "@/components/tools/remember-recent";
@@ -134,6 +135,15 @@ export const router = createBrowserRouter([
             <Suspense fallback={<Loading />}>
               <IconLibrary />
             </Suspense>
+          </>
+        ),
+      },
+      {
+        path: "licenses",
+        element: (
+          <>
+            {title("สัญญาอนุญาต")}
+            <LicensesView />
           </>
         ),
       },

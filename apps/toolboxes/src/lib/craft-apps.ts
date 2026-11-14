@@ -19,8 +19,8 @@ import type { Lang } from "@empire/core/lang";
 type Text = Record<Lang, string>;
 
 /**
- * crocwork's own apps with a desktop build. The Craft apps are rebranded forks of the storytold
- * Craft apps (MIT OR Apache-2.0) made by tools/craft/rebrand.mjs; their web build sits in
+ * crocwork's own apps with a desktop build. The Pro apps are our forks (MIT OR Apache-2.0, notices
+ * kept in each build and on /licenses) made by tools/craft/rebrand.mjs; their web build sits in
  * public/craft/<slug>/ (tools/craft/web.mjs) and the Windows installer is a release of the fork.
  */
 export type CraftApp = {
@@ -37,6 +37,8 @@ export type CraftApp = {
   /** GitHub repo and release tag holding the unsigned Windows installer */
   repo?: string;
   tag?: string;
+  /** file name stem of the release assets: <asset>-<version>-windows-x64.msi */
+  asset?: string;
 };
 
 export const CRAFT_APPS: CraftApp[] = [
@@ -52,6 +54,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/photo-editor/",
     light: "photo-studio",
     repo: "CROC101/crocwork-photo",
+    asset: "photocraft",
     tag: "v0.23.1-crocwork.3",
   },
   {
@@ -66,6 +69,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/pdf-editor/",
     light: "pdf",
     repo: "CROC101/crocwork-pdf",
+    asset: "pdfcraft",
     tag: "v0.21.1-crocwork.3",
   },
   {
@@ -80,6 +84,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/word-editor/",
     light: "documents",
     repo: "CROC101/crocwork-word",
+    asset: "wordcraft",
     tag: "v0.18.1-crocwork.3",
   },
   {
@@ -94,6 +99,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/slides/",
     light: "presentation",
     repo: "CROC101/crocwork-slides",
+    asset: "deckcraft",
     tag: "v0.18.1-crocwork.1",
   },
   {
@@ -108,6 +114,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/vector/",
     light: "vector-studio",
     repo: "CROC101/crocwork-vector",
+    asset: "vectorcraft",
     tag: "v0.24.1-crocwork.1",
   },
   {
@@ -121,6 +128,7 @@ export const CRAFT_APPS: CraftApp[] = [
     },
     web: "/craft/layout/",
     repo: "CROC101/crocwork-layout",
+    asset: "designcraft",
     tag: "v0.20.1-crocwork.2",
   },
   {
@@ -134,6 +142,7 @@ export const CRAFT_APPS: CraftApp[] = [
     },
     web: "/craft/interface/",
     repo: "CROC101/crocwork-interface",
+    asset: "figcraft",
     tag: "v0.18.1-crocwork.1",
   },
   {
@@ -148,6 +157,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/cad/",
     light: "cad",
     repo: "CROC101/crocwork-cad",
+    asset: "cadcraft",
     tag: "v0.20.1-crocwork.2",
   },
   {
@@ -162,6 +172,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/motion/",
     light: "video-studio",
     repo: "CROC101/crocwork-motion",
+    asset: "effectcraft",
     tag: "v0.24.1-crocwork.1",
   },
   {
@@ -175,6 +186,7 @@ export const CRAFT_APPS: CraftApp[] = [
     },
     light: "video-studio",
     repo: "CROC101/crocwork-animate",
+    asset: "anicraft",
     tag: "v0.2.1-crocwork.2",
   },
   {
@@ -189,6 +201,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/material/",
     light: "3d",
     repo: "CROC101/crocwork-material",
+    asset: "materialcraft",
     tag: "v0.4.1-crocwork.1",
   },
   {
@@ -203,6 +216,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/texture/",
     light: "3d",
     repo: "CROC101/crocwork-texture",
+    asset: "texturecraft",
     tag: "v0.6.1-crocwork.1",
   },
   {
@@ -220,3 +234,12 @@ export const CRAFT_APPS: CraftApp[] = [
 
 export const releaseUrl = (app: CraftApp) =>
   app.repo && app.tag ? `https://github.com/${app.repo}/releases/tag/${app.tag}` : undefined;
+
+/** Direct download links of a release: the MSI installer and the portable zip (no install). */
+export function downloads(app: CraftApp) {
+  if (!app.repo || !app.tag || !app.asset) return undefined;
+  const version = /^v(d+.d+.d+)/.exec(app.tag)?.[1];
+  if (!version) return undefined;
+  const base = `https://github.com/${app.repo}/releases/download/${app.tag}/${app.asset}-${version}-windows-x64`;
+  return { msi: `${base}.msi`, zip: `${base}-portable.zip` };
+}
