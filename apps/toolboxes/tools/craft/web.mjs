@@ -42,7 +42,7 @@ export function releases(source) {
 
 // what a Craft web build holds; anything else (a symlink, a server config, a stray binary) stops the run
 export const ALLOWED =
-  /^(index\.html|[\w-]+-[0-9a-f]{16}\.(ico|png)|[\w-]+-web(-boot)?-[0-9a-f]+(\.js|_bg\.wasm)|[\w-]+-ocr-worker-[0-9a-f]+(\.js|_loader\.js|_bg\.wasm)|models\/([\w-]+\.onnx(\.LICENCE\.txt)?|ATTRIBUTION\.txt)|[a-z]+_web(\.js|_bg\.wasm)|(worker|sw|audio-worklet)\.js|favicon\.svg|icon-\d+\.png|manifest\.webmanifest|app\/(parts\.txt|[\w-]+\.js|[\w-]+-[0-9a-f]+\.part-[a-z]{2})|snippets\/[\w./-]+\.js|icons\/(\d+\/)?[\w.]+\.(png|svg)|fonts\/[0-9a-f]{16}\/(OFL\.txt|[\w-]+\.ttf)|licenses\/([\w-]+\/)+[\w-]+(\.txt)?|(ATTRIBUTION|ASSETS)\.md|OFL-[\w-]+\.txt|NOTICE|LICENSE-(MIT|APACHE))$/;
+  /^(index\.html|[\w-]+-[0-9a-f]{16}\.(ico|png)|[\w-]+-web(-boot)?-[0-9a-f]+(\.js|_bg\.wasm)|[\w-]+-ocr-worker-[0-9a-f]+(\.js|_loader\.js|_bg\.wasm)|models\/([\w-]+\.onnx(\.LICENCE\.txt)?|ATTRIBUTION\.txt)|[a-z]+_web(\.js|_bg\.wasm)|(worker|sw|audio-worklet)\.js|favicon\.svg|icon-\d+\.png|manifest\.webmanifest|app\/(parts\.txt|[\w-]+\.js|[\w-]+-[0-9a-f]+\.part-[a-z]{2})|snippets\/[\w./-]+\.js|icons\/(\d+\/)?[\w.]+\.(png|svg)|fonts\/(list\.txt|[a-z0-9-]+\/(OFL\.txt|[\w-]+\.[ot]tf))|licenses\/([\w-]+\/)+[\w-]+(\.txt)?|(ATTRIBUTION|ASSETS)\.md|OFL-[\w-]+\.txt|NOTICE|LICENSE-(MIT|APACHE))$/;
 // host configs and hosting notes for other servers: this site has its own (public/_headers);
 // README.md is the upstream project page (its name, its links), not a licence text
 export const DROP = /^(_headers|\.htaccess|HOSTING\.md|README\.md)$/;
@@ -312,6 +312,17 @@ const wasm = await init({ module_or_path: './x-web-0a_bg.wasm' });
   ]);
   assert.throws(() => check(["index.html", "NOTICE", "models/t.onnx"]));
   assert.throws(() => check(["index.html", "NOTICE", "fonts/dc591156f36842d3/run.exe"]));
+  // script faces a WordCraft web build fetches at start (packaging/web/fonts.txt in the fork)
+  check([
+    "index.html",
+    "NOTICE",
+    "fonts/list.txt",
+    "fonts/noto-sans-thai/NotoSansThai.ttf",
+    "fonts/noto-sans-thai/OFL.txt",
+    "fonts/noto-sans-cjk-sc/NotoSansCJKsc-Regular.otf",
+  ]);
+  assert.throws(() => check(["index.html", "NOTICE", "fonts/../x.ttf"]));
+  assert.throws(() => check(["index.html", "NOTICE", "fonts/a/b/c.ttf"]));
   console.log("web self-test ok");
 }
 
