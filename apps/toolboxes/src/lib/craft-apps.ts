@@ -1,4 +1,6 @@
 import {
+  Aperture,
+  AudioWaveform,
   DraftingCompass,
   FileText,
   Film,
@@ -55,7 +57,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "photo-studio",
     repo: "CROC101/crocwork-photo",
     asset: "photocraft",
-    tag: "v0.23.1-crocwork.3",
+    tag: "v0.23.1-crocwork.4",
   },
   {
     slug: "pdf-editor",
@@ -70,7 +72,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "pdf",
     repo: "CROC101/crocwork-pdf",
     asset: "pdfcraft",
-    tag: "v0.21.1-crocwork.3",
+    tag: "v0.21.1-crocwork.4",
   },
   {
     slug: "word-editor",
@@ -85,7 +87,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "documents",
     repo: "CROC101/crocwork-word",
     asset: "wordcraft",
-    tag: "v0.18.1-crocwork.4",
+    tag: "v0.18.1-crocwork.5",
   },
   {
     slug: "slides",
@@ -100,7 +102,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "presentation",
     repo: "CROC101/crocwork-slides",
     asset: "deckcraft",
-    tag: "v0.18.1-crocwork.1",
+    tag: "v0.18.1-crocwork.2",
   },
   {
     slug: "vector",
@@ -115,7 +117,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "vector-studio",
     repo: "CROC101/crocwork-vector",
     asset: "vectorcraft",
-    tag: "v0.24.1-crocwork.1",
+    tag: "v0.24.1-crocwork.2",
   },
   {
     slug: "layout",
@@ -129,7 +131,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/layout/",
     repo: "CROC101/crocwork-layout",
     asset: "designcraft",
-    tag: "v0.20.1-crocwork.2",
+    tag: "v0.20.1-crocwork.3",
   },
   {
     slug: "interface",
@@ -143,7 +145,7 @@ export const CRAFT_APPS: CraftApp[] = [
     web: "/craft/interface/",
     repo: "CROC101/crocwork-interface",
     asset: "figcraft",
-    tag: "v0.18.1-crocwork.1",
+    tag: "v0.18.1-crocwork.2",
   },
   {
     slug: "cad",
@@ -158,7 +160,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "cad",
     repo: "CROC101/crocwork-cad",
     asset: "cadcraft",
-    tag: "v0.20.1-crocwork.2",
+    tag: "v0.20.1-crocwork.3",
   },
   {
     slug: "motion",
@@ -173,7 +175,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "video-studio",
     repo: "CROC101/crocwork-motion",
     asset: "effectcraft",
-    tag: "v0.24.1-crocwork.1",
+    tag: "v0.24.1-crocwork.2",
   },
   {
     slug: "animate",
@@ -202,7 +204,7 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "3d",
     repo: "CROC101/crocwork-material",
     asset: "materialcraft",
-    tag: "v0.4.1-crocwork.1",
+    tag: "v0.4.1-crocwork.2",
   },
   {
     slug: "texture",
@@ -217,7 +219,37 @@ export const CRAFT_APPS: CraftApp[] = [
     light: "3d",
     repo: "CROC101/crocwork-texture",
     asset: "texturecraft",
-    tag: "v0.6.1-crocwork.1",
+    tag: "v0.6.1-crocwork.2",
+  },
+  {
+    slug: "darkroom",
+    icon: Aperture,
+    word: "Darkroom",
+    kind: { th: "ห้องมืดดิจิทัล", en: "Photo darkroom" },
+    description: {
+      th: "จัดคลังรูปและล้างไฟล์ RAW ปรับแสง สี และโทนโดยไม่ทับไฟล์ต้นฉบับ",
+      en: "Organise your photos and develop RAW files: light, colour and tone, never touching the original.",
+    },
+    web: "/craft/darkroom/",
+    light: "photo-studio",
+    repo: "CROC101/crocwork-darkroom",
+    asset: "lightcraft",
+    tag: "v0.21.1-crocwork.1",
+  },
+  {
+    slug: "sound",
+    icon: AudioWaveform,
+    word: "Sound",
+    kind: { th: "ทำเพลง", en: "Music studio" },
+    description: {
+      th: "อัดเสียง เรียงแทร็ก มิกซ์ และใส่เอฟเฟกต์ ทำเพลงได้ครบในเบราว์เซอร์",
+      en: "Record, arrange, mix and add effects: a full music studio in the browser.",
+    },
+    web: "/craft/sound/",
+    light: "music-studio",
+    repo: "CROC101/crocwork-sound",
+    asset: "soundcraft",
+    tag: "v0.20.1-crocwork.1",
   },
   {
     slug: "icons",

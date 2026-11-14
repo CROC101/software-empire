@@ -42,8 +42,8 @@ describe("crocwork Craft apps", () => {
 
   it("links every released app's MSI and portable zip at its tag", () => {
     expect(downloads(CRAFT_APPS[0])).toEqual({
-      msi: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.3/photocraft-0.23.1-windows-x64.msi",
-      zip: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.3/photocraft-0.23.1-windows-x64-portable.zip",
+      msi: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.4/photocraft-0.23.1-windows-x64.msi",
+      zip: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.4/photocraft-0.23.1-windows-x64-portable.zip",
     });
     for (const a of CRAFT_APPS.filter((a) => a.repo)) expect(downloads(a), a.slug).toBeDefined();
     expect(downloads({ ...CRAFT_APPS[0], tag: "latest" })).toBeUndefined();
