@@ -4,6 +4,7 @@ import { createBrowserRouter, Link, useParams } from "react-router";
 import { DirectoryView } from "@/components/pages/directory-view";
 import { AppsView } from "@/components/pages/apps-view";
 import { FavoritesView } from "@/components/pages/favorites-view";
+import { GuideView } from "@/components/pages/guide-view";
 import { HomeView } from "@/components/pages/home-view";
 import { LicensesView } from "@/components/pages/licenses-view";
 import { ToolView } from "@/components/pages/tool-view";
@@ -135,6 +136,15 @@ export const router = createBrowserRouter([
             <Suspense fallback={<Loading />}>
               <IconLibrary />
             </Suspense>
+          </>
+        ),
+      },
+      {
+        path: "craft/guide",
+        element: (
+          <>
+            {title("คู่มือแอป crocwork")}
+            <GuideView />
           </>
         ),
       },

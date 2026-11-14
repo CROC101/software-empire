@@ -10,6 +10,7 @@ const COPY = {
   msi: { th: "ตัวติดตั้ง MSI", en: "MSI installer" },
   zip: { th: "แบบพกพา ZIP", en: "Portable ZIP" },
   share: { th: "คัดลอกลิงก์", en: "Copy link" },
+  guide: { th: "อ่านคู่มือ", en: "Read the guide" },
   webTag: { th: "เว็บ", en: "Web" },
   pro: { th: "ตัวเต็ม", en: "Pro" },
   light: { th: "ตัวเบา:", en: "Quick version:" },
@@ -83,10 +84,18 @@ export function CraftLineup({ lang }: { lang: Lang }) {
                       <Download aria-hidden className="size-4" />
                       {COPY.msi[lang]}
                     </a>
-                    <a href={files.zip} rel="noreferrer" className={button}>
-                      <Package aria-hidden className="size-4" />
-                      {COPY.zip[lang]}
-                    </a>
+                    {files.setup && (
+                      <a href={files.setup} rel="noreferrer" className={button}>
+                        <Download aria-hidden className="size-4" />
+                        {COPY.exe[lang]}
+                      </a>
+                    )}
+                    {files.zip && (
+                      <a href={files.zip} rel="noreferrer" className={button}>
+                        <Package aria-hidden className="size-4" />
+                        {COPY.zip[lang]}
+                      </a>
+                    )}
                   </>
                 ) : (
                   exe && (
@@ -113,7 +122,10 @@ export function CraftLineup({ lang }: { lang: Lang }) {
         })}
       </ul>
       <p className="mt-3 text-xs text-on-surface-variant">
-        {COPY.pwa[lang]} {COPY.unsigned[lang]}
+        {COPY.pwa[lang]} {COPY.unsigned[lang]}{" "}
+        <a href="/craft/guide/" className="font-medium text-primary underline underline-offset-4">
+          {COPY.guide[lang]}
+        </a>
       </p>
     </>
   );

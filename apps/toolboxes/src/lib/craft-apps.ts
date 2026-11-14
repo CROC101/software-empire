@@ -10,6 +10,7 @@ import {
   Paintbrush,
   PenTool,
   Presentation,
+  Scissors,
   Shapes,
   Type,
   WandSparkles,
@@ -41,6 +42,10 @@ export type CraftApp = {
   tag?: string;
   /** file name stem of the release assets: <asset>-<version>-windows-x64.msi */
   asset?: string;
+  /** release holds <asset>-<version>-windows-x86_64-setup.exe and .msi (Inno + WiX) instead of MSI + zip */
+  setup?: true;
+  /** when not the default dual MIT OR Apache-2.0 */
+  licence?: "MIT" | "AGPL-3.0-or-later";
 };
 
 export const CRAFT_APPS: CraftApp[] = [
@@ -262,16 +267,51 @@ export const CRAFT_APPS: CraftApp[] = [
     },
     web: "/icons",
   },
+  {
+    slug: "video",
+    icon: Film,
+    word: "Video",
+    kind: { th: "ตัดต่อวิดีโอ", en: "Video editor" },
+    description: {
+      th: "ตัดต่อหลายแทร็ก ใส่ข้อความ เสียง และเอฟเฟกต์ งานทั้งหมดอยู่ในเครื่องคุณ ไม่ต้องอัปโหลด",
+      en: "Multi-track editing with text, audio and effects. Your footage stays on your device, nothing is uploaded.",
+    },
+    web: "/craft/video/",
+    repo: "CROC101/crocwork-video",
+    licence: "MIT",
+    tag: "v0.3.0-crocwork.1",
+  },
+  {
+    slug: "cut",
+    icon: Scissors,
+    word: "Cut",
+    kind: { th: "ตัดต่อวิดีโอบนเครื่อง", en: "Desktop video editor" },
+    description: {
+      th: "ตัดต่อวิดีโอบน Windows หลายแทร็ก ใส่ข้อความ เสียง เอฟเฟกต์ และซับไตเติล ทำงานออฟไลน์บนเครื่องคุณ",
+      en: "A Windows video editor: multi-track, titles, audio, effects and captions, working offline on your PC.",
+    },
+    light: "video-studio",
+    repo: "CROC101/crocwork-cut",
+    asset: "crocwork-cut",
+    tag: "v0.2.11-crocwork.1",
+    setup: true,
+    licence: "AGPL-3.0-or-later",
+  },
 ];
 
+/** the release page; only apps with a Windows build (an `asset`) have one worth showing */
 export const releaseUrl = (app: CraftApp) =>
-  app.repo && app.tag ? `https://github.com/${app.repo}/releases/tag/${app.tag}` : undefined;
+  app.repo && app.tag && app.asset
+    ? `https://github.com/${app.repo}/releases/tag/${app.tag}`
+    : undefined;
 
-/** Direct download links of a release: the MSI installer and the portable zip (no install). */
+/** Direct download links of a release: the MSI installer plus the portable zip (no install), or the setup EXE. */
 export function downloads(app: CraftApp) {
   if (!app.repo || !app.tag || !app.asset) return undefined;
   const version = /^v(\d+\.\d+\.\d+)/.exec(app.tag)?.[1];
   if (!version) return undefined;
-  const base = `https://github.com/${app.repo}/releases/download/${app.tag}/${app.asset}-${version}-windows-x64`;
-  return { msi: `${base}.msi`, zip: `${base}-portable.zip` };
+  const dir = `https://github.com/${app.repo}/releases/download/${app.tag}/${app.asset}-${version}`;
+  if (app.setup)
+    return { msi: `${dir}-windows-x86_64.msi`, setup: `${dir}-windows-x86_64-setup.exe` };
+  return { msi: `${dir}-windows-x64.msi`, zip: `${dir}-windows-x64-portable.zip` };
 }

@@ -11,8 +11,8 @@ const COPY = {
   },
   craft: { th: "แอป crocwork ตัวเต็ม", en: "crocwork Pro apps" },
   craftNote: {
-    th: "ใช้ได้ทั้ง MIT และ Apache-2.0 เลือกฉบับใดก็ได้",
-    en: "Dual licensed: MIT or Apache-2.0, at your option.",
+    th: "ส่วนใหญ่ใช้ได้ทั้ง MIT และ Apache-2.0 เลือกฉบับใดก็ได้ ตัวที่ต่างกันระบุไว้ที่ชื่อ",
+    en: "Mostly dual licensed, MIT or Apache-2.0 at your option; any other licence is named per app.",
   },
   apps: { th: "แอปทำงานครบชุด", en: "Everyday apps" },
   appsNote: {
@@ -72,7 +72,21 @@ export function LicensesView() {
               <li key={a.slug} className="text-sm">
                 <span className="font-semibold">crocwork {a.word}</span>
                 <span className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                  {a.web && (
+                  {a.licence === "AGPL-3.0-or-later" && (
+                    <a
+                      href={`https://github.com/${a.repo}/blob/main/LICENSE`}
+                      rel="noreferrer"
+                      className={link}
+                    >
+                      AGPL-3.0
+                    </a>
+                  )}
+                  {a.web && a.licence === "MIT" && (
+                    <a href={`${a.web}LICENSE-MIT`} className={link}>
+                      MIT
+                    </a>
+                  )}
+                  {a.web && !a.licence && (
                     <>
                       <a href={`${a.web}LICENSE-MIT`} className={link}>
                         MIT

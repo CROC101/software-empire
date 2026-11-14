@@ -2,7 +2,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import apps from "./apps.json";
-import { CRAFT_APPS, downloads } from "./craft-apps";
+import { CRAFT_APPS, downloads, releaseUrl } from "./craft-apps";
 
 const root = join(import.meta.dirname, "../../public/craft");
 // apps with a web build; AniCraft ships only the Windows installer
@@ -24,12 +24,14 @@ describe.skipIf(!existsSync(root))("crocwork Craft web builds", () => {
   it.each(built.map((a) => a.slug))(
     "%s keeps its licences and loads nothing from outside",
     (slug) => {
-      for (const f of ["NOTICE", "LICENSE-MIT", "LICENSE-APACHE"])
+      // crocwork Video (OpenCut) is MIT only; the others are MIT OR Apache-2.0
+      const licences = slug === "video" ? ["LICENSE-MIT"] : ["LICENSE-MIT", "LICENSE-APACHE"];
+      for (const f of ["NOTICE", ...licences])
         expect(existsSync(join(root, slug, f)), f).toBe(true);
       const html = readFileSync(join(root, slug, "index.html"), "utf8");
       expect(html).not.toMatch(/(?:src|href)="(?:https?:)?\/\//);
-      // relative URLs only, so the build works under /craft/<slug>/
-      expect(html).not.toMatch(/(?:src|href)="\//);
+      // relative URLs (or Next's basePath /craft/<slug>/), so the build works under /craft/<slug>/
+      expect(html.replaceAll(`"/craft/${slug}/`, '"./')).not.toMatch(/(?:src|href)="\//);
     },
   );
 });
@@ -45,7 +47,19 @@ describe("crocwork Craft apps", () => {
       msi: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.4/photocraft-0.23.1-windows-x64.msi",
       zip: "https://github.com/CROC101/crocwork-photo/releases/download/v0.23.1-crocwork.4/photocraft-0.23.1-windows-x64-portable.zip",
     });
-    for (const a of CRAFT_APPS.filter((a) => a.repo)) expect(downloads(a), a.slug).toBeDefined();
+    for (const a of CRAFT_APPS.filter((a) => a.asset)) expect(downloads(a), a.slug).toBeDefined();
     expect(downloads({ ...CRAFT_APPS[0], tag: "latest" })).toBeUndefined();
+    // crocwork Cut (Concat) ships an Inno setup EXE and a WiX MSI, no zip
+    const cut = CRAFT_APPS.find((a) => a.slug === "cut");
+    expect(cut && downloads(cut)).toEqual({
+      msi: "https://github.com/CROC101/crocwork-cut/releases/download/v0.2.11-crocwork.1/crocwork-cut-0.2.11-windows-x86_64.msi",
+      setup:
+        "https://github.com/CROC101/crocwork-cut/releases/download/v0.2.11-crocwork.1/crocwork-cut-0.2.11-windows-x86_64-setup.exe",
+    });
+    // web-only releases (crocwork Video) show no Windows button
+    const video = CRAFT_APPS.find((a) => a.slug === "video");
+    expect(video?.web).toBe("/craft/video/");
+    expect(video && releaseUrl(video)).toBeUndefined();
+    expect(releaseUrl(CRAFT_APPS[0])).toContain("/releases/tag/");
   });
 });
