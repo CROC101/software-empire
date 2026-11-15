@@ -356,3 +356,6 @@ const SHOTS = new Set([
 ]);
 export const craftShot = (slug: string) =>
   SHOTS.has(slug) ? `/craft-shots/${slug}.webp` : undefined;
+
+/** The launcher that installs every craft app (our fork, unsigned MSI). */
+export const LAUNCHER = "https://github.com/CROC101/crocwork-launcher/releases/latest";

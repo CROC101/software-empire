@@ -64,7 +64,7 @@ export function CraftLineup({ lang, more }: { lang: Lang; more?: string }) {
                 <span className="text-xs text-on-surface-variant">{app.kind[lang]}</span>
               </div>
               <div className="relative aspect-[8/5] overflow-hidden border-y border-outline-variant bg-[color-mix(in_oklab,var(--hue)_14%,var(--color-surface-container))]">
-                {shot && (
+                {shot ? (
                   <img
                     src={shot}
                     alt=""
@@ -74,10 +74,13 @@ export function CraftLineup({ lang, more }: { lang: Lang; more?: string }) {
                     height={500}
                     className="ch-shot size-full object-cover object-top"
                   />
+                ) : (
+                  <WindowSketch />
                 )}
               </div>
               <div className="flex flex-1 flex-col px-5 pb-5">
-                <div className="-mt-9 mb-4">
+                {/* positioned so it paints over the screenshot box above it */}
+                <div className="relative z-10 -mt-9 mb-4">
                   <CraftTile app={app} size={64} />
                 </div>
                 <h3 className="font-display text-2xl font-black tracking-tight">
@@ -174,5 +177,26 @@ export function CraftLineup({ lang, more }: { lang: Lang; more?: string }) {
         </a>
       </p>
     </>
+  );
+}
+
+/** Stand-in for apps with no screenshot yet (desktop-only ones): a plain app window in the app's colour. */
+function WindowSketch() {
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-[8%_8%_0] flex flex-col overflow-hidden rounded-t-lg border border-b-0 border-outline-variant bg-surface-container-lowest shadow-lg"
+    >
+      <div className="flex h-5 shrink-0 items-center gap-1 border-b border-outline-variant px-2">
+        <span className="size-1.5 rounded-full bg-outline-variant" />
+        <span className="size-1.5 rounded-full bg-outline-variant" />
+        <span className="size-1.5 rounded-full bg-outline-variant" />
+      </div>
+      <div className="flex flex-1">
+        <div className="w-[9%] border-r border-outline-variant" />
+        <div className="m-[4%] flex-1 rounded-sm bg-[linear-gradient(160deg,var(--hue),color-mix(in_oklab,var(--hue)_35%,var(--em-ink-975)))]" />
+        <div className="w-[18%] border-l border-outline-variant" />
+      </div>
+    </div>
   );
 }
