@@ -1,6 +1,7 @@
 import {
   Aperture,
   AudioWaveform,
+  Clapperboard,
   DraftingCompass,
   FileText,
   Film,
@@ -184,7 +185,7 @@ export const CRAFT_APPS: CraftApp[] = [
   },
   {
     slug: "animate",
-    icon: Film,
+    icon: Clapperboard,
     word: "Animate",
     kind: { th: "แอนิเมชัน", en: "Animation" },
     description: {
@@ -315,3 +316,43 @@ export function downloads(app: CraftApp) {
     return { msi: `${dir}-windows-x86_64.msi`, setup: `${dir}-windows-x86_64-setup.exe` };
   return { msi: `${dir}-windows-x64.msi`, zip: `${dir}-windows-x64-portable.zip` };
 }
+
+/** an accent per app for its tile, number and name (palette tokens, cycled) */
+const HUES = [
+  "blue-600",
+  "coral-500",
+  "teal-600",
+  "violet-600",
+  "croc-600",
+  "gold-500",
+  "sky-500",
+  "fuchsia-500",
+];
+export const craftHue = (slug: string) =>
+  `var(--em-${
+    HUES[
+      Math.max(
+        0,
+        CRAFT_APPS.findIndex((a) => a.slug === slug),
+      ) % HUES.length
+    ]
+  })`;
+
+/** screenshots of the web builds in public/craft-shots (800x500 webp); the rest show their tile */
+const SHOTS = new Set([
+  "cad",
+  "darkroom",
+  "icons",
+  "interface",
+  "layout",
+  "material",
+  "pdf-editor",
+  "slides",
+  "sound",
+  "texture",
+  "vector",
+  "video",
+  "word-editor",
+]);
+export const craftShot = (slug: string) =>
+  SHOTS.has(slug) ? `/craft-shots/${slug}.webp` : undefined;
