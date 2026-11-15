@@ -20,10 +20,9 @@ import { CraftLineup } from "@/components/apps/craft-lineup";
 import { CraftTile } from "@/components/apps/craft-tile";
 import { CopyButton } from "@/components/tools/tool-output";
 import apps from "@/lib/apps.json";
-import { CRAFT_APPS } from "@/lib/craft-apps";
+import { CRAFT_APPS, LAUNCHER } from "@/lib/craft-apps";
 import { TOOLS } from "@/lib/tools/registry";
 
-const LAUNCHER = "https://github.com/CROC101/crocwork-launcher/releases/latest";
 const GITHUB = "https://github.com/CROC101";
 const DISCORD = contacts.find((c) => c.label === "Discord")?.href ?? GITHUB;
 
