@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { readLang, setLang, type Lang } from "@empire/core/lang";
 import { CraftLineup } from "@/components/apps/craft-lineup";
+import { FavoriteButton } from "@/components/tools/tool-card";
 import apps from "@/lib/apps.json";
 
 type Text = Record<Lang, string>;
@@ -149,10 +150,10 @@ export function AppsView() {
               {apps
                 .filter((a) => a.category === c.key)
                 .map((app) => (
-                  <li key={app.slug}>
+                  <li key={app.slug} className="relative">
                     <a
                       href={`/apps/${app.slug}/`}
-                      className="lift flex h-full min-h-24 gap-3 rounded-2xl border border-outline-variant/70 bg-surface-container-lowest p-4"
+                      className="lift flex h-full min-h-24 gap-3 rounded-2xl border border-outline-variant/70 bg-surface-container-lowest p-4 pr-12"
                     >
                       <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary-container/15 text-primary">
                         <c.icon aria-hidden className="size-5" />
@@ -171,6 +172,11 @@ export function AppsView() {
                         </span>
                       </span>
                     </a>
+                    <FavoriteButton
+                      id={`app-${app.slug}`}
+                      name={app.name[lang]}
+                      className="absolute top-2 right-2"
+                    />
                   </li>
                 ))}
             </ul>

@@ -6,6 +6,7 @@
  * App pages only upload. Downloads are written on toolboxes' own pages, and only while no app page is
  * open (each app page holds a shared Web Lock), because an app cannot see its database replaced under it.
  */
+import "./chrome";
 import { sha256 } from "./codec";
 import { plan } from "./plan";
 import { readAll, validPath, write } from "./store";

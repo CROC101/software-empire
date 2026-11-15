@@ -2,9 +2,11 @@ import type { CSSProperties } from "react";
 import { ArrowUpRight, Download, Globe, MessagesSquare, Package, Zap } from "lucide-react";
 import type { Lang } from "@empire/core/lang";
 import { CraftTile } from "@/components/apps/craft-tile";
+import { FavoriteButton } from "@/components/tools/tool-card";
 import { CopyButton } from "@/components/tools/tool-output";
 import { CRAFT_APPS, craftHue, craftShot, downloads, releaseUrl } from "@/lib/craft-apps";
 import apps from "@/lib/apps.json";
+import { logVisit } from "@/lib/history";
 
 const COPY = {
   web: { th: "เปิดในเว็บ", en: "Open on the web" },
@@ -50,6 +52,7 @@ export function CraftLineup({ lang, more }: { lang: Lang; more?: string }) {
           const light = apps.find((a) => a.slug === app.light);
           const shot = craftShot(app.slug);
           const explore = app.web ?? `/craft/guide/#${app.slug}`;
+          const logDownload = () => logVisit(`craft-${app.slug}`, "download");
           return (
             <li
               key={app.slug}
@@ -57,11 +60,12 @@ export function CraftLineup({ lang, more }: { lang: Lang; more?: string }) {
               className="ch-card flex scroll-mt-24 flex-col bg-surface-container-lowest"
               style={{ "--hue": craftHue(app.slug) } as CSSProperties}
             >
-              <div className="flex items-center gap-3 px-5 py-3">
+              <div className="flex items-center gap-3 py-1 pr-1 pl-5">
                 <span className="rounded-sm bg-(--hue) px-1.5 py-0.5 font-mono text-[11px] text-white">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="text-xs text-on-surface-variant">{app.kind[lang]}</span>
+                <span className="flex-1 text-xs text-on-surface-variant">{app.kind[lang]}</span>
+                <FavoriteButton id={`craft-${app.slug}`} name={`crocwork ${app.word}`} />
               </div>
               <div className="relative aspect-[8/5] overflow-hidden border-y border-outline-variant bg-[color-mix(in_oklab,var(--hue)_14%,var(--color-surface-container))]">
                 {shot ? (
@@ -105,18 +109,23 @@ export function CraftLineup({ lang, more }: { lang: Lang; more?: string }) {
                   )}
                   {files ? (
                     <>
-                      <a href={files.msi} rel="noreferrer" className={link}>
+                      <a href={files.msi} rel="noreferrer" className={link} onClick={logDownload}>
                         <Download aria-hidden className="size-4" />
                         {COPY.msi[lang]}
                       </a>
                       {files.setup && (
-                        <a href={files.setup} rel="noreferrer" className={link}>
+                        <a
+                          href={files.setup}
+                          rel="noreferrer"
+                          className={link}
+                          onClick={logDownload}
+                        >
                           <Download aria-hidden className="size-4" />
                           {COPY.exe[lang]}
                         </a>
                       )}
                       {files.zip && (
-                        <a href={files.zip} rel="noreferrer" className={link}>
+                        <a href={files.zip} rel="noreferrer" className={link} onClick={logDownload}>
                           <Package aria-hidden className="size-4" />
                           {COPY.zip[lang]}
                         </a>
@@ -124,7 +133,7 @@ export function CraftLineup({ lang, more }: { lang: Lang; more?: string }) {
                     </>
                   ) : (
                     exe && (
-                      <a href={exe} rel="noreferrer" className={link}>
+                      <a href={exe} rel="noreferrer" className={link} onClick={logDownload}>
                         <Download aria-hidden className="size-4" />
                         {COPY.exe[lang]}
                       </a>

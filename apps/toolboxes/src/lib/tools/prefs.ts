@@ -1,4 +1,5 @@
 import { useCallback, useSyncExternalStore } from "react";
+import { logVisit } from "@/lib/history";
 
 /// รายการโปรดและเครื่องมือที่ใช้ล่าสุด — เก็บในเบราว์เซอร์ของผู้ใช้เท่านั้น (ความสะดวกส่วนตัว ไม่ใช่ข้อมูลสำคัญ)
 /// เก็บแค่ slug ของเครื่องมือ ไม่มีสิ่งที่ผู้ใช้กรอก · localStorage ใช้ไม่ได้ (โหมดส่วนตัว) ก็ทำงานต่อได้แค่ไม่จำ
@@ -101,6 +102,7 @@ export function useRecent() {
 }
 
 export function rememberRecent(slug: string) {
+  logVisit(slug);
   const current = read(RECENT_KEY);
 
   if (current[0] === slug) return;

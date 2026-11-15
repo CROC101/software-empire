@@ -17,6 +17,7 @@ import type { Lang } from "@empire/core/lang";
 import { contacts } from "@empire/core/subsystems";
 import { TideReveal } from "@empire/ui";
 import { CraftLineup } from "@/components/apps/craft-lineup";
+import { BlurText } from "@/components/home/blur-text";
 import { CraftTile } from "@/components/apps/craft-tile";
 import { CopyButton } from "@/components/tools/tool-output";
 import apps from "@/lib/apps.json";
@@ -241,7 +242,7 @@ function Hero({ lang, title, intro, perks }: HeroProps) {
           className="tb-rise font-display text-[clamp(3.5rem,15vw,11rem)] leading-[0.85] font-black tracking-tight"
           style={rise(0)}
         >
-          croc<span className="text-primary">work</span>
+          <BlurText parts={[{ text: "croc" }, { text: "work", className: "text-primary" }]} />
         </p>
         <h1
           className="tb-rise mt-8 font-display text-3xl leading-tight font-black sm:text-5xl"

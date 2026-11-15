@@ -2,8 +2,9 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn, HubSwitcher, SunMoonThemeToggle } from "@empire/ui";
 import { contactEmail, contacts, subsystems } from "@empire/core/subsystems";
 import { readLang, type Lang } from "@empire/core/lang";
-import { ChevronDown, Menu, X } from "lucide-react";
-import { Link, Outlet, useLocation } from "react-router";
+import { ChevronDown, Menu, Search, X } from "lucide-react";
+import { Link, Outlet, ScrollRestoration, useLocation } from "react-router";
+import { CommandPalette, openSearch } from "@/components/shell/command-palette";
 import { env } from "@/lib/env";
 import { CRAFT_APPS, LAUNCHER } from "@/lib/craft-apps";
 import { signInUrl, signOut, useSession } from "@/lib/session";
@@ -30,6 +31,7 @@ const NAV: NavItem[] = [
   { label: "Tools", to: "/tools" },
   { label: "Icons", to: "/icons" },
   { label: "Favorites", to: "/favorites" },
+  { label: "History", to: "/history" },
 ];
 const APPS: Item = { label: "Apps", to: "/apps" };
 
@@ -235,6 +237,16 @@ export function AppShell() {
             </nav>
           </div>
           <div className="flex items-stretch">
+            <button
+              type="button"
+              onClick={openSearch}
+              aria-label="Search (Ctrl+K)"
+              aria-keyshortcuts="Control+K"
+              className={cn(cell, "w-auto gap-2 px-3")}
+            >
+              <Search aria-hidden className="size-4" />
+              <kbd className={cn(mono, "hidden text-[10px] lg:inline")}>Ctrl K</kbd>
+            </button>
             <a
               href={env.hubUrl}
               className={cn(
@@ -368,6 +380,9 @@ export function AppShell() {
       </div>
       <SiteFooter />
       <FavoritesSync />
+      <CommandPalette />
+      {/* new page = top; back/forward and reload = where you were */}
+      <ScrollRestoration />
     </div>
   );
 }
@@ -392,6 +407,7 @@ const FOOTER: { title: string; links: Item[] }[] = [
       { label: "Apps", to: "/apps" },
       { label: "Icons", to: "/icons" },
       { label: "Favorites", to: "/favorites" },
+      { label: "History", to: "/history" },
     ],
   },
   {

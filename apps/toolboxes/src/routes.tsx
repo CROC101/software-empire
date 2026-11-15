@@ -5,6 +5,7 @@ import { DirectoryView } from "@/components/pages/directory-view";
 import { AppsView } from "@/components/pages/apps-view";
 import { FavoritesView } from "@/components/pages/favorites-view";
 import { GuideView } from "@/components/pages/guide-view";
+import { HistoryView } from "@/components/pages/history-view";
 import { HomeView } from "@/components/pages/home-view";
 import { LicensesView } from "@/components/pages/licenses-view";
 import { ToolView } from "@/components/pages/tool-view";
@@ -110,6 +111,15 @@ export const router = createBrowserRouter([
       },
       { path: "tools/:toolId", element: <ToolRoute /> },
       { path: "category/:slug", element: <CategoryRoute /> },
+      {
+        path: "history",
+        element: (
+          <>
+            {title("ประวัติการใช้งาน")}
+            <HistoryView />
+          </>
+        ),
+      },
       {
         path: "favorites",
         element: (
