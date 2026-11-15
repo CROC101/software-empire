@@ -3,6 +3,7 @@
 import { Button, OtpInput, type OtpInputHandle, type OtpStatus } from "@empire/ui";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { resendCode, verifyCode, type CodePurpose, type VerifyState } from "./actions";
+import { Turnstile } from "./turnstile";
 
 /** Mirrors Supabase's resend window on hosted projects (auth.email.max_frequency = 60s). */
 export const RESEND_SECONDS = 60;
@@ -116,9 +117,10 @@ export function VerifyCode({
         </Button>
       </form>
 
-      <form action={resend} className="flex items-center justify-between gap-2 text-sm">
+      <form action={resend} className="flex flex-wrap items-center justify-between gap-2 text-sm">
         <input type="hidden" name="email" value={email} />
         <input type="hidden" name="purpose" value={purpose} />
+        <Turnstile reset={resent} className="basis-full" />
         <button
           type="button"
           onClick={onBack}
