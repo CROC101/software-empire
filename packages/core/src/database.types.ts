@@ -2771,6 +2771,99 @@ export type Database = {
       [_ in never]: never;
     };
   };
+  hub: {
+    Tables: {
+      admin_actions: {
+        Row: {
+          action: string;
+          actor: string | null;
+          at: string;
+          id: number;
+          target: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          action: string;
+          actor?: string | null;
+          at?: string;
+          id?: never;
+          target?: string | null;
+        };
+        Update: {
+          action?: string;
+          actor?: string | null;
+          at?: string;
+          id?: never;
+          target?: string | null;
+        };
+        Relationships: [];
+      };
+      profiles: {
+        Row: {
+          bio: string;
+          display_name: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          bio?: string;
+          display_name: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          bio?: string;
+          display_name?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      visits: {
+        Row: {
+          app: string;
+          at: string;
+          id: number;
+          path: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          app: string;
+          at?: string;
+          id?: never;
+          path: string;
+          user_id?: string;
+        };
+        Update: {
+          app?: string;
+          at?: string;
+          id?: never;
+          path?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      admin_log: { Args: Record<PropertyKey, never>; Returns: Json };
+      admin_set_admin: { Args: { make: boolean; target: string }; Returns: undefined };
+      admin_set_banned: { Args: { banned: boolean; target: string }; Returns: undefined };
+      admin_users: { Args: Record<PropertyKey, never>; Returns: Json };
+      admin_visits: { Args: { days?: number }; Returns: Json };
+      require_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       [_ in never]: never;
@@ -3115,6 +3208,9 @@ export const Constants = {
     Enums: {},
   },
   community: {
+    Enums: {},
+  },
+  hub: {
     Enums: {},
   },
   public: {
