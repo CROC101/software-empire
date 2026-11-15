@@ -4,7 +4,7 @@ import { env } from "@/lib/env";
 import { launched, openBeforeLaunch } from "@/lib/launch";
 
 // signed-in only; /admin also checks cms.is_admin() itself, page and every action
-const PROTECTED_PREFIXES = ["/dashboard", "/admin"];
+const PROTECTED_PREFIXES = ["/dashboard", "/admin", "/profile"];
 
 /** Refreshes the Supabase session on every request and gates protected pages. */
 export async function proxy(request: NextRequest) {

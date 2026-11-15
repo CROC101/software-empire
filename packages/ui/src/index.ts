@@ -19,6 +19,7 @@ export {
   type OtpMode,
 } from "./components/otp-input";
 export { HubSwitcher, type HubApp } from "./components/hub-switcher";
+export { UserMenu, userMenuItemClass, type UserMenuLink } from "./components/user-menu";
 export { PhoneFrame, PhoneScrollHero } from "./components/phone-scroll-hero";
 export { MorphingText } from "./components/morphing-text";
 export { ParallaxLayers, type ParallaxLayer } from "./components/parallax-layers";

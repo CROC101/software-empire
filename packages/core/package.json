@@ -13,7 +13,8 @@
     "./cms": "./src/cms.ts",
     "./cms-pages": "./src/cms-pages.ts",
     "./auth": "./src/auth.ts",
-    "./launch": "./src/launch.ts"
+    "./launch": "./src/launch.ts",
+    "./presence": "./src/presence.ts"
   },
   "scripts": {
     "lint": "eslint .",
