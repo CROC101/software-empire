@@ -4,6 +4,7 @@ import { contactEmail, contacts, subsystems } from "@empire/core/subsystems";
 import { readLang, type Lang } from "@empire/core/lang";
 import { ChevronDown, Menu, Search, X } from "lucide-react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router";
+import { AccountMenu } from "@/components/shell/account-menu";
 import { CommandPalette, openSearch } from "@/components/shell/command-palette";
 import { env } from "@/lib/env";
 import { CRAFT_APPS, LAUNCHER } from "@/lib/craft-apps";
@@ -278,14 +279,20 @@ export function AppShell() {
                 className="size-9 justify-center"
               />
             </span>
-            <span
-              className={cn(
-                mono,
-                "hidden w-[120px] items-stretch bg-foreground font-bold tracking-[0.12em] text-background sm:flex [&>*]:flex [&>*]:w-full [&>*]:items-center [&>*]:justify-center",
-              )}
-            >
-              {account}
-            </span>
+            {user ? (
+              <span className={cn(cell, "w-14")}>
+                <AccountMenu user={user} pathname={pathname} />
+              </span>
+            ) : (
+              <span
+                className={cn(
+                  mono,
+                  "hidden w-[120px] items-stretch bg-foreground font-bold tracking-[0.12em] text-background sm:flex [&>*]:flex [&>*]:w-full [&>*]:items-center [&>*]:justify-center",
+                )}
+              >
+                {account}
+              </span>
+            )}
             <button
               type="button"
               aria-label={mobile ? "Close main menu" : "Open main menu"}

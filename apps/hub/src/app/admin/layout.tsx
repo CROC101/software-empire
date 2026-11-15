@@ -1,9 +1,8 @@
-import { Button } from "@empire/ui";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { signOut } from "../dashboard/actions";
+import { AccountMenu } from "../account-menu";
 import { AdminTabs } from "./admin-tabs";
 import { requireAdmin } from "./guard";
 
@@ -24,11 +23,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         <div className="order-3 w-full sm:order-none sm:w-auto">
           <AdminTabs />
         </div>
-        <form action={signOut}>
-          <Button type="submit" variant="outline" size="sm">
-            ออกจากระบบ
-          </Button>
-        </form>
+        <AccountMenu />
       </header>
       {children}
     </div>

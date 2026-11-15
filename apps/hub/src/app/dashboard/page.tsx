@@ -1,10 +1,10 @@
-import { BrandMark, Button, GlassClock } from "@empire/ui";
+import { BrandMark, GlassClock } from "@empire/ui";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getClaims } from "@/lib/supabase/server";
+import { AccountMenu } from "../account-menu";
 import { SubsystemGrid } from "../subsystem-grid";
-import { signOut } from "./actions";
 
 export const metadata: Metadata = { title: "แดชบอร์ด" };
 
@@ -20,11 +20,7 @@ export default async function DashboardPage() {
           <BrandMark />
           <span>Software Empire</span>
         </Link>
-        <form action={signOut}>
-          <Button type="submit" variant="outline" size="sm">
-            ออกจากระบบ
-          </Button>
-        </form>
+        <AccountMenu />
       </header>
       <main className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-20 pt-6 sm:px-6">
         <div className="grid items-center gap-8 lg:grid-cols-[1fr_15rem]">
