@@ -44,7 +44,7 @@ export function ToolView({ slug }: { slug: string }) {
             <h1 className="font-display text-2xl font-bold sm:text-3xl">{tool.name}</h1>
             <p className="mt-1 text-on-surface-variant">{tool.description}</p>
           </div>
-          <FavoriteButton tool={tool} className="shrink-0" />
+          <FavoriteButton id={tool.slug} name={tool.name} className="shrink-0" />
         </header>
 
         <SpecToolView key={tool.slug} tool={tool} />

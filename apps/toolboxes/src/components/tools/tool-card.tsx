@@ -5,16 +5,25 @@ import { useFavorites } from "@/lib/tools/prefs";
 import { toolHref } from "@/lib/tools/registry";
 import type { Tool } from "@/lib/tools/types";
 
-export function FavoriteButton({ tool, className = "" }: { tool: Tool; className?: string }) {
+/** Star for anything in the catalogue: a tool slug, app-<slug> or craft-<slug> (lib/catalog.ts). */
+export function FavoriteButton({
+  id,
+  name,
+  className = "",
+}: {
+  id: string;
+  name: string;
+  className?: string;
+}) {
   const { isFavorite, toggle } = useFavorites();
-  const active = isFavorite(tool.slug);
+  const active = isFavorite(id);
 
   return (
     <button
       type="button"
-      onClick={() => toggle(tool.slug)}
+      onClick={() => toggle(id)}
       aria-pressed={active}
-      aria-label={active ? `เอา ${tool.name} ออกจากรายการโปรด` : `เพิ่ม ${tool.name} ในรายการโปรด`}
+      aria-label={active ? `เอา ${name} ออกจากรายการโปรด` : `เพิ่ม ${name} ในรายการโปรด`}
       title={active ? "เอาออกจากรายการโปรด" : "เพิ่มในรายการโปรด"}
       className={`grid size-10 place-items-center rounded-full text-on-surface-variant hover:bg-surface-container hover:text-brand-amber ${className}`}
     >
@@ -42,7 +51,7 @@ export function ToolCard({ tool, showCategory = false }: { tool: Tool; showCateg
           )}
         </span>
       </Link>
-      <FavoriteButton tool={tool} className="absolute top-2 right-2" />
+      <FavoriteButton id={tool.slug} name={tool.name} className="absolute top-2 right-2" />
     </div>
   );
 }
