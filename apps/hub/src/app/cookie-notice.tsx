@@ -72,6 +72,9 @@ export function CookieNotice({ cookieDomain }: { cookieDomain?: string }) {
       <p className="relative mt-2 font-black leading-snug">ใช้คุกกี้เท่าที่จำเป็น</p>
       <p className="relative mt-1.5 text-sm text-muted-foreground">
         จำธีม บรรยากาศ และการล็อกอินของคุณเท่านั้น ไม่มีโฆษณา ไม่มีตัวติดตาม ไม่ส่งข้อมูลให้ใคร
+        {/* Turnstile (login/turnstile.tsx) reads browser signals on the login forms */}
+        {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY &&
+          " ยกเว้นหน้าเข้าสู่ระบบ ที่ Cloudflare Turnstile ตรวจว่าไม่ใช่บอท"}
       </p>
       <details className="relative mt-3 text-sm">
         <summary className="cursor-pointer select-none font-bold">ดูว่าเก็บอะไรบ้าง</summary>

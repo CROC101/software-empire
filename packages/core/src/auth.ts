@@ -43,3 +43,9 @@ export const signUpInput = z
   });
 
 export type SignUpInput = z.infer<typeof signUpInput>;
+
+/**
+ * Cloudflare Turnstile token from the hidden `cf-turnstile-response` field, for Supabase Auth's
+ * `captchaToken`. Missing, empty or oversized = undefined (Supabase then refuses once CAPTCHA is on).
+ */
+export const captchaToken = (value: unknown) => z.string().min(1).max(2048).safeParse(value).data;

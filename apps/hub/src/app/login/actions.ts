@@ -1,6 +1,6 @@
 "use server";
 
-import { email, signInInput, signUpInput } from "@empire/core/auth";
+import { captchaToken as readCaptcha, email, signInInput, signUpInput } from "@empire/core/auth";
 import { safeNext } from "@/lib/apps";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -43,10 +43,16 @@ const field = (formData: FormData, key: string) => {
   return typeof value === "string" ? value.trim() : "";
 };
 
+// Turnstile's one-use token (turnstile.tsx); Supabase checks it once CAPTCHA is on in Auth settings
+const captcha = (formData: FormData) => readCaptcha(formData.get("cf-turnstile-response"));
+const BOT_CHECK = "ยืนยันว่าไม่ใช่บอทไม่ผ่าน รีเฟรชหน้าแล้วลองใหม่";
+const botCheckFailed = (error: { code?: string } | null) => error?.code === "captcha_failed";
+
 export async function authenticate(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const typed = field(formData, "email");
   const next = safeNext(formData.get("next"));
   const supabase = await createClient();
+  const captchaToken = captcha(formData);
 
   if (formData.get("intent") === "code") {
     const parsed = email.safeParse(typed);
@@ -55,8 +61,9 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
     // the address has an account, so the form can't be used to probe who is registered.
     const { error } = await supabase.auth.signInWithOtp({
       email: parsed.data,
-      options: { shouldCreateUser: false },
+      options: { shouldCreateUser: false, captchaToken },
     });
+    if (botCheckFailed(error)) return { email: typed, error: BOT_CHECK };
     if (error?.status === 429)
       return { email: typed, error: "ขอรหัสถี่เกินไป รอสักครู่แล้วลองใหม่" };
     return { email: parsed.data, verify: "login" };
@@ -66,8 +73,12 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
     const input = signInInput.safeParse({ email: typed, password: formData.get("password") });
     if (!input.success)
       return { email: typed, error: "กรอกอีเมลให้ถูกต้อง และรหัสผ่าน 8–72 ตัวอักษร" };
-    const { error } = await supabase.auth.signInWithPassword(input.data);
-    // one message for every failure — don't reveal which emails have accounts
+    const { error } = await supabase.auth.signInWithPassword({
+      ...input.data,
+      options: { captchaToken },
+    });
+    if (botCheckFailed(error)) return { email: typed, error: BOT_CHECK };
+    // one message for every other failure — don't reveal which emails have accounts
     if (error) return { email: typed, error: "อีเมลหรือรหัสผ่านไม่ถูกต้อง" };
     redirect(next);
   }
@@ -97,8 +108,10 @@ export async function authenticate(_prev: AuthState, formData: FormData): Promis
     options: {
       data: { display_name: input.data.name },
       emailRedirectTo: `${env.siteUrl}/auth/callback?next=${encodeURIComponent(next)}`,
+      captchaToken,
     },
   });
+  if (botCheckFailed(error)) return { email: typed, name, error: BOT_CHECK };
   if (error?.status === 429)
     return { email: typed, name, error: "ส่งอีเมลถี่เกินไป รอสักครู่แล้วลองใหม่" };
   if (error) return { email: typed, name, error: "สมัครไม่สำเร็จ ลองใหม่อีกครั้ง" };
@@ -137,13 +150,15 @@ export async function resendCode(_prev: VerifyState, formData: FormData): Promis
 
   const { email: address, purpose } = input.data;
   const supabase = await createClient();
+  const captchaToken = captcha(formData);
   const { error } =
     purpose === "signup"
-      ? await supabase.auth.resend({ type: "signup", email: address })
+      ? await supabase.auth.resend({ type: "signup", email: address, options: { captchaToken } })
       : await supabase.auth.signInWithOtp({
           email: address,
-          options: { shouldCreateUser: false },
+          options: { shouldCreateUser: false, captchaToken },
         });
+  if (botCheckFailed(error)) return { error: BOT_CHECK };
   // Supabase enforces the real resend cooldown; the button timer only mirrors it
   if (error?.status === 429) return { error: "ขอรหัสถี่เกินไป รอสักครู่แล้วลองใหม่" };
   return { notice: "ส่งรหัสใหม่แล้ว รหัสเดิมใช้ไม่ได้แล้ว", sentAt: Date.now() };

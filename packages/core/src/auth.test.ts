@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { passedRules, signUpInput } from "./auth";
+import { captchaToken, passedRules, signUpInput } from "./auth";
 
 const valid = { name: "จระเข้", email: "a@b.co", password: "river2026", confirm: "river2026" };
 const firstError = (input: object) => signUpInput.safeParse(input).error?.issues[0]?.message;
@@ -24,5 +24,18 @@ describe("sign-up input", () => {
     expect(firstError({ ...valid, name: "   " })).toBe("กรอกชื่อที่จะแสดง");
     expect(firstError({ ...valid, name: "ก".repeat(41) })).toMatch(/40/);
     expect(firstError({ ...valid, name: "ad​min" })).toBe("ชื่อมีอักขระที่ใช้ไม่ได้");
+  });
+});
+
+describe("captcha token", () => {
+  it("passes a Turnstile token through", () => {
+    expect(captchaToken("0.abc-DEF_123")).toBe("0.abc-DEF_123");
+  });
+
+  it("drops missing, empty, non-string and oversized values", () => {
+    expect(captchaToken(null)).toBeUndefined();
+    expect(captchaToken("")).toBeUndefined();
+    expect(captchaToken(new Blob(["x"]))).toBeUndefined();
+    expect(captchaToken("x".repeat(2049))).toBeUndefined();
   });
 });

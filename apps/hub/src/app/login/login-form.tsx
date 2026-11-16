@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from "react";
 import { authenticate, type AuthState } from "./actions";
+import { Turnstile } from "./turnstile";
 import { VerifyCode } from "./verify-code";
 
 export type AuthMode = "signin" | "signup";
@@ -133,6 +134,7 @@ function SignInForm({ next, onSignUp }: { next: string; onSignUp: () => void }) 
           aria-describedby="signin-error"
         />
       </Field>
+      <Turnstile reset={state} />
       <FormMessage id="signin-error" state={state} />
 
       <Button type="submit" name="intent" value="signin" className={PRIMARY} disabled={pending}>
@@ -249,6 +251,7 @@ function SignUpForm({ next, onSignIn }: { next: string; onSignIn: () => void }) 
           {mismatch ? "ยังไม่ตรงกับรหัสผ่านด้านบน" : confirm && "ตรงกันแล้ว"}
         </p>
       </Field>
+      <Turnstile reset={state} />
       {/* errors that belong to a field show under it; this line is for the rest */}
       <FormMessage id="signup-error" state={state.field ? {} : state} />
 
