@@ -44,7 +44,9 @@ export function AddPage() {
   if (ready && !user)
     return (
       <div className="mx-auto grid max-w-md gap-4 px-4 py-16 text-center">
-        <p className="text-[var(--em-ink-200)]">ล็อกอินก่อน แล้วลิงก์ที่เพิ่มจะซิงก์ทุกเครื่อง</p>
+        <p className="text-[var(--muted-foreground)]">
+          ล็อกอินก่อน แล้วลิงก์ที่เพิ่มจะซิงก์ทุกเครื่อง
+        </p>
         <a
           href={signInUrl(location.href)}
           className="mx-auto inline-flex min-h-11 items-center gap-2 rounded-md bg-[var(--em-blue-600)] px-5 font-semibold text-[var(--em-ink-0)]"
@@ -90,9 +92,9 @@ export function AddPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-4 py-5">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--em-blue-300)]">Add</p>
-      <h1 className="mb-1 text-3xl font-black text-[var(--em-ink-0)]">เพิ่มลิงก์</h1>
-      <p className="mb-5 text-sm text-[var(--em-ink-300)]">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--primary)]">Add</p>
+      <h1 className="mb-1 text-3xl font-black text-[var(--foreground)]">เพิ่มลิงก์</h1>
+      <p className="mb-5 text-sm text-[var(--muted-foreground)]">
         วางลิงก์จาก YouTube (วิดีโอ, Shorts, YouTube Music) คลิปเล่นผ่านเครื่องเล่นของ YouTube เอง
         เราเก็บแค่ลิงก์กับชื่อ
       </p>
@@ -108,7 +110,7 @@ export function AddPage() {
           value={link}
           onChange={(e) => setLink(e.target.value)}
           placeholder="https://youtu.be/…"
-          className="min-h-12 min-w-0 flex-1 rounded-md border border-[color-mix(in_oklab,var(--em-ink-0)_18%,transparent)] bg-[var(--em-ink-950)] px-3 text-[var(--em-ink-0)] placeholder:text-[var(--em-ink-400)] focus:border-[var(--em-blue-400)] focus:outline-none"
+          className="min-h-12 min-w-0 flex-1 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] bg-[var(--card)] px-3 text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none"
         />
         <button
           type="submit"
@@ -119,12 +121,12 @@ export function AddPage() {
         </button>
       </form>
       {error && (
-        <p role="alert" className="mt-3 text-sm text-[var(--em-coral-400)]">
+        <p role="alert" className="mt-3 text-sm text-[var(--destructive)]">
           {error}
         </p>
       )}
       {found && (
-        <div className="mt-5 grid gap-4 rounded-xl border border-[color-mix(in_oklab,var(--em-ink-0)_12%,transparent)] bg-[var(--em-ink-950)] p-4">
+        <div className="mt-5 grid gap-4 rounded-xl border border-[color-mix(in_oklab,var(--foreground)_12%,transparent)] bg-[var(--card)] p-4">
           <div className="flex gap-3">
             <img
               src={thumb(found.id)}
@@ -132,23 +134,23 @@ export function AddPage() {
               className="aspect-video w-32 shrink-0 rounded object-cover"
             />
             <div className="min-w-0">
-              <p className="line-clamp-2 font-semibold text-[var(--em-ink-0)]">
+              <p className="line-clamp-2 font-semibold text-[var(--foreground)]">
                 {found.info.title}
               </p>
-              <p className="truncate text-sm text-[var(--em-ink-300)]">{found.info.author}</p>
+              <p className="truncate text-sm text-[var(--muted-foreground)]">{found.info.author}</p>
             </div>
           </div>
           <fieldset>
-            <legend className="mb-2 text-sm text-[var(--em-ink-200)]">เก็บไว้ในโหมด</legend>
+            <legend className="mb-2 text-sm text-[var(--muted-foreground)]">เก็บไว้ในโหมด</legend>
             <div className="grid grid-cols-4 gap-2">
               {KINDS.map((k) => (
                 <label
                   key={k}
                   className={cn(
-                    "flex min-h-11 cursor-pointer items-center justify-center rounded-md border text-sm font-semibold has-focus-visible:outline-2 has-focus-visible:outline-[var(--em-blue-300)]",
+                    "flex min-h-11 cursor-pointer items-center justify-center rounded-md border text-sm font-semibold has-focus-visible:outline-2 has-focus-visible:outline-[var(--primary)]",
                     kind === k
-                      ? "border-[var(--em-blue-400)] bg-[color-mix(in_oklab,var(--em-blue-500)_20%,transparent)] text-[var(--em-ink-0)]"
-                      : "border-[color-mix(in_oklab,var(--em-ink-0)_15%,transparent)] text-[var(--em-ink-200)]",
+                      ? "border-[var(--primary)] bg-[color-mix(in_oklab,var(--em-blue-500)_20%,transparent)] text-[var(--foreground)]"
+                      : "border-[color-mix(in_oklab,var(--foreground)_15%,transparent)] text-[var(--muted-foreground)]",
                   )}
                 >
                   <input
@@ -168,7 +170,7 @@ export function AddPage() {
             type="button"
             disabled={busy}
             onClick={() => void save()}
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--em-ink-0)] font-bold text-[var(--em-ink-975)] hover:bg-[var(--em-ink-100)] disabled:opacity-60"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--foreground)] font-bold text-[var(--background)] hover:bg-[color-mix(in_oklab,var(--foreground)_85%,var(--background))] disabled:opacity-60"
           >
             <Check className="size-5" aria-hidden /> บันทึก
           </button>

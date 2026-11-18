@@ -122,7 +122,7 @@ export function RoomPage() {
   if (ready && !user)
     return (
       <Center>
-        <p className="text-[var(--em-ink-200)]">ล็อกอินก่อนเข้าห้องดูด้วยกัน</p>
+        <p className="text-[var(--muted-foreground)]">ล็อกอินก่อนเข้าห้องดูด้วยกัน</p>
         <a
           href={signInUrl(location.href)}
           className="mx-auto inline-flex min-h-11 items-center gap-2 rounded-md bg-[var(--em-blue-600)] px-5 font-semibold text-[var(--em-ink-0)]"
@@ -144,17 +144,17 @@ export function RoomPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-4 py-5">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--em-blue-300)]">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--primary)]">
         Watch together
       </p>
-      <h1 className="mb-4 text-3xl font-black text-[var(--em-ink-0)]">ดูพร้อมเพื่อน</h1>
-      <div className="grid gap-4 rounded-xl border border-[color-mix(in_oklab,var(--em-ink-0)_12%,transparent)] bg-[var(--em-ink-950)] p-4">
+      <h1 className="mb-4 text-3xl font-black text-[var(--foreground)]">ดูพร้อมเพื่อน</h1>
+      <div className="grid gap-4 rounded-xl border border-[color-mix(in_oklab,var(--foreground)_12%,transparent)] bg-[var(--card)] p-4">
         <img
           src={thumb(room.youtube_id)}
           alt=""
           className="aspect-video w-full rounded-lg object-cover"
         />
-        <p className="flex items-center gap-2 text-sm text-[var(--em-ink-200)]">
+        <p className="flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
           {isHost ? (
             <Radio className="size-4" aria-hidden />
           ) : (
@@ -164,7 +164,7 @@ export function RoomPage() {
             ? "คุณเป็นเจ้าของห้อง เล่น หยุด หรือกรอ แล้วเพื่อนจะตามไปด้วย"
             : "เจ้าของห้องเป็นคนคุม คุณจะเห็นตามจังหวะเดียวกัน"}
           {inRoom && (
-            <span className="ml-auto text-xs text-[var(--em-ink-300)]">
+            <span className="ml-auto text-xs text-[var(--muted-foreground)]">
               {live ? "เชื่อมต่อแล้ว" : "กำลังเชื่อม…"}
             </span>
           )}
@@ -173,7 +173,7 @@ export function RoomPage() {
           <button
             type="button"
             onClick={() => void join()}
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--em-ink-0)] font-bold text-[var(--em-ink-975)] hover:bg-[var(--em-ink-100)]"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[var(--foreground)] font-bold text-[var(--background)] hover:bg-[color-mix(in_oklab,var(--foreground)_85%,var(--background))]"
           >
             <Play className="size-5 fill-current" aria-hidden /> {isHost ? "เริ่มเล่น" : "เข้าร่วม"}
           </button>
@@ -187,7 +187,7 @@ export function RoomPage() {
                 setTimeout(() => setCopied(false), 2000);
               })
             }
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--em-ink-0)_18%,transparent)] hover:bg-[color-mix(in_oklab,var(--em-ink-0)_8%,transparent)]"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
           >
             <Copy className="size-4" aria-hidden />{" "}
             {copied ? "คัดลอกแล้ว" : "คัดลอกลิงก์ห้องส่งให้เพื่อน"}
@@ -200,7 +200,7 @@ export function RoomPage() {
 
 function Center({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto grid max-w-md gap-4 px-4 py-16 text-center text-[var(--em-ink-200)]">
+    <div className="mx-auto grid max-w-md gap-4 px-4 py-16 text-center text-[var(--muted-foreground)]">
       {children}
     </div>
   );
