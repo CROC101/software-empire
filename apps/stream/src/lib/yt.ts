@@ -6,6 +6,8 @@ export type YTPlayer = {
   loadVideoById(args: { videoId: string; startSeconds?: number }): void;
   getCurrentTime(): number;
   getDuration(): number;
+  getPlaybackRate(): number;
+  setPlaybackRate(rate: number): void;
   destroy(): void;
 };
 

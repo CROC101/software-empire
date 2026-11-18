@@ -60,14 +60,6 @@ export async function lookup(id: string): Promise<Oembed> {
   return oembedSchema.parse(await res.json());
 }
 
-export async function saveItem(item: { youtube_id: string; kind: Kind } & Oembed) {
-  const s = await db();
-  const { error } = await s
-    .from("items")
-    .upsert(item, { onConflict: "user_id,youtube_id", ignoreDuplicates: false });
-  if (error) throw error;
-}
-
 export async function removeItem(id: string) {
   const { error } = await (await db()).from("items").delete().eq("id", id);
   if (error) throw error;

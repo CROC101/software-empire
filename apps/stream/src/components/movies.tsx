@@ -14,7 +14,7 @@ import type { Video } from "@/lib/api";
 import { searchVideos, type Hit } from "@/lib/search";
 import { timeAgo } from "@/lib/time";
 import { thumb } from "@/lib/youtube";
-import { Seen, Status, useLibrary } from "./modes";
+import { More, Seen, Status, useLibrary } from "./modes";
 import { usePlayer } from "./player";
 
 /**
@@ -97,6 +97,7 @@ export function MoviesPage() {
             <Status lib={lib} empty="" />
           </div>
         )}
+        <More lib={lib} />
         {dialog}
       </div>
     );
@@ -108,7 +109,7 @@ export function MoviesPage() {
       <div className="mx-auto w-full max-w-6xl px-4 py-10">
         <Status
           lib={lib}
-          empty="ยังไม่มีหนัง ลองวางลิงก์หนังเต็มเรื่องที่เจ้าของเปิดให้ดูฟรีบน YouTube"
+          empty="ยังไม่มีหนัง ลองค้นหนังเต็มเรื่องที่เจ้าของเปิดให้ดูฟรีบน YouTube"
         />
       </div>
     );

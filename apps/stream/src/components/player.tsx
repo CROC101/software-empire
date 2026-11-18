@@ -2,13 +2,19 @@ import { cn } from "@empire/ui";
 import {
   ChevronDown,
   ExternalLink,
+  Gauge,
+  Lightbulb,
   ListMusic,
   Maximize2,
+  Palette,
   Pause,
   Play,
+  RectangleHorizontal,
+  Repeat,
   SkipForward,
   Users,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import {
   createContext,
@@ -46,6 +52,11 @@ type Player = {
   resume: () => void;
   /** Called on every play / pause / seek / change of video; returns an unsubscribe. */
   watch: (fn: (s: PlayState) => void) => () => void;
+  /** Enhancer tools: playback speed and repeat-one, kept across videos. */
+  speed: number;
+  setSpeed: (rate: number) => void;
+  loop: boolean;
+  setLoop: (on: boolean) => void;
 };
 
 const PlayerContext = createContext<Player | null>(null);
@@ -62,6 +73,16 @@ export function resumeAt(seconds: number, duration: number) {
 }
 
 const AUTOSAVE_MS = 10_000;
+
+/** The speeds YouTube's own player offers. */
+export const RATES = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+
+/** One step slower or faster, staying inside RATES (an unknown rate counts as 1). */
+export function stepRate(rate: number, by: 1 | -1) {
+  const at = RATES.indexOf(rate);
+  const next = (at < 0 ? RATES.indexOf(1) : at) + by;
+  return RATES[Math.min(RATES.length - 1, Math.max(0, next))] ?? 1;
+}
 
 /**
  * One official YouTube player for the whole app. It lives in the shell, so it keeps playing while
@@ -83,6 +104,10 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const userRef = useRef(user);
   const progressRef = useRef(progress);
   const playingRef = useRef(false);
+  const [speed, setSpeedState] = useState(1);
+  const [loop, setLoopState] = useState(false);
+  const speedRef = useRef(1);
+  const loopRef = useRef(false);
   // the YouTube player keeps its first callbacks, so it reaches the latest start through a ref
   const startRef = useRef<(video: Video) => void>(() => undefined);
 
@@ -152,8 +177,16 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
                 const on = e.data === STATE.PLAYING;
                 playingRef.current = on;
                 setPlaying(on);
+                // a new video can start at 1x: put the chosen speed back
+                if (on && e.target.getPlaybackRate() !== speedRef.current)
+                  e.target.setPlaybackRate(speedRef.current);
                 if (e.data === STATE.PAUSED || e.data === STATE.ENDED) save();
-                if (e.data === STATE.ENDED) advance();
+                if (e.data === STATE.ENDED) {
+                  if (loopRef.current) {
+                    e.target.seekTo(0, true);
+                    e.target.playVideo();
+                  } else advance();
+                }
                 if (e.data === STATE.PLAYING || e.data === STATE.PAUSED) emit();
               },
               onError: () => {
@@ -226,6 +259,16 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     host.current?.replaceChildren();
   }, [save]);
 
+  const setSpeed = useCallback((rate: number) => {
+    speedRef.current = rate;
+    setSpeedState(rate);
+    yt.current?.setPlaybackRate(rate);
+  }, []);
+  const setLoop = useCallback((on: boolean) => {
+    loopRef.current = on;
+    setLoopState(on);
+  }, []);
+
   const value = useMemo<Player>(
     () => ({
       current,
@@ -247,8 +290,26 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         listeners.current.add(fn);
         return () => listeners.current.delete(fn);
       },
+      speed,
+      setSpeed,
+      loop,
+      setLoop,
     }),
-    [current, queue, playing, expanded, play, advance, close, now, emit],
+    [
+      current,
+      queue,
+      playing,
+      expanded,
+      play,
+      advance,
+      close,
+      now,
+      emit,
+      speed,
+      setSpeed,
+      loop,
+      setLoop,
+    ],
   );
 
   return (
@@ -271,13 +332,55 @@ function Dock({
   const { user } = useSession();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
+  // view-only tools; the video itself is YouTube's frame, so these style around it
+  const [cinema, setCinema] = useState(false);
+  const [ambient, setAmbient] = useState(true);
+  const [vivid, setVivid] = useState(false);
   const v = p.current;
 
-  // Escape folds the full-screen player
+  // YouTube's keys while the player is open (inside the frame, YouTube handles its own)
   useEffect(() => {
     if (!p.expanded) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") p.setExpanded(false);
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const el = e.target instanceof Element ? e.target : null;
+      if (el?.closest("input, textarea, select, [contenteditable]")) return;
+      if (e.key === " " && el?.closest("button, a")) return;
+      const t = p.now()?.t ?? 0;
+      switch (e.key) {
+        case "Escape":
+          p.setExpanded(false);
+          break;
+        case " ":
+        case "k":
+          if (p.playing) p.pause();
+          else p.resume();
+          break;
+        case "j":
+          p.seek(Math.max(0, t - 10));
+          break;
+        case "l":
+          p.seek(t + 10);
+          break;
+        case "ArrowLeft":
+          p.seek(Math.max(0, t - 5));
+          break;
+        case "ArrowRight":
+          p.seek(t + 5);
+          break;
+        case "<":
+          p.setSpeed(stepRate(p.speed, -1));
+          break;
+        case ">":
+          p.setSpeed(stepRate(p.speed, 1));
+          break;
+        case "t":
+          setCinema((c) => !c);
+          break;
+        default:
+          return;
+      }
+      e.preventDefault();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -328,10 +431,27 @@ function Dock({
       <div
         className={cn(
           "relative aspect-video w-full bg-black",
-          p.expanded && "mx-auto max-h-[70dvh] max-w-5xl",
+          p.expanded && (cinema ? "max-h-[85dvh]" : "mx-auto max-h-[70dvh] max-w-5xl"),
+          p.expanded && ambient && "isolate",
         )}
       >
-        <div ref={host} className="absolute inset-0 [&>iframe]:size-full" />
+        {/* ambient: the cover, blurred, glows round the frame (blur never adds scroll width) */}
+        {p.expanded && ambient && v && (
+          <img
+            src={thumb(v.youtube_id)}
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 size-full object-cover opacity-70 blur-3xl"
+          />
+        )}
+        {/* vivid: a colour lift over YouTube's frame; the pixels themselves stay YouTube's */}
+        <div
+          ref={host}
+          className={cn(
+            "absolute inset-0 [&>iframe]:size-full",
+            vivid && "saturate-[1.35] contrast-[1.08]",
+          )}
+        />
         {failed && (
           <div className="absolute inset-0 grid place-items-center bg-[var(--background)] p-4 text-center text-sm">
             <p>
@@ -425,6 +545,39 @@ function Dock({
               เปิดบน YouTube
             </a>
           </div>
+          <div role="toolbar" aria-label="เครื่องมือ" className="flex flex-wrap items-center gap-2">
+            <label className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-3 text-sm">
+              <Gauge className="size-4" aria-hidden />
+              ความเร็ว
+              <select
+                value={p.speed}
+                onChange={(e) => p.setSpeed(Number(e.target.value))}
+                className="min-h-9 rounded bg-[var(--card)] px-1 font-semibold text-[var(--foreground)]"
+              >
+                {RATES.map((r) => (
+                  <option key={r} value={r}>
+                    {r === 1 ? "ปกติ" : `${r}x`}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <Toggle on={p.loop} onClick={() => p.setLoop(!p.loop)} icon={Repeat}>
+              เล่นซ้ำ
+            </Toggle>
+            <Toggle on={cinema} onClick={() => setCinema(!cinema)} icon={RectangleHorizontal}>
+              โหมดโรงหนัง
+            </Toggle>
+            <Toggle on={ambient} onClick={() => setAmbient(!ambient)} icon={Lightbulb}>
+              แสงรอบจอ
+            </Toggle>
+            <Toggle on={vivid} onClick={() => setVivid(!vivid)} icon={Palette}>
+              สีสด
+            </Toggle>
+          </div>
+          <p className="hidden text-xs text-[var(--muted-foreground)] sm:block">
+            ปุ่มลัด: K หรือเว้นวรรค เล่น/หยุด · J / L ถอย/ข้าม 10 วิ · ← / → 5 วิ · &lt; / &gt;
+            ความเร็ว · T โรงหนัง · Esc ย่อ
+          </p>
           {upNext.length > 0 && (
             <div>
               <h3 className="mb-2 flex items-center gap-2 font-heading font-bold">
@@ -478,6 +631,35 @@ function IconButton({
       aria-label={label}
       className="grid size-11 shrink-0 place-items-center rounded-md hover:bg-[color-mix(in_oklab,var(--foreground)_10%,transparent)]"
     >
+      {children}
+    </button>
+  );
+}
+
+function Toggle({
+  on,
+  onClick,
+  icon: Icon,
+  children,
+}: {
+  on: boolean;
+  onClick: () => void;
+  icon: LucideIcon;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={onClick}
+      className={cn(
+        "inline-flex min-h-11 items-center gap-2 rounded-md border px-3 text-sm",
+        on
+          ? "border-[var(--primary)] bg-[color-mix(in_oklab,var(--primary)_14%,transparent)] font-semibold text-[var(--foreground)]"
+          : "border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]",
+      )}
+    >
+      <Icon className="size-4" aria-hidden />
       {children}
     </button>
   );

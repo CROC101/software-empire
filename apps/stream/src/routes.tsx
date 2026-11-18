@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { createBrowserRouter, Link, Navigate } from "react-router";
-import { AddPage } from "@/components/add-page";
 import { MusicPage, ShortsPage, VideosPage } from "@/components/modes";
 import { MoviesPage } from "@/components/movies";
 import { TubePage } from "@/components/tube";
@@ -24,15 +23,14 @@ export const router = createBrowserRouter([
       { path: "/music", element: page("เพลง", <MusicPage />) },
       { path: "/shorts", element: page("Shorts", <ShortsPage />) },
       { path: "/tube", element: page("Tube", <TubePage />) },
-      { path: "/add", element: page("เพิ่มลิงก์", <AddPage />) },
       { path: "/room/:id", element: page("ดูพร้อมเพื่อน", <RoomPage />) },
       {
         path: "*",
         element: page(
           "ไม่พบหน้า",
           <div className="mx-auto max-w-md px-4 py-16 text-center">
-            <p className="mb-4 text-[var(--em-ink-300)]">ไม่พบหน้านี้</p>
-            <Link to="/videos" className="text-[var(--em-blue-300)] underline">
+            <p className="mb-4 text-[var(--muted-foreground)]">ไม่พบหน้านี้</p>
+            <Link to="/videos" className="text-[var(--primary)] underline">
               กลับหน้าวิดีโอ
             </Link>
           </div>,
