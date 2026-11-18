@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { loadSupabase } from "./session";
+import { KINDS, type Kind } from "./search";
 import { oembedSchema, type Oembed } from "./youtube";
 
-export const KINDS = ["video", "movie", "music", "short"] as const;
-export type Kind = (typeof KINDS)[number];
+export { KINDS, type Kind };
 
 const video = z.object({
   youtube_id: z.string().regex(/^[A-Za-z0-9_-]{11}$/),

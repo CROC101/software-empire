@@ -5,7 +5,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "crocwork-stream",
   "compatibility_date": "2026-10-01",
-  // the launch gate for pages (asks the hub, via service binding HUB) + /api/oembed
+  // the launch gate for pages (asks the hub, via service binding HUB) + /api/oembed + /api/search
   "main": "./worker.ts",
   "assets": {
     "directory": "./dist",
@@ -15,4 +15,9 @@
   },
   "vars": { "APP": "stream" },
   "services": [{ "binding": "HUB", "service": "crocwork-hub" }],
+  // /api/search: fresh (uncached) searches per visitor IP per minute, in each Cloudflare location
+  "ratelimits": [
+    { "name": "SEARCH_LIMIT", "namespace_id": "7001", "simple": { "limit": 10, "period": 60 } },
+  ],
+  // YOUTUBE_API_KEY is a secret (wrangler secret put YOUTUBE_API_KEY); without it search answers 503
 }
