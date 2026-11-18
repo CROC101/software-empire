@@ -2,6 +2,7 @@ import { DominoLettering, dominoCount } from "@empire/ui";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { getSettings, passed, thaiDate } from "@/lib/site";
 import { Countdown } from "./countdown";
 
@@ -14,7 +15,8 @@ export const metadata: Metadata = {
 const LINE_1 = "เปิดตัว";
 
 export default async function SoonPage() {
-  // the admins set the date and the message at /admin/system
+  // the admins set the date and the message at /admin/system, so read them on every request
+  await connection();
   const { launch_at, soon_message } = await getSettings();
   const target = Date.parse(launch_at);
   if (passed(launch_at)) redirect("/");
