@@ -18,6 +18,7 @@ import { findTool, IMAGE_TOOL_SLUGS } from "@/lib/tools/registry";
 const ImageTool = lazy(() => import("@/pages/image-tool"));
 const IconLibrary = lazy(() => import("@/pages/icon-library"));
 const PAGE_TOOLS: Record<string, ComponentType> = {
+  "image-upscaler": lazy(() => import("@/pages/image-upscaler")),
   "image-compressor": lazy(() => import("@/pages/image-compressor")),
   "file-comparison": lazy(() => import("@/pages/file-comparison")),
   "pdf-to-word": lazy(() => import("@/pages/pdf-to-word")),

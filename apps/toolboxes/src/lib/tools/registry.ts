@@ -8,6 +8,7 @@ import {
   ImageDown,
   Pipette,
   Scaling,
+  Sparkles,
 } from "lucide-react";
 import { converterTools } from "./specs/convert";
 import { developerTools } from "./specs/developer";
@@ -21,6 +22,16 @@ import type { CategoryKey, PageTool, SpecTool, Tool } from "./types";
 
 /// เครื่องมือที่มีหน้าของตัวเอง (AIE ทำไว้แล้ว — งานไฟล์/รูปที่ต้องมี UI เฉพาะ)
 const pageTools: PageTool[] = [
+  {
+    kind: "page",
+    slug: "image-upscaler",
+    href: "/tools/image-upscaler",
+    name: "ขยายรูปด้วย AI",
+    description: "ขยายรูป 2–4 เท่าให้คมชัด สูงสุด 8K ด้วย AI บนการ์ดจอของคุณ (WebGPU)",
+    category: "image",
+    icon: Sparkles,
+    keywords: ["upscale", "ai", "esrgan", "4k", "8k", "enlarge", "super resolution", "ขยาย", "ชัด"],
+  },
   {
     kind: "page",
     slug: "image-compressor",

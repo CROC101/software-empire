@@ -28,6 +28,11 @@ const COPY = {
     th: "เฉพาะไอคอนที่สัญญาอนุญาตให้แจกต่อ แต่ละไอคอนระบุที่มาในไฟล์ประกาศ",
     en: "Only icons whose licence allows redistribution; each one is credited in the notice.",
   },
+  model: { th: "โมเดล AI ขยายรูป", en: "AI upscaler model" },
+  modelNote: {
+    th: "Real-ESRGAN (realesr-general-x4v3) ของ Xintao Wang ใช้ BSD-3-Clause ทำงานในเบราว์เซอร์ของคุณ",
+    en: "Real-ESRGAN (realesr-general-x4v3) by Xintao Wang, BSD-3-Clause; it runs in your browser.",
+  },
   source: { th: "ซอร์สโค้ด", en: "Source code" },
   licence: { th: "สัญญาอนุญาต", en: "Licence" },
   notices: { th: "ประกาศสัญญาอนุญาต", en: "Licence notices" },
@@ -138,6 +143,17 @@ export function LicensesView() {
           <a href="/icons/NOTICE.txt" className={`${link} text-sm`}>
             {COPY.notices[lang]}
           </a>
+        </Section>
+
+        <Section title={COPY.model[lang]} note={COPY.modelNote[lang]}>
+          <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+            <a href="/models/LICENSE-Real-ESRGAN.txt" className={link}>
+              BSD-3-Clause
+            </a>
+            <a href="https://github.com/xinntao/Real-ESRGAN" rel="noreferrer" className={link}>
+              {COPY.source[lang]}
+            </a>
+          </p>
         </Section>
       </div>
     </main>

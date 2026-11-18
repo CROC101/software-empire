@@ -1,6 +1,6 @@
 import type { z } from "zod";
 
-export { expose, wrap, type Remote } from "comlink";
+export { expose, proxy, transfer, wrap, type Remote } from "comlink";
 
 /**
  * Wrap a Worker method so its input is parsed inside the Worker.
