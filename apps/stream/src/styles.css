@@ -1,0 +1,54 @@
+@import "@empire/ui/styles.css";
+
+@font-face {
+  font-family: "Noto Sans Thai UI";
+  src: url("/fonts/NotoSansThai-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans UI";
+  src: url("/fonts/PlusJakartaSans-Variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Noto Sans Thai UI", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans UI", "Noto Sans Thai UI", ui-sans-serif, sans-serif;
+}
+
+/* a cinema at night: ink water, one moon glow at the top right (house rule), painted once */
+body {
+  background: var(--em-ink-975);
+}
+.st-sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      60% 40% at 88% 0%,
+      color-mix(in oklab, var(--em-blue-400) 22%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, var(--em-ink-975) 0%, var(--em-blue-950) 100%);
+}
+
+/* the Movies hero fades into the page instead of ending in a box */
+.st-hero-fade {
+  background: linear-gradient(
+    0deg,
+    var(--em-ink-975) 0%,
+    color-mix(in oklab, var(--em-ink-975) 70%, transparent) 40%,
+    transparent 100%
+  );
+}
+
+/* sideways shelves and the Shorts feed scroll by touch or wheel without a bar */
+.st-no-scrollbar {
+  scrollbar-width: none;
+}
+.st-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

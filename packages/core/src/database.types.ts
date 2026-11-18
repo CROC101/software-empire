@@ -2967,6 +2967,132 @@ export type Database = {
       [_ in never]: never;
     };
   };
+  stream: {
+    Tables: {
+      featured: {
+        Row: {
+          author: string;
+          created_at: string;
+          id: string;
+          kind: string;
+          position: number;
+          title: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          author?: string;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          position?: number;
+          title: string;
+          youtube_id: string;
+        };
+        Update: {
+          author?: string;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          position?: number;
+          title?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      items: {
+        Row: {
+          author: string;
+          created_at: string;
+          id: string;
+          kind: string;
+          title: string;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          author?: string;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          title: string;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          author?: string;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          title?: string;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      progress: {
+        Row: {
+          duration: number;
+          seconds: number;
+          updated_at: string;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          duration?: number;
+          seconds: number;
+          updated_at?: string;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          duration?: number;
+          seconds?: number;
+          updated_at?: string;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      rooms: {
+        Row: {
+          created_at: string;
+          host: string;
+          id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          host?: string;
+          id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          created_at?: string;
+          host?: string;
+          id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      can_steer: { Args: { room: string }; Returns: boolean };
+      can_watch: { Args: { room: string }; Returns: boolean };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   tarot: {
     Tables: {
       checkins: {
@@ -3300,6 +3426,9 @@ export const Constants = {
     Enums: {},
   },
   public: {
+    Enums: {},
+  },
+  stream: {
     Enums: {},
   },
   tarot: {
