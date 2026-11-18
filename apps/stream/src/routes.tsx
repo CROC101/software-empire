@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { createBrowserRouter, Link, Navigate } from "react-router";
 import { AddPage } from "@/components/add-page";
-import { MoviesPage, MusicPage, ShortsPage, TubePage, VideosPage } from "@/components/modes";
+import { MoviesPage, MusicPage, ShortsPage, VideosPage } from "@/components/modes";
+import { TubePage } from "@/components/tube";
 import { RoomPage } from "@/components/room-page";
 import { Shell } from "@/components/shell";
 
