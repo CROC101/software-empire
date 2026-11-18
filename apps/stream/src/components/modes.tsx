@@ -1,6 +1,6 @@
 import { subsystems } from "@empire/core/subsystems";
 import { cn } from "@empire/ui";
-import { ArrowUpRight, Play, Search, Shuffle } from "lucide-react";
+import { ArrowUpRight, Play, Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
 import { type Kind, type Video } from "@/lib/api";
@@ -338,88 +338,6 @@ export function VideosPage() {
       <Shelf title="ดูต่อ" items={lib.resume} />
       {lib.all.length ? <Grid items={lib.all} /> : <Status lib={lib} empty="ยังไม่มีวิดีโอ" />}
       <More lib={lib} />
-    </Page>
-  );
-}
-
-/** Spotify style: a track list and a play-all queue; fold the player and keep listening. */
-export function MusicPage() {
-  const lib = useLibrary("music");
-  const { play, current } = usePlayer();
-  const list = lib.all;
-  return (
-    <Page eyebrow="Music" title="เพลง">
-      {list.length === 0 ? (
-        <Status lib={lib} empty="ยังไม่มีเพลง" />
-      ) : (
-        <>
-          <div className="mb-4 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                const [first] = list;
-                if (first) play(first, list);
-              }}
-              className="inline-flex min-h-12 items-center gap-2 rounded-md bg-[var(--em-blue-600)] px-5 font-bold text-[var(--em-ink-0)] hover:bg-[var(--em-blue-500)]"
-            >
-              <Play className="size-5 fill-current" aria-hidden /> เล่นทั้งหมด
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                const mixed = [...list].sort(() => Math.random() - 0.5);
-                const [first] = mixed;
-                if (first) play(first, mixed);
-              }}
-              className="inline-flex min-h-12 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-5 hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
-            >
-              <Shuffle className="size-4" aria-hidden /> สุ่ม
-            </button>
-          </div>
-          <p className="mb-3 text-sm text-[var(--muted-foreground)]">
-            ย่อเครื่องเล่นแล้วไปหน้าอื่นได้ เพลงเล่นต่อจนจบคิว
-          </p>
-          <ol className="grid gap-1">
-            {list.map((v, i) => {
-              const on = current?.youtube_id === v.youtube_id;
-              return (
-                <li key={v.youtube_id}>
-                  <button
-                    type="button"
-                    onClick={() => play(v, list)}
-                    aria-current={on || undefined}
-                    className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
-                  >
-                    <span className="w-6 text-right text-sm tabular-nums text-[var(--muted-foreground)]">
-                      {i + 1}
-                    </span>
-                    <img
-                      src={thumb(v.youtube_id)}
-                      alt=""
-                      loading="lazy"
-                      className="size-12 rounded object-cover"
-                    />
-                    <span className="min-w-0 flex-1">
-                      <span
-                        className={cn(
-                          "block truncate font-semibold",
-                          on ? "text-[var(--primary)]" : "text-[var(--foreground)]",
-                        )}
-                      >
-                        {v.title}
-                      </span>
-                      <span className="block truncate text-sm text-[var(--muted-foreground)]">
-                        {v.author}
-                      </span>
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-          <More lib={lib} />
-        </>
-      )}
     </Page>
   );
 }
