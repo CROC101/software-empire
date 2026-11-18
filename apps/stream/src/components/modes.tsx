@@ -292,7 +292,7 @@ export function ShortsPage() {
     return promo ? [{ v }, { promo }] : [{ v }];
   });
   return (
-    <div className="st-no-scrollbar mx-auto h-[calc(100dvh-8.5rem)] max-w-sm snap-y snap-mandatory overflow-y-auto px-4 py-3">
+    <div className="st-no-scrollbar mx-auto h-full max-w-sm snap-y snap-mandatory overflow-y-auto px-4 py-3">
       <h1 className="sr-only">Shorts</h1>
       {feed.map((f, i) =>
         "v" in f && f.v ? (

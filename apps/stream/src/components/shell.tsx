@@ -3,6 +3,7 @@ import { subsystems } from "@empire/core/subsystems";
 import {
   Clapperboard,
   Grid3x3,
+  LayoutGrid,
   Music2,
   Search,
   SlidersHorizontal,
@@ -11,39 +12,56 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import { env } from "@/lib/env";
 import { filters, type Filters } from "@/lib/search";
 import { PlayerProvider, usePlayer } from "./player";
 
-/** The five ways to watch the same links: one tab each. */
-const MODES = [
-  { to: "/videos", label: "วิดีโอ", icon: Tv },
-  { to: "/movies", label: "หนัง", icon: Clapperboard },
-  { to: "/music", label: "เพลง", icon: Music2 },
-  { to: "/shorts", label: "Shorts", icon: Smartphone },
-  { to: "/tube", label: "Tube", icon: Grid3x3 },
+/** The tools on the launcher: each opens full screen with its own bar and layout. */
+export const TOOLS = [
+  { to: "/videos", label: "วิดีโอ", icon: Tv, blurb: "กริดแน่น แท็บหมวด ชี้การ์ดแล้วเลื่อนดูเฟรม" },
+  {
+    to: "/movies",
+    label: "หนัง",
+    icon: Clapperboard,
+    blurb: "หนังเต็มเรื่องจัดเป็นแถว ภาพใหญ่ด้านบน แบบโรงหนังที่บ้าน",
+  },
+  {
+    to: "/music",
+    label: "เพลง",
+    icon: Music2,
+    blurb: "เพลย์ลิสต์ ช่อง ตารางเพลง และแถบเล่นด้านล่าง",
+  },
+  { to: "/shorts", label: "Shorts", icon: Smartphone, blurb: "คลิปสั้นเต็มจอแนวตั้ง ปัดขึ้นดูต่อ" },
+  {
+    to: "/tube",
+    label: "Tube",
+    icon: Grid3x3,
+    blurb: "หน้าแรกแบบเว็บดูคลิป ชิปหัวข้อ แถบข้าง ดูต่อ",
+  },
 ];
 
+/** Shared by every page: the player (one iframe for the whole app) and the sky. */
 export function Shell() {
   return (
     <PlayerProvider>
-      <Frame />
+      <div aria-hidden className="st-sky" />
+      <Outlet />
     </PlayerProvider>
   );
 }
 
-function Frame() {
+/** One tool, full screen: its own bar (hub, back to the launcher, a search in this tool only). */
+export function Tool() {
   const { current } = usePlayer();
-  // switching tabs keeps the search: the same results, watched in another style
+  const { pathname } = useLocation();
   const [params] = useSearchParams();
-  const q = params.get("q");
-  const keep = new URLSearchParams([...params].filter(([name]) => KEEP.has(name)));
+  const tool = TOOLS.find((t) => t.to === pathname);
+  const shorts = pathname === "/shorts";
   return (
-    <div className="flex min-h-dvh flex-col text-[var(--foreground)]">
-      <div aria-hidden className="st-sky" />
+    <div className={cn("flex flex-col text-[var(--foreground)]", shorts ? "h-dvh" : "min-h-dvh")}>
       <header className="vt-top sticky top-0 z-30 border-b border-[color-mix(in_oklab,var(--foreground)_8%,transparent)] bg-[color-mix(in_oklab,var(--background)_88%,transparent)]">
-        <div className="mx-auto flex w-full max-w-6xl items-center gap-2 px-4 py-2">
+        <div className="mx-auto flex w-full max-w-6xl items-center gap-1 px-4 py-2 sm:gap-2">
           <HubSwitcher
             hubUrl={env.hubUrl}
             apps={subsystems}
@@ -53,54 +71,39 @@ function Frame() {
             className="size-11 justify-center rounded-md text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--foreground)_10%,transparent)]"
           />
           <Link
-            to="/videos"
-            className="hidden font-heading text-lg font-black text-[var(--foreground)] sm:block"
+            to="/"
+            aria-label="เครื่องมือทั้งหมด"
+            className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-md px-2 hover:bg-[color-mix(in_oklab,var(--foreground)_10%,transparent)]"
           >
-            crocwork <span className="text-[var(--primary)]">stream</span>
+            <LayoutGrid className="size-5" aria-hidden />
+            <span className="hidden font-heading text-lg font-black lg:inline">stream</span>
           </Link>
-          <SearchBox />
+          {tool && (
+            <>
+              <span className="shrink-0 font-heading text-lg font-black text-[var(--primary)]">
+                {tool.label}
+              </span>
+              <SearchBox tool={tool} />
+            </>
+          )}
         </div>
-        {q && <SearchFilters />}
+        {tool && params.get("q") && <SearchFilters />}
       </header>
-      {/* room below for the tab bar, and for the mini player when one is open */}
+      {/* room below for the folded player: a card, or the full-width bar in music */}
       <main
         id="content"
         className={cn(
-          "flex-1 pb-20",
-          current && "pb-[calc(5rem+min(22.25rem,100vw-1rem)*0.5625+3.5rem)]",
+          "flex-1",
+          shorts && "min-h-0",
+          !shorts && current && "pb-[calc(min(22.25rem,100vw-1rem)*0.5625+4.5rem)]",
+          pathname === "/music" && current && "pb-[calc(56.25vw+4.5rem)] sm:pb-[13.5rem]",
         )}
       >
         <Outlet />
       </main>
-      <nav
-        aria-label="โหมด"
-        className="vt-top fixed inset-x-0 bottom-0 z-30 border-t border-[color-mix(in_oklab,var(--foreground)_12%,transparent)] bg-[color-mix(in_oklab,var(--background)_94%,transparent)] pb-[env(safe-area-inset-bottom)]"
-      >
-        <ul className="mx-auto grid max-w-xl grid-cols-5">
-          {MODES.map(({ to, label, icon: Icon }) => (
-            <li key={to}>
-              <NavLink
-                to={q ? `${to}?${keep}` : to}
-                className={({ isActive }) =>
-                  cn(
-                    "flex min-h-16 flex-col items-center justify-center gap-0.5 text-xs",
-                    isActive ? "text-[var(--primary)]" : "text-[var(--muted-foreground)]",
-                  )
-                }
-              >
-                <Icon className="size-5" aria-hidden />
-                {label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
     </div>
   );
 }
-
-/** What a tab switch carries over: the search and its filters. */
-const KEEP = new Set(["q", "order", "when", "length"]);
 
 const GROUPS: {
   name: keyof Filters;
@@ -215,13 +218,12 @@ function SearchFilters() {
   );
 }
 
-/** Searches YouTube in the mode on screen (pages that are not a mode search in วิดีโอ). */
-function SearchBox() {
+/** Searches YouTube inside one tool: the results stay in that tool's layout. */
+function SearchBox({ tool }: { tool: (typeof TOOLS)[number] }) {
   const [params] = useSearchParams();
-  const { pathname } = useLocation();
   const navigate = useNavigate();
   const q = params.get("q") ?? "";
-  const mode = MODES.some((m) => m.to === pathname) ? pathname : "/videos";
+  const mode = tool.to;
 
   return (
     <form
@@ -237,7 +239,7 @@ function SearchBox() {
       className="relative mx-auto flex min-w-0 flex-1 sm:max-w-md"
     >
       <label htmlFor="search" className="sr-only">
-        ค้นหาใน YouTube
+        {`ค้นหาใน${tool.label}`}
       </label>
       <Search
         className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--muted-foreground)]"
@@ -250,7 +252,7 @@ function SearchBox() {
         defaultValue={q}
         maxLength={100}
         enterKeyHint="search"
-        placeholder="ค้นหาใน YouTube"
+        placeholder={`ค้นหาใน${tool.label}`}
         className="min-h-11 w-full min-w-0 rounded-md border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[color-mix(in_oklab,var(--foreground)_6%,transparent)] pl-9 pr-10 text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:border-[var(--primary)] focus:outline-none [&::-webkit-search-cancel-button]:hidden"
       />
       {q && (
