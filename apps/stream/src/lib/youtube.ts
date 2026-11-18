@@ -37,6 +37,9 @@ export function youtubeId(input: string): string | null {
 export const thumb = (id: string, size: "hq" | "max" = "hq") =>
   `https://i.ytimg.com/vi/${id}/${size === "max" ? "maxresdefault" : "hqdefault"}.jpg`;
 
+/** One of the 3 storyboard frames YouTube keeps for every video (320x180). */
+export const frame = (id: string, n: number) => `https://i.ytimg.com/vi/${id}/mq${n}.jpg`;
+
 export const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const oembedSchema = z.object({
