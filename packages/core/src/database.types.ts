@@ -3047,6 +3047,93 @@ export type Database = {
           },
         ];
       };
+      custom_playlists: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+          profile_id: string;
+          shared: boolean;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+          profile_id: string;
+          shared?: boolean;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+          profile_id?: string;
+          shared?: boolean;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "custom_playlists_profile_id_user_id_fkey";
+            columns: ["profile_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id", "user_id"];
+          },
+        ];
+      };
+      episodes: {
+        Row: {
+          credits_s: number | null;
+          id: string;
+          intro_end_s: number | null;
+          intro_start_s: number | null;
+          name: string;
+          number: number;
+          runtime_s: number | null;
+          season: number;
+          synopsis: string;
+          title_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          credits_s?: number | null;
+          id?: string;
+          intro_end_s?: number | null;
+          intro_start_s?: number | null;
+          name: string;
+          number: number;
+          runtime_s?: number | null;
+          season: number;
+          synopsis?: string;
+          title_id: string;
+          youtube_id: string;
+        };
+        Update: {
+          credits_s?: number | null;
+          id?: string;
+          intro_end_s?: number | null;
+          intro_start_s?: number | null;
+          name?: string;
+          number?: number;
+          runtime_s?: number | null;
+          season?: number;
+          synopsis?: string;
+          title_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "episodes_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       featured: {
         Row: {
           author: string;
@@ -3109,6 +3196,133 @@ export type Database = {
         };
         Relationships: [];
       };
+      my_list: {
+        Row: {
+          created_at: string;
+          profile_id: string;
+          title_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          profile_id: string;
+          title_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          profile_id?: string;
+          title_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "my_list_profile_id_user_id_fkey";
+            columns: ["profile_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "my_list_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      playlist_items: {
+        Row: {
+          created_at: string;
+          episode_id: string | null;
+          playlist_id: string;
+          position: number;
+          title_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          episode_id?: string | null;
+          playlist_id: string;
+          position: number;
+          title_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          episode_id?: string | null;
+          playlist_id?: string;
+          position?: number;
+          title_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "playlist_items_episode_id_fkey";
+            columns: ["episode_id"];
+            isOneToOne: false;
+            referencedRelation: "episodes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "playlist_items_playlist_id_user_id_fkey";
+            columns: ["playlist_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "custom_playlists";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "playlist_items_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      profiles: {
+        Row: {
+          avatar: string;
+          created_at: string;
+          id: string;
+          locked: boolean | null;
+          maturity: number;
+          name: string;
+          pin_fails: number;
+          pin_hash: string | null;
+          pin_locked_until: string | null;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          avatar?: string;
+          created_at?: string;
+          id?: string;
+          locked?: never;
+          maturity?: number;
+          name: string;
+          pin_fails?: number;
+          pin_hash?: string | null;
+          pin_locked_until?: string | null;
+          user_id?: string;
+        };
+        Update: {
+          avatar?: string;
+          created_at?: string;
+          id?: string;
+          locked?: never;
+          maturity?: number;
+          name?: string;
+          pin_fails?: number;
+          pin_hash?: string | null;
+          pin_locked_until?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       progress: {
         Row: {
           duration: number;
@@ -3152,6 +3366,37 @@ export type Database = {
           created_at?: string;
           host?: string;
           id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      scene_xray_markers: {
+        Row: {
+          detail: string;
+          end_s: number;
+          id: string;
+          kind: string;
+          label: string;
+          start_s: number;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          detail?: string;
+          end_s: number;
+          id?: string;
+          kind: string;
+          label: string;
+          start_s: number;
+          youtube_id: string;
+        };
+        Update: {
+          detail?: string;
+          end_s?: number;
+          id?: string;
+          kind?: string;
+          label?: string;
+          start_s?: number;
           youtube_id?: string;
         };
         Relationships: [];
@@ -3239,6 +3484,64 @@ export type Database = {
         };
         Relationships: [];
       };
+      titles: {
+        Row: {
+          cast_names: string[];
+          created_at: string;
+          directors: string[];
+          genres: string[];
+          id: string;
+          kind: string;
+          maturity: number;
+          moods: string[];
+          name: string;
+          published: boolean;
+          runtime_s: number | null;
+          search: unknown;
+          synopsis: string;
+          trailer_id: string | null;
+          year: number | null;
+          youtube_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          cast_names?: string[];
+          created_at?: string;
+          directors?: string[];
+          genres?: string[];
+          id?: string;
+          kind: string;
+          maturity?: number;
+          moods?: string[];
+          name: string;
+          published?: boolean;
+          runtime_s?: number | null;
+          search?: never;
+          synopsis?: string;
+          trailer_id?: string | null;
+          year?: number | null;
+          youtube_id?: string | null;
+        };
+        Update: {
+          cast_names?: string[];
+          created_at?: string;
+          directors?: string[];
+          genres?: string[];
+          id?: string;
+          kind?: string;
+          maturity?: number;
+          moods?: string[];
+          name?: string;
+          published?: boolean;
+          runtime_s?: number | null;
+          search?: never;
+          synopsis?: string;
+          trailer_id?: string | null;
+          year?: number | null;
+          youtube_id?: string | null;
+        };
+        Relationships: [];
+      };
       video_engagement: {
         Row: {
           created_at: string;
@@ -3317,6 +3620,62 @@ export type Database = {
         };
         Relationships: [];
       };
+      watch_progress: {
+        Row: {
+          duration_s: number;
+          episode_id: string | null;
+          position_s: number;
+          profile_id: string;
+          title_id: string;
+          updated_at: string;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          duration_s?: number;
+          episode_id?: string | null;
+          position_s: number;
+          profile_id: string;
+          title_id: string;
+          updated_at?: string;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          duration_s?: number;
+          episode_id?: string | null;
+          position_s?: number;
+          profile_id?: string;
+          title_id?: string;
+          updated_at?: string;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "watch_progress_episode_id_fkey";
+            columns: ["episode_id"];
+            isOneToOne: false;
+            referencedRelation: "episodes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "watch_progress_profile_id_user_id_fkey";
+            columns: ["profile_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "watch_progress_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -3324,6 +3683,11 @@ export type Database = {
     Functions: {
       can_steer: { Args: { room: string }; Returns: boolean };
       can_watch: { Args: { room: string }; Returns: boolean };
+      check_profile_pin: { Args: { pin: string; profile: string }; Returns: boolean };
+      set_profile_pin: {
+        Args: { new_pin: string; old_pin: string; profile: string };
+        Returns: undefined;
+      };
     };
     Enums: {
       [_ in never]: never;
