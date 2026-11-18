@@ -3,7 +3,7 @@
   // .github/workflows/deploy.yml (Linux: OpenNext needs symlinks). Setup: docs/DEPLOY.md.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "crocwork-hub",
-  "main": ".open-next/worker.js",
+  "main": "worker.mjs",
   "compatibility_date": "2026-10-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
