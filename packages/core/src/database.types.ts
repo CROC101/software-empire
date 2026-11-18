@@ -2969,6 +2969,171 @@ export type Database = {
   };
   stream: {
     Tables: {
+      comment_reports: {
+        Row: {
+          comment_id: string;
+          created_at: string;
+          reason: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comment_id: string;
+          created_at?: string;
+          reason: string;
+          user_id?: string;
+        };
+        Update: {
+          comment_id?: string;
+          created_at?: string;
+          reason?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comment_reports_comment_id_fkey";
+            columns: ["comment_id"];
+            isOneToOne: false;
+            referencedRelation: "comments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      comments: {
+        Row: {
+          body: string;
+          created_at: string;
+          edited_at: string | null;
+          hearted: boolean;
+          id: string;
+          parent_id: string | null;
+          pinned: boolean;
+          replies: number;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          body: string;
+          created_at?: string;
+          edited_at?: string | null;
+          hearted?: boolean;
+          id?: string;
+          parent_id?: string | null;
+          pinned?: boolean;
+          replies?: number;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          body?: string;
+          created_at?: string;
+          edited_at?: string | null;
+          hearted?: boolean;
+          id?: string;
+          parent_id?: string | null;
+          pinned?: boolean;
+          replies?: number;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comments_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "comments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      custom_playlists: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+          profile_id: string;
+          shared: boolean;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+          profile_id: string;
+          shared?: boolean;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+          profile_id?: string;
+          shared?: boolean;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "custom_playlists_profile_id_user_id_fkey";
+            columns: ["profile_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id", "user_id"];
+          },
+        ];
+      };
+      episodes: {
+        Row: {
+          credits_s: number | null;
+          id: string;
+          intro_end_s: number | null;
+          intro_start_s: number | null;
+          name: string;
+          number: number;
+          runtime_s: number | null;
+          season: number;
+          synopsis: string;
+          title_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          credits_s?: number | null;
+          id?: string;
+          intro_end_s?: number | null;
+          intro_start_s?: number | null;
+          name: string;
+          number: number;
+          runtime_s?: number | null;
+          season: number;
+          synopsis?: string;
+          title_id: string;
+          youtube_id: string;
+        };
+        Update: {
+          credits_s?: number | null;
+          id?: string;
+          intro_end_s?: number | null;
+          intro_start_s?: number | null;
+          name?: string;
+          number?: number;
+          runtime_s?: number | null;
+          season?: number;
+          synopsis?: string;
+          title_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "episodes_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       featured: {
         Row: {
           author: string;
@@ -3031,6 +3196,262 @@ export type Database = {
         };
         Relationships: [];
       };
+      music_liked_tracks: {
+        Row: {
+          created_at: string;
+          track_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          track_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "music_liked_tracks_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "music_track_cache";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      music_playlist_tracks: {
+        Row: {
+          created_at: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          playlist_id?: string;
+          position?: number;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "music_playlist_tracks_playlist_id_user_id_fkey";
+            columns: ["playlist_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "music_playlists";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "music_playlist_tracks_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "music_track_cache";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      music_playlists: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      music_track_cache: {
+        Row: {
+          album: string;
+          artist: string;
+          artwork_url: string | null;
+          duration_s: number | null;
+          fetched_at: string;
+          id: string;
+          preview_url: string | null;
+          search: unknown;
+          title: string;
+          youtube_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          album?: string;
+          artist: string;
+          artwork_url?: string | null;
+          duration_s?: number | null;
+          fetched_at?: string;
+          id: string;
+          preview_url?: string | null;
+          search?: never;
+          title: string;
+          youtube_id?: string | null;
+        };
+        Update: {
+          album?: string;
+          artist?: string;
+          artwork_url?: string | null;
+          duration_s?: number | null;
+          fetched_at?: string;
+          id?: string;
+          preview_url?: string | null;
+          search?: never;
+          title?: string;
+          youtube_id?: string | null;
+        };
+        Relationships: [];
+      };
+      my_list: {
+        Row: {
+          created_at: string;
+          profile_id: string;
+          title_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          profile_id: string;
+          title_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          profile_id?: string;
+          title_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "my_list_profile_id_user_id_fkey";
+            columns: ["profile_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "my_list_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      playlist_items: {
+        Row: {
+          created_at: string;
+          episode_id: string | null;
+          playlist_id: string;
+          position: number;
+          title_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          episode_id?: string | null;
+          playlist_id: string;
+          position: number;
+          title_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          episode_id?: string | null;
+          playlist_id?: string;
+          position?: number;
+          title_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "playlist_items_episode_id_fkey";
+            columns: ["episode_id"];
+            isOneToOne: false;
+            referencedRelation: "episodes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "playlist_items_playlist_id_user_id_fkey";
+            columns: ["playlist_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "custom_playlists";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "playlist_items_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      profiles: {
+        Row: {
+          avatar: string;
+          created_at: string;
+          id: string;
+          locked: boolean | null;
+          maturity: number;
+          name: string;
+          pin_fails: number;
+          pin_hash: string | null;
+          pin_locked_until: string | null;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          avatar?: string;
+          created_at?: string;
+          id?: string;
+          locked?: never;
+          maturity?: number;
+          name: string;
+          pin_fails?: number;
+          pin_hash?: string | null;
+          pin_locked_until?: string | null;
+          user_id?: string;
+        };
+        Update: {
+          avatar?: string;
+          created_at?: string;
+          id?: string;
+          locked?: never;
+          maturity?: number;
+          name?: string;
+          pin_fails?: number;
+          pin_hash?: string | null;
+          pin_locked_until?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       progress: {
         Row: {
           duration: number;
@@ -3078,13 +3499,369 @@ export type Database = {
         };
         Relationships: [];
       };
+      scene_xray_markers: {
+        Row: {
+          detail: string;
+          end_s: number;
+          id: string;
+          kind: string;
+          label: string;
+          start_s: number;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          detail?: string;
+          end_s: number;
+          id?: string;
+          kind: string;
+          label: string;
+          start_s: number;
+          youtube_id: string;
+        };
+        Update: {
+          detail?: string;
+          end_s?: number;
+          id?: string;
+          kind?: string;
+          label?: string;
+          start_s?: number;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      segment_votes: {
+        Row: {
+          segment_id: string;
+          user_id: string;
+          value: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          segment_id: string;
+          user_id?: string;
+          value: number;
+        };
+        Update: {
+          segment_id?: string;
+          user_id?: string;
+          value?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "segment_votes_segment_id_fkey";
+            columns: ["segment_id"];
+            isOneToOne: false;
+            referencedRelation: "video_segments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      subscriptions: {
+        Row: {
+          channel_id: string;
+          created_at: string;
+          title: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id: string;
+          created_at?: string;
+          title: string;
+          user_id?: string;
+        };
+        Update: {
+          channel_id?: string;
+          created_at?: string;
+          title?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      timestamp_notes: {
+        Row: {
+          at_s: number;
+          body: string;
+          created_at: string;
+          id: string;
+          search: unknown;
+          shared: boolean;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          at_s: number;
+          body: string;
+          created_at?: string;
+          id?: string;
+          search?: never;
+          shared?: boolean;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          at_s?: number;
+          body?: string;
+          created_at?: string;
+          id?: string;
+          search?: never;
+          shared?: boolean;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      titles: {
+        Row: {
+          cast_names: string[];
+          created_at: string;
+          directors: string[];
+          genres: string[];
+          id: string;
+          kind: string;
+          maturity: number;
+          moods: string[];
+          name: string;
+          published: boolean;
+          runtime_s: number | null;
+          search: unknown;
+          synopsis: string;
+          trailer_id: string | null;
+          year: number | null;
+          youtube_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          cast_names?: string[];
+          created_at?: string;
+          directors?: string[];
+          genres?: string[];
+          id?: string;
+          kind: string;
+          maturity?: number;
+          moods?: string[];
+          name: string;
+          published?: boolean;
+          runtime_s?: number | null;
+          search?: never;
+          synopsis?: string;
+          trailer_id?: string | null;
+          year?: number | null;
+          youtube_id?: string | null;
+        };
+        Update: {
+          cast_names?: string[];
+          created_at?: string;
+          directors?: string[];
+          genres?: string[];
+          id?: string;
+          kind?: string;
+          maturity?: number;
+          moods?: string[];
+          name?: string;
+          published?: boolean;
+          runtime_s?: number | null;
+          search?: never;
+          synopsis?: string;
+          trailer_id?: string | null;
+          year?: number | null;
+          youtube_id?: string | null;
+        };
+        Relationships: [];
+      };
+      video_engagement: {
+        Row: {
+          created_at: string;
+          user_id: string;
+          value: number;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          user_id?: string;
+          value: number;
+          youtube_id: string;
+        };
+        Update: {
+          created_at?: string;
+          user_id?: string;
+          value?: number;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      video_segments: {
+        Row: {
+          category: string;
+          created_at: string;
+          end_s: number;
+          id: string;
+          score: number;
+          start_s: number;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          category: string;
+          created_at?: string;
+          end_s: number;
+          id?: string;
+          score?: number;
+          start_s: number;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          category?: string;
+          created_at?: string;
+          end_s?: number;
+          id?: string;
+          score?: number;
+          start_s?: number;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      video_stats: {
+        Row: {
+          comments: number;
+          dislikes: number;
+          likes: number;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comments?: number;
+          dislikes?: number;
+          likes?: number;
+          youtube_id: string;
+        };
+        Update: {
+          comments?: number;
+          dislikes?: number;
+          likes?: number;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      watch_progress: {
+        Row: {
+          duration_s: number;
+          episode_id: string | null;
+          position_s: number;
+          profile_id: string;
+          title_id: string;
+          updated_at: string;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          duration_s?: number;
+          episode_id?: string | null;
+          position_s: number;
+          profile_id: string;
+          title_id: string;
+          updated_at?: string;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          duration_s?: number;
+          episode_id?: string | null;
+          position_s?: number;
+          profile_id?: string;
+          title_id?: string;
+          updated_at?: string;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "watch_progress_episode_id_fkey";
+            columns: ["episode_id"];
+            isOneToOne: false;
+            referencedRelation: "episodes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "watch_progress_profile_id_user_id_fkey";
+            columns: ["profile_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "watch_progress_title_id_fkey";
+            columns: ["title_id"];
+            isOneToOne: false;
+            referencedRelation: "titles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yt_catalog_cache: {
+        Row: {
+          channel_id: string | null;
+          channel_title: string;
+          duration_s: number | null;
+          fetched_at: string;
+          published_at: string | null;
+          search: unknown;
+          source: string;
+          title: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id?: string | null;
+          channel_title?: string;
+          duration_s?: number | null;
+          fetched_at?: string;
+          published_at?: string | null;
+          search?: never;
+          source: string;
+          title: string;
+          youtube_id: string;
+        };
+        Update: {
+          channel_id?: string | null;
+          channel_title?: string;
+          duration_s?: number | null;
+          fetched_at?: string;
+          published_at?: string | null;
+          search?: never;
+          source?: string;
+          title?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
-      [_ in never]: never;
+      my_taste: {
+        Row: {
+          channel_id: string | null;
+          last_watched: string | null;
+          weight: number | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
     };
     Functions: {
       can_steer: { Args: { room: string }; Returns: boolean };
       can_watch: { Args: { room: string }; Returns: boolean };
+      check_profile_pin: { Args: { pin: string; profile: string }; Returns: boolean };
+      set_profile_pin: {
+        Args: { new_pin: string; old_pin: string; profile: string };
+        Returns: undefined;
+      };
     };
     Enums: {
       [_ in never]: never;
