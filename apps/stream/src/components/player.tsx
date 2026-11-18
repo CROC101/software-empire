@@ -26,7 +26,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { openRoom, saveProgress, type Video } from "@/lib/api";
 import { useData } from "@/lib/data";
 import { useSession } from "@/lib/session";
@@ -331,6 +331,7 @@ function Dock({
   const p = usePlayer();
   const { user } = useSession();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [busy, setBusy] = useState(false);
   // view-only tools; the video itself is YouTube's frame, so these style around it
   const [cinema, setCinema] = useState(false);
@@ -402,6 +403,8 @@ function Dock({
 
   const index = v ? p.queue.findIndex((q) => q.youtube_id === v.youtube_id) : -1;
   const upNext = p.queue.slice(index + 1, index + 11);
+  // music folds into a full-width bar at the bottom, like a music app; elsewhere a card
+  const bar = pathname === "/music" && !p.expanded;
 
   return (
     <section
@@ -411,7 +414,9 @@ function Dock({
         "vt-top fixed z-40 text-[var(--foreground)]",
         p.expanded
           ? "inset-0 z-50 flex flex-col overflow-y-auto bg-[var(--background)]"
-          : "bottom-[calc(4.25rem+env(safe-area-inset-bottom))] right-2 w-[min(22.25rem,calc(100vw-1rem))] overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[var(--card)] shadow-2xl",
+          : bar
+            ? "inset-x-0 bottom-0 flex flex-col border-t border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[var(--card)] pb-[env(safe-area-inset-bottom)] shadow-2xl sm:flex-row sm:items-center"
+            : "bottom-[calc(0.5rem+env(safe-area-inset-bottom))] right-2 w-[min(22.25rem,calc(100vw-1rem))] overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[var(--card)] shadow-2xl",
       )}
     >
       {p.expanded && (
@@ -431,6 +436,7 @@ function Dock({
       <div
         className={cn(
           "relative aspect-video w-full bg-black",
+          bar && "sm:w-[22.25rem] sm:shrink-0",
           p.expanded && (cinema ? "max-h-[85dvh]" : "mx-auto max-h-[70dvh] max-w-5xl"),
           p.expanded && ambient && "isolate",
         )}
@@ -472,7 +478,7 @@ function Dock({
       </div>
 
       {v && !p.expanded && (
-        <div className="flex items-center gap-1 px-2 py-1.5">
+        <div className={cn("flex items-center gap-1 px-2 py-1.5", bar && "sm:flex-1 sm:px-6")}>
           <button
             type="button"
             onClick={() => p.setExpanded(true)}

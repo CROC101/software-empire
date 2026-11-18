@@ -230,7 +230,7 @@ function Guide({
   return (
     <aside
       aria-label="เมนู Tube"
-      className="st-no-scrollbar sticky top-[60px] hidden h-[calc(100dvh-60px-4rem)] w-[72px] shrink-0 overflow-y-auto px-1 pt-1 pb-6 md:block xl:w-[240px] xl:px-0 xl:pt-3"
+      className="st-no-scrollbar sticky top-[60px] hidden h-[calc(100dvh-60px)] w-[72px] shrink-0 overflow-y-auto px-1 pt-1 pb-6 md:block xl:w-[240px] xl:px-0 xl:pt-3"
     >
       <nav>
         {links.map(({ to, label, icon: Icon, end }) => (
