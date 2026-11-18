@@ -52,3 +52,19 @@ body {
 .st-no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Tube: the grid fades up when a chip changes it (transform and opacity only) */
+@keyframes st-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.st-rise {
+  animation: st-rise 0.22s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-rise {
+    animation: none;
+  }
+}

@@ -1,9 +1,9 @@
 import { subsystems } from "@empire/core/subsystems";
 import { cn } from "@empire/ui";
-import { ArrowUpRight, Play, Plus, Shuffle, Trash2 } from "lucide-react";
+import { ArrowUpRight, Play, Plus, Shuffle } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router";
-import { removeItem, type Kind, type Video } from "@/lib/api";
+import { type Kind, type Video } from "@/lib/api";
 import { allVideos, useData } from "@/lib/data";
 import { searchVideos, type Hit } from "@/lib/search";
 import { env } from "@/lib/env";
@@ -42,7 +42,7 @@ function useSearch(kind: Kind) {
  * Every video of one kind (own first), plus the ones the viewer stopped part way through.
  * While a search is open (?q=), the mode shows YouTube's results instead, in its own style.
  */
-function useLibrary(kind?: Kind) {
+export function useLibrary(kind?: Kind) {
   const { featured, mine, progress, loaded, error, refresh } = useData();
   const { q, hits, loaded: found, error: missed, retry } = useSearch(kind ?? "video");
   return useMemo(() => {
@@ -100,7 +100,7 @@ function Page({
   );
 }
 
-function Status({ lib, empty }: { lib: ReturnType<typeof useLibrary>; empty: string }) {
+export function Status({ lib, empty }: { lib: ReturnType<typeof useLibrary>; empty: string }) {
   if (!lib.loaded)
     return (
       <p className="py-10 text-center text-[var(--em-ink-300)]">
@@ -136,7 +136,7 @@ function Status({ lib, empty }: { lib: ReturnType<typeof useLibrary>; empty: str
 }
 
 /** How far through a video the viewer got, as a thin bar on its thumbnail. */
-function Seen({ id }: { id: string }) {
+export function Seen({ id }: { id: string }) {
   const p = useData().progress.get(id);
   if (!p || !(p.duration > 0)) return null;
   const pct = Math.min(100, (p.seconds / p.duration) * 100);
@@ -416,84 +416,5 @@ function ShortCard({ v, list }: { v: Video; list: Video[] }) {
         <Play className="size-7 fill-[var(--em-ink-0)] text-[var(--em-ink-0)]" aria-hidden />
       </span>
     </button>
-  );
-}
-
-const SORTS = [
-  { key: "new", label: "ล่าสุด" },
-  { key: "name", label: "ชื่อ" },
-  { key: "resume", label: "ดูค้าง" },
-] as const;
-
-/** A dense grid of everything, every kind, with sort tabs and a remove button on your own links. */
-export function TubePage() {
-  const lib = useLibrary();
-  const [sort, setSort] = useState<(typeof SORTS)[number]["key"]>("new");
-  const [busy, setBusy] = useState<string | null>(null);
-  const items = useMemo(() => {
-    if (sort === "resume") return lib.resume;
-    const list = [...lib.all];
-    return sort === "name"
-      ? list.sort((a, b) => a.title.localeCompare(b.title, "th"))
-      : list.sort((a, b) => b.created_at.localeCompare(a.created_at));
-  }, [lib.all, lib.resume, sort]);
-
-  const remove = async (v: Video) => {
-    if (!v.id) return;
-    setBusy(v.id);
-    try {
-      await removeItem(v.id);
-      lib.refresh();
-    } catch (e) {
-      console.error("ลบไม่สำเร็จ", e);
-    } finally {
-      setBusy(null);
-    }
-  };
-
-  return (
-    <Page eyebrow="Tube" title="ทั้งหมด">
-      <div role="tablist" aria-label="เรียง" className="mb-4 flex gap-2">
-        {SORTS.map((s) => (
-          <button
-            key={s.key}
-            type="button"
-            role="tab"
-            aria-selected={sort === s.key}
-            onClick={() => setSort(s.key)}
-            className={cn(
-              "min-h-10 rounded-full px-4 text-sm font-semibold",
-              sort === s.key
-                ? "bg-[var(--em-ink-0)] text-[var(--em-ink-975)]"
-                : "bg-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)] text-[var(--em-ink-100)]",
-            )}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
-      {items.length === 0 ? (
-        <Status lib={lib} empty={sort === "resume" ? "ยังไม่มีคลิปที่ดูค้าง" : "ยังไม่มีอะไรเลย"} />
-      ) : (
-        <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 lg:grid-cols-5">
-          {items.map((v) => (
-            <li key={v.youtube_id} className="relative">
-              <VideoCard v={v} list={items} />
-              {v.id && (
-                <button
-                  type="button"
-                  disabled={busy === v.id}
-                  onClick={() => void remove(v)}
-                  aria-label={`ลบ ${v.title} ออกจากคลัง`}
-                  className="absolute right-1 top-1 grid size-9 place-items-center rounded-md bg-[color-mix(in_oklab,var(--em-ink-975)_75%,transparent)] text-[var(--em-ink-0)] hover:bg-[var(--em-coral-500)] disabled:opacity-50"
-                >
-                  <Trash2 className="size-4" aria-hidden />
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </Page>
   );
 }
