@@ -91,10 +91,10 @@ function Page({
 }) {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-5">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--em-blue-300)]">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--primary)]">
         {eyebrow}
       </p>
-      <h1 className="mb-4 text-3xl font-black text-[var(--em-ink-0)]">{title}</h1>
+      <h1 className="mb-4 text-3xl font-black text-[var(--foreground)]">{title}</h1>
       {children}
     </div>
   );
@@ -103,28 +103,28 @@ function Page({
 export function Status({ lib, empty }: { lib: ReturnType<typeof useLibrary>; empty: string }) {
   if (!lib.loaded)
     return (
-      <p className="py-10 text-center text-[var(--em-ink-300)]">
+      <p className="py-10 text-center text-[var(--muted-foreground)]">
         {lib.query ? "กำลังค้นใน YouTube…" : "กำลังโหลด…"}
       </p>
     );
   if (lib.error)
     return (
-      <p role="alert" className="py-10 text-center text-[var(--em-ink-300)]">
+      <p role="alert" className="py-10 text-center text-[var(--muted-foreground)]">
         {lib.error}{" "}
-        <button type="button" onClick={lib.refresh} className="text-[var(--em-blue-300)] underline">
+        <button type="button" onClick={lib.refresh} className="text-[var(--primary)] underline">
           ลองใหม่
         </button>
       </p>
     );
   if (lib.query)
     return (
-      <p className="py-10 text-center text-[var(--em-ink-300)]">
+      <p className="py-10 text-center text-[var(--muted-foreground)]">
         ไม่พบคลิปที่ตรงกับ “{lib.query}” ในโหมดนี้ ลองคำอื่นหรือโหมดอื่น
       </p>
     );
   return (
-    <div className="grid place-items-center gap-3 rounded-xl border border-dashed border-[color-mix(in_oklab,var(--em-ink-0)_18%,transparent)] px-4 py-12 text-center">
-      <p className="text-[var(--em-ink-300)]">{empty}</p>
+    <div className="grid place-items-center gap-3 rounded-xl border border-dashed border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-4 py-12 text-center">
+      <p className="text-[var(--muted-foreground)]">{empty}</p>
       <Link
         to="/add"
         className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-[var(--em-blue-600)] px-4 font-semibold text-[var(--em-ink-0)] hover:bg-[var(--em-blue-500)]"
@@ -158,7 +158,7 @@ function VideoCard({ v, list, className }: { v: Video; list: Video[]; className?
       onClick={() => play(v, list)}
       className={cn("group grid gap-2 text-left", className)}
     >
-      <span className="relative block aspect-video overflow-hidden rounded-lg bg-[var(--em-ink-900)]">
+      <span className="relative block aspect-video overflow-hidden rounded-lg bg-[var(--muted)]">
         <img
           src={thumb(v.youtube_id)}
           alt=""
@@ -168,8 +168,10 @@ function VideoCard({ v, list, className }: { v: Video; list: Video[]; className?
         <Seen id={v.youtube_id} />
       </span>
       <span className="min-w-0">
-        <span className="line-clamp-2 text-sm font-semibold text-[var(--em-ink-0)]">{v.title}</span>
-        <span className="block truncate text-xs text-[var(--em-ink-300)]">{v.author}</span>
+        <span className="line-clamp-2 text-sm font-semibold text-[var(--foreground)]">
+          {v.title}
+        </span>
+        <span className="block truncate text-xs text-[var(--muted-foreground)]">{v.author}</span>
       </span>
     </button>
   );
@@ -179,7 +181,7 @@ function Shelf({ title, items }: { title: string; items: Video[] }) {
   if (items.length === 0) return null;
   return (
     <section className="mb-6">
-      <h2 className="mb-2 font-heading text-lg font-bold text-[var(--em-ink-0)]">{title}</h2>
+      <h2 className="mb-2 font-heading text-lg font-bold text-[var(--foreground)]">{title}</h2>
       <ul className="st-no-scrollbar -mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1">
         {items.map((v) => (
           <li key={v.youtube_id} className="w-60 shrink-0 snap-start sm:w-64">
@@ -214,59 +216,6 @@ export function VideosPage() {
   );
 }
 
-/** Netflix style: one big hero, then rows. */
-export function MoviesPage() {
-  const lib = useLibrary("movie");
-  const { play } = usePlayer();
-  const hero = lib.resume[0] ?? lib.featured[0] ?? lib.mine[0];
-  if (!hero)
-    return (
-      <Page eyebrow="Movies" title="หนัง">
-        <Status
-          lib={lib}
-          empty="ยังไม่มีหนัง ลองวางลิงก์หนังเต็มเรื่องที่เจ้าของเปิดให้ดูฟรีบน YouTube"
-        />
-      </Page>
-    );
-  const resuming = lib.resume.includes(hero);
-  return (
-    <div className="mx-auto w-full max-w-6xl">
-      <section className="relative isolate min-h-[56vw] overflow-hidden sm:min-h-[28rem]">
-        <img
-          src={thumb(hero.youtube_id, "max")}
-          onError={(e) => {
-            // not every video has a full-size cover
-            e.currentTarget.src = thumb(hero.youtube_id);
-          }}
-          alt=""
-          className="absolute inset-0 -z-10 size-full object-cover"
-        />
-        <div aria-hidden className="st-hero-fade absolute inset-0 -z-10" />
-        <div className="flex min-h-[inherit] flex-col justify-end gap-3 px-4 pb-6 sm:max-w-xl">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--em-blue-300)]">
-            Movies
-          </p>
-          <h1 className="text-3xl font-black text-[var(--em-ink-0)] sm:text-4xl">{hero.title}</h1>
-          <p className="text-sm text-[var(--em-ink-200)]">{hero.author}</p>
-          <button
-            type="button"
-            onClick={() => play(hero, lib.all)}
-            className="inline-flex min-h-12 w-fit items-center gap-2 rounded-md bg-[var(--em-ink-0)] px-6 font-bold text-[var(--em-ink-975)] hover:bg-[var(--em-ink-100)]"
-          >
-            <Play className="size-5 fill-current" aria-hidden />
-            {resuming ? "ดูต่อ" : "เล่น"}
-          </button>
-        </div>
-      </section>
-      <div className="px-4 pt-2">
-        <Shelf title="ดูต่อ" items={lib.resume} />
-        <Shelf title={lib.query ? `ผลค้นหา “${lib.query}”` : "แนะนำ"} items={lib.featured} />
-        <Shelf title="คลังของฉัน" items={lib.mine} />
-      </div>
-    </div>
-  );
-}
-
 /** Spotify style: a track list and a play-all queue; fold the player and keep listening. */
 export function MusicPage() {
   const lib = useLibrary("music");
@@ -296,12 +245,12 @@ export function MusicPage() {
                 const [first] = mixed;
                 if (first) play(first, mixed);
               }}
-              className="inline-flex min-h-12 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--em-ink-0)_18%,transparent)] px-5 hover:bg-[color-mix(in_oklab,var(--em-ink-0)_8%,transparent)]"
+              className="inline-flex min-h-12 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-5 hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
             >
               <Shuffle className="size-4" aria-hidden /> สุ่ม
             </button>
           </div>
-          <p className="mb-3 text-sm text-[var(--em-ink-300)]">
+          <p className="mb-3 text-sm text-[var(--muted-foreground)]">
             ย่อเครื่องเล่นแล้วไปหน้าอื่นได้ เพลงเล่นต่อจนจบคิว
           </p>
           <ol className="grid gap-1">
@@ -313,9 +262,9 @@ export function MusicPage() {
                     type="button"
                     onClick={() => play(v, list)}
                     aria-current={on || undefined}
-                    className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-[color-mix(in_oklab,var(--em-ink-0)_8%,transparent)]"
+                    className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
                   >
-                    <span className="w-6 text-right text-sm tabular-nums text-[var(--em-ink-300)]">
+                    <span className="w-6 text-right text-sm tabular-nums text-[var(--muted-foreground)]">
                       {i + 1}
                     </span>
                     <img
@@ -328,12 +277,12 @@ export function MusicPage() {
                       <span
                         className={cn(
                           "block truncate font-semibold",
-                          on ? "text-[var(--em-blue-300)]" : "text-[var(--em-ink-0)]",
+                          on ? "text-[var(--primary)]" : "text-[var(--foreground)]",
                         )}
                       >
                         {v.title}
                       </span>
-                      <span className="block truncate text-sm text-[var(--em-ink-300)]">
+                      <span className="block truncate text-sm text-[var(--muted-foreground)]">
                         {v.author}
                       </span>
                     </span>
@@ -399,7 +348,7 @@ function ShortCard({ v, list }: { v: Video; list: Video[] }) {
     <button
       type="button"
       onClick={() => play(v, list)}
-      className="relative mb-3 block aspect-[9/16] max-h-full w-full snap-center overflow-hidden rounded-xl bg-[var(--em-ink-900)] text-left"
+      className="relative mb-3 block aspect-[9/16] max-h-full w-full snap-center overflow-hidden rounded-xl bg-[var(--muted)] text-left"
     >
       <img
         src={thumb(v.youtube_id)}

@@ -305,10 +305,10 @@ function Dock({
       aria-label="เครื่องเล่น"
       hidden={!v}
       className={cn(
-        "vt-top fixed z-40 text-[var(--em-ink-50)]",
+        "vt-top fixed z-40 text-[var(--foreground)]",
         p.expanded
-          ? "inset-0 z-50 flex flex-col overflow-y-auto bg-[var(--em-ink-975)]"
-          : "bottom-[calc(4.25rem+env(safe-area-inset-bottom))] right-2 w-[min(22.25rem,calc(100vw-1rem))] overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--em-ink-0)_14%,transparent)] bg-[var(--em-ink-950)] shadow-2xl",
+          ? "inset-0 z-50 flex flex-col overflow-y-auto bg-[var(--background)]"
+          : "bottom-[calc(4.25rem+env(safe-area-inset-bottom))] right-2 w-[min(22.25rem,calc(100vw-1rem))] overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[var(--card)] shadow-2xl",
       )}
     >
       {p.expanded && (
@@ -316,7 +316,7 @@ function Dock({
           <button
             type="button"
             onClick={() => p.setExpanded(false)}
-            className="grid size-11 place-items-center rounded-md hover:bg-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)]"
+            className="grid size-11 place-items-center rounded-md hover:bg-[color-mix(in_oklab,var(--foreground)_10%,transparent)]"
             aria-label="ย่อเครื่องเล่น"
           >
             <ChevronDown className="size-6" aria-hidden />
@@ -333,7 +333,7 @@ function Dock({
       >
         <div ref={host} className="absolute inset-0 [&>iframe]:size-full" />
         {failed && (
-          <div className="absolute inset-0 grid place-items-center bg-[var(--em-ink-975)] p-4 text-center text-sm">
+          <div className="absolute inset-0 grid place-items-center bg-[var(--background)] p-4 text-center text-sm">
             <p>
               {failed}
               {v && (
@@ -341,7 +341,7 @@ function Dock({
                   href={watchUrl(v.youtube_id)}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-2 flex items-center justify-center gap-1 text-[var(--em-blue-300)] underline"
+                  className="mt-2 flex items-center justify-center gap-1 text-[var(--primary)] underline"
                 >
                   เปิดบน YouTube <ExternalLink className="size-4" aria-hidden />
                 </a>
@@ -360,7 +360,9 @@ function Dock({
             aria-label={`ขยาย ${v.title}`}
           >
             <span className="block truncate text-sm font-semibold">{v.title}</span>
-            <span className="block truncate text-xs text-[var(--em-ink-300)]">{v.author}</span>
+            <span className="block truncate text-xs text-[var(--muted-foreground)]">
+              {v.author}
+            </span>
           </button>
           <IconButton label={p.playing ? "หยุด" : "เล่น"} onClick={p.playing ? p.pause : p.resume}>
             {p.playing ? (
@@ -386,8 +388,8 @@ function Dock({
       {v && p.expanded && (
         <div className="mx-auto grid w-full max-w-5xl gap-4 px-4 py-4">
           <div>
-            <h2 className="font-heading text-xl font-black text-[var(--em-ink-0)]">{v.title}</h2>
-            <p className="text-sm text-[var(--em-ink-300)]">{v.author}</p>
+            <h2 className="font-heading text-xl font-black text-[var(--foreground)]">{v.title}</h2>
+            <p className="text-sm text-[var(--muted-foreground)]">{v.author}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button
@@ -407,7 +409,7 @@ function Dock({
                 type="button"
                 disabled={busy}
                 onClick={() => void together()}
-                className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--em-ink-0)_18%,transparent)] px-4 hover:bg-[color-mix(in_oklab,var(--em-ink-0)_8%,transparent)] disabled:opacity-60"
+                className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-4 hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)] disabled:opacity-60"
               >
                 <Users className="size-4" aria-hidden />
                 ดูพร้อมเพื่อน
@@ -417,7 +419,7 @@ function Dock({
               href={watchUrl(v.youtube_id)}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--em-ink-0)_18%,transparent)] px-4 hover:bg-[color-mix(in_oklab,var(--em-ink-0)_8%,transparent)]"
+              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-4 hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
             >
               <ExternalLink className="size-4" aria-hidden />
               เปิดบน YouTube
@@ -434,7 +436,7 @@ function Dock({
                     <button
                       type="button"
                       onClick={() => p.play(q, p.queue)}
-                      className="flex w-full items-center gap-3 rounded-md p-1.5 text-left hover:bg-[color-mix(in_oklab,var(--em-ink-0)_8%,transparent)]"
+                      className="flex w-full items-center gap-3 rounded-md p-1.5 text-left hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
                     >
                       <img
                         src={thumb(q.youtube_id)}
@@ -444,7 +446,7 @@ function Dock({
                       />
                       <span className="min-w-0">
                         <span className="line-clamp-2 text-sm font-semibold">{q.title}</span>
-                        <span className="block truncate text-xs text-[var(--em-ink-300)]">
+                        <span className="block truncate text-xs text-[var(--muted-foreground)]">
                           {q.author}
                         </span>
                       </span>
@@ -474,7 +476,7 @@ function IconButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="grid size-11 shrink-0 place-items-center rounded-md hover:bg-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)]"
+      className="grid size-11 shrink-0 place-items-center rounded-md hover:bg-[color-mix(in_oklab,var(--foreground)_10%,transparent)]"
     >
       {children}
     </button>

@@ -18,9 +18,10 @@
   --font-heading: "Plus Jakarta Sans UI", "Noto Sans Thai UI", ui-sans-serif, sans-serif;
 }
 
-/* a cinema at night: ink water, one moon glow at the top right (house rule), painted once */
+/* a cinema at night (or a bright screening room in light): one moon glow at the top right
+   (house rule), painted once; every colour follows the shared em-theme cookie */
 body {
-  background: var(--em-ink-975);
+  background: var(--background);
 }
 .st-sky {
   position: fixed;
@@ -32,10 +33,14 @@ body {
       color-mix(in oklab, var(--em-blue-400) 22%, transparent),
       transparent 70%
     ),
-    linear-gradient(180deg, var(--em-ink-975) 0%, var(--em-blue-950) 100%);
+    linear-gradient(
+      180deg,
+      var(--background) 0%,
+      color-mix(in oklab, var(--background) 88%, var(--em-blue-500)) 100%
+    );
 }
 
-/* the Movies hero fades into the page instead of ending in a box */
+/* a dark scrim under white text on a picture (Shorts cards) */
 .st-hero-fade {
   background: linear-gradient(
     0deg,
@@ -43,6 +48,32 @@ body {
     color-mix(in oklab, var(--em-ink-975) 70%, transparent) 40%,
     transparent 100%
   );
+}
+
+/* Movies billboard (netflixcraft): darken the side the words sit on, melt the foot into the page */
+.st-bill-side {
+  background: linear-gradient(
+    77deg,
+    color-mix(in oklab, var(--background) 60%, transparent),
+    transparent 85%
+  );
+}
+.st-bill-foot,
+.st-info-foot {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--background) 15%, transparent) 15%,
+    color-mix(in oklab, var(--background) 60%, transparent) 30%,
+    var(--background) 68%,
+    var(--background)
+  );
+}
+.st-info-foot {
+  background: linear-gradient(180deg, transparent, var(--card));
+}
+.st-bill-title {
+  text-shadow: 2px 2px 4px color-mix(in oklab, var(--background) 45%, transparent);
 }
 
 /* sideways shelves and the Shorts feed scroll by touch or wheel without a bar */

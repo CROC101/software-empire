@@ -11,10 +11,11 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { removeItem, type Kind, type Video } from "@/lib/api";
 import { useData } from "@/lib/data";
+import { searchVideos, type Hit } from "@/lib/search";
 import { clock, timeAgo } from "@/lib/time";
 import { thumb } from "@/lib/youtube";
 import { Seen, Status, useLibrary } from "./modes";
@@ -34,9 +35,34 @@ const KIND_LABEL: Record<Kind, string> = {
 // chips that open a live YouTube search (answers are cached by the Worker for 6 h)
 const SEARCHES = ["เพลงฮิต", "เกม", "ข่าว", "สอนเขียนโค้ด", "ทำอาหาร"];
 
-const raised = "bg-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)]";
-const hover = "hover:bg-[color-mix(in_oklab,var(--em-ink-0)_18%,transparent)]";
-const muted = "text-[var(--em-ink-300)]";
+const raised = "bg-[color-mix(in_oklab,var(--foreground)_10%,transparent)]";
+const hover = "hover:bg-[color-mix(in_oklab,var(--foreground)_18%,transparent)]";
+const muted = "text-[var(--muted-foreground)]";
+
+/** YouTube's own picks fill the home after the library, so a new viewer never sees it empty. */
+function useFeed(on: boolean) {
+  const [feed, setFeed] = useState<{ videos: Hit[]; shorts: Hit[] }>({ videos: [], shorts: [] });
+  useEffect(() => {
+    if (!on) return;
+    const stop = new AbortController();
+    // search off or quota spent: the home shows the library alone
+    searchVideos("มาแรง วันนี้", "video", stop.signal).then(
+      (videos) => setFeed((f) => ({ ...f, videos })),
+      () => undefined,
+    );
+    searchVideos("shorts ไทย", "short", stop.signal).then(
+      (shorts) => setFeed((f) => ({ ...f, shorts })),
+      () => undefined,
+    );
+    return () => stop.abort();
+  }, [on]);
+  return feed;
+}
+
+const merge = (own: Video[], extra: Video[]) => {
+  const seen = new Set(own.map((v) => v.youtube_id));
+  return [...own, ...extra.filter((v) => !seen.has(v.youtube_id))];
+};
 
 type Filter =
   { by: "all" } | { by: "kind"; kind: Kind } | { by: "resume" } | { by: "author"; name: string };
@@ -45,6 +71,7 @@ export function TubePage() {
   const lib = useLibrary();
   const navigate = useNavigate();
   const [filter, setFilter] = useState<Filter>({ by: "all" });
+  const feed = useFeed(!lib.query);
 
   const channels = useMemo(() => {
     const count = new Map<string, number>();
@@ -66,12 +93,23 @@ export function TubePage() {
         return newest.filter((v) => v.author === filter.name);
       default:
         // shorts get their own shelf below, like the YouTube home page
-        return lib.query ? newest : newest.filter((v) => v.kind !== "short");
+        return lib.query
+          ? newest
+          : merge(
+              newest.filter((v) => v.kind !== "short"),
+              feed.videos,
+            );
     }
-  }, [lib.all, lib.resume, lib.query, filter]);
+  }, [lib.all, lib.resume, lib.query, filter, feed.videos]);
   const shorts = useMemo(
-    () => (filter.by === "all" && !lib.query ? lib.all.filter((v) => v.kind === "short") : []),
-    [lib.all, lib.query, filter.by],
+    () =>
+      filter.by === "all" && !lib.query
+        ? merge(
+            lib.all.filter((v) => v.kind === "short"),
+            feed.shorts,
+          )
+        : [],
+    [lib.all, lib.query, filter.by, feed.shorts],
   );
 
   const pick = (next: Filter) => {
@@ -82,10 +120,11 @@ export function TubePage() {
   const fadeKey = lib.query || JSON.stringify(filter);
 
   return (
-    <div className="flex">
+    // YouTube's page is flat: cover the shared night sky
+    <div className="flex min-h-[calc(100dvh-60px)] bg-[var(--background)]">
       <Guide channels={channels} filter={filter} onPick={pick} />
       <div className="min-w-0 flex-1">
-        <div className="vt-top sticky top-[60px] z-20 bg-[color-mix(in_oklab,var(--em-ink-975)_95%,transparent)]">
+        <div className="vt-top sticky top-[60px] z-20 bg-[color-mix(in_oklab,var(--background)_95%,transparent)]">
           <div
             role="toolbar"
             aria-label="ตัวกรอง"
@@ -158,8 +197,8 @@ function chipClass(on: boolean) {
   return cn(
     "inline-flex h-8 shrink-0 items-center rounded-lg px-3 text-sm font-medium whitespace-nowrap transition-colors",
     on
-      ? "bg-[var(--em-ink-50)] text-[var(--em-ink-975)]"
-      : cn(raised, hover, "text-[var(--em-ink-50)]"),
+      ? "bg-[var(--foreground)] text-[var(--background)]"
+      : cn(raised, hover, "text-[var(--foreground)]"),
   );
 }
 
@@ -217,7 +256,7 @@ function Guide({
             <span className="max-w-full truncate">{label}</span>
           </NavLink>
         ))}
-        <hr className="my-3 hidden border-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)] xl:block" />
+        <hr className="my-3 hidden border-[color-mix(in_oklab,var(--foreground)_10%,transparent)] xl:block" />
         <button
           type="button"
           onClick={() => onPick({ by: "resume" })}
@@ -232,7 +271,7 @@ function Guide({
         </Link>
         {channels.length > 0 && (
           <div className="hidden xl:block">
-            <hr className="my-3 border-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)]" />
+            <hr className="my-3 border-[color-mix(in_oklab,var(--foreground)_10%,transparent)]" />
             <h3 className="px-6 pt-1.5 pb-1 text-base font-medium">ช่อง</h3>
             {channels.map((name) => (
               <button
@@ -255,7 +294,7 @@ function Guide({
         <p
           className={cn(
             "hidden px-6 pt-4 text-xs leading-[18px] xl:block",
-            "text-[var(--em-ink-400)]",
+            "text-[var(--muted-foreground)]",
           )}
         >
           เล่นผ่านเครื่องเล่นทางการของ YouTube · ไม่ตัดโฆษณา ไม่ดาวน์โหลดคลิป
@@ -326,7 +365,7 @@ function Card({ v, list, onRemoved }: { v: Video; list: Video[]; onRemoved: () =
         onClick={() => play(v, list)}
         className="block w-full"
       >
-        <span className="relative block aspect-video overflow-hidden rounded-[12px] bg-[var(--em-ink-900)] group-hover:rounded-none">
+        <span className="relative block aspect-video overflow-hidden rounded-[12px] bg-[var(--muted)] group-hover:rounded-none">
           <img src={thumb(v.youtube_id)} alt="" loading="lazy" className="size-full object-cover" />
           {seen && seen.duration > 0 && (
             <span className="absolute right-1.5 bottom-1.5 rounded bg-[color-mix(in_oklab,var(--em-ink-975)_80%,transparent)] px-1 py-px text-xs font-medium text-[var(--em-ink-0)] tabular-nums">
@@ -339,7 +378,7 @@ function Card({ v, list, onRemoved }: { v: Video; list: Video[]; onRemoved: () =
       <div className="mt-3 flex gap-3">
         <Avatar name={v.author} size={36} />
         <button type="button" onClick={() => play(v, list)} className="min-w-0 flex-1 text-left">
-          <span className="line-clamp-2 text-base leading-[22px] font-medium text-[var(--em-ink-50)]">
+          <span className="line-clamp-2 text-base leading-[22px] font-medium text-[var(--foreground)]">
             {v.title}
           </span>
           <span className={cn("mt-1 block truncate text-sm", muted)}>{v.author}</span>
@@ -368,8 +407,8 @@ function ShortsShelf({ items }: { items: Video[] }) {
   const { play } = usePlayer();
   if (items.length === 0) return null;
   return (
-    <section className="border-t border-[color-mix(in_oklab,var(--em-ink-0)_10%,transparent)] px-4 pt-6 pb-16 sm:px-6">
-      <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-[var(--em-ink-0)]">
+    <section className="border-t border-[color-mix(in_oklab,var(--foreground)_10%,transparent)] px-4 pt-6 pb-16 sm:px-6">
+      <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-[var(--foreground)]">
         <Zap className="size-6 fill-[var(--em-blue-500)] text-[var(--em-blue-500)]" aria-hidden />
         Shorts
       </h2>
@@ -377,7 +416,7 @@ function ShortsShelf({ items }: { items: Video[] }) {
         {items.map((v) => (
           <li key={v.youtube_id} className="w-[180px] shrink-0 sm:w-[210px]">
             <button type="button" onClick={() => play(v, items)} className="block w-full text-left">
-              <span className="relative block aspect-[9/16] overflow-hidden rounded-[12px] bg-[var(--em-ink-900)]">
+              <span className="relative block aspect-[9/16] overflow-hidden rounded-[12px] bg-[var(--muted)]">
                 <img
                   src={thumb(v.youtube_id)}
                   alt=""
@@ -389,7 +428,7 @@ function ShortsShelf({ items }: { items: Video[] }) {
                   aria-hidden
                 />
               </span>
-              <span className="mt-2 line-clamp-2 text-base font-medium text-[var(--em-ink-50)]">
+              <span className="mt-2 line-clamp-2 text-base font-medium text-[var(--foreground)]">
                 {v.title}
               </span>
               <span className={cn("block truncate text-sm", muted)}>{v.author}</span>
