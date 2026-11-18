@@ -1,5 +1,4 @@
 import { subsystems } from "@empire/core/subsystems";
-import { cn } from "@empire/ui";
 import { ArrowUpRight, Play, Search } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
@@ -272,73 +271,6 @@ export function Seen({ id }: { id: string }) {
     >
       <span className="block h-full bg-[var(--em-blue-500)]" style={{ width: `${pct}%` }} />
     </span>
-  );
-}
-
-function VideoCard({ v, list, className }: { v: Video; list: Video[]; className?: string }) {
-  const { play } = usePlayer();
-  return (
-    <button
-      type="button"
-      onClick={() => play(v, list)}
-      className={cn("group grid gap-2 text-left", className)}
-    >
-      <span className="relative block aspect-video overflow-hidden rounded-lg bg-[var(--muted)]">
-        <img
-          src={thumb(v.youtube_id)}
-          alt=""
-          loading="lazy"
-          className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-        <Seen id={v.youtube_id} />
-      </span>
-      <span className="min-w-0">
-        <span className="line-clamp-2 text-sm font-semibold text-[var(--foreground)]">
-          {v.title}
-        </span>
-        <span className="block truncate text-xs text-[var(--muted-foreground)]">{v.author}</span>
-      </span>
-    </button>
-  );
-}
-
-function Shelf({ title, items }: { title: string; items: Video[] }) {
-  if (items.length === 0) return null;
-  return (
-    <section className="mb-6">
-      <h2 className="mb-2 font-heading text-lg font-bold text-[var(--foreground)]">{title}</h2>
-      <ul className="st-no-scrollbar -mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1">
-        {items.map((v) => (
-          <li key={v.youtube_id} className="w-60 shrink-0 snap-start sm:w-64">
-            <VideoCard v={v} list={items} />
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-function Grid({ items }: { items: Video[] }) {
-  return (
-    <ul className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
-      {items.map((v) => (
-        <li key={v.youtube_id}>
-          <VideoCard v={v} list={items} />
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** YouTube style: what to finish first, then everything as a grid. */
-export function VideosPage() {
-  const lib = useLibrary("video");
-  return (
-    <Page eyebrow="Videos" title="วิดีโอ">
-      <Shelf title="ดูต่อ" items={lib.resume} />
-      {lib.all.length ? <Grid items={lib.all} /> : <Status lib={lib} empty="ยังไม่มีวิดีโอ" />}
-      <More lib={lib} />
-    </Page>
   );
 }
 
