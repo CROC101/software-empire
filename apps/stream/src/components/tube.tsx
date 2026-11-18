@@ -1,16 +1,5 @@
 import { cn } from "@empire/ui";
-import {
-  Clapperboard,
-  History,
-  Home,
-  Music2,
-  Plus,
-  Smartphone,
-  Trash2,
-  Tv,
-  X,
-  Zap,
-} from "lucide-react";
+import { Clapperboard, History, Home, Music2, Smartphone, Trash2, Tv, X, Zap } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { removeItem, type Kind, type Video } from "@/lib/api";
@@ -18,7 +7,7 @@ import { useData } from "@/lib/data";
 import { searchVideos, type Hit } from "@/lib/search";
 import { clock, timeAgo } from "@/lib/time";
 import { thumb } from "@/lib/youtube";
-import { Seen, Status, useLibrary } from "./modes";
+import { More, Seen, Status, useLibrary } from "./modes";
 import { usePlayer } from "./player";
 
 /*
@@ -94,7 +83,7 @@ export function TubePage() {
       default:
         // shorts get their own shelf below, like the YouTube home page
         return lib.query
-          ? newest
+          ? lib.all
           : merge(
               newest.filter((v) => v.kind !== "short"),
               feed.videos,
@@ -186,6 +175,7 @@ export function TubePage() {
               ))}
             </ul>
           )}
+          <More lib={lib} />
           <ShortsShelf items={shorts} />
         </div>
       </div>
@@ -265,10 +255,6 @@ function Guide({
           <History className="size-6 shrink-0" aria-hidden />
           <span className="max-w-full truncate">ดูค้าง</span>
         </button>
-        <Link to="/add" className={cn(row, hover)}>
-          <Plus className="size-6 shrink-0" aria-hidden />
-          <span className="max-w-full truncate">เพิ่มลิงก์</span>
-        </Link>
         {channels.length > 0 && (
           <div className="hidden xl:block">
             <hr className="my-3 border-[color-mix(in_oklab,var(--foreground)_10%,transparent)]" />
