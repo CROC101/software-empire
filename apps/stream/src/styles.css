@@ -99,3 +99,23 @@ body {
     animation: none;
   }
 }
+
+/* Music: "now playing" bars (transform only; still under reduced motion) */
+@keyframes st-bar {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.st-bar {
+  animation: st-bar 0.9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-bar {
+    animation: none;
+    transform: scaleY(0.6);
+  }
+}
