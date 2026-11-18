@@ -1,7 +1,7 @@
 import { HubSwitcher, cn } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
-import { Clapperboard, Grid3x3, Music2, Plus, Smartphone, Tv } from "lucide-react";
-import { Link, NavLink, Outlet } from "react-router";
+import { Clapperboard, Grid3x3, Music2, Plus, Search, Smartphone, Tv, X } from "lucide-react";
+import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from "react-router";
 import { env } from "@/lib/env";
 import { PlayerProvider, usePlayer } from "./player";
 
@@ -24,6 +24,8 @@ export function Shell() {
 
 function Frame() {
   const { current } = usePlayer();
+  // switching tabs keeps the search: the same results, watched in another style
+  const q = useSearchParams()[0].get("q");
   return (
     <div className="flex min-h-dvh flex-col text-[var(--em-ink-50)]">
       <div aria-hidden className="st-sky" />
@@ -39,16 +41,17 @@ function Frame() {
           />
           <Link
             to="/videos"
-            className="mr-auto font-heading text-lg font-black text-[var(--em-ink-0)]"
+            className="hidden font-heading text-lg font-black text-[var(--em-ink-0)] sm:block"
           >
             crocwork <span className="text-[var(--em-blue-400)]">stream</span>
           </Link>
+          <SearchBox />
           <Link
             to="/add"
             className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-[var(--em-blue-600)] px-3 text-sm font-semibold text-[var(--em-ink-0)] hover:bg-[var(--em-blue-500)]"
           >
             <Plus className="size-4" aria-hidden />
-            เพิ่มลิงก์
+            <span className="sr-only sm:not-sr-only">เพิ่มลิงก์</span>
           </Link>
         </div>
       </header>
@@ -70,7 +73,7 @@ function Frame() {
           {MODES.map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <NavLink
-                to={to}
+                to={q ? `${to}?${new URLSearchParams({ q })}` : to}
                 className={({ isActive }) =>
                   cn(
                     "flex min-h-16 flex-col items-center justify-center gap-0.5 text-xs",
@@ -86,5 +89,56 @@ function Frame() {
         </ul>
       </nav>
     </div>
+  );
+}
+
+/** Searches YouTube in the mode on screen (pages that are not a mode search in วิดีโอ). */
+function SearchBox() {
+  const [params] = useSearchParams();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const q = params.get("q") ?? "";
+  const mode = MODES.some((m) => m.to === pathname) ? pathname : "/videos";
+
+  return (
+    <form
+      role="search"
+      // a new key per query resets the field when the URL changes (back button, clear)
+      key={q}
+      onSubmit={(e) => {
+        e.preventDefault();
+        const field = new FormData(e.currentTarget).get("q");
+        const next = typeof field === "string" ? field.trim() : "";
+        void navigate(next ? `${mode}?${new URLSearchParams({ q: next })}` : mode);
+      }}
+      className="relative mx-auto flex min-w-0 flex-1 sm:max-w-md"
+    >
+      <label htmlFor="search" className="sr-only">
+        ค้นหาใน YouTube
+      </label>
+      <Search
+        className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--em-ink-300)]"
+        aria-hidden
+      />
+      <input
+        id="search"
+        name="q"
+        type="search"
+        defaultValue={q}
+        maxLength={100}
+        enterKeyHint="search"
+        placeholder="ค้นหาใน YouTube"
+        className="min-h-11 w-full min-w-0 rounded-md border border-[color-mix(in_oklab,var(--em-ink-0)_14%,transparent)] bg-[color-mix(in_oklab,var(--em-ink-0)_6%,transparent)] pl-9 pr-10 text-[var(--em-ink-0)] placeholder:text-[var(--em-ink-400)] focus:border-[var(--em-blue-400)] focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+      />
+      {q && (
+        <Link
+          to={mode}
+          aria-label="ล้างการค้นหา"
+          className="absolute right-0 top-0 grid size-11 place-items-center text-[var(--em-ink-300)] hover:text-[var(--em-ink-0)]"
+        >
+          <X className="size-4" aria-hidden />
+        </Link>
+      )}
+    </form>
   );
 }

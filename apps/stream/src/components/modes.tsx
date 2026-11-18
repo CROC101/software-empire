@@ -1,18 +1,65 @@
 import { subsystems } from "@empire/core/subsystems";
 import { cn } from "@empire/ui";
 import { ArrowUpRight, Play, Plus, Shuffle, Trash2 } from "lucide-react";
-import { useMemo, useState, type ReactNode } from "react";
-import { Link } from "react-router";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Link, useSearchParams } from "react-router";
 import { removeItem, type Kind, type Video } from "@/lib/api";
 import { allVideos, useData } from "@/lib/data";
+import { searchVideos, type Hit } from "@/lib/search";
 import { env } from "@/lib/env";
 import { thumb } from "@/lib/youtube";
 import { resumeAt, usePlayer } from "./player";
 
-/** Every video of one kind (own first), plus the ones the viewer stopped part way through. */
+/** Live YouTube results for ?q= in this mode, through our Worker. */
+function useSearch(kind: Kind) {
+  const q = useSearchParams()[0].get("q")?.trim() ?? "";
+  const [found, setFound] = useState<{ key: string; hits: Hit[]; error: string | null }>();
+  const [tries, setTries] = useState(0);
+  const key = `${kind}:${q}:${tries}`;
+  useEffect(() => {
+    if (!q) return;
+    const stop = new AbortController();
+    searchVideos(q, kind, stop.signal).then(
+      (hits) => setFound({ key, hits, error: null }),
+      (e: unknown) => {
+        if (!stop.signal.aborted)
+          setFound({ key, hits: [], error: e instanceof Error ? e.message : "ค้นหาไม่สำเร็จ" });
+      },
+    );
+    return () => stop.abort();
+  }, [q, kind, key]);
+  const done = found?.key === key ? found : undefined;
+  return {
+    q,
+    hits: done?.hits ?? [],
+    loaded: !!done,
+    error: done?.error ?? null,
+    retry: useCallback(() => setTries((n) => n + 1), []),
+  };
+}
+
+/**
+ * Every video of one kind (own first), plus the ones the viewer stopped part way through.
+ * While a search is open (?q=), the mode shows YouTube's results instead, in its own style.
+ */
 function useLibrary(kind?: Kind) {
   const { featured, mine, progress, loaded, error, refresh } = useData();
+  const { q, hits, loaded: found, error: missed, retry } = useSearch(kind ?? "video");
   return useMemo(() => {
+    if (q) {
+      const list: Video[] = hits;
+      return {
+        all: list,
+        featured: list,
+        mine: [] as Video[],
+        resume: [] as Video[],
+        progress,
+        loaded: found,
+        error: missed,
+        refresh: retry,
+        query: q,
+      };
+    }
     const all = allVideos(featured, mine);
     const byId = new Map(all.map((v) => [v.youtube_id, v]));
     const ofKind = (list: Video[]) => (kind ? list.filter((v) => v.kind === kind) : list);
@@ -28,8 +75,9 @@ function useLibrary(kind?: Kind) {
       loaded,
       error,
       refresh,
+      query: "",
     };
-  }, [featured, mine, progress, loaded, error, refresh, kind]);
+  }, [featured, mine, progress, loaded, error, refresh, kind, q, hits, found, missed, retry]);
 }
 
 function Page({
@@ -53,7 +101,12 @@ function Page({
 }
 
 function Status({ lib, empty }: { lib: ReturnType<typeof useLibrary>; empty: string }) {
-  if (!lib.loaded) return <p className="py-10 text-center text-[var(--em-ink-300)]">กำลังโหลด…</p>;
+  if (!lib.loaded)
+    return (
+      <p className="py-10 text-center text-[var(--em-ink-300)]">
+        {lib.query ? "กำลังค้นใน YouTube…" : "กำลังโหลด…"}
+      </p>
+    );
   if (lib.error)
     return (
       <p role="alert" className="py-10 text-center text-[var(--em-ink-300)]">
@@ -61,6 +114,12 @@ function Status({ lib, empty }: { lib: ReturnType<typeof useLibrary>; empty: str
         <button type="button" onClick={lib.refresh} className="text-[var(--em-blue-300)] underline">
           ลองใหม่
         </button>
+      </p>
+    );
+  if (lib.query)
+    return (
+      <p className="py-10 text-center text-[var(--em-ink-300)]">
+        ไม่พบคลิปที่ตรงกับ “{lib.query}” ในโหมดนี้ ลองคำอื่นหรือโหมดอื่น
       </p>
     );
   return (
@@ -201,7 +260,7 @@ export function MoviesPage() {
       </section>
       <div className="px-4 pt-2">
         <Shelf title="ดูต่อ" items={lib.resume} />
-        <Shelf title="แนะนำ" items={lib.featured} />
+        <Shelf title={lib.query ? `ผลค้นหา “${lib.query}”` : "แนะนำ"} items={lib.featured} />
         <Shelf title="คลังของฉัน" items={lib.mine} />
       </div>
     </div>
