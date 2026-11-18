@@ -1,6 +1,6 @@
 "use client";
 
-import { Activity, LayoutDashboard, PenLine, Users } from "lucide-react";
+import { Activity, LayoutDashboard, PenLine, Power, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -9,6 +9,7 @@ const TABS = [
   { href: "/admin/content", label: "เนื้อหา", icon: PenLine },
   { href: "/admin/users", label: "ผู้ใช้", icon: Users },
   { href: "/admin/stats", label: "สถิติ", icon: Activity },
+  { href: "/admin/system", label: "ระบบ", icon: Power },
 ] as const;
 
 /** The back office's rooms; the one you are in is lit. */

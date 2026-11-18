@@ -2778,6 +2778,7 @@ export type Database = {
           action: string;
           actor: string | null;
           at: string;
+          detail: Json | null;
           id: number;
           target: string | null;
         };
@@ -2786,6 +2787,7 @@ export type Database = {
           action: string;
           actor?: string | null;
           at?: string;
+          detail?: Json | null;
           id?: never;
           target?: string | null;
         };
@@ -2793,8 +2795,56 @@ export type Database = {
           action?: string;
           actor?: string | null;
           at?: string;
+          detail?: Json | null;
           id?: never;
           target?: string | null;
+        };
+        Relationships: [];
+      };
+      apps: {
+        Row: {
+          login: boolean;
+          message: string;
+          slug: string;
+          status: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          login?: boolean;
+          message?: string;
+          slug: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          login?: boolean;
+          message?: string;
+          slug?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      online: {
+        Row: {
+          app: string;
+          path: string;
+          seen_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          app: string;
+          path: string;
+          seen_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          app?: string;
+          path?: string;
+          seen_at?: string;
+          user_id?: string;
         };
         Relationships: [];
       };
@@ -2817,6 +2867,31 @@ export type Database = {
           display_name?: string;
           updated_at?: string;
           user_id?: string;
+        };
+        Relationships: [];
+      };
+      settings: {
+        Row: {
+          announcement: string;
+          id: boolean;
+          launch_at: string;
+          soon_message: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          announcement?: string;
+          id?: boolean;
+          launch_at?: string;
+          soon_message?: string;
+          updated_at?: string;
+        };
+        Update: {
+          announcement?: string;
+          id?: boolean;
+          launch_at?: string;
+          soon_message?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };
@@ -2852,9 +2927,20 @@ export type Database = {
     Functions: {
       admin_log: { Args: Record<PropertyKey, never>; Returns: Json };
       admin_set_admin: { Args: { make: boolean; target: string }; Returns: undefined };
+      admin_set_app: {
+        Args: { login: boolean; message: string; slug: string; status: string };
+        Returns: undefined;
+      };
       admin_set_banned: { Args: { banned: boolean; target: string }; Returns: undefined };
+      admin_set_settings: {
+        Args: { announcement: string; launch_at: string; soon_message: string };
+        Returns: undefined;
+      };
+      admin_sign_out: { Args: { target: string }; Returns: undefined };
+      admin_suspend: { Args: { target: string; until: string }; Returns: undefined };
       admin_users: { Args: Record<PropertyKey, never>; Returns: Json };
       admin_visits: { Args: { days?: number }; Returns: Json };
+      gate: { Args: { app: string }; Returns: Json };
       require_admin: { Args: Record<PropertyKey, never>; Returns: undefined };
     };
     Enums: {

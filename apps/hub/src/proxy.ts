@@ -1,7 +1,8 @@
 import { createServerSupabase, expireHostOnlyAuthCookies } from "@empire/core/supabase";
 import { NextResponse, type NextRequest } from "next/server";
 import { env } from "@/lib/env";
-import { launched, openBeforeLaunch } from "@/lib/launch";
+import { readGate } from "@empire/core/launch";
+import { openBeforeLaunch } from "@/lib/launch";
 
 // signed-in only; /admin also checks cms.is_admin() itself, page and every action
 const PROTECTED_PREFIXES = ["/dashboard", "/admin", "/profile"];
@@ -32,18 +33,20 @@ async function gate(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  const gated = !launched() && !openBeforeLaunch(pathname);
-  if (gated || pathname.startsWith("/admin")) {
-    const admin = data ? (await supabase.schema("cms").rpc("is_admin")).data === true : false;
-    // before launch only CMS admins see the site; everyone else gets the countdown at this URL
-    if (gated && !admin)
+  // the admins' switches (hub /admin/system): countdown, maintenance, or the TOTP step
+  if (!openBeforeLaunch(pathname)) {
+    const { verdict } = await readGate(supabase, "hub");
+    if (verdict === "soon")
       return carry(response, NextResponse.rewrite(new URL("/soon", request.url)));
-    // an admin's password alone is not enough: the session must have passed the TOTP code
-    if (admin && data?.claims.aal !== "aal2") {
-      const mfa = new URL("/mfa", request.url);
-      mfa.searchParams.set("next", pathname);
-      return carry(response, NextResponse.redirect(mfa));
-    }
+    if (verdict === "closed")
+      return carry(response, NextResponse.rewrite(new URL("/closed?app=hub", request.url)));
+    if (verdict === "mfa") return carry(response, NextResponse.redirect(mfaUrl(request)));
+  }
+
+  // an admin's password alone is not enough for /admin: the session must have passed the TOTP code
+  if (pathname.startsWith("/admin") && data && data.claims.aal !== "aal2") {
+    const admin = (await supabase.schema("cms").rpc("is_admin")).data === true;
+    if (admin) return carry(response, NextResponse.redirect(mfaUrl(request)));
   }
 
   if (!data && PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
@@ -53,6 +56,12 @@ async function gate(request: NextRequest) {
   }
 
   return response;
+}
+
+function mfaUrl(request: NextRequest) {
+  const mfa = new URL("/mfa", request.url);
+  mfa.searchParams.set("next", request.nextUrl.pathname);
+  return mfa;
 }
 
 /** Expires host-only auth cookies left from before COOKIE_DOMAIN; they shadowed real logins. */

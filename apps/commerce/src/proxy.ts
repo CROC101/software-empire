@@ -1,9 +1,9 @@
 import { createServerSupabase, expireHostOnlyAuthCookies } from "@empire/core/supabase";
-import { launched } from "@empire/core/launch";
+import { gateTarget, readGate } from "@empire/core/launch";
 import { NextResponse, type NextRequest } from "next/server";
 import { env, hubUrl, signInUrl } from "@/lib/env";
 
-// the catalogue is public (SEO); buying, selling and the wallet need an account
+// with the login switch off the catalogue is public; buying and selling still need an account
 const PROTECTED_PREFIXES = ["/orders", "/sell"];
 
 /** Refreshes the Supabase session on every request and sends guests to the hub to sign in. */
@@ -32,12 +32,11 @@ async function gate(request: NextRequest) {
 
   const { pathname, search } = request.nextUrl;
 
-  // before launch (1 Jan 2570) only CMS admins get in; everyone else sees the hub's countdown
-  if (!launched() && !/\.[a-z0-9]+$/i.test(pathname)) {
-    // aal2 only: the hub sends an admin without the TOTP step to /mfa
-    const admin =
-      data?.claims.aal === "aal2" && (await supabase.schema("cms").rpc("is_admin")).data === true;
-    if (!admin) return carry(response, NextResponse.redirect(hubUrl));
+  // the admins' switches (hub /admin/system); turn "login" off there to make the catalogue public
+  if (!/\.[a-z0-9]+$/i.test(pathname)) {
+    const { verdict } = await readGate(supabase, "commerce");
+    const location = gateTarget(verdict, hubUrl, "commerce", request.url);
+    if (location) return carry(response, NextResponse.redirect(location));
   }
 
   if (!data && PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {

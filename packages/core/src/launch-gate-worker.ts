@@ -1,13 +1,14 @@
 /**
- * Worker in front of the static apps (toolboxes, canva, community, tarot) until launch.
- * wrangler.jsonc runs it first for everything except /assets/*, and it only checks page opens:
- * scripts, styles and fonts pass straight through. The hub decides (service binding HUB, so the
- * call never leaves Cloudflare): admins get the app, everyone else the hub's countdown.
+ * Worker in front of the static apps (toolboxes, canva, community, tarot). wrangler.jsonc runs it
+ * first for everything except /assets/*, and it only checks page opens: scripts, styles and fonts
+ * pass straight through. The hub decides from the admins' switches (hub.gate, via service binding
+ * HUB, so the call never leaves Cloudflare): before launch, maintenance, off, or sign in first.
+ * APP (wrangler vars) names the app whose switch applies.
  */
-import { GATE_PATH, launched } from "./launch";
+import { GATE_PATH } from "./launch";
 
 type Fetcher = { fetch: (input: Request | string, init?: RequestInit) => Promise<Response> };
-type Env = { ASSETS: Fetcher; HUB: Fetcher };
+type Env = { ASSETS: Fetcher; HUB: Fetcher; APP?: string };
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -15,18 +16,19 @@ export default {
       request.method === "GET" &&
       (request.headers.get("sec-fetch-dest") === "document" ||
         (request.headers.get("accept") ?? "").includes("text/html"));
-    if (launched() || !page) return env.ASSETS.fetch(request);
+    if (!page) return env.ASSETS.fetch(request);
 
-    const gate = await env.HUB.fetch(`https://hub${GATE_PATH}`, {
+    const ask = new URLSearchParams({ app: env.APP ?? "", next: request.url });
+    const gate = await env.HUB.fetch(`https://hub${GATE_PATH}?${ask}`, {
       headers: { cookie: request.headers.get("cookie") ?? "" },
     });
     if (gate.status === 204) return withSession(gate, await env.ASSETS.fetch(request));
-    const { hub } = (await gate.json().catch(() => ({}))) as { hub?: string };
+    const { location } = (await gate.json().catch(() => ({}))) as { location?: string };
     // shut, even if the hub's answer is unreadable
-    if (!hub) return new Response("เร็ว ๆ นี้", { status: 503 });
+    if (!location) return new Response("ยังเปิดไม่ได้ในตอนนี้", { status: 503 });
     return withSession(
       gate,
-      new Response(null, { status: 302, headers: { location: hub, "cache-control": "no-store" } }),
+      new Response(null, { status: 302, headers: { location, "cache-control": "no-store" } }),
     );
   },
 };

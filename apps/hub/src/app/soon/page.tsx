@@ -2,20 +2,23 @@ import { DominoLettering, dominoCount } from "@empire/ui";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { LAUNCH_AT, launched } from "@/lib/launch";
+import { getSettings, passed, thaiDate } from "@/lib/site";
 import { Countdown } from "./countdown";
 
 export const metadata: Metadata = {
   title: "เร็ว ๆ นี้",
-  description: "crocwork.studio เปิดตัว 1 มกราคม 2570",
+  description: "crocwork.studio กำลังจะเปิดตัว",
   robots: { index: false },
 };
 
 const LINE_1 = "เปิดตัว";
-const LINE_2 = "1 มกราคม 2570";
 
-export default function SoonPage() {
-  if (launched()) redirect("/");
+export default async function SoonPage() {
+  // the admins set the date and the message at /admin/system
+  const { launch_at, soon_message } = await getSettings();
+  const target = Date.parse(launch_at);
+  if (passed(launch_at)) redirect("/");
+  const LINE_2 = thaiDate(launch_at);
   return (
     <main className="flex min-h-dvh flex-col bg-[var(--em-ink-975)] px-5 py-6 text-[var(--em-ink-0)] sm:px-12 sm:py-10">
       <div className="flex items-center justify-between gap-4">
@@ -42,11 +45,12 @@ export default function SoonPage() {
               className="text-[var(--em-sky-500)]"
             />
           </h1>
-          <p className="max-w-xl text-lg text-[var(--em-ink-100)]">
-            Portfolio และระบบย่อยทั้งหมดของ crocwork กำลังเตรียมพร้อม กลับมาเจอกันวันเปิดตัว
+          <p className="max-w-xl whitespace-pre-line text-lg text-[var(--em-ink-100)]">
+            {soon_message ||
+              "Portfolio และระบบย่อยทั้งหมดของ crocwork กำลังเตรียมพร้อม กลับมาเจอกันวันเปิดตัว"}
           </p>
         </div>
-        <Countdown target={LAUNCH_AT} />
+        <Countdown target={target} />
       </div>
     </main>
   );

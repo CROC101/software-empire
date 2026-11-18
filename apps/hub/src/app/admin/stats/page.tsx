@@ -34,6 +34,10 @@ const ACTION = {
   unban: "ปลดระงับ",
   make_admin: "ตั้งแอดมิน",
   remove_admin: "ถอดแอดมิน",
+  suspend: "พักบัญชี",
+  sign_out: "ออกจากระบบทุกเครื่อง",
+  settings: "ตั้งค่าเว็บ",
+  app: "สวิตช์แอป",
 } as Record<string, string>;
 const DAYS = 14;
 const when = new Intl.DateTimeFormat("th-TH", {
@@ -171,7 +175,8 @@ export default async function AdminStatsPage() {
               {actions.data.map((a) => (
                 <li key={`${a.at}-${a.target}-${a.action}`} className="py-2">
                   <span className="font-semibold">{ACTION[a.action] ?? a.action}</span>{" "}
-                  {a.target ?? "บัญชีที่ลบแล้ว"}
+                  {a.target ??
+                    (a.action === "settings" || a.action === "app" ? "" : "บัญชีที่ลบแล้ว")}
                   <span className="block text-xs text-muted-foreground">
                     โดย {a.actor ?? "–"} · {when.format(new Date(a.at))}
                   </span>
