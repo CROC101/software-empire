@@ -2969,6 +2969,84 @@ export type Database = {
   };
   stream: {
     Tables: {
+      comment_reports: {
+        Row: {
+          comment_id: string;
+          created_at: string;
+          reason: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comment_id: string;
+          created_at?: string;
+          reason: string;
+          user_id?: string;
+        };
+        Update: {
+          comment_id?: string;
+          created_at?: string;
+          reason?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comment_reports_comment_id_fkey";
+            columns: ["comment_id"];
+            isOneToOne: false;
+            referencedRelation: "comments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      comments: {
+        Row: {
+          body: string;
+          created_at: string;
+          edited_at: string | null;
+          hearted: boolean;
+          id: string;
+          parent_id: string | null;
+          pinned: boolean;
+          replies: number;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          body: string;
+          created_at?: string;
+          edited_at?: string | null;
+          hearted?: boolean;
+          id?: string;
+          parent_id?: string | null;
+          pinned?: boolean;
+          replies?: number;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          body?: string;
+          created_at?: string;
+          edited_at?: string | null;
+          hearted?: boolean;
+          id?: string;
+          parent_id?: string | null;
+          pinned?: boolean;
+          replies?: number;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "comments_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "comments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       featured: {
         Row: {
           author: string;
@@ -3074,6 +3152,167 @@ export type Database = {
           created_at?: string;
           host?: string;
           id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      segment_votes: {
+        Row: {
+          segment_id: string;
+          user_id: string;
+          value: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          segment_id: string;
+          user_id?: string;
+          value: number;
+        };
+        Update: {
+          segment_id?: string;
+          user_id?: string;
+          value?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "segment_votes_segment_id_fkey";
+            columns: ["segment_id"];
+            isOneToOne: false;
+            referencedRelation: "video_segments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      subscriptions: {
+        Row: {
+          channel_id: string;
+          created_at: string;
+          title: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id: string;
+          created_at?: string;
+          title: string;
+          user_id?: string;
+        };
+        Update: {
+          channel_id?: string;
+          created_at?: string;
+          title?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      timestamp_notes: {
+        Row: {
+          at_s: number;
+          body: string;
+          created_at: string;
+          id: string;
+          search: unknown;
+          shared: boolean;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          at_s: number;
+          body: string;
+          created_at?: string;
+          id?: string;
+          search?: never;
+          shared?: boolean;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          at_s?: number;
+          body?: string;
+          created_at?: string;
+          id?: string;
+          search?: never;
+          shared?: boolean;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      video_engagement: {
+        Row: {
+          created_at: string;
+          user_id: string;
+          value: number;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          user_id?: string;
+          value: number;
+          youtube_id: string;
+        };
+        Update: {
+          created_at?: string;
+          user_id?: string;
+          value?: number;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      video_segments: {
+        Row: {
+          category: string;
+          created_at: string;
+          end_s: number;
+          id: string;
+          score: number;
+          start_s: number;
+          user_id: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          category: string;
+          created_at?: string;
+          end_s: number;
+          id?: string;
+          score?: number;
+          start_s: number;
+          user_id?: string;
+          youtube_id: string;
+        };
+        Update: {
+          category?: string;
+          created_at?: string;
+          end_s?: number;
+          id?: string;
+          score?: number;
+          start_s?: number;
+          user_id?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
+      video_stats: {
+        Row: {
+          comments: number;
+          dislikes: number;
+          likes: number;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          comments?: number;
+          dislikes?: number;
+          likes?: number;
+          youtube_id: string;
+        };
+        Update: {
+          comments?: number;
+          dislikes?: number;
+          likes?: number;
           youtube_id?: string;
         };
         Relationships: [];
