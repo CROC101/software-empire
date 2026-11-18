@@ -47,7 +47,7 @@ export const subsystems = [
   {
     slug: "stream",
     name: "Stream",
-    summary: "เครื่องเล่นเสียงเล่นต่อเมื่อปิดจอ คุมจาก lockscreen",
+    summary: "หนัง เพลง คลิปสั้น จาก YouTube ทางการ พับจอฟังต่อได้ ดูพร้อมเพื่อนได้",
     accent: "var(--em-violet-800)",
   },
 ] as const;

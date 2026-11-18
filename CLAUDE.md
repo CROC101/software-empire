@@ -28,7 +28,7 @@ apps/toolboxes  ระบบย่อย 3 — dev tools + MCP inspector (dupe) 
 apps/tarot      ระบบย่อย 4 — AI tarot 3D, WebGPU/BYOK             (Vite)
 apps/design     ระบบย่อย 5 — component & prompt registry          (Next.js)
 apps/canva      ระบบย่อย 6 — canvas editor (dupe จาก canvas)       (Vite)
-apps/stream     ระบบย่อย 7 — audio player + Media Session          (Vite)
+apps/stream     ระบบย่อย 7 — หนัง/เพลง/คลิปสั้นจาก YouTube ทางการ + ดูพร้อมเพื่อน (Vite)
 packages/ui     design system กลาง
 packages/config eslint / tsconfig / tailwind preset
 packages/core   Supabase client, auth helpers, Zod schemas, SW
@@ -57,6 +57,7 @@ pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็
 pnpm --filter @empire/community dev  # http://localhost:3001 (ต้องล็อกอิน)
 pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จริง (ต้อง db:start)
 pnpm --filter @empire/crocbyte dev     # http://localhost:3007 เว็บรับงานเดิม (ยังใช้ Firebase)
+pnpm --filter @empire/stream dev       # http://localhost:3008 YouTube ทางการ (youtube-nocookie + oEmbed ไม่ใช้ key) · ดูพร้อมเพื่อนผ่าน Realtime ส่วนตัว `stream-room:<id>`
 ```
 
 - `db:start` เปิด storage + realtime ด้วย · DB volume เก่า + schema ใหม่ใน `[api] schemas` → PostgREST 503 ตอน start: ใช้ `supabase start --ignore-health-check ...` แล้ว `pnpm db:reset`
