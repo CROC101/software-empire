@@ -40,6 +40,12 @@ export const thumb = (id: string, size: "hq" | "sd" | "max" = "hq") =>
 /** One of the 3 storyboard frames YouTube keeps for every video (320x180). */
 export const frame = (id: string, n: number) => `https://i.ytimg.com/vi/${id}/mq${n}.jpg`;
 
+/** Which of YouTube's 3 storyboard frames sits under the pointer (1-3). */
+export function frameAt(x: number, width: number) {
+  if (!(width > 0)) return 1;
+  return Math.min(3, Math.max(1, Math.floor((x / width) * 3) + 1));
+}
+
 export const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const oembedSchema = z.object({
