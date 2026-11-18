@@ -16,7 +16,14 @@ import { maxScale } from "@/lib/upscale/model";
 import type { UpscaleApi } from "@/lib/upscale/worker";
 
 type Scale = 2 | 3 | 4;
-type Source = { file: File; url: string; width: number; height: number };
+// preview is drawn on a canvas from the decoded bitmap, so the user's file never becomes an <img src>
+type Source = { file: File; preview: ImageBitmap; width: number; height: number };
+const drawPreview = (bitmap: ImageBitmap) => (canvas: HTMLCanvasElement | null) => {
+  if (!canvas) return;
+  canvas.width = bitmap.width;
+  canvas.height = bitmap.height;
+  canvas.getContext("2d")?.drawImage(bitmap, 0, 0);
+};
 type Result = { blob: Blob; url: string; width: number; height: number };
 const MAX_FILE_BYTES = 25 * 1024 * 1024;
 const SCALES: Scale[] = [2, 3, 4];
@@ -70,16 +77,19 @@ export default function ImageUpscalerPage() {
     try {
       const bitmap = await createImageBitmap(file);
       const { width, height } = bitmap;
-      bitmap.close();
       const top = maxScale(width, height);
       if (!top) {
+        bitmap.close();
         setError("รูปใหญ่เกิน 3840 × 2160 แล้ว ขยายอีกจะเกิน 8K");
         return;
       }
       setError("");
       setResult(null);
       setScale(top as Scale);
-      setSource({ file, url: track(file), width, height });
+      setSource((old) => {
+        old?.preview.close();
+        return { file, preview: bitmap, width, height };
+      });
     } catch {
       setError("เปิดรูปนี้ไม่ได้ ลองไฟล์อื่น");
     }
@@ -115,7 +125,10 @@ export default function ImageUpscalerPage() {
   };
 
   const reset = () => {
-    setSource(null);
+    setSource((old) => {
+      old?.preview.close();
+      return null;
+    });
     setResult(null);
     setError("");
     if (inputRef.current) inputRef.current.value = "";
@@ -229,9 +242,11 @@ export default function ImageUpscalerPage() {
                       รูปต้นฉบับ
                     </figcaption>
                     <div className="relative grid h-56 place-items-center p-3">
-                      <img
-                        src={source.url}
-                        alt="ตัวอย่างรูปต้นฉบับ"
+                      <canvas
+                        key={`${source.file.name}:${source.file.lastModified}`}
+                        ref={drawPreview(source.preview)}
+                        role="img"
+                        aria-label="ตัวอย่างรูปต้นฉบับ"
                         className="absolute inset-0 size-full object-contain p-3"
                       />
                     </div>
