@@ -2,7 +2,7 @@ import { cn } from "@empire/ui";
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { type Video } from "@/lib/api";
-import { frame, thumb } from "@/lib/youtube";
+import { frame, frameAt, thumb } from "@/lib/youtube";
 import { More, Seen, Status, useLibrary } from "./modes";
 import { byChannel } from "./music";
 import { usePlayer } from "./player";
@@ -20,12 +20,6 @@ const TOPICS = [
   "สารคดี",
   "การ์ตูน",
 ];
-
-/** Which of YouTube's 3 storyboard frames sits under the pointer (1-3). */
-export function frameAt(x: number, width: number) {
-  if (!(width > 0)) return 1;
-  return Math.min(3, Math.max(1, Math.floor((x / width) * 3) + 1));
-}
 
 /** The channels with the most clips in the list, most first (ties keep list order). */
 export function topChannels(list: Video[], n = 10) {

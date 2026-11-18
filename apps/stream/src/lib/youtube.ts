@@ -34,11 +34,17 @@ export function youtubeId(input: string): string | null {
 }
 
 /** Thumbnails come straight from YouTube's image host (no API key, no copy kept). */
-export const thumb = (id: string, size: "hq" | "max" = "hq") =>
-  `https://i.ytimg.com/vi/${id}/${size === "max" ? "maxresdefault" : "hqdefault"}.jpg`;
+export const thumb = (id: string, size: "hq" | "sd" | "max" = "hq") =>
+  `https://i.ytimg.com/vi/${id}/${size}${size === "max" ? "res" : ""}default.jpg`;
 
 /** One of the 3 storyboard frames YouTube keeps for every video (320x180). */
 export const frame = (id: string, n: number) => `https://i.ytimg.com/vi/${id}/mq${n}.jpg`;
+
+/** Which of YouTube's 3 storyboard frames sits under the pointer (1-3). */
+export function frameAt(x: number, width: number) {
+  if (!(width > 0)) return 1;
+  return Math.min(3, Math.max(1, Math.floor((x / width) * 3) + 1));
+}
 
 export const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 

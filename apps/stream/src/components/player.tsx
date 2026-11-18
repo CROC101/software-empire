@@ -32,11 +32,12 @@ import { useData } from "@/lib/data";
 import { useSession } from "@/lib/session";
 import { STATE, loadYouTube, type YTPlayer } from "@/lib/yt";
 import { thumb, watchUrl } from "@/lib/youtube";
+import { jumpTo, TheaterBar, toggleFullscreen, type Clock } from "./theater";
 
 /** What a watch-together host broadcasts, and what guests follow. */
 export type PlayState = { id: string; t: number; playing: boolean };
 
-type Player = {
+export type Player = {
   current: Video | null;
   queue: Video[];
   playing: boolean;
@@ -57,6 +58,10 @@ type Player = {
   setSpeed: (rate: number) => void;
   loop: boolean;
   setLoop: (on: boolean) => void;
+  /** Theater bar: time, length, buffer and sound, read on demand (never in React state). */
+  read: () => Clock | null;
+  setVolume: (volume: number) => void;
+  setMuted: (muted: boolean) => void;
 };
 
 const PlayerContext = createContext<Player | null>(null);
@@ -171,7 +176,17 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
             videoId: video.youtube_id,
             width: "100%",
             height: "100%",
-            playerVars: { autoplay: 1, playsinline: 1, rel: 0, start: from },
+            // our own bar and keys drive it; YouTube's logo and frame stay as YouTube draws them
+            playerVars: {
+              autoplay: 1,
+              playsinline: 1,
+              rel: 0,
+              start: from,
+              controls: 0,
+              disablekb: 1,
+              fs: 0,
+              iv_load_policy: 3,
+            },
             events: {
               onStateChange: (e) => {
                 const on = e.data === STATE.PLAYING;
@@ -294,6 +309,23 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       setSpeed,
       loop,
       setLoop,
+      read: () => {
+        const y = yt.current;
+        // the object exists before onReady, its methods only after
+        if (!y || !currentRef.current || typeof y.getCurrentTime !== "function") return null;
+        return {
+          t: y.getCurrentTime(),
+          duration: y.getDuration(),
+          buffered: y.getVideoLoadedFraction(),
+          volume: y.getVolume(),
+          muted: y.isMuted(),
+        };
+      },
+      setVolume: (volume) => {
+        yt.current?.setVolume(volume);
+        if (volume > 0) yt.current?.unMute();
+      },
+      setMuted: (muted) => (muted ? yt.current?.mute() : yt.current?.unMute()),
     }),
     [
       current,
@@ -338,6 +370,7 @@ function Dock({
   const [ambient, setAmbient] = useState(true);
   const [vivid, setVivid] = useState(false);
   const v = p.current;
+  const stage = useRef<HTMLDivElement>(null);
 
   // YouTube's keys while the player is open (inside the frame, YouTube handles its own)
   useEffect(() => {
@@ -378,8 +411,25 @@ function Dock({
         case "t":
           setCinema((c) => !c);
           break;
-        default:
-          return;
+        case "f":
+          void toggleFullscreen(stage.current);
+          break;
+        case "m": {
+          const c = p.read();
+          if (c) p.setMuted(!c.muted);
+          break;
+        }
+        case "ArrowUp":
+        case "ArrowDown": {
+          const c = p.read();
+          if (c) p.setVolume(Math.min(100, Math.max(0, c.volume + (e.key === "ArrowUp" ? 5 : -5))));
+          break;
+        }
+        default: {
+          const to = jumpTo(e.key, p.read()?.duration ?? 0);
+          if (to === null) return;
+          p.seek(to);
+        }
       }
       e.preventDefault();
     };
@@ -416,7 +466,7 @@ function Dock({
           ? "inset-0 z-50 flex flex-col overflow-y-auto bg-[var(--background)]"
           : bar
             ? "inset-x-0 bottom-0 flex flex-col border-t border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[var(--card)] pb-[env(safe-area-inset-bottom)] shadow-2xl sm:flex-row sm:items-center"
-            : "bottom-[calc(0.5rem+env(safe-area-inset-bottom))] right-2 w-[min(22.25rem,calc(100vw-1rem))] overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[var(--card)] shadow-2xl",
+            : "bottom-[calc(0.5rem+env(safe-area-inset-bottom))] right-2 w-[min(22.5rem,calc(100vw-1rem))] overflow-hidden rounded-xl border border-[color-mix(in_oklab,var(--foreground)_14%,transparent)] bg-[var(--card)] shadow-2xl",
       )}
     >
       {p.expanded && (
@@ -432,47 +482,61 @@ function Dock({
           <p className="min-w-0 flex-1 truncate font-heading text-sm font-bold">{v?.title}</p>
         </header>
       )}
-      {/* YouTube's terms: the player stays visible and at least 200px tall, folded too */}
+      {/* full screen takes the frame and its bar together */}
       <div
+        ref={stage}
         className={cn(
-          "relative aspect-video w-full bg-black",
+          "group/stage [&:fullscreen]:flex [&:fullscreen]:flex-col [&:fullscreen]:bg-[var(--em-ink-975)]",
           bar && "sm:w-[22.25rem] sm:shrink-0",
-          p.expanded && (cinema ? "max-h-[85dvh]" : "mx-auto max-h-[70dvh] max-w-5xl"),
-          p.expanded && ambient && "isolate",
         )}
       >
-        {/* ambient: the cover, blurred, glows round the frame (blur never adds scroll width) */}
-        {p.expanded && ambient && v && (
-          <img
-            src={thumb(v.youtube_id)}
-            alt=""
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 size-full object-cover opacity-70 blur-3xl"
-          />
-        )}
-        {/* vivid: a colour lift over YouTube's frame; the pixels themselves stay YouTube's */}
+        {/* YouTube's terms: the player stays visible and at least 200px tall, folded too */}
         <div
-          ref={host}
           className={cn(
-            "absolute inset-0 [&>iframe]:size-full",
-            vivid && "saturate-[1.35] contrast-[1.08]",
+            "relative aspect-video w-full bg-black",
+            p.expanded && (cinema ? "max-h-[85dvh]" : "mx-auto max-h-[70dvh] max-w-5xl"),
+            p.expanded && ambient && "isolate",
+            "group-[:fullscreen]/stage:aspect-auto group-[:fullscreen]/stage:max-h-none group-[:fullscreen]/stage:max-w-none group-[:fullscreen]/stage:flex-1",
           )}
-        />
-        {failed && (
-          <div className="absolute inset-0 grid place-items-center bg-[var(--background)] p-4 text-center text-sm">
-            <p>
-              {failed}
-              {v && (
-                <a
-                  href={watchUrl(v.youtube_id)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-2 flex items-center justify-center gap-1 text-[var(--primary)] underline"
-                >
-                  เปิดบน YouTube <ExternalLink className="size-4" aria-hidden />
-                </a>
-              )}
-            </p>
+        >
+          {/* ambient: the cover, blurred, glows round the frame (blur never adds scroll width) */}
+          {p.expanded && ambient && v && (
+            <img
+              src={thumb(v.youtube_id)}
+              alt=""
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -z-10 size-full object-cover opacity-70 blur-3xl"
+            />
+          )}
+          {/* vivid: a colour lift over YouTube's frame; the pixels themselves stay YouTube's */}
+          <div
+            ref={host}
+            className={cn(
+              "absolute inset-0 [&>iframe]:size-full",
+              vivid && "saturate-[1.35] contrast-[1.08]",
+            )}
+          />
+          {failed && (
+            <div className="absolute inset-0 grid place-items-center bg-[var(--background)] p-4 text-center text-sm">
+              <p>
+                {failed}
+                {v && (
+                  <a
+                    href={watchUrl(v.youtube_id)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 flex items-center justify-center gap-1 text-[var(--primary)] underline"
+                  >
+                    เปิดบน YouTube <ExternalLink className="size-4" aria-hidden />
+                  </a>
+                )}
+              </p>
+            </div>
+          )}
+        </div>
+        {v && p.expanded && (
+          <div className="mx-auto w-full max-w-5xl group-[:fullscreen]/stage:max-w-none">
+            <TheaterBar p={p} id={v.youtube_id} stage={stage} />
           </div>
         )}
       </div>
@@ -541,15 +605,6 @@ function Dock({
                 ดูพร้อมเพื่อน
               </button>
             )}
-            <a
-              href={watchUrl(v.youtube_id)}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-4 hover:bg-[color-mix(in_oklab,var(--foreground)_8%,transparent)]"
-            >
-              <ExternalLink className="size-4" aria-hidden />
-              เปิดบน YouTube
-            </a>
           </div>
           <div role="toolbar" aria-label="เครื่องมือ" className="flex flex-wrap items-center gap-2">
             <label className="inline-flex min-h-11 items-center gap-2 rounded-md border border-[color-mix(in_oklab,var(--foreground)_18%,transparent)] px-3 text-sm">
@@ -581,8 +636,8 @@ function Dock({
             </Toggle>
           </div>
           <p className="hidden text-xs text-[var(--muted-foreground)] sm:block">
-            ปุ่มลัด: K หรือเว้นวรรค เล่น/หยุด · J / L ถอย/ข้าม 10 วิ · ← / → 5 วิ · &lt; / &gt;
-            ความเร็ว · T โรงหนัง · Esc ย่อ
+            ปุ่มลัด: K หรือเว้นวรรค เล่น/หยุด · J / L ถอย/ข้าม 10 วิ · ← / → 5 วิ · ↑ / ↓ เสียง · M
+            ปิดเสียง · 0-9 กระโดด · &lt; / &gt; ความเร็ว · T โรงหนัง · F เต็มจอ · Esc ย่อ
           </p>
           {upNext.length > 0 && (
             <div>
