@@ -8,6 +8,13 @@ export type YTPlayer = {
   getDuration(): number;
   getPlaybackRate(): number;
   setPlaybackRate(rate: number): void;
+  getVolume(): number;
+  setVolume(volume: number): void;
+  isMuted(): boolean;
+  mute(): void;
+  unMute(): void;
+  /** 0-1: how much of the video is buffered. */
+  getVideoLoadedFraction(): number;
   destroy(): void;
 };
 

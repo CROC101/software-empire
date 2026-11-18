@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { type Video } from "@/lib/api";
-import { frameAt, topChannels } from "./videos";
+import { frameAt } from "@/lib/youtube";
+import { topChannels } from "./videos";
 
 const v = (youtube_id: string, author: string): Video => ({
   youtube_id,
