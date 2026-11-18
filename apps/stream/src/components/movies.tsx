@@ -192,16 +192,42 @@ export function MoviesPage() {
   );
 }
 
-/** The full-size cover, or the standard one when YouTube has none (it then serves a 120 px grey card). */
-const cover = (id: string) => ({
-  src: thumb(id, "max"),
-  onLoad: (e: SyntheticEvent<HTMLImageElement>) => {
-    if (e.currentTarget.naturalWidth <= 120) e.currentTarget.src = thumb(id);
-  },
-  onError: (e: SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = thumb(id);
-  },
-});
+// 1280, 640 and 480 px wide; a size YouTube lacks comes back as a 120 px grey card or a 404
+const COVERS = ["max", "sd", "hq"] as const;
+
+/** The next smaller cover after `src`, or undefined at the smallest. */
+export function smaller(id: string, src: string) {
+  const at = COVERS.findIndex((s) => thumb(id, s) === src);
+  const next = at < 0 ? undefined : COVERS[at + 1];
+  return next && thumb(id, next);
+}
+
+/** Where a shelf scrolled `left` of `room` px sits: which page dash to light, and its two ends. */
+export function scrollEdge(left: number, room: number, pages: number) {
+  const slack = 4; // sub-pixel widths never land exactly on 0 or the end
+  return {
+    at: room > 0 ? Math.round((left / room) * (pages - 1)) : 0,
+    start: left <= slack,
+    end: left >= room - slack,
+  };
+}
+
+/** The sharpest cover YouTube has, stepping down when a size is missing. */
+const cover = (id: string) => {
+  const down = (img: HTMLImageElement) => {
+    const next = smaller(id, img.src);
+    if (next) img.src = next;
+  };
+  return {
+    src: thumb(id, "max"),
+    decoding: "async" as const,
+    draggable: false,
+    onLoad: (e: SyntheticEvent<HTMLImageElement>) => {
+      if (e.currentTarget.naturalWidth <= 120) down(e.currentTarget);
+    },
+    onError: (e: SyntheticEvent<HTMLImageElement>) => down(e.currentTarget),
+  };
+};
 
 const dedupe = (list: Video[]) => [...new Map(list.map((v) => [v.youtube_id, v])).values()];
 
@@ -222,7 +248,12 @@ function Billboard({
       aria-label="แนะนำวันนี้"
       className="relative h-[56.25vw] max-h-[85vh] min-h-[320px] w-full overflow-hidden"
     >
-      <img {...cover(v.youtube_id)} alt="" className="absolute inset-0 size-full object-cover" />
+      <img
+        {...cover(v.youtube_id)}
+        alt=""
+        fetchPriority="high"
+        className="absolute inset-0 size-full object-cover"
+      />
       <div aria-hidden className="st-bill-side absolute inset-0" />
       <div aria-hidden className="st-bill-foot absolute inset-x-0 bottom-0 h-[14.7vw]" />
       <div className="absolute bottom-[35%] left-[4%] w-[36%] min-w-[260px] max-sm:bottom-[14%] max-sm:w-[86%]">
@@ -269,17 +300,23 @@ function Row({
   top?: boolean;
   onInfo: Open;
 }) {
-  const [page, setPage] = useState(0);
-  const [moved, setMoved] = useState(false);
+  const shelf = useRef<HTMLUListElement>(null);
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const [edge, setEdge] = useState({ at: 0, start: true, end: false });
+  const measure = () => {
+    const el = shelf.current;
+    if (!el) return;
+    const room = el.scrollWidth - el.clientWidth;
+    setEdge(scrollEdge(el.scrollLeft, room, Math.ceil(items.length / per)));
+  };
+  useEffect(measure, [items.length, per]);
   if (!items.length) return null;
   const pages = Math.ceil(items.length / per);
-  const at = Math.min(page, pages - 1); // the window may have grown since
-  const go = (step: number) => {
-    setMoved(true);
-    setPage((at + step + pages) % pages);
-  };
+  // one screen of cards per press; the 0.92 keeps the edge card in view as a cue
+  const go = (dir: number) =>
+    shelf.current?.scrollBy({ left: dir * shelf.current.clientWidth * 0.92 });
   const arrow =
-    "absolute top-0 bottom-0 z-10 grid w-[4%] place-items-center bg-[color-mix(in_oklab,var(--background)_50%,transparent)] text-[var(--foreground)] opacity-0 group-hover/row:opacity-100 hover:bg-[color-mix(in_oklab,var(--background)_70%,transparent)] focus-visible:opacity-100 [@media(hover:none)]:opacity-100";
+    "absolute top-0 bottom-0 z-40 grid w-[4%] min-w-8 place-items-center bg-[color-mix(in_oklab,var(--background)_50%,transparent)] text-[var(--foreground)] opacity-0 transition-opacity group-hover/row:opacity-100 hover:bg-[color-mix(in_oklab,var(--background)_70%,transparent)] focus-visible:opacity-100 [@media(hover:none)]:hidden";
   return (
     <section aria-label={title} className="group/row relative mb-[3vw] hover:z-20 max-sm:mb-6">
       <div className="mb-[0.5em] flex items-end justify-between px-[4%]">
@@ -291,7 +328,7 @@ function Row({
                 key={i}
                 className={cn(
                   "h-[2px] w-3",
-                  i === at
+                  i === edge.at
                     ? "bg-[var(--muted-foreground)]"
                     : "bg-[color-mix(in_oklab,var(--muted-foreground)_35%,transparent)]",
                 )}
@@ -300,10 +337,43 @@ function Row({
           </ol>
         )}
       </div>
-      <div className="relative overflow-x-clip px-[4%]">
+      <div className="relative">
+        {/* The padding gives a grown card room inside the scroller (which clips both ways); the
+            negative margin gives the room back, and the strip lets the pointer through to the rows
+            around it except over the cards themselves. */}
         <ul
-          className="flex transition-transform duration-[750ms] ease-[cubic-bezier(.5,0,.1,1)] motion-reduce:transition-none"
-          style={{ transform: `translateX(${-at * 100}%)` }}
+          ref={shelf}
+          onScroll={measure}
+          onPointerDown={(e) => {
+            drag.current =
+              e.pointerType === "mouse" && e.button === 0
+                ? { x: e.clientX, left: e.currentTarget.scrollLeft, moved: false }
+                : null;
+          }}
+          onPointerMove={(e) => {
+            const d = drag.current;
+            const el = e.currentTarget;
+            if (!d || !(e.buttons & 1)) return;
+            const dx = e.clientX - d.x;
+            if (!d.moved && Math.abs(dx) < 6) return;
+            if (!d.moved) {
+              d.moved = true;
+              el.setPointerCapture(e.pointerId);
+              el.dataset.drag = "";
+            }
+            el.scrollLeft = d.left - dx;
+          }}
+          onPointerUp={(e) => delete e.currentTarget.dataset.drag}
+          onPointerCancel={(e) => delete e.currentTarget.dataset.drag}
+          onClickCapture={(e) => {
+            // a drag that ends over a card is not a click on it
+            if (drag.current?.moved) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            drag.current = null;
+          }}
+          className="st-no-scrollbar pointer-events-none -mt-[6vw] mb-[calc(-6vw-11rem)] flex snap-x snap-mandatory scroll-px-[4%] overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth px-[4%] pt-[6vw] pb-[calc(6vw+11rem)] select-none motion-reduce:scroll-auto data-drag:cursor-grabbing data-drag:snap-none data-drag:scroll-auto"
         >
           {items.map((v, i) => (
             <Card
@@ -311,33 +381,30 @@ function Row({
               v={v}
               list={items}
               per={per}
-              i={i}
               rank={top ? i + 1 : undefined}
               onInfo={onInfo}
             />
           ))}
         </ul>
-        {pages > 1 && (
-          <>
-            {moved && (
-              <button
-                type="button"
-                aria-label="ก่อนหน้า"
-                onClick={() => go(-1)}
-                className={cn(arrow, "group/btn left-0")}
-              >
-                <ChevronLeft className="size-8 transition-transform group-hover/btn:scale-125" />
-              </button>
-            )}
-            <button
-              type="button"
-              aria-label="ถัดไป"
-              onClick={() => go(1)}
-              className={cn(arrow, "group/btn right-0")}
-            >
-              <ChevronRight className="size-8 transition-transform group-hover/btn:scale-125" />
-            </button>
-          </>
+        {!edge.start && (
+          <button
+            type="button"
+            aria-label="ก่อนหน้า"
+            onClick={() => go(-1)}
+            className={cn(arrow, "group/btn left-0")}
+          >
+            <ChevronLeft className="size-8 transition-transform group-hover/btn:scale-125" />
+          </button>
+        )}
+        {!edge.end && (
+          <button
+            type="button"
+            aria-label="ถัดไป"
+            onClick={() => go(1)}
+            className={cn(arrow, "group/btn right-0")}
+          >
+            <ChevronRight className="size-8 transition-transform group-hover/btn:scale-125" />
+          </button>
         )}
       </div>
     </section>
@@ -347,8 +414,8 @@ function Row({
 function TitleGrid({ items, per, onInfo }: { items: Video[]; per: number; onInfo: Open }) {
   return (
     <ul className="flex flex-wrap gap-y-10 px-[4%]">
-      {items.map((v, i) => (
-        <Card key={v.youtube_id} v={v} list={items} per={per} i={i} onInfo={onInfo} />
+      {items.map((v) => (
+        <Card key={v.youtube_id} v={v} list={items} per={per} onInfo={onInfo} />
       ))}
     </ul>
   );
@@ -359,24 +426,27 @@ function Card({
   v,
   list,
   per,
-  i,
   rank,
   onInfo,
 }: {
   v: Video;
   list: Video[];
   per: number;
-  i: number;
   rank?: number;
   onInfo: Open;
 }) {
   const { play } = usePlayer();
-  // the first and last card of a page grow inwards so they never leave the screen
-  const origin = i % per === 0 ? "origin-left" : i % per === per - 1 ? "origin-right" : "";
+  const [origin, setOrigin] = useState("");
   const fresh = isNew(v.created_at);
   return (
     <li
-      className="group/card relative shrink-0 px-[0.2vw] hover:z-30"
+      // a card at either edge of the screen grows inwards so it never leaves it
+      onPointerEnter={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        const w = document.documentElement.clientWidth;
+        setOrigin(r.left < w * 0.08 ? "origin-left" : r.right > w * 0.92 ? "origin-right" : "");
+      }}
+      className="group/card pointer-events-auto relative shrink-0 snap-start px-[0.2vw] hover:z-30"
       style={{ width: `${100 / per}%` }}
     >
       <div
@@ -393,7 +463,7 @@ function Card({
         >
           {rank && <Rank n={rank} />}
           <img
-            src={thumb(v.youtube_id)}
+            {...cover(v.youtube_id)}
             alt=""
             loading="lazy"
             className={cn("h-full object-cover", rank ? "w-1/2" : "w-full")}
@@ -516,7 +586,7 @@ function InfoDialog({ v, list, onClose }: { v: Video; list: Video[]; onClose: ()
                     className="grid w-full gap-2 overflow-hidden rounded-sm bg-[var(--muted)] text-left hover:opacity-90"
                   >
                     <img
-                      src={thumb(x.youtube_id)}
+                      {...cover(x.youtube_id)}
                       alt=""
                       loading="lazy"
                       className="aspect-video w-full object-cover"
