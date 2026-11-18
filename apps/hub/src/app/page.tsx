@@ -36,9 +36,6 @@ import {
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { parseChoice, THEME_COOKIE } from "@empire/core/theme";
-import { getClaims } from "@/lib/supabase/server";
 import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
 import { getContent, HUB_HOME, HUB_SUBSYSTEMS } from "@/lib/cms";
@@ -179,14 +176,10 @@ const LAUNCHER = {
 };
 
 export default async function HomePage() {
-  const claims = await getClaims();
-  // the theme from the cookie, so the water menu and switch render in it from the first paint
-  // ("system" can't be known on the server: those start light and settle after hydration)
-  const choice = parseChoice((await cookies()).get(THEME_COOKIE)?.value);
-  const theme = choice === "system" ? undefined : choice;
-  const cta = claims
-    ? { href: "/dashboard", label: "แดชบอร์ด" }
-    : { href: "/login", label: "เข้าสู่ระบบ" };
+  // No cookies or session here: the page is built once at deploy and served as a file, because
+  // rendering it per visit costs more CPU than the Workers Free plan allows (error 1102).
+  // The theme switch settles after hydration; /login sends people already signed in to /dashboard.
+  const cta = { href: "/login?next=/dashboard", label: "เข้าสู่ระบบ" };
   // text, numbers and section order the owner edits at /admin (defaults when the DB is down)
   const [home, cards] = await Promise.all([getContent(HUB_HOME), getContent(HUB_SUBSYSTEMS)]);
   const summaries = Object.fromEntries(
@@ -256,14 +249,11 @@ export default async function HomePage() {
           <div className="flex items-center gap-1 sm:gap-4">
             {/* the water pill; its own CSS sets display, so the breakpoint lives on a wrapper */}
             <span className="site-nav hidden lg:block">
-              <SiteNav launcher={LAUNCHER} initialTheme={theme} />
+              <SiteNav launcher={LAUNCHER} />
             </span>
             <span className="hidden items-center gap-2 lg:flex">
               <AmbienceButton cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
-              <LiquidThemeToggle
-                cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN}
-                initial={theme}
-              />
+              <LiquidThemeToggle cookieDomain={process.env.NEXT_PUBLIC_COOKIE_DOMAIN} />
             </span>
             <Link
               href={cta.href}
@@ -275,7 +265,7 @@ export default async function HomePage() {
             <span className="lg:hidden">
               <AppLauncher {...LAUNCHER} />
             </span>
-            <MobileMenu items={NAV} cta={cta} initialTheme={theme} />
+            <MobileMenu items={NAV} cta={cta} />
           </div>
         </div>
       </header>
@@ -377,7 +367,7 @@ export default async function HomePage() {
                 href={cta.href}
                 className="cw-glass inline-flex items-center rounded-xl px-5 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5"
               >
-                {claims ? "เปิดแดชบอร์ด" : "ลองเล่นดู"}
+                ลองเล่นดู
               </Link>
               <TourButton />
             </div>
