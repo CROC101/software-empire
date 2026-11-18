@@ -1,11 +1,10 @@
 import { GATE_PATH } from "@empire/core/launch";
 
-export { LAUNCH_AT, launched } from "@empire/core/launch";
-
-/** Paths a visitor may still open before launch: the countdown, signing in, static files. */
+/** Paths the gate never stops: the countdown, the closed notice, signing in, static files. */
 export function openBeforeLaunch(pathname: string) {
   return (
     pathname === "/soon" ||
+    pathname === "/closed" ||
     pathname === "/login" ||
     pathname === "/mfa" ||
     pathname === GATE_PATH ||

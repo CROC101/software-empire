@@ -39,7 +39,7 @@ function compare(sort: Sort) {
   };
 }
 
-/** Every account: search, sort, ban / unban, give or take admin. The SQL decides who may. */
+/** Every account: search, sort, suspend for days, ban / unban, sign out everywhere, give or take admin. The SQL decides who may. */
 export function UsersTable({ rows, me }: { rows: UserRow[]; me: string }) {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>("last_seen");
@@ -135,9 +135,28 @@ export function UsersTable({ rows, me }: { rows: UserRow[]; me: string }) {
                       บัญชีของคุณ
                     </span>
                   ) : (
-                    <form action={act} className="flex justify-end gap-1">
+                    <form action={act} className="flex flex-wrap justify-end gap-1">
                       <input type="hidden" name="target" value={r.id} />
+                      {!r.banned && (
+                        <>
+                          <label className="sr-only" htmlFor={`days-${r.id}`}>
+                            จำนวนวันที่พัก
+                          </label>
+                          <select
+                            id={`days-${r.id}`}
+                            name="days"
+                            defaultValue="7"
+                            className="min-h-9 rounded-lg border bg-background px-2 text-xs"
+                          >
+                            <option value="1">1 วัน</option>
+                            <option value="7">7 วัน</option>
+                            <option value="30">30 วัน</option>
+                          </select>
+                          <Action kind="suspend" pending={pending} />
+                        </>
+                      )}
                       <Action kind={r.banned ? "unban" : "ban"} pending={pending} />
+                      <Action kind="sign_out" pending={pending} />
                       <Action kind={r.admin ? "remove_admin" : "make_admin"} pending={pending} />
                     </form>
                   )}
@@ -159,12 +178,14 @@ const LABEL = {
   unban: "ปลดระงับ",
   make_admin: "ตั้งแอดมิน",
   remove_admin: "ถอดแอดมิน",
+  suspend: "พัก",
+  sign_out: "ออกทุกเครื่อง",
 } as const;
 
 /** A ban ends their sessions and admin opens the whole back office, so those two ask once. */
 function Action({ kind, pending }: { kind: keyof typeof LABEL; pending: boolean }) {
   const [armed, setArmed] = useState(false);
-  const risky = kind === "ban" || kind === "make_admin";
+  const risky = kind === "ban" || kind === "make_admin" || kind === "suspend";
   return (
     <button
       type="submit"
@@ -179,7 +200,7 @@ function Action({ kind, pending }: { kind: keyof typeof LABEL; pending: boolean 
       }}
       onBlur={() => setArmed(false)}
       className={`min-h-9 whitespace-nowrap rounded-lg border px-3 text-xs font-semibold hover:bg-accent disabled:opacity-50 ${
-        kind === "ban" ? "text-destructive" : ""
+        kind === "ban" || kind === "suspend" ? "text-destructive" : ""
       }`}
     >
       {armed ? "กดยืนยัน" : LABEL[kind]}
