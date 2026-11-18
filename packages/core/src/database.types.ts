@@ -3196,6 +3196,135 @@ export type Database = {
         };
         Relationships: [];
       };
+      music_liked_tracks: {
+        Row: {
+          created_at: string;
+          track_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          track_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "music_liked_tracks_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "music_track_cache";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      music_playlist_tracks: {
+        Row: {
+          created_at: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          playlist_id?: string;
+          position?: number;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "music_playlist_tracks_playlist_id_user_id_fkey";
+            columns: ["playlist_id", "user_id"];
+            isOneToOne: false;
+            referencedRelation: "music_playlists";
+            referencedColumns: ["id", "user_id"];
+          },
+          {
+            foreignKeyName: "music_playlist_tracks_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "music_track_cache";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      music_playlists: {
+        Row: {
+          created_at: string;
+          id: string;
+          name: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          id?: string;
+          name: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          name?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      music_track_cache: {
+        Row: {
+          album: string;
+          artist: string;
+          artwork_url: string | null;
+          duration_s: number | null;
+          fetched_at: string;
+          id: string;
+          preview_url: string | null;
+          search: unknown;
+          title: string;
+          youtube_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          album?: string;
+          artist: string;
+          artwork_url?: string | null;
+          duration_s?: number | null;
+          fetched_at?: string;
+          id: string;
+          preview_url?: string | null;
+          search?: never;
+          title: string;
+          youtube_id?: string | null;
+        };
+        Update: {
+          album?: string;
+          artist?: string;
+          artwork_url?: string | null;
+          duration_s?: number | null;
+          fetched_at?: string;
+          id?: string;
+          preview_url?: string | null;
+          search?: never;
+          title?: string;
+          youtube_id?: string | null;
+        };
+        Relationships: [];
+      };
       my_list: {
         Row: {
           created_at: string;
@@ -3676,9 +3805,54 @@ export type Database = {
           },
         ];
       };
+      yt_catalog_cache: {
+        Row: {
+          channel_id: string | null;
+          channel_title: string;
+          duration_s: number | null;
+          fetched_at: string;
+          published_at: string | null;
+          search: unknown;
+          source: string;
+          title: string;
+          youtube_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel_id?: string | null;
+          channel_title?: string;
+          duration_s?: number | null;
+          fetched_at?: string;
+          published_at?: string | null;
+          search?: never;
+          source: string;
+          title: string;
+          youtube_id: string;
+        };
+        Update: {
+          channel_id?: string | null;
+          channel_title?: string;
+          duration_s?: number | null;
+          fetched_at?: string;
+          published_at?: string | null;
+          search?: never;
+          source?: string;
+          title?: string;
+          youtube_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
-      [_ in never]: never;
+      my_taste: {
+        Row: {
+          channel_id: string | null;
+          last_watched: string | null;
+          weight: number | null;
+        };
+        ComputedFields: never;
+        Relationships: [];
+      };
     };
     Functions: {
       can_steer: { Args: { room: string }; Returns: boolean };
