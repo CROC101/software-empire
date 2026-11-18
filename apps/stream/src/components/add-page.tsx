@@ -22,8 +22,11 @@ const KIND_PATH: Record<Kind, string> = {
 
 /** The kind a link most likely is, from where it was copied. */
 export function guessKind(link: string): Kind {
-  if (/youtube\.com\/shorts\//.test(link)) return "short";
-  if (/music\.youtube\.com/.test(link)) return "music";
+  const url = URL.parse(link.trim()) ?? URL.parse(`https://${link.trim()}`);
+  if (!url) return "video";
+  if (url.hostname === "music.youtube.com") return "music";
+  if (/^(www\.|m\.)?youtube\.com$/.test(url.hostname) && url.pathname.startsWith("/shorts/"))
+    return "short";
   return "video";
 }
 
