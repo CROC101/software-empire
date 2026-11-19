@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --port 3005",
-    "build": "next build",
+    "build": "next build && node scripts/flat-rsc.mjs",
     "lint": "eslint .",
     "typecheck": "tsc -p .",
-    "test": "vitest run"
+    "test": "vitest run && node scripts/flat-rsc.mjs --self-test"
   },
   "dependencies": {
     "@empire/core": "workspace:*",

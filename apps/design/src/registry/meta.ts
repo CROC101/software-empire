@@ -1,49 +1,21 @@
 /**
- * The registry: every component the gallery shows, its playground controls and the prompt that
- * rebuilds it. Plain data (no React), so server pages and tests read it too. Each entry blends two
- * or three classic motion patterns into one crocwork part; `src/registry/<slug>.tsx` is the code.
+ * The registry: every part the library shows, its playground controls and the prompt that rebuilds
+ * it. Plain data (no React), so server pages and tests read it too. `src/registry/ui/<slug>.tsx` is
+ * the code; the first twelve parts are hand-tuned here, the rest live in `data/`.
  */
+import { blocks } from "./data/blocks";
+import { components } from "./data/components";
+import type { Entry } from "./types";
 
-export type Control =
-  | {
-      key: string;
-      label: string;
-      type: "range";
-      min: number;
-      max: number;
-      step: number;
-      value: number;
-    }
-  | { key: string; label: string; type: "select"; options: readonly string[]; value: string }
-  | { key: string; label: string; type: "toggle"; value: boolean }
-  | { key: string; label: string; type: "text"; maxLength: number; value: string };
-
-export type Values = Record<string, string | number | boolean>;
-
-export const categories = {
-  background: "พื้นหลัง",
-  text: "ตัวอักษร",
-  card: "การ์ด",
-  interaction: "ลูกเล่น",
-} as const;
-export type Category = keyof typeof categories;
-
-export type Entry = {
-  slug: string;
-  name: string;
-  summary: string;
-  category: Category;
-  /** the patterns this part blends, shown as chips */
-  blend: readonly string[];
-  controls: readonly Control[];
-  prompt: string;
-};
+export * from "./types";
 
 const tone = ["blue", "sky", "violet", "teal"] as const;
 
-export const registry: readonly Entry[] = [
+const core: readonly Entry[] = [
   {
     slug: "aurora-tide",
+    added: "2026-11-18",
+    rank: 1,
     name: "Aurora Tide",
     summary: "แสงเหนือสามชั้นลอยช้าๆ ใต้ผิวน้ำ มีวงโลหะเหลวหมุนอยู่ข้างหลัง",
     category: "background",
@@ -76,6 +48,8 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "decode-text",
+    added: "2026-11-18",
+    rank: 3,
     name: "Decode Text",
     summary: "ตัวอักษรสุ่มวิ่งแล้วค่อยๆ ถอดรหัสจากซ้ายไปขวา เริ่มเอง ชี้เมาส์ หรือวนซ้ำ",
     category: "text",
@@ -111,6 +85,8 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "reveal-text",
+    added: "2026-11-18",
+    rank: 8,
     name: "Reveal Text",
     summary: "ข้อความโผล่ทีละคำหรือทีละตัว แบบหายเบลอ ลอยขึ้น หรือพลิก ตัดคำไทยถูกต้อง",
     category: "text",
@@ -152,6 +128,8 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "spotlight-card",
+    added: "2026-11-18",
+    rank: 2,
     name: "Spotlight Card",
     summary: "การ์ดกระจกที่เอียงตามเมาส์ ถูกดึงเข้าหาเคอร์เซอร์ และมีไฟส่องตามขอบ",
     category: "card",
@@ -175,6 +153,8 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "pixel-card",
+    added: "2026-11-18",
+    rank: 18,
     name: "Pixel Card",
     summary: "การ์ดสองหน้า เปลี่ยนหน้าด้วยพิกเซลที่ปิดแล้วเปิดตามลำดับสุ่ม",
     category: "card",
@@ -197,6 +177,8 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "click-spark",
+    added: "2026-11-18",
+    rank: 14,
     name: "Click Spark",
     summary: "แตะตรงไหนก็มีประกายแตกออกเป็นเส้นรอบจุดนั้น วาดบน canvas",
     category: "interaction",
@@ -220,6 +202,8 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "constellation",
+    added: "2026-11-18",
+    rank: 16,
     name: "Constellation",
     summary: "จุดดาวลอยช้าๆ ลากเส้นหากันเมื่ออยู่ใกล้ และต่อเส้นมาหาเมาส์",
     category: "background",
@@ -235,9 +219,11 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "beam-button",
+    added: "2026-11-18",
+    rank: 5,
     name: "Beam Button",
     summary: "ปุ่มที่มีลำแสงวิ่งรอบขอบ ใช้การหมุนล้วนๆ ไม่แตะสีพื้นหลัง",
-    category: "interaction",
+    category: "button",
     blend: ["border beam", "shiny button"],
     controls: [
       { key: "label", label: "ข้อความปุ่ม", type: "text", maxLength: 24, value: "เริ่มสร้างเลย" },
@@ -257,9 +243,11 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "dock",
+    added: "2026-11-18",
+    rank: 4,
     name: "Magnify Dock",
     summary: "แถบไอคอนที่ขยายตามระยะห่างจากเมาส์ พร้อมป้ายชื่อลอยขึ้น",
-    category: "interaction",
+    category: "navigation",
     blend: ["dock magnification", "tooltip"],
     controls: [
       {
@@ -287,9 +275,11 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "island",
+    added: "2026-11-18",
+    rank: 9,
     name: "Command Island",
     summary: "เกาะลอยที่ยืดหดตามสถานะ สายเข้า เพลง ตัวจับเวลา ด้วย layout animation",
-    category: "interaction",
+    category: "feedback",
     blend: ["floating island", "morphing status"],
     controls: [
       {
@@ -306,9 +296,11 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "metric-bento",
+    added: "2026-11-18",
+    rank: 12,
     name: "Metric Bento",
     summary: "ตารางตัวเลขแบบเบนโต ตัวเลขนับขึ้น กราฟเส้นค่อยๆ เผย การ์ดลอยเมื่อชี้",
-    category: "card",
+    category: "data",
     blend: ["bento grid", "number ticker", "sparkline"],
     controls: [
       {
@@ -328,9 +320,11 @@ export const registry: readonly Entry[] = [
   },
   {
     slug: "marquee",
+    added: "2026-11-18",
+    rank: 6,
     name: "Name Marquee",
     summary: "แถบชื่อเลื่อนไม่รู้จบ หนึ่งหรือสองแถวสวนกัน ขอบจางหาย หยุดเมื่อชี้",
-    category: "background",
+    category: "layout",
     blend: ["infinite marquee", "edge fade"],
     controls: [
       { key: "rows", label: "จำนวนแถว", type: "select", options: ["1", "2"], value: "2" },
@@ -351,26 +345,8 @@ export const registry: readonly Entry[] = [
   },
 ];
 
+export const registry: readonly Entry[] = [...core, ...components, ...blocks];
+
 export function entry(slug: string): Entry | undefined {
   return registry.find((e) => e.slug === slug);
-}
-
-export function defaults(e: Entry): Values {
-  return Object.fromEntries(e.controls.map((c) => [c.key, c.value]));
-}
-
-/** Playground input is a trust boundary in miniature: keep every value inside its control's range. */
-export function clampValue(c: Control, v: unknown): string | number | boolean {
-  switch (c.type) {
-    case "range": {
-      const n = Number(v);
-      return Number.isFinite(n) ? Math.min(c.max, Math.max(c.min, n)) : c.value;
-    }
-    case "select":
-      return typeof v === "string" && c.options.includes(v) ? v : c.value;
-    case "toggle":
-      return typeof v === "boolean" ? v : c.value;
-    case "text":
-      return typeof v === "string" ? v.slice(0, c.maxLength) : c.value;
-  }
 }
