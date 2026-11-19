@@ -1,80 +1,75 @@
-"use client";
+import type { CSSProperties, ReactNode } from "react";
 
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
+// one sum-of-sines waterline, 1200 wide; both sines repeat every 600, so sliding by half loops seamlessly
+const wave = (() => {
+  let d = "M0 0V16";
+  for (let x = 0; x <= 1200; x += 20)
+    d += `L${String(x)} ${(16 + 5 * Math.sin((x / 300) * Math.PI * 2) + 2 * Math.sin((x / 150) * Math.PI * 2 + 1)).toFixed(1)}`;
+  return `${d}V0Z`;
+})();
 
-const blobs = [
-  {
-    color: "var(--em-blue-500)",
-    at: "-left-[15%] -top-[25%]",
-    x: [0, 90, -40, 0],
-    y: [0, 50, 90, 0],
-  },
-  {
-    color: "var(--em-sky-400)",
-    at: "-right-[20%] top-[5%]",
-    x: [0, -70, 30, 0],
-    y: [0, 70, -30, 0],
-  },
-  {
-    color: "var(--em-violet-500)",
-    at: "left-[15%] -bottom-[35%]",
-    x: [0, 60, -80, 0],
-    y: [0, -60, 20, 0],
-  },
+// light shafts fall from the moon at the top right, slanting down to the left
+const shafts = [
+  { left: "62%", width: "16%", delay: 0 },
+  { left: "74%", width: "9%", delay: -3 },
+  { left: "48%", width: "7%", delay: -6 },
+  { left: "84%", width: "5%", delay: -2 },
 ];
 
-/** Three drifting aurora layers over ink, with an optional rotating liquid-metal disc behind. */
+/** Under the surface at night: a lapping waterline above, moonlight shafts swaying down through dark water. */
 export function AuroraTide({
   title = "แสงใต้น้ำ",
   speed = 16,
   blur = 80,
   intensity = 0.65,
-  swirl = true,
+  surface = true,
   children,
 }: {
   title?: string;
+  /** seconds for one sway of the light */
   speed?: number;
+  /** softness of the shafts' edges */
   blur?: number;
   intensity?: number;
-  swirl?: boolean;
+  /** the lapping waterline along the top */
+  surface?: boolean;
   /** replaces the title, so a page hero can sit on the same water */
   children?: ReactNode;
 }) {
   return (
-    <div className="relative isolate flex size-full min-h-56 items-center justify-center overflow-hidden bg-(--em-ink-975)">
-      {swirl && (
-        <motion.div
+    <div
+      className="relative isolate flex size-full min-h-56 items-center justify-center overflow-hidden bg-linear-to-b from-(--em-blue-700) to-(--em-ink-975)"
+      style={{ "--t": `${String(speed)}s`, "--a": String(intensity) } as CSSProperties}
+    >
+      <style>{`@keyframes aurora-tide-sway{0%,100%{transform:rotate(16deg) scaleX(1);opacity:var(--a)}50%{transform:rotate(22deg) scaleX(1.25);opacity:calc(var(--a)*.45)}}@keyframes aurora-tide-lap{to{transform:translateX(-50%)}}.aurora-tide-shaft{animation:aurora-tide-sway var(--t) ease-in-out infinite}.aurora-tide-lap{animation:aurora-tide-lap 7s linear infinite}.aurora-tide-lap.slow{animation-duration:11s;animation-direction:reverse}@media (prefers-reduced-motion:reduce){.aurora-tide-shaft,.aurora-tide-lap{animation:none}}`}</style>
+      {shafts.map((s) => (
+        <span
+          key={s.left}
           aria-hidden
-          className="vt-live absolute top-1/2 left-1/2 -z-10 aspect-square w-[130%] -translate-1/2 rounded-full opacity-25"
+          className="aurora-tide-shaft vt-live absolute -top-[10%] -z-10 h-[130%] origin-top bg-linear-to-b from-(--em-sky-400) to-transparent to-80%"
           style={{
-            background:
-              "conic-gradient(from 0deg, var(--em-ink-975), var(--em-blue-600), var(--em-ink-200), var(--em-ink-900), var(--em-sky-400), var(--em-ink-975))",
-            filter: `blur(${blur / 2}px)`,
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: speed * 2, repeat: Infinity, ease: "linear" }}
-        />
-      )}
-      {blobs.map((b, i) => (
-        <motion.div
-          key={b.color}
-          aria-hidden
-          className={`vt-live absolute -z-10 aspect-square w-[70%] rounded-full ${b.at}`}
-          style={{
-            background: `radial-gradient(circle, ${b.color}, transparent 65%)`,
-            filter: `blur(${blur}px)`,
+            left: s.left,
+            width: s.width,
             opacity: intensity,
+            filter: `blur(${String(Math.round(blur / 5))}px)`,
+            animationDelay: `${String(s.delay)}s`,
           }}
-          animate={{ x: b.x, y: b.y, scale: [1, 1.15, 0.95, 1] }}
-          transition={{ duration: speed + i * 3, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
-      {/* faint grain: a static dot pattern, no SVG noise filter */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 opacity-20 [background-image:radial-gradient(var(--em-ink-400)_0.5px,transparent_0.5px)] [background-size:3px_3px]"
-      />
+      {surface && (
+        <div aria-hidden className="absolute inset-x-0 top-0 -z-10 h-6 overflow-hidden">
+          {(["", "slow"] as const).map((k) => (
+            <svg
+              key={k}
+              viewBox="0 0 1200 24"
+              preserveAspectRatio="none"
+              className={`aurora-tide-lap vt-live absolute top-0 left-0 h-full w-[200%] ${k}`}
+            >
+              <path d={wave} className={k ? "fill-(--em-sky-500)/25" : "fill-(--em-sky-400)/35"} />
+            </svg>
+          ))}
+        </div>
+      )}
       {children ?? (
         <h3 className="px-6 text-center font-heading text-4xl font-black text-(--em-ink-50) sm:text-5xl">
           {title}

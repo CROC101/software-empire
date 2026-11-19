@@ -6,10 +6,10 @@ import { useRef, useState, type PointerEvent } from "react";
 function Scene({ dusk }: { dusk: boolean }) {
   return (
     <div
-      className={`absolute inset-0 ${dusk ? "bg-linear-to-b from-(--em-ink-950) via-(--em-blue-900) to-(--em-violet-800)" : "bg-linear-to-b from-(--em-sky-400) via-(--em-blue-400) to-(--em-blue-600)"}`}
+      className={`absolute inset-0 ${dusk ? "bg-linear-to-b from-(--em-ink-950) via-(--em-blue-900) to-(--em-blue-700)" : "bg-linear-to-b from-(--em-sky-400) via-(--em-blue-400) to-(--em-blue-600)"}`}
     >
       <span
-        className={`absolute top-6 right-8 size-12 rounded-full ${dusk ? "bg-(--em-ink-100) shadow-[0_0_40px_var(--em-ink-100)]" : "bg-(--em-gold-300)"}`}
+        className={`absolute top-6 right-8 size-12 rounded-full ${dusk ? "bg-(--em-ink-100)" : "bg-(--em-gold-300)"}`}
       />
       <span className="absolute inset-x-0 bottom-0 h-2/5 bg-(--em-ink-900)/60 [clip-path:polygon(0_60%,20%_20%,38%_55%,60%_0,82%_45%,100%_25%,100%_100%,0_100%)]" />
       <span className="absolute inset-x-0 bottom-0 h-1/5 bg-(--em-ink-950)/80" />

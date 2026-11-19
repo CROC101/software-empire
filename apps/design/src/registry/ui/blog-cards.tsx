@@ -44,7 +44,7 @@ export default function BlogCards() {
               >
                 <div className="overflow-hidden">
                   <div
-                    className={`aspect-video bg-linear-to-br transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none ${p.tone}`}
+                    className={`aspect-video bg-linear-to-br transition-opacity duration-75 group-hover:opacity-90 ${p.tone}`}
                   />
                 </div>
                 <div className="p-5">

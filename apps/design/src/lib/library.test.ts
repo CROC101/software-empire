@@ -2,10 +2,12 @@ import { describe, expect, it } from "vitest";
 import { registry } from "@/registry/meta";
 import {
   filterEntries,
+  fuzzy,
   initialView,
   isHot,
   isNew,
   parseView,
+  rank,
   sortEntries,
   viewHash,
 } from "./library";
@@ -44,5 +46,19 @@ describe("library views", () => {
       filterEntries(registry, { ...initialView, fav: true }, new Set(["dock"])).map((e) => e.slug),
     ).toEqual(["dock"]);
     expect(filterEntries(registry, { ...initialView, q: "zzzz-none" }, new Set())).toEqual([]);
+  });
+});
+
+describe("palette search", () => {
+  it("matches characters in order and prefers runs and word starts", () => {
+    expect(fuzzy("Magnify Dock", "mdk")).toBeGreaterThan(0);
+    expect(fuzzy("Magnify Dock", "kdm")).toBe(0);
+    expect(fuzzy("Magnify Dock", "dock")).toBeGreaterThan(fuzzy("Magnify Dock", "mgdk"));
+  });
+
+  it("ranks the closest part first and still finds category words", () => {
+    const top = [...registry].sort((a, b) => rank(b, "dock") - rank(a, "dock"))[0];
+    expect(top?.slug).toBe("dock");
+    expect(registry.some((e) => rank(e, "zzzzqq") > 0)).toBe(false);
   });
 });

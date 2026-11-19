@@ -12,7 +12,7 @@ export default function KenBurns({ duration = 6 }: { duration?: number }) {
           className="ken-burns-pic vt-live absolute inset-0 origin-[70%_40%] bg-linear-to-b from-(--em-blue-800) via-(--em-blue-600) to-(--em-sky-400)"
           style={{ "--t": `${String(t)}s` } as CSSProperties}
         >
-          <span className="absolute top-[18%] right-[22%] size-10 rounded-full bg-(--em-ink-50) shadow-[0_0_50px_var(--em-ink-50)]" />
+          <span className="absolute top-[18%] right-[22%] size-10 rounded-full bg-(--em-ink-50)" />
           <span className="absolute inset-x-0 bottom-[30%] h-1/3 bg-(--em-ink-900)/70 [clip-path:polygon(0_70%,15%_30%,30%_60%,48%_10%,65%_55%,80%_25%,100%_60%,100%_100%,0_100%)]" />
           <span className="absolute inset-x-0 bottom-0 h-[32%] bg-linear-to-b from-(--em-blue-900) to-(--em-ink-975)" />
         </div>

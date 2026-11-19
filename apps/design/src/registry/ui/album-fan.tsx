@@ -6,7 +6,7 @@ import { useState } from "react";
 const covers = [
   { title: "น้ำขึ้น", tone: "from-(--em-sky-400) to-(--em-blue-700)" },
   { title: "ลมหนาว", tone: "from-(--em-ink-200) to-(--em-blue-800)" },
-  { title: "ไฟเมือง", tone: "from-(--em-coral-500) to-(--em-violet-700)" },
+  { title: "ไฟเมือง", tone: "from-(--em-coral-500) to-(--em-ink-950)" },
   { title: "ฝนพรำ", tone: "from-(--em-blue-700) to-(--em-ink-950)" },
   { title: "แดดบ่าย", tone: "from-(--em-gold-300) to-(--em-coral-500)" },
 ];

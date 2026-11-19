@@ -53,6 +53,31 @@ export function matches(e: Entry, q: string): boolean {
   );
 }
 
+/** Query characters in order inside text (Raycast-style). Higher is tighter: runs and word starts score more; 0 = no match. */
+export function fuzzy(text: string, q: string): number {
+  const t = text.toLowerCase();
+  let from = 0;
+  let last = -2;
+  let run = 0;
+  let score = 0;
+  for (const ch of q) {
+    const j = t.indexOf(ch, from);
+    if (j < 0) return 0;
+    run = j === last + 1 ? run + 1 : 1;
+    score += run + (j === 0 || " -".includes(t[j - 1] ?? "") ? 2 : 0);
+    last = j;
+    from = j + 1;
+  }
+  return score;
+}
+
+/** Palette ranking: fuzzy on name and slug first, then a plain substring hit on the rest scores 1. */
+export function rank(e: Entry, q: string): number {
+  const s = q.trim().toLowerCase().replace(/\s+/g, "");
+  if (!s) return 1;
+  return Math.max(fuzzy(e.name, s), fuzzy(e.slug, s)) * 2 || (matches(e, q) ? 1 : 0);
+}
+
 export function filterEntries(list: readonly Entry[], v: View, favs: ReadonlySet<string>): Entry[] {
   return sortEntries(
     list.filter(

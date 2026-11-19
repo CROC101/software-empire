@@ -14,9 +14,9 @@ export default function ProductCard({
         <div className="relative aspect-square overflow-hidden bg-linear-to-br from-(--em-blue-700) to-(--em-ink-950)">
           <Headphones
             aria-hidden
-            className="absolute inset-0 m-auto size-24 text-(--em-sky-400) transition-transform duration-500 group-hover:scale-110 motion-reduce:transition-none"
+            className="absolute inset-0 m-auto size-24 text-(--em-sky-400) transition-transform duration-75 group-hover:-translate-y-1 motion-reduce:transition-none"
           />
-          <span className="absolute top-3 left-3 rounded-full bg-(--em-coral-500) px-2 py-0.5 text-xs font-bold text-(--em-ink-0)">
+          <span className="absolute top-3 left-3 rounded-full bg-(--em-ink-0) px-2 py-0.5 text-xs font-semibold text-(--em-ink-975)">
             -20%
           </span>
           <button

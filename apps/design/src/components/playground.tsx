@@ -2,7 +2,8 @@
 
 import { cn } from "@empire/ui";
 import { Monitor, RotateCcw, Smartphone, Tablet } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { defaultSurface, surfaces, type StageMessage, type Surface } from "@/lib/stage";
 import {
   clampValue,
   defaults,
@@ -11,8 +12,7 @@ import {
   type Entry,
   type Values,
 } from "@/registry/meta";
-import { Part } from "@/registry/parts";
-import { CopyButton } from "./copy-button";
+import { CodeView, type CodeFile } from "./code-view";
 
 function Field({
   c,
@@ -94,13 +94,61 @@ function Field({
   );
 }
 
-/** Live props on the left, a dark stage with Preview / Code tabs on the right. */
-export function Playground({ entry, source }: { entry: Entry; source: string }) {
+const widths = [
+  ["full", "เต็ม", Monitor],
+  ["768", "แท็บเล็ต 768", Tablet],
+  ["390", "มือถือ 390", Smartphone],
+] as const;
+
+const seg = (on: boolean) =>
+  cn(
+    "rounded transition-colors duration-75",
+    on ? "bg-(--em-ink-700) text-(--em-ink-50)" : "text-(--em-ink-400) hover:text-(--em-ink-100)",
+  );
+
+/**
+ * Live props on the left; on the right a stage that loads /p/<slug> in an iframe, so 390 and 768
+ * are real viewports (media queries fire), with Preview / Code tabs.
+ */
+export function Playground({
+  entry,
+  files,
+  deps,
+}: {
+  entry: Entry;
+  files: readonly CodeFile[];
+  deps: readonly string[];
+}) {
+  const component = kindOf(entry) === "component";
   const [values, setValues] = useState<Values>(() => defaults(entry));
+  const [surface, setSurface] = useState<Surface>(() => defaultSurface(component));
   const [tab, setTab] = useState<"preview" | "code">("preview");
   const [run, setRun] = useState(0);
-  const [width, setWidth] = useState<"full" | "768" | "390">("full");
-  const page = kindOf(entry) !== "component";
+  const [width, setWidth] = useState<(typeof widths)[number][0]>("full");
+  const frame = useRef<HTMLIFrameElement>(null);
+
+  const send = useCallback(() => {
+    const msg: StageMessage = { type: "croc:stage", values, surface };
+    frame.current?.contentWindow?.postMessage(msg, location.origin);
+  }, [values, surface]);
+
+  useEffect(send, [send]);
+  // the frame says when it is listening (after hydration), then gets the current state
+  useEffect(() => {
+    const onReady = (m: MessageEvent) => {
+      const data: unknown = m.data;
+      if (
+        m.origin === location.origin &&
+        m.source === frame.current?.contentWindow &&
+        typeof data === "object" &&
+        data !== null &&
+        (data as { type?: unknown }).type === "croc:ready"
+      )
+        send();
+    };
+    addEventListener("message", onReady);
+    return () => removeEventListener("message", onReady);
+  }, [send]);
 
   const tabButton = (t: typeof tab, label: string) => (
     <button
@@ -109,12 +157,7 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
       aria-selected={tab === t}
       aria-controls={`panel-${t}`}
       onClick={() => setTab(t)}
-      className={cn(
-        "rounded-md px-3 py-1.5 text-sm transition-colors",
-        tab === t
-          ? "bg-(--em-ink-800) text-(--em-ink-50)"
-          : "text-(--em-ink-400) hover:text-(--em-ink-100)",
-      )}
+      className={cn("px-3 py-1.5 text-sm", seg(tab === t))}
     >
       {label}
     </button>
@@ -134,11 +177,8 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
           </p>
           <button
             type="button"
-            onClick={() => {
-              setValues(defaults(entry));
-              setRun((n) => n + 1);
-            }}
-            className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-muted"
+            onClick={() => setValues(defaults(entry))}
+            className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground transition-colors duration-75 hover:bg-muted"
           >
             <RotateCcw aria-hidden className="size-3.5" />
             คืนค่าเดิม
@@ -162,20 +202,32 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
             {tabButton("preview", "Preview")}
             {tabButton("code", "Code")}
           </div>
-          <div className="flex flex-wrap gap-2">
-            {tab === "preview" && (
+          {tab === "preview" && (
+            <div className="flex flex-wrap gap-2">
+              <div
+                role="radiogroup"
+                aria-label="พื้นหลัง"
+                className="flex rounded-md bg-(--em-ink-900) p-0.5"
+              >
+                {surfaces.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    role="radio"
+                    aria-checked={surface === s}
+                    onClick={() => setSurface(s)}
+                    className={cn("px-2 py-1 font-mono text-xs", seg(surface === s))}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
               <div
                 role="radiogroup"
                 aria-label="ความกว้างจอ"
                 className="flex rounded-md bg-(--em-ink-900) p-0.5"
               >
-                {(
-                  [
-                    ["full", "เต็ม", Monitor],
-                    ["768", "แท็บเล็ต 768", Tablet],
-                    ["390", "มือถือ 390", Smartphone],
-                  ] as const
-                ).map(([w, label, Icon]) => (
+                {widths.map(([w, label, Icon]) => (
                   <button
                     key={w}
                     type="button"
@@ -183,61 +235,46 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
                     aria-checked={width === w}
                     aria-label={label}
                     title={label}
-                    onClick={() => {
-                      setWidth(w);
-                    }}
-                    className={cn(
-                      "grid size-8 place-items-center rounded transition-colors",
-                      width === w
-                        ? "bg-(--em-ink-700) text-(--em-ink-50)"
-                        : "text-(--em-ink-400) hover:text-(--em-ink-100)",
-                    )}
+                    onClick={() => setWidth(w)}
+                    className={cn("grid size-7 place-items-center", seg(width === w))}
                   >
                     <Icon aria-hidden className="size-4" />
                   </button>
                 ))}
               </div>
-            )}
-            {tab === "preview" && (
               <button
                 type="button"
                 onClick={() => setRun((n) => n + 1)}
-                className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-(--em-ink-300) hover:bg-(--em-ink-900)"
+                className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-(--em-ink-300) transition-colors duration-75 hover:bg-(--em-ink-900)"
               >
                 <RotateCcw aria-hidden className="size-4" />
                 เล่นใหม่
               </button>
-            )}
-            <CopyButton
-              text={source}
-              label="คัดลอกโค้ด"
-              className="border-(--em-ink-800) text-(--em-ink-100) hover:bg-(--em-ink-900)"
-            />
-          </div>
-        </div>
-        {tab === "preview" ? (
-          <div
-            id="panel-preview"
-            role="tabpanel"
-            className={cn("overflow-auto", page ? "h-[36rem] bg-(--em-ink-900)" : "h-[26rem]")}
-          >
-            <div
-              className={cn(
-                "mx-auto",
-                page ? "min-h-full bg-background text-foreground" : "h-full [&>*]:h-full",
-                width !== "full" && "border-x border-(--em-ink-700)",
-              )}
-              style={{ maxWidth: width === "full" ? "100%" : `${width}px` }}
-            >
-              <Part key={run} slug={entry.slug} values={values} />
             </div>
-          </div>
-        ) : (
-          <div id="panel-code" role="tabpanel" className="h-[26rem] overflow-auto">
-            {/* shortcut: plain text, no syntax colours; add a highlighter when the registry grows */}
-            <pre className="p-5 font-mono text-xs leading-relaxed text-(--em-ink-200)">
-              <code>{source}</code>
-            </pre>
+          )}
+        </div>
+        <div
+          id="panel-preview"
+          role="tabpanel"
+          hidden={tab !== "preview"}
+          className={cn("overflow-auto bg-(--em-ink-900)", component ? "h-[26rem]" : "h-[36rem]")}
+        >
+          <iframe
+            key={run}
+            ref={frame}
+            src={`/p/${entry.slug}`}
+            title={`ตัวอย่าง ${entry.name}`}
+            className={cn(
+              "mx-auto block h-full",
+              width !== "full" && "border-x border-(--em-ink-700)",
+            )}
+            // +2 for the 1px side borders, so the frame content is exactly 390 / 768
+            style={{ width: width === "full" ? "100%" : `${Number(width) + 2}px` }}
+          />
+        </div>
+        {tab === "code" && (
+          <div id="panel-code" role="tabpanel" className="h-[32rem]">
+            <CodeView files={files} deps={deps} />
           </div>
         )}
       </section>

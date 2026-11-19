@@ -42,10 +42,6 @@ export default function HeroSplit({
           </div>
         </div>
         <div className="relative">
-          <div
-            aria-hidden
-            className="absolute inset-x-8 -bottom-6 h-16 rounded-full bg-primary/30 blur-2xl"
-          />
           <div className="hero-split-float vt-live relative overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
             <div className="flex gap-1.5 border-b border-border px-4 py-3">
               {[0, 1, 2].map((i) => (

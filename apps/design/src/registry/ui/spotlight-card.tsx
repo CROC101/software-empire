@@ -51,7 +51,7 @@ export function SpotlightCard({
     spotlight && (
       <motion.div
         aria-hidden
-        className={`pointer-events-none absolute top-0 left-0 rounded-full bg-(--em-sky-400) blur-3xl ${opacity}`}
+        className={`pointer-events-none absolute top-0 left-0 rounded-full bg-radial from-(--em-sky-400)/60 to-transparent to-70% ${opacity}`}
         style={{ width: SPOT, height: SPOT, x: spotX, y: spotY }}
       />
     );

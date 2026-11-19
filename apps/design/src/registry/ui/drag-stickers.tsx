@@ -7,7 +7,7 @@ const stickers = [
   { t: "ส่งงานไว", c: "bg-(--em-gold-500) text-(--em-ink-950)", x: "12%", y: "18%", r: -8 },
   { t: "ใช้ได้จริง", c: "bg-(--em-sky-400) text-(--em-ink-950)", x: "56%", y: "14%", r: 6 },
   { t: "crocwork", c: "bg-(--em-blue-600) text-(--em-ink-0)", x: "30%", y: "56%", r: -3 },
-  { t: "โอเค!", c: "bg-(--em-coral-500) text-(--em-ink-0)", x: "64%", y: "62%", r: 10 },
+  { t: "โอเค", c: "bg-(--em-coral-500) text-(--em-ink-0)", x: "64%", y: "62%", r: 10 },
 ];
 
 /** Stickers you can pick up and throw around the stage; they lift while held and settle with a small bounce. */

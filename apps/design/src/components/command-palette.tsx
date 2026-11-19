@@ -3,7 +3,7 @@
 import { cn } from "@empire/ui";
 import { CornerDownLeft, Search } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { matches, sortEntries } from "@/lib/library";
+import { rank, sortEntries } from "@/lib/library";
 import { categories, kinds, kindOf, registry } from "@/registry/meta";
 
 /** Ctrl/⌘K anywhere: type to find a part, arrows to move, Enter to open. A native <dialog> keeps focus and Esc. */
@@ -15,10 +15,13 @@ export function CommandPalette() {
 
   const hits = useMemo(
     () =>
-      sortEntries(
-        registry.filter((e) => matches(e, q)),
-        "popular",
-      ).slice(0, 30),
+      // popular first, then a stable sort by fuzzy score keeps popular order among ties
+      sortEntries(registry, "popular")
+        .map((e) => ({ e, r: rank(e, q) }))
+        .filter((x) => x.r > 0)
+        .sort((a, b) => b.r - a.r)
+        .slice(0, 30)
+        .map((x) => x.e),
     [q],
   );
 
@@ -66,7 +69,7 @@ export function CommandPalette() {
         onClick={(e) => {
           if (e.target === e.currentTarget) e.currentTarget.close();
         }}
-        className="mx-auto mt-[12vh] w-[min(40rem,calc(100vw-2rem))] overflow-hidden rounded-xl border bg-popover p-0 text-popover-foreground shadow-2xl backdrop:bg-(--em-ink-975)/60 backdrop:backdrop-blur-sm"
+        className="mx-auto mt-[12vh] w-[min(40rem,calc(100vw-2rem))] overflow-hidden rounded-xl border bg-popover p-0 text-popover-foreground shadow-lg backdrop:bg-(--em-ink-975)/60"
       >
         <label className="flex items-center gap-2 border-b px-4 py-3">
           <Search aria-hidden className="size-4 text-muted-foreground" />
@@ -121,7 +124,7 @@ export function CommandPalette() {
               }}
               className={cn(
                 "flex cursor-pointer items-center gap-3 rounded-md px-3 py-2",
-                i === at && "bg-primary/10",
+                i === at && "bg-muted",
               )}
             >
               <span className="min-w-0 flex-1">
@@ -130,7 +133,7 @@ export function CommandPalette() {
                   {kinds[kindOf(e)]} · {categories[e.category].label}
                 </span>
               </span>
-              {i === at && <CornerDownLeft aria-hidden className="size-4 text-primary" />}
+              {i === at && <CornerDownLeft aria-hidden className="size-4 text-muted-foreground" />}
             </li>
           ))}
           {!hits.length && (
