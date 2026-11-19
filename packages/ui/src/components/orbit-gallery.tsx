@@ -36,7 +36,12 @@ export function OrbitGallery({
       }
     >
       <style>{css}</style>
-      <div aria-hidden className="em-orbit vt-live absolute top-1/2 left-1/2 -z-20 size-0">
+      {/* keyed on the pictures: ring and tiles must start their spins together or the tiles tilt */}
+      <div
+        key={images.join("|")}
+        aria-hidden
+        className="em-orbit vt-live absolute top-1/2 left-1/2 -z-20 size-0"
+      >
         {images.map((src, i) => {
           const a = (i * 360) / images.length;
           return (
