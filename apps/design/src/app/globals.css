@@ -1,0 +1,32 @@
+@import "@empire/ui/styles.css";
+
+/* UI fonts (OFL, files in public/fonts) — the same pair as the other apps */
+@font-face {
+  font-family: "Noto Sans Thai UI";
+  src: url("/fonts/NotoSansThai-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans UI";
+  src: url("/fonts/PlusJakartaSans-Variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Noto Sans Thai UI", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans UI", "Noto Sans Thai UI", ui-sans-serif, sans-serif;
+}
+
+/* registry motion: transform only */
+@keyframes beam-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-50% - var(--marquee-gap, 0px) / 2));
+  }
+}

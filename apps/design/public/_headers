@@ -1,0 +1,15 @@
+# security headers for every file Cloudflare serves (Workers static assets read this file)
+# shortcut: previews render inline (our own components only); user-submitted components need a
+# sandboxed iframe on a separate origin first (MASTER-SPEC §5)
+/*
+  Content-Security-Policy: base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  Cross-Origin-Opener-Policy: same-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# hashed build files never change: cache them for a year
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
