@@ -34,7 +34,7 @@ export default function MagneticButton({
         onPointerLeave={leave}
         style={{ x: sx, y: sy }}
         whileTap={{ scale: 0.94 }}
-        className="rounded-lg bg-(--em-blue-600) px-8 py-4 font-semibold text-(--em-ink-0) shadow-[0_10px_40px_-10px_var(--em-blue-500)]"
+        className="rounded-lg bg-(--em-blue-600) px-8 py-4 font-semibold text-(--em-ink-0) shadow-lg"
       >
         <motion.span className="inline-block" style={{ x: sx, y: sy }}>
           {label}

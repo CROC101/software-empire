@@ -18,11 +18,6 @@ export default function HeroCentered({
   const id = useId();
   return (
     <section className="relative overflow-hidden bg-background text-foreground @container">
-      <style>{`@keyframes hero-centered-swell{0%,100%{transform:translate(-50%,0) scale(1)}50%{transform:translate(-50%,12px) scale(1.08)}}.hero-centered-glow{animation:hero-centered-swell 9s ease-in-out infinite}@media (prefers-reduced-motion:reduce){.hero-centered-glow{animation:none}}`}</style>
-      <div
-        aria-hidden
-        className="hero-centered-glow vt-live pointer-events-none absolute top-1/3 left-1/2 h-80 w-[48rem] max-w-[160%] rounded-full bg-linear-to-r from-(--em-sky-400)/40 via-(--em-blue-500)/40 to-(--em-violet-500)/30 blur-3xl"
-      />
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-20 text-center @3xl:py-28">
         <a
           href="#news"

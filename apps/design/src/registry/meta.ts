@@ -17,9 +17,9 @@ const core: readonly Entry[] = [
     added: "2026-11-18",
     rank: 1,
     name: "Aurora Tide",
-    summary: "แสงเหนือสามชั้นลอยช้าๆ ใต้ผิวน้ำ มีวงโลหะเหลวหมุนอยู่ข้างหลัง",
+    summary: "ใต้ผิวน้ำยามค่ำ ลำแสงจันทร์ส่ายช้าๆ ลงมาในน้ำ ผิวน้ำด้านบนกระเพื่อมสองชั้น",
     category: "background",
-    blend: ["aurora waves", "mesh drift", "liquid metal"],
+    blend: ["god rays", "water surface", "night water"],
     controls: [
       { key: "title", label: "หัวข้อ", type: "text", maxLength: 40, value: "แสงใต้น้ำ" },
       {
@@ -31,7 +31,15 @@ const core: readonly Entry[] = [
         step: 1,
         value: 16,
       },
-      { key: "blur", label: "ความเบลอ", type: "range", min: 30, max: 140, step: 5, value: 80 },
+      {
+        key: "blur",
+        label: "ความนุ่มของแสง",
+        type: "range",
+        min: 30,
+        max: 140,
+        step: 5,
+        value: 80,
+      },
       {
         key: "intensity",
         label: "ความเข้ม",
@@ -41,10 +49,10 @@ const core: readonly Entry[] = [
         step: 0.05,
         value: 0.65,
       },
-      { key: "swirl", label: "วงโลหะเหลว", type: "toggle", value: true },
+      { key: "surface", label: "ผิวน้ำด้านบน", type: "toggle", value: true },
     ],
     prompt:
-      "Build a React background component: three large blurred radial blobs (blue, sky, violet design tokens) drifting on slow looping x/y paths with motion/react, plus an optional slowly rotating conic-gradient disc behind them for a liquid-metal sheen. Dark ink base, centred title on top. Animate transform and opacity only, stop all loops under prefers-reduced-motion.",
+      "Build a React background component seen from under water at night: a dark water gradient (blue-700 to ink-975 tokens), four slanted light shafts falling from the top right that sway slowly (rotate and scaleX plus opacity, CSS keyframes, period set by a speed prop), and an optional lapping waterline along the top made of two sum-of-sines SVG layers sliding opposite ways at 7 s and 11 s. Centred title or children on top. Transform and opacity only; under prefers-reduced-motion everything stands still.",
   },
   {
     slug: "decode-text",

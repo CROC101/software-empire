@@ -170,8 +170,8 @@ export const components: readonly Entry[] = [
     "text",
     "glow-heading",
     "Glow Heading",
-    "หัวข้อไล่สีน้ำ มีแสงนวลหายใจอยู่ข้างหลัง",
-    ["gradient text", "breathing glow"],
+    "หัวข้อวางบนผิวน้ำยามค่ำ เงาสะท้อนข้างล่างกระเพื่อมตามระลอกแล้วจางลงตามความลึก",
+    ["water reflection", "ripple sway"],
     [text("text", "หัวข้อ", "แสงใต้ผิวน้ำ")],
   ),
   c(

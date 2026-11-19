@@ -41,7 +41,7 @@ function Content({ state }: { state: State }) {
   if (state === "music")
     return (
       <div className="flex items-center gap-3">
-        <span className="flex size-9 items-center justify-center rounded-md bg-linear-to-br from-(--em-sky-500) to-(--em-violet-500) text-(--em-ink-0)">
+        <span className="flex size-9 items-center justify-center rounded-md bg-linear-to-br from-(--em-sky-500) to-(--em-blue-700) text-(--em-ink-0)">
           <Music2 aria-hidden className="size-4" />
         </span>
         <span className="min-w-0 flex-1">

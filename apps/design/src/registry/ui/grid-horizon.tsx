@@ -14,7 +14,7 @@ export default function GridHorizon({
       {glow && (
         <div
           aria-hidden
-          className="absolute inset-x-0 top-[38%] h-24 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,var(--em-sky-400),transparent_70%)] opacity-50 blur-2xl"
+          className="absolute inset-x-0 top-[38%] h-24 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,var(--em-sky-400),transparent_70%)] opacity-30"
         />
       )}
       <div

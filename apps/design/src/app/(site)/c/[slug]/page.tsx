@@ -5,9 +5,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { InView } from "@/components/in-view";
+import { InstallPanel } from "@/components/install-panel";
 import { Playground } from "@/components/playground";
 import { Thumb } from "@/components/preview";
 import { isHot, isNew, sortEntries } from "@/lib/library";
+import { aiPrompt } from "@/lib/stage";
 import { categories, entry, kindOf, kinds, promptFor, registry } from "@/registry/meta";
 
 export const dynamicParams = false;
@@ -18,6 +20,17 @@ export function generateStaticParams() {
 
 type Props = { params: Promise<{ slug: string }> };
 
+// the same origin the registry JSON was built for (deploy writes NEXT_PUBLIC_SITE_URL)
+const base = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://crocwork-design.crocwork.workers.dev"
+).replace(/\/$/, "");
+
+type Item = {
+  dependencies?: string[];
+  docs?: string;
+  files: { path: string; type: string; content: string }[];
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const e = entry((await params).slug);
   return e ? { title: e.name, description: e.summary } : {};
@@ -27,14 +40,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ComponentPage({ params }: Props) {
   const e = entry((await params).slug);
   if (!e) notFound();
-  // slug comes from the registry (dynamicParams = false), never from a visitor
-  const source = await readFile(
-    path.join(process.cwd(), "src/registry/ui", `${e.slug}.tsx`),
-    "utf8",
-  );
-  const deps = [...source.matchAll(/^import .+ from "([^".][^"]*)";$/gm)]
-    .map((m) => m[1] ?? "")
-    .filter((d) => d && !d.startsWith("@/") && d !== "react");
+  // slug comes from the registry (dynamicParams = false), never from a visitor; the JSON is what
+  // scripts/build-registry.mjs wrote before this build, so the page shows exactly what installs
+  const item = JSON.parse(
+    await readFile(path.join(process.cwd(), "public/r", `${e.slug}.json`), "utf8"),
+  ) as Item;
+  const deps = item.dependencies ?? [];
+  const files = item.files.map((f) => ({
+    path: `${f.type === "registry:lib" ? "lib" : "components/ui"}/${path.basename(f.path)}`,
+    content: f.content,
+  }));
   const kind = kindOf(e);
 
   // prev / next walk the same category in popular order, wrapping round
@@ -75,15 +90,14 @@ export default async function ComponentPage({ params }: Props) {
       <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            {isHot(e) && (
-              <span className="rounded-full bg-(--em-coral-500) px-2 py-0.5 text-[11px] font-semibold text-(--em-ink-0)">
-                ฮิต #{e.rank}
-              </span>
-            )}
             {isNew(e) && (
-              <span className="rounded-full bg-(--em-sky-500) px-2 py-0.5 text-[11px] font-semibold text-(--em-ink-975)">
+              <span className="inline-flex items-center gap-1.5 text-xs text-foreground">
+                <span aria-hidden className="size-1.5 rounded-full bg-primary" />
                 ใหม่
               </span>
+            )}
+            {isHot(e) && (
+              <span className="text-xs text-muted-foreground">ยอดนิยมอันดับ {e.rank}</span>
             )}
             <span className="text-xs text-muted-foreground">
               เพิ่มเมื่อ <time className="font-mono">{e.added}</time>
@@ -110,33 +124,29 @@ export default async function ComponentPage({ params }: Props) {
             <Expand aria-hidden className="size-4" />
             เต็มจอ
           </a>
-          <CopyButton text={promptFor(e)} label="คัดลอก prompt" />
+          <CopyButton
+            text={aiPrompt(e, { base, dependencies: deps, usage: item.docs, brief: promptFor(e) })}
+            label="คัดลอก prompt ให้ AI"
+          />
         </div>
       </div>
 
       <div className="mt-8">
-        <Playground entry={e} source={source} />
+        <Playground entry={e} files={files} deps={deps} />
       </div>
 
       <section aria-labelledby="install" className="mt-10 grid gap-4 md:grid-cols-2">
-        <div className="rounded-xl border bg-card p-5">
-          <h2 id="install" className="font-heading text-lg font-bold">
+        <div className="min-w-0">
+          <h2 id="install" className="font-heading text-lg font-semibold">
             ติดตั้ง
           </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            คัดลอกโค้ดไปวางเป็นไฟล์ <code className="font-mono text-xs">{e.slug}.tsx</code>{" "}
-            แล้วลงแพ็กเกจที่ใช้
+          <p className="mt-1 mb-3 text-sm text-muted-foreground">
+            shadcn CLI วางไฟล์และลงแพ็กเกจให้เอง โปรเจกต์ที่ไม่มี shadcn ใช้ croc-ui แทน
           </p>
-          <pre className="mt-3 overflow-x-auto rounded-md bg-(--em-ink-975) p-3 font-mono text-xs text-(--em-ink-100)">
-            <code>
-              {deps.length
-                ? `pnpm add ${[...new Set(deps)].join(" ")}`
-                : "ไม่ต้องลงอะไรเพิ่ม (React เท่านั้น)"}
-            </code>
-          </pre>
+          <InstallPanel base={base} slug={e.slug} />
         </div>
         <div className="rounded-xl border bg-card p-5">
-          <h2 className="font-heading text-lg font-bold">ค่าที่ปรับได้</h2>
+          <h2 className="font-heading text-lg font-semibold">ค่าที่ปรับได้</h2>
           {e.controls.length ? (
             <div className="mt-3 overflow-x-auto">
               <table className="w-full text-left text-sm">
@@ -153,7 +163,7 @@ export default async function ComponentPage({ params }: Props) {
                       <td className="py-1.5 pr-3 font-mono text-xs">{c.key}</td>
                       <td className="py-1.5 pr-3 text-muted-foreground">
                         {c.type === "range"
-                          ? `${String(c.min)}–${String(c.max)}`
+                          ? `${String(c.min)}-${String(c.max)}`
                           : c.type === "select"
                             ? c.options.join(" | ")
                             : c.type === "toggle"
@@ -183,7 +193,7 @@ export default async function ComponentPage({ params }: Props) {
                 <InView className="aspect-[16/10] overflow-hidden border-b">
                   <Thumb entry={r} />
                 </InView>
-                <p className="p-4 font-heading font-bold">
+                <p className="p-4 font-heading font-semibold">
                   <a
                     href={`/c/${r.slug}`}
                     className="after:absolute after:inset-0 group-hover:text-primary"

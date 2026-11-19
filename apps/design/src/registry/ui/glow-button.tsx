@@ -20,18 +20,14 @@ export default function GlowButton({ label = "เริ่มใช้ฟรี"
       <button
         type="button"
         onPointerMove={move}
-        className="group relative rounded-lg p-px font-semibold text-(--em-ink-50) transition-transform active:scale-95"
+        className="group relative rounded-lg p-px font-semibold text-(--em-ink-50) transition-transform duration-75 active:scale-[0.98]"
       >
-        <span
-          aria-hidden
-          className="absolute -inset-3 rounded-xl bg-(--em-blue-500)/50 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100"
-        />
         <motion.span
           aria-hidden
           className="absolute inset-0 rounded-lg bg-(--em-ink-700)"
           style={{ backgroundImage: rim }}
         />
-        <span className="relative block rounded-[calc(0.5rem-1px)] bg-(--em-ink-900) px-8 py-3.5">
+        <span className="relative block rounded-[calc(0.5rem-1px)] bg-(--em-ink-900) px-8 py-3.5 transition-colors duration-75 group-hover:bg-(--em-ink-850)">
           {label}
         </span>
       </button>

@@ -2,7 +2,7 @@ import { AtSign, Globe, Link2 } from "lucide-react";
 
 const team = [
   { n: "ภูมิ", r: "ออกแบบ", tone: "from-(--em-sky-400) to-(--em-blue-700)" },
-  { n: "ฟ้า", r: "พัฒนาหน้าเว็บ", tone: "from-(--em-violet-500) to-(--em-blue-800)" },
+  { n: "ฟ้า", r: "พัฒนาหน้าเว็บ", tone: "from-(--em-violet-500) to-(--em-ink-950)" },
   { n: "ต้นน้ำ", r: "หลังบ้านและฐานข้อมูล", tone: "from-(--em-teal-400) to-(--em-blue-800)" },
   { n: "ข้าวหอม", r: "ดูแลลูกค้า", tone: "from-(--em-gold-500) to-(--em-coral-500)" },
 ];
