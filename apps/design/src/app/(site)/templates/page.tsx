@@ -76,8 +76,8 @@ export default function TemplatesPage() {
         ))}
       </ul>
       <p className="mt-16 max-w-3xl text-sm text-muted-foreground">
-        ชื่อและโลโก้ของ Netflix, YouTube, Spotify, TikTok, Instagram, Fastwork, Canva, 21st.dev
-        และ ArtCraft เป็นเครื่องหมายการค้าของเจ้าของแต่ละราย ใช้ที่นี่เพื่อบอกว่าเทมเพลตไหนได้แรงบันดาลใจจากอะไรเท่านั้น
+        ชื่อและโลโก้ของ Netflix, YouTube, Spotify, TikTok, Instagram, Fastwork, Canva, 21st.dev,
+        React Bits และ ArtCraft เป็นเครื่องหมายการค้าของเจ้าของแต่ละราย ใช้ที่นี่เพื่อบอกว่าเทมเพลตไหนได้แรงบันดาลใจจากอะไรเท่านั้น
         เราไม่ได้เกี่ยวข้องหรือได้รับการรับรองจากบริษัทเหล่านี้ ภาพยนตร์ตัวอย่างใน Lumora มาจาก Blender
         Foundation (CC BY)
       </p>

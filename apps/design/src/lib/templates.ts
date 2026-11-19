@@ -74,6 +74,13 @@ export const templates: readonly Template[] = [
     inspired: { name: "21st.dev", url: "https://21st.dev" },
   },
   {
+    slug: "motion-bits",
+    name: "Motion Bits",
+    about: "คลังคอมโพเนนต์เคลื่อนไหว ปรับค่าสด คัดลอกโค้ด TS/JS เก็บรายการโปรด",
+    stack: "Next.js",
+    inspired: { name: "React Bits", url: "https://reactbits.dev" },
+  },
+  {
     slug: "craft-everything",
     name: "Craft Everything",
     about: "เว็บแนะนำเครื่องมือโอเพนซอร์ส หน้าสตูดิโอ ราคา ช่วยเหลือ",

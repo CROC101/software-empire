@@ -4,3 +4,4 @@ dist/
 .next/
 next-env.d.ts
 *.tsbuildinfo
+motion-bits/src/data/sources.generated.ts
