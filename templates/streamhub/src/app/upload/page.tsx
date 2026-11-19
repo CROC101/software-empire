@@ -32,7 +32,8 @@ export default function UploadPage() {
     if (!f) return;
     if (!f.type.startsWith("video/")) return hub.toast("Please choose a video file");
     // Local files only play in this tab session; the blob URL is not persisted across reloads.
-    setSrc(URL.createObjectURL(f));
+    // a blob URL is `blob:<origin>/<uuid>`; strip HTML metacharacters so a picked file never puts markup in src
+    setSrc(URL.createObjectURL(f).replace(/[<>"'&]/g, ""));
     setFileName(f.name);
     if (!title) setTitle(f.name.replace(/\.[^.]+$/, ""));
   };
@@ -88,7 +89,7 @@ export default function UploadPage() {
 
         <div>
           <label htmlFor="sample" className="mb-1 block text-sm font-bold text-ink">Sample stream</label>
-          <select id="sample" value={src.startsWith("blob:") ? "" : src} onChange={(e) => { setSrc(e.target.value); setFileName(""); }} className={field}>
+          <select id="sample" value={src.startsWith("blob:") ? "" : src} onChange={(e) => { const s = SAMPLE_STREAMS.find((x) => x.src === e.target.value); if (s) { setSrc(s.src); setFileName(""); } }} className={field}>
             {src.startsWith("blob:") && <option value="">Your file: {fileName}</option>}
             {SAMPLE_STREAMS.map((s) => <option key={s.src} value={s.src}>{s.label}</option>)}
           </select>

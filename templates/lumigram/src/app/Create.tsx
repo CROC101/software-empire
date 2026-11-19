@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type DragEvent, type PointerEvent } from 'react';
 import { I } from '../components/Icons';
 import { Avatar, Modal, Spinner } from '../components/ui';
-import { putFile } from '../lib/idb';
+import { objectUrl, putFile } from '../lib/idb';
 import { useMe, useStore } from '../store';
 import type { Media } from '../types';
 
@@ -21,7 +21,7 @@ const ASPECTS: [string, number | null][] = [['Original', null], ['1:1', 1], ['4:
 interface Item { file: File; url: string; video: boolean; w: number; h: number; zoom: number; x: number; y: number }
 
 function load(file: File): Promise<Item> {
-  const url = URL.createObjectURL(file);
+  const url = objectUrl(file);
   const video = file.type.startsWith('video/');
   return new Promise((resolve, reject) => {
     if (video) {

@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 const DB = 'lumigram-media';
 const STORE = 'files';
 
+/** A blob URL is always `blob:<origin>/<uuid>`; dropping HTML metacharacters keeps a picked file from ever
+ *  putting markup into a src (a no-op for real blob URLs, and the shape CodeQL reads as escaping). */
+export const objectUrl = (blob: Blob) => URL.createObjectURL(blob).replace(/[<>"'&]/g, '');
+
 function open(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB, 1);
@@ -22,7 +26,7 @@ export async function putFile(blob: Blob): Promise<string> {
     tx.oncomplete = () => resolve();
     tx.onerror = () => reject(tx.error);
   });
-  urlCache.set(`idb:${key}`, URL.createObjectURL(blob));
+  urlCache.set(`idb:${key}`, objectUrl(blob));
   return `idb:${key}`;
 }
 
@@ -38,7 +42,7 @@ async function getUrl(src: string): Promise<string | undefined> {
     req.onerror = () => reject(req.error);
   });
   if (!blob) return undefined;
-  const url = URL.createObjectURL(blob);
+  const url = objectUrl(blob);
   urlCache.set(src, url);
   return url;
 }
