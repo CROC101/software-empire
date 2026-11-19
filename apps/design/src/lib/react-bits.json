@@ -1,0 +1,899 @@
+{
+  "commit": "4ee8e2c",
+  "variants": ["JS-CSS", "JS-TW", "TS-CSS", "TS-TW"],
+  "categories": [
+    {
+      "name": "Text Animations",
+      "items": [
+        {
+          "title": "Tech Text",
+          "component": "TechText"
+        },
+        {
+          "title": "Text Loop",
+          "component": "TextLoop"
+        },
+        {
+          "title": "Masked Heading",
+          "component": "MaskedHeading"
+        },
+        {
+          "title": "Particle Text",
+          "component": "ParticleText"
+        },
+        {
+          "title": "Split Flap Text",
+          "component": "SplitFlapText"
+        },
+        {
+          "title": "Warp Text",
+          "component": "WarpText"
+        },
+        {
+          "title": "Stroke Text",
+          "component": "StrokeText"
+        },
+        {
+          "title": "Depth Text",
+          "component": "DepthText"
+        },
+        {
+          "title": "Fold Text",
+          "component": "FoldText"
+        },
+        {
+          "title": "Echo Text",
+          "component": "EchoText"
+        },
+        {
+          "title": "Split Text",
+          "component": "SplitText"
+        },
+        {
+          "title": "Blur Text",
+          "component": "BlurText"
+        },
+        {
+          "title": "Circular Text",
+          "component": "CircularText"
+        },
+        {
+          "title": "Text Type",
+          "component": "TextType"
+        },
+        {
+          "title": "Shuffle",
+          "component": "Shuffle"
+        },
+        {
+          "title": "Shiny Text",
+          "component": "ShinyText"
+        },
+        {
+          "title": "Text Pressure",
+          "component": "TextPressure"
+        },
+        {
+          "title": "Curved Loop",
+          "component": "CurvedLoop"
+        },
+        {
+          "title": "Fuzzy Text",
+          "component": "FuzzyText"
+        },
+        {
+          "title": "Gradient Text",
+          "component": "GradientText"
+        },
+        {
+          "title": "Falling Text",
+          "component": "FallingText"
+        },
+        {
+          "title": "Text Cursor",
+          "component": "TextCursor"
+        },
+        {
+          "title": "Decrypted Text",
+          "component": "DecryptedText"
+        },
+        {
+          "title": "True Focus",
+          "component": "TrueFocus"
+        },
+        {
+          "title": "Scroll Float",
+          "component": "ScrollFloat"
+        },
+        {
+          "title": "Scroll Reveal",
+          "component": "ScrollReveal"
+        },
+        {
+          "title": "ASCII Text",
+          "component": "ASCIIText"
+        },
+        {
+          "title": "Scrambled Text",
+          "component": "ScrambledText"
+        },
+        {
+          "title": "Rotating Text",
+          "component": "RotatingText"
+        },
+        {
+          "title": "Glitch Text",
+          "component": "GlitchText"
+        },
+        {
+          "title": "Scroll Velocity",
+          "component": "ScrollVelocity"
+        },
+        {
+          "title": "Variable Proximity",
+          "component": "VariableProximity"
+        },
+        {
+          "title": "Count Up",
+          "component": "CountUp"
+        }
+      ]
+    },
+    {
+      "name": "Animations",
+      "items": [
+        {
+          "title": "Crystalized Ball",
+          "component": "CrystalizedBall"
+        },
+        {
+          "title": "Electric Logo",
+          "component": "ElectricLogo"
+        },
+        {
+          "title": "Dither Veil",
+          "component": "DitherVeil"
+        },
+        {
+          "title": "Glow Cursor",
+          "component": "GlowCursor"
+        },
+        {
+          "title": "Scroll Expand",
+          "component": "ScrollExpand"
+        },
+        {
+          "title": "Ripple Distortion",
+          "component": "RippleDistortion"
+        },
+        {
+          "title": "Elastic Mesh",
+          "component": "ElasticMesh"
+        },
+        {
+          "title": "Swarm Cursor",
+          "component": "SwarmCursor"
+        },
+        {
+          "title": "Halftone Reveal",
+          "component": "HalftoneReveal"
+        },
+        {
+          "title": "Pixel Swap",
+          "component": "PixelSwap"
+        },
+        {
+          "title": "Cursor Grid",
+          "component": "CursorGrid"
+        },
+        {
+          "title": "Animated Content",
+          "component": "AnimatedContent"
+        },
+        {
+          "title": "Fade Content",
+          "component": "FadeContent"
+        },
+        {
+          "title": "Electric Border",
+          "component": "ElectricBorder"
+        },
+        {
+          "title": "Orbit Images",
+          "component": "OrbitImages"
+        },
+        {
+          "title": "Pixel Transition",
+          "component": "PixelTransition"
+        },
+        {
+          "title": "Glare Hover",
+          "component": "GlareHover"
+        },
+        {
+          "title": "Logo Loop",
+          "component": "LogoLoop"
+        },
+        {
+          "title": "Target Cursor",
+          "component": "TargetCursor"
+        },
+        {
+          "title": "Laser Flow",
+          "component": "LaserFlow"
+        },
+        {
+          "title": "Ghost Cursor",
+          "component": "GhostCursor"
+        },
+        {
+          "title": "Gradual Blur",
+          "component": "GradualBlur"
+        },
+        {
+          "title": "Click Spark",
+          "component": "ClickSpark"
+        },
+        {
+          "title": "Magnet",
+          "component": "Magnet"
+        },
+        {
+          "title": "Strands",
+          "component": "Strands"
+        },
+        {
+          "title": "Sticker Peel",
+          "component": "StickerPeel"
+        },
+        {
+          "title": "Pixel Trail",
+          "component": "PixelTrail"
+        },
+        {
+          "title": "Cubes",
+          "component": "Cubes"
+        },
+        {
+          "title": "Metallic Paint",
+          "component": "MetallicPaint"
+        },
+        {
+          "title": "Noise",
+          "component": "Noise"
+        },
+        {
+          "title": "Shape Blur",
+          "component": "ShapeBlur"
+        },
+        {
+          "title": "Crosshair",
+          "component": "Crosshair"
+        },
+        {
+          "title": "Image Trail",
+          "component": "ImageTrail"
+        },
+        {
+          "title": "Ribbons",
+          "component": "Ribbons"
+        },
+        {
+          "title": "Splash Cursor",
+          "component": "SplashCursor"
+        },
+        {
+          "title": "Meta Balls",
+          "component": "MetaBalls"
+        },
+        {
+          "title": "Blob Cursor",
+          "component": "BlobCursor"
+        },
+        {
+          "title": "Star Border",
+          "component": "StarBorder"
+        }
+      ]
+    },
+    {
+      "name": "Components",
+      "items": [
+        {
+          "title": "Holo Card",
+          "component": "HoloCard"
+        },
+        {
+          "title": "Circular Carousel",
+          "component": "CircularCarousel"
+        },
+        {
+          "title": "Flex Carousel",
+          "component": "FlexCarousel"
+        },
+        {
+          "title": "Infinite Spiral",
+          "component": "InfiniteSpiral"
+        },
+        {
+          "title": "Depth Carousel",
+          "component": "DepthCarousel"
+        },
+        {
+          "title": "Morph Slider",
+          "component": "MorphSlider"
+        },
+        {
+          "title": "Drift Wall",
+          "component": "DriftWall"
+        },
+        {
+          "title": "Accordion Gallery",
+          "component": "AccordionGallery"
+        },
+        {
+          "title": "Specular Button",
+          "component": "SpecularButton"
+        },
+        {
+          "title": "Option Wheel",
+          "component": "OptionWheel"
+        },
+        {
+          "title": "Curved Input",
+          "component": "CurvedInput"
+        },
+        {
+          "title": "Line Sidebar",
+          "component": "LineSidebar"
+        },
+        {
+          "title": "Animated List",
+          "component": "AnimatedList"
+        },
+        {
+          "title": "Scroll Stack",
+          "component": "ScrollStack"
+        },
+        {
+          "title": "Bubble Menu",
+          "component": "BubbleMenu"
+        },
+        {
+          "title": "Magic Bento",
+          "component": "MagicBento"
+        },
+        {
+          "title": "Circular Gallery",
+          "component": "CircularGallery"
+        },
+        {
+          "title": "Reflective Card",
+          "component": "ReflectiveCard"
+        },
+        {
+          "title": "Card Nav",
+          "component": "CardNav"
+        },
+        {
+          "title": "Stack",
+          "component": "Stack"
+        },
+        {
+          "title": "Fluid Glass",
+          "component": "FluidGlass"
+        },
+        {
+          "title": "Pill Nav",
+          "component": "PillNav"
+        },
+        {
+          "title": "Tilted Card",
+          "component": "TiltedCard"
+        },
+        {
+          "title": "Masonry",
+          "component": "Masonry"
+        },
+        {
+          "title": "Glass Surface",
+          "component": "GlassSurface"
+        },
+        {
+          "title": "Dome Gallery",
+          "component": "DomeGallery"
+        },
+        {
+          "title": "Chroma Grid",
+          "component": "ChromaGrid"
+        },
+        {
+          "title": "Folder",
+          "component": "Folder"
+        },
+        {
+          "title": "Staggered Menu",
+          "component": "StaggeredMenu"
+        },
+        {
+          "title": "Model Viewer",
+          "component": "ModelViewer"
+        },
+        {
+          "title": "Lanyard",
+          "component": "Lanyard"
+        },
+        {
+          "title": "Profile Card",
+          "component": "ProfileCard"
+        },
+        {
+          "title": "Dock",
+          "component": "Dock"
+        },
+        {
+          "title": "Gooey Nav",
+          "component": "GooeyNav"
+        },
+        {
+          "title": "Pixel Card",
+          "component": "PixelCard"
+        },
+        {
+          "title": "Carousel",
+          "component": "Carousel"
+        },
+        {
+          "title": "Spotlight Card",
+          "component": "SpotlightCard"
+        },
+        {
+          "title": "Border Glow",
+          "component": "BorderGlow"
+        },
+        {
+          "title": "Flying Posters",
+          "component": "FlyingPosters"
+        },
+        {
+          "title": "Card Swap",
+          "component": "CardSwap"
+        },
+        {
+          "title": "Glass Icons",
+          "component": "GlassIcons"
+        },
+        {
+          "title": "Decay Card",
+          "component": "DecayCard"
+        },
+        {
+          "title": "Flowing Menu",
+          "component": "FlowingMenu"
+        },
+        {
+          "title": "Elastic Slider",
+          "component": "ElasticSlider"
+        },
+        {
+          "title": "Counter",
+          "component": "Counter"
+        },
+        {
+          "title": "Infinite Menu",
+          "component": "InfiniteMenu"
+        },
+        {
+          "title": "Stepper",
+          "component": "Stepper"
+        },
+        {
+          "title": "Bounce Cards",
+          "component": "BounceCards"
+        }
+      ]
+    },
+    {
+      "name": "Micro",
+      "items": [
+        {
+          "title": "Shredder",
+          "component": "Shredder"
+        },
+        {
+          "title": "Paper Crumple",
+          "component": "PaperCrumple"
+        },
+        {
+          "title": "Tear Ticket",
+          "component": "TearTicket"
+        },
+        {
+          "title": "Flip Card",
+          "component": "FlipCard"
+        },
+        {
+          "title": "Branched Menu",
+          "component": "BranchedMenu"
+        },
+        {
+          "title": "Folder Float",
+          "component": "FolderFloat"
+        },
+        {
+          "title": "Refine Frame",
+          "component": "RefineFrame"
+        },
+        {
+          "title": "Thought Line",
+          "component": "ThoughtLine"
+        },
+        {
+          "title": "Voice Pill",
+          "component": "VoicePill"
+        },
+        {
+          "title": "Slosh Gauge",
+          "component": "SloshGauge"
+        },
+        {
+          "title": "Prompt Bar",
+          "component": "PromptBar"
+        },
+        {
+          "title": "Swipe Toast",
+          "component": "SwipeToast"
+        },
+        {
+          "title": "Sling Button",
+          "component": "SlingButton"
+        },
+        {
+          "title": "Bell Toggle",
+          "component": "BellToggle"
+        },
+        {
+          "title": "Call Chip",
+          "component": "CallChip"
+        },
+        {
+          "title": "Status Mark",
+          "component": "StatusMark"
+        },
+        {
+          "title": "Glide Select",
+          "component": "GlideSelect"
+        },
+        {
+          "title": "Swipe Row",
+          "component": "SwipeRow"
+        },
+        {
+          "title": "Jelly Radio",
+          "component": "JellyRadio"
+        },
+        {
+          "title": "Comet Dial",
+          "component": "CometDial"
+        },
+        {
+          "title": "Wake Slider",
+          "component": "WakeSlider"
+        },
+        {
+          "title": "Code Slots",
+          "component": "CodeSlots"
+        },
+        {
+          "title": "Dodge Field",
+          "component": "DodgeField"
+        },
+        {
+          "title": "Lattice Loader",
+          "component": "LatticeLoader"
+        },
+        {
+          "title": "Scrub Field",
+          "component": "ScrubField"
+        },
+        {
+          "title": "Fuse Button",
+          "component": "FuseButton"
+        },
+        {
+          "title": "Warm Tooltip",
+          "component": "WarmTooltip"
+        },
+        {
+          "title": "Slide Commit",
+          "component": "SlideCommit"
+        },
+        {
+          "title": "Rubber Segment",
+          "component": "RubberSegment"
+        },
+        {
+          "title": "Pulse Heart",
+          "component": "PulseHeart"
+        },
+        {
+          "title": "Spring Check",
+          "component": "SpringCheck"
+        },
+        {
+          "title": "Peek Rating",
+          "component": "PeekRating"
+        },
+        {
+          "title": "Hold Button",
+          "component": "HoldButton"
+        },
+        {
+          "title": "Squish Switch",
+          "component": "SquishSwitch"
+        }
+      ]
+    },
+    {
+      "name": "Backgrounds",
+      "items": [
+        {
+          "title": "Holo Mosaic",
+          "component": "HoloMosaic"
+        },
+        {
+          "title": "Gradient ASCII",
+          "component": "GradientASCII"
+        },
+        {
+          "title": "Flux Lines",
+          "component": "FluxLines"
+        },
+        {
+          "title": "Pattern Waves",
+          "component": "PatternWaves"
+        },
+        {
+          "title": "Micro Slats",
+          "component": "MicroSlats"
+        },
+        {
+          "title": "Shape Waves",
+          "component": "ShapeWaves"
+        },
+        {
+          "title": "Aero Shards",
+          "component": "AeroShards"
+        },
+        {
+          "title": "Ghost Fibers",
+          "component": "GhostFibers"
+        },
+        {
+          "title": "CRT Warp",
+          "component": "CRTWarp"
+        },
+        {
+          "title": "Molten Metal",
+          "component": "MoltenMetal"
+        },
+        {
+          "title": "Gradient Waves",
+          "component": "GradientWaves"
+        },
+        {
+          "title": "Web Threads",
+          "component": "WebThreads"
+        },
+        {
+          "title": "Topography",
+          "component": "Topography"
+        },
+        {
+          "title": "Light Tunnel",
+          "component": "LightTunnel"
+        },
+        {
+          "title": "Sliced Waves",
+          "component": "SlicedWaves"
+        },
+        {
+          "title": "Acid Squares",
+          "component": "AcidSquares"
+        },
+        {
+          "title": "Scanner",
+          "component": "Scanner"
+        },
+        {
+          "title": "Ferrofluid",
+          "component": "Ferrofluid"
+        },
+        {
+          "title": "Lightfall",
+          "component": "Lightfall"
+        },
+        {
+          "title": "Liquid Ether",
+          "component": "LiquidEther"
+        },
+        {
+          "title": "Prism",
+          "component": "Prism"
+        },
+        {
+          "title": "Dark Veil",
+          "component": "DarkVeil"
+        },
+        {
+          "title": "Light Pillar",
+          "component": "LightPillar"
+        },
+        {
+          "title": "Antigravity",
+          "component": "Antigravity"
+        },
+        {
+          "title": "Silk",
+          "component": "Silk"
+        },
+        {
+          "title": "Floating Lines",
+          "component": "FloatingLines"
+        },
+        {
+          "title": "Side Rays",
+          "component": "SideRays"
+        },
+        {
+          "title": "Light Rays",
+          "component": "LightRays"
+        },
+        {
+          "title": "Pixel Blast",
+          "component": "PixelBlast"
+        },
+        {
+          "title": "Color Bends",
+          "component": "ColorBends"
+        },
+        {
+          "title": "Line Waves",
+          "component": "LineWaves"
+        },
+        {
+          "title": "Radar",
+          "component": "Radar"
+        },
+        {
+          "title": "Soft Aurora",
+          "component": "SoftAurora"
+        },
+        {
+          "title": "Magic Rings",
+          "component": "MagicRings"
+        },
+        {
+          "title": "Aurora",
+          "component": "Aurora"
+        },
+        {
+          "title": "Plasma",
+          "component": "Plasma"
+        },
+        {
+          "title": "Plasma Wave",
+          "component": "PlasmaWave"
+        },
+        {
+          "title": "Particles",
+          "component": "Particles"
+        },
+        {
+          "title": "Gradient Blinds",
+          "component": "GradientBlinds"
+        },
+        {
+          "title": "Grainient",
+          "component": "Grainient"
+        },
+        {
+          "title": "Grid Scan",
+          "component": "GridScan"
+        },
+        {
+          "title": "Beams",
+          "component": "Beams"
+        },
+        {
+          "title": "Pixel Snow",
+          "component": "PixelSnow"
+        },
+        {
+          "title": "Lightning",
+          "component": "Lightning"
+        },
+        {
+          "title": "Prismatic Burst",
+          "component": "PrismaticBurst"
+        },
+        {
+          "title": "Galaxy",
+          "component": "Galaxy"
+        },
+        {
+          "title": "Dither",
+          "component": "Dither"
+        },
+        {
+          "title": "Faulty Terminal",
+          "component": "FaultyTerminal"
+        },
+        {
+          "title": "Ripple Grid",
+          "component": "RippleGrid"
+        },
+        {
+          "title": "Dot Field",
+          "component": "DotField"
+        },
+        {
+          "title": "Dot Grid",
+          "component": "DotGrid"
+        },
+        {
+          "title": "Threads",
+          "component": "Threads"
+        },
+        {
+          "title": "Hyperspeed",
+          "component": "Hyperspeed"
+        },
+        {
+          "title": "Iridescence",
+          "component": "Iridescence"
+        },
+        {
+          "title": "Waves",
+          "component": "Waves"
+        },
+        {
+          "title": "Magnet Lines",
+          "component": "MagnetLines"
+        },
+        {
+          "title": "Grid Distortion",
+          "component": "GridDistortion"
+        },
+        {
+          "title": "Ballpit",
+          "component": "Ballpit"
+        },
+        {
+          "title": "Orb",
+          "component": "Orb"
+        },
+        {
+          "title": "Letter Glitch",
+          "component": "LetterGlitch"
+        },
+        {
+          "title": "Grid Motion",
+          "component": "GridMotion"
+        },
+        {
+          "title": "Shape Grid",
+          "component": "ShapeGrid"
+        },
+        {
+          "title": "Liquid Chrome",
+          "component": "LiquidChrome"
+        },
+        {
+          "title": "Balatro",
+          "component": "Balatro"
+        }
+      ]
+    }
+  ]
+}

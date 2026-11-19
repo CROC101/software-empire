@@ -35,6 +35,14 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href="/react-bits"
+                className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                React Bits
+              </a>
+            </li>
           </ul>
           <CommandPalette />
         </nav>
