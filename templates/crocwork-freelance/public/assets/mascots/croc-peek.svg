@@ -1,0 +1,18 @@
+<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="120" cy="170" rx="100" ry="10" fill="#0d4fb3" opacity=".12"/>
+  <path d="M30 170c0-70 40-120 95-120s85 50 85 120z" fill="#3fbf7f"/>
+  <path d="M55 170c0-50 30-90 70-90s65 40 65 90z" fill="#8fe0b0"/>
+  <circle cx="85" cy="62" r="26" fill="#3fbf7f"/>
+  <circle cx="160" cy="62" r="26" fill="#3fbf7f"/>
+  <circle cx="85" cy="60" r="16" fill="#fff"/>
+  <circle cx="160" cy="60" r="16" fill="#fff"/>
+  <circle cx="89" cy="62" r="8" fill="#1f2a37"/>
+  <circle cx="156" cy="62" r="8" fill="#1f2a37"/>
+  <circle cx="92" cy="58" r="2.5" fill="#fff"/>
+  <circle cx="159" cy="58" r="2.5" fill="#fff"/>
+  <path d="M90 118c18 14 46 14 64 0" stroke="#1f2a37" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="105" cy="100" r="3" fill="#2a8f5c"/>
+  <circle cx="138" cy="100" r="3" fill="#2a8f5c"/>
+  <path d="M30 150c-12-8-18-24-10-30 8-6 18 6 22 16z" fill="#3fbf7f"/>
+  <path d="M210 150c12-8 18-24 10-30-8-6-18 6-22 16z" fill="#3fbf7f"/>
+</svg>

@@ -1,0 +1,147 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Tokens measured from the capture (capture.json design + layouts). */
+@theme {
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-heading: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+
+  --color-page: #050506;
+  --color-ink: #f6f6f8;
+  --color-ink-soft: #f6f6f8bf;
+  --color-ink-faint: #f6f6f873;
+  --color-dim: #98989d;
+  --color-brand: #0033ff;
+  --color-panel: #0d0d0e;
+  --color-panel-2: #141416;
+  --color-panel-3: #0f1011;
+  --color-chip: #f2f2f214;
+  --color-wash: #ffffff0d;
+  --color-hair: #f6f6f80f;
+
+  --text-hero: 84.96px;
+  --text-h2: 46px;
+  --text-h2-lead: 44px;
+  --text-cta: 56px;
+  --text-lead: 20.88px;
+
+  --container-site: 1152px;
+
+  /* rem like the defaults, so sm/xl sort correctly against md/lg */
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+}
+
+@theme inline {
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: 7px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 20px;
+  --radius-4xl: 24px;
+}
+
+:root {
+  --radius: 10px;
+  --background: #050506;
+  --foreground: #f6f6f8;
+  --card: #0d0d0e;
+  --card-foreground: #f6f6f8;
+  --popover: #0f1011;
+  --popover-foreground: #f6f6f8;
+  --primary: #0033ff;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f2f214;
+  --secondary-foreground: #f6f6f8;
+  --muted: #ffffff0d;
+  --muted-foreground: #98989d;
+  --accent: #f1f1ff12;
+  --accent-foreground: #f6f6f8;
+  --destructive: #ff4d4f;
+  --border: #f6f6f80f;
+  --input: #ffffff14;
+  --ring: #0033ff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    background: var(--color-page);
+    color-scheme: dark;
+  }
+  html {
+    overflow-x: clip;
+    scrollbar-width: none; /* the original reserves no scrollbar gutter */
+  }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-weight: 450;
+    overflow-x: clip;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility site-col {
+  /* gutters via width, not padding: the original's sections carry no side padding */
+  width: min(calc(var(--container-site) - 48px), calc(100% - 48px));
+  max-width: var(--container-site);
+  margin-inline: auto;
+  @media (width < 768px) {
+    width: calc(100% - 32px);
+  }
+}
+
+@utility display {
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+@utility hairline {
+  box-shadow: inset 0 0 0 1px #f6f6f80f;
+}
+
+/* Soft blue swirl drawn with gradients (stands in for the original's photo backdrop). */
+@utility swirl {
+  background:
+    radial-gradient(60% 55% at 78% 8%, #1238ffcc 0%, #0a1fb366 35%, transparent 70%),
+    radial-gradient(45% 40% at 18% 30%, #0b1a8a99 0%, transparent 70%),
+    conic-gradient(from 210deg at 62% 30%, #050506 0deg, #0c1f99 70deg, #050506 140deg, #12207a 230deg, #050506 300deg),
+    #050506;
+}
+
+@keyframes swirl-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(-2%, 2%, 0) rotate(4deg); }
+}

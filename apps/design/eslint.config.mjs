@@ -5,5 +5,12 @@ import { defineConfig, globalIgnores } from "eslint/config";
 export default defineConfig(
   ...nextVitals,
   ...base(import.meta.dirname),
-  globalIgnores([".next/**", "out/**", "next-env.d.ts", "public/r/**", "public/croc-ui.mjs"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "next-env.d.ts",
+    "public/r/**",
+    "public/croc-ui.mjs",
+    "public/tpl/**",
+  ]),
 );

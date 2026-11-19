@@ -1,0 +1,179 @@
+@import 'tailwindcss';
+
+/* Theme tokens measured from the capture (colours, type scale, radii, widths, breakpoints). */
+@theme {
+  --font-sans: var(--brand-font-sans, 'Noto Sans Thai Variable', 'Helvetica Neue', 'Segoe UI', Roboto, Ubuntu, sans-serif);
+  --font-display: var(--brand-font-display, 'Bebas Neue', sans-serif);
+
+  --color-accent: var(--brand-accent, #e50914);
+  --color-accent-hover: var(--brand-accent-hover, #c11119);
+  --color-page: #000000;
+  --color-app: var(--brand-app-bg, #141414);
+  --color-card: #232323;
+  --color-faq: #2d2d2d;
+  --color-faq-hover: #414141;
+  --color-field: #161616b3;
+  --color-panel: #181818;
+  --color-footer: #161616;
+  --color-dim: #ffffffb3;
+  --color-faint: #ffffff80;
+  --color-muted: #737373;
+  --color-gray-btn: #6d6d6eb3;
+  --color-match: #46d369;
+
+  --text-xs2: 13px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg2: 18px;
+  --text-xl2: 20px;
+  --text-2xl2: 24px;
+  --text-hero: 56px;
+  --text-rank: 100px;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  --container-hero: 588px;
+  --container-form: 783px;
+  --container-page: 1920px;
+
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1280px;
+
+  --ease-netflix: cubic-bezier(0.5, 0, 0.1, 1);
+  --ease-out-soft: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+html,
+body {
+  background: #000;
+  color: #fff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body {
+  margin: 0;
+}
+/* In the base layer so Tailwind utilities on links and buttons win. */
+@layer base {
+  button {
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+  }
+  a {
+    color: inherit;
+  }
+}
+
+/* Page gutters from the capture: 24 / 32 / 64 / 148 px */
+.gutter {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (min-width: 600px) {
+  .gutter {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+@media (min-width: 960px) {
+  .gutter {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+@media (min-width: 1280px) {
+  .gutter {
+    padding-left: 148px;
+    padding-right: 148px;
+  }
+}
+
+/* Signed-in app gutter: 4% like the browse grid */
+.app-gutter {
+  padding-left: 4%;
+  padding-right: 4%;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #222;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06) 40%, rgba(255, 255, 255, 0.1) 50%, transparent);
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes ripple {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+.ripple::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  animation: ripple 0.6s ease-out;
+}
+
+input[type='range'].nf-range {
+  appearance: none;
+  background: transparent;
+}
+input[type='range'].nf-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  margin-top: -5px;
+}
+input[type='range'].nf-range::-webkit-slider-runnable-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.4);
+}
+input[type='range'].nf-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+input[type='range'].nf-range::-moz-range-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+select.lang-select {
+  appearance: none;
+}

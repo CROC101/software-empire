@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: var(--font-roboto), Roboto, Arial, sans-serif;
+
+  /* Dark palette from the request; sizes, radii and spacing from the capture */
+  --color-canvas: #0f0f0f;
+  --color-elevated: #212121;
+  --color-raised: #272727;
+  --color-hover: #3f3f3f;
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-soft: rgba(255, 255, 255, 0.1);
+  --color-ink: #f1f1f1;
+  --color-muted: #aaaaaa;
+  --color-faint: #717171;
+  --color-brand: #ff0000;
+  --color-brand-dark: #cc0000;
+  --color-link: #3ea6ff;
+
+  --radius-item: 10px;
+  --radius-card: 12px;
+  --radius-pill: 20px;
+  --radius-chip: 8px;
+
+  --text-2xs: 10px;
+
+  --shadow-card: rgba(0, 0, 0, 0.2) 0px 8px 23px 0px;
+
+  /* Layout breakpoints of the original: search collapses, mini rail, full sidebar */
+  --breakpoint-sm: 656px;
+  --breakpoint-md: 792px;
+  --breakpoint-lg: 1016px;
+  --breakpoint-xl: 1312px;
+
+  --animate-marquee: marquee 9s linear infinite;
+  --animate-pulse-ring: pulse-ring 1.4s ease-out infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.5); }
+  100% { box-shadow: 0 0 0 28px rgba(255, 0, 0, 0); }
+}
+
+html,
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.thin-scroll:hover {
+  scrollbar-color: #717171 transparent;
+}
+
+input[type='range'].yt-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: linear-gradient(to right, #fff var(--val, 100%), rgba(255, 255, 255, 0.3) var(--val, 100%));
+  border-radius: 2px;
+}
+input[type='range'].yt-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+}
+input[type='range'].yt-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+}
