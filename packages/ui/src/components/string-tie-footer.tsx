@@ -359,7 +359,11 @@ export const nearestFree = (
 };
 // #endregion
 
-export type ContactLink = { label: string; href: string };
+export type ContactLink = {
+  label: string;
+  href: string;
+  /** a small mark before the label, e.g. <BrandIcon> */ icon?: React.ReactNode;
+};
 
 export type EnvelopeNote = {
   /** Small line at the top of the note. */
@@ -527,10 +531,10 @@ const CSS =
   EASE +
   ",color .25s}" +
   ".stt-link:hover{background-size:0 1px;background-position:100% 80%;color:var(--stt-paper)}" +
-  ".stt-link svg{width:.7em;height:.7em;flex:none;max-width:none;opacity:0;transform:translate(-4px,4px);transition:opacity .3s,transform .4s " +
+  ".stt-link>svg{width:.7em;height:.7em;flex:none;max-width:none;opacity:0;transform:translate(-4px,4px);transition:opacity .3s,transform .4s " +
   EASE +
   "}" +
-  ".stt-link:hover svg{opacity:1;transform:none}" +
+  ".stt-link:hover>svg{opacity:1;transform:none}.stt-ico{display:inline-flex;margin-right:.15em}.stt-ico svg{width:.85em;height:.85em}" +
   ".stt-regards{display:flex;flex-direction:column;align-items:center;padding-right:clamp(0px,2cqw,40px);opacity:0;transform:translateY(14px);transition:opacity .9s .65s,transform .9s .65s " +
   EASE +
   "}" +
@@ -1324,6 +1328,7 @@ export function StringTieFooter({
                       target={external(l.href) ? "_blank" : undefined}
                       rel={external(l.href) ? "noopener noreferrer" : undefined}
                     >
+                      {l.icon && <span className="stt-ico">{l.icon}</span>}
                       {l.label}
                       <Arrow />
                     </a>

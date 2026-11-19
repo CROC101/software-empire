@@ -15,6 +15,7 @@ import {
   WaterRippleCarousel,
   ScrollAssemble,
   StringTieFooter,
+  BrandIcon,
   TextLoop,
   TidelineCta,
   GlassBucket,
@@ -1464,9 +1465,10 @@ export function SiteFooter() {
       tapes={["ขอบคุณที่แวะมา", "มีงานไหน เล่าให้ผมฟัง"]}
       email={process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? contactEmail}
       links={[
-        { label: "github.com/CROC101", href: "https://github.com/CROC101" },
         { label: "CROC101/software-empire", href: GITHUB },
-        ...contacts.filter((c) => c.href.startsWith("https:")),
+        ...contacts
+          .filter((c) => c.href.startsWith("https:"))
+          .map((c) => ({ ...c, icon: <BrandIcon name={c.icon} /> })),
       ]}
       regards="ด้วยความขอบคุณ"
       signatureText="crocwork"

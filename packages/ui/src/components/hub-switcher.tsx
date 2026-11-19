@@ -1,4 +1,5 @@
 import { contacts } from "@empire/core/subsystems";
+import { BrandIcon } from "./brand-icon";
 import { useId, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { Ambience, AmbienceButton } from "./ambience";
@@ -112,8 +113,9 @@ export function HubSwitcher({
                 <a
                   href={c.href}
                   {...(c.href.startsWith("https:") && { target: "_blank", rel: "noopener" })}
-                  className="inline-flex min-h-10 items-center rounded-lg px-3 text-sm font-medium hover:bg-accent"
+                  className="inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium hover:bg-accent"
                 >
+                  <BrandIcon name={c.icon} className="size-4 text-muted-foreground" />
                   {c.label}
                 </a>
               </li>
