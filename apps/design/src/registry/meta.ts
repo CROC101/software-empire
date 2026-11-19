@@ -5,6 +5,7 @@
  */
 import { blocks } from "./data/blocks";
 import { components } from "./data/components";
+import { rebuilds } from "./data/rebuilds";
 import type { Entry } from "./types";
 
 export * from "./types";
@@ -353,7 +354,7 @@ const core: readonly Entry[] = [
   },
 ];
 
-export const registry: readonly Entry[] = [...core, ...components, ...blocks];
+export const registry: readonly Entry[] = [...core, ...components, ...rebuilds, ...blocks];
 
 export function entry(slug: string): Entry | undefined {
   return registry.find((e) => e.slug === slug);

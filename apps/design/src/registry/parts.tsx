@@ -143,6 +143,21 @@ export const parts = {
   "particle-title": lazy(() => import("./ui/particle-title")),
   "count-up": lazy(() => import("./ui/count-up")),
   "where-globe": lazy(() => import("./ui/where-globe")),
+  "tide-plasma": lazy(() => import("./ui/tide-plasma")),
+  "silk-current": lazy(() => import("./ui/silk-current")),
+  "deep-galaxy": lazy(() => import("./ui/deep-galaxy")),
+  "warp-lanes": lazy(() => import("./ui/warp-lanes")),
+  "float-particles": lazy(() => import("./ui/float-particles")),
+  "glyph-glitch": lazy(() => import("./ui/glyph-glitch")),
+  "ripple-mesh": lazy(() => import("./ui/ripple-mesh")),
+  "thread-drift": lazy(() => import("./ui/thread-drift")),
+  "bolt-strike": lazy(() => import("./ui/bolt-strike")),
+  "dither-tide": lazy(() => import("./ui/dither-tide")),
+  "magnet-lines": lazy(() => import("./ui/magnet-lines")),
+  "ball-pool": lazy(() => import("./ui/ball-pool")),
+  "pixel-snow": lazy(() => import("./ui/pixel-snow")),
+  "topo-lines": lazy(() => import("./ui/topo-lines")),
+  "radar-sweep": lazy(() => import("./ui/radar-sweep")),
 };
 
 const lookup = parts as unknown as Record<string, ComponentType<Values> | undefined>;

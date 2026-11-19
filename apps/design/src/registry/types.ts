@@ -66,6 +66,8 @@ export type Entry = {
   rank?: number;
   /** hand-written prompt; otherwise promptFor() builds one */
   prompt?: string;
+  /** our own clean-room rebuild of this React Bits part (its title there); credited and linked, no code taken */
+  inspiredBy?: string;
 };
 
 export const kindOf = (e: Entry): Kind => categories[e.category].kind;
