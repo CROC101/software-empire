@@ -1,0 +1,17 @@
+Brand marks on the /templates page
+
+Copied from the crocwork icon library (apps/toolboxes/public/icons), which takes them from
+theSVG (https://github.com/glincker/thesvg, MIT) at commit 389ef0d727ed09e78749e2de8b1ba1273439a146.
+Licence of each file as published there:
+  canva.svg      MIT
+  fastwork.svg   MIT
+  instagram.svg  CC0-1.0
+  netflix.svg    CC0-1.0
+  spotify.svg    CC0-1.0
+  tiktok.svg     CC0-1.0
+  youtube.svg    CC0-1.0
+
+ph.svg is not from the library (it has no such mark): a plain "PH" badge drawn by crocwork.
+
+The marks stay their owners' trademarks. They are shown only to say which product inspired
+each template; no template is made by, endorsed by or connected to these companies.

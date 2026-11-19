@@ -10,4 +10,11 @@ describe("_headers", () => {
     expect(headers).toContain("X-Frame-Options: SAMEORIGIN");
     expect(headers).not.toMatch(/frame-ancestors 'none'|X-Frame-Options: DENY/);
   });
+
+  // the clone templates run third-party-shaped code: an opaque origin keeps our cookies out of reach
+  it("sandboxes /tpl/* without same-origin", () => {
+    const block = headers.split(/\r?\n(?=\S)/).find((b) => b.startsWith("/tpl/*"));
+    expect(block).toMatch(/Content-Security-Policy: sandbox allow-scripts/);
+    expect(block).not.toContain("allow-same-origin");
+  });
 });

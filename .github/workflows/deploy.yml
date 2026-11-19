@@ -10,10 +10,10 @@ name: deploy
 on:
   pull_request:
     branches: [main]
-    paths: [apps/**, packages/**, pnpm-lock.yaml, .github/workflows/deploy.yml]
+    paths: [apps/**, packages/**, templates/**, pnpm-lock.yaml, .github/workflows/deploy.yml]
   push:
     branches: [main]
-    paths: [apps/**, packages/**, pnpm-lock.yaml, .github/workflows/deploy.yml]
+    paths: [apps/**, packages/**, templates/**, pnpm-lock.yaml, .github/workflows/deploy.yml]
   workflow_dispatch:
 
 permissions:
@@ -122,6 +122,12 @@ jobs:
       - name: build (next)
         if: matrix.kind == 'next'
         run: pnpm --filter @empire/${{ matrix.app }} cf:build
+
+      # the clone templates are not in git as builds: each is its own npm project (installed with
+      # --ignore-scripts), built under /tpl/<slug> into public/tpl with a zip of its source
+      - name: clone templates (design)
+        if: matrix.app == 'design'
+        run: node apps/design/tools/templates.mjs
 
       - name: build (export)
         if: matrix.kind == 'export'

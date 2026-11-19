@@ -43,6 +43,14 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
                 React Bits
               </a>
             </li>
+            <li>
+              <a
+                href="/templates"
+                className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                เทมเพลตแอป
+              </a>
+            </li>
           </ul>
           <CommandPalette />
         </nav>

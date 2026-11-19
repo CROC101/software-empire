@@ -1,0 +1,141 @@
+@import 'tailwindcss';
+
+/* Tokens measured from the capture (capture.json design + layouts). */
+@theme {
+  --font-sans: var(--font-mix), 'Helvetica Neue', helvetica, arial, sans-serif;
+  --font-title: var(--font-mix), 'Helvetica Neue', helvetica, arial, sans-serif;
+
+  --color-frame: #000000;
+  --color-surface: #121212;
+  --color-elevated: #1f1f1f;
+  --color-card: #181818;
+  --color-hover: #282828;
+  --color-tinted: #292929;
+  --color-highlight: #333333;
+  --color-press: #3b3b3b;
+  --color-subdued: #b3b3b3;
+  --color-green: #1ed760;
+  --color-green-hi: #1fdf64;
+  --color-liked: #5038a0;
+  --color-link-podcast: #9e9eff;
+
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-2xl: 24px;
+  --text-3xl: 32px;
+  --text-hero: 96px;
+
+  --radius-xs: 2px;
+  --radius-img: 6px;
+  --radius-lg: 8px;
+
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  --spacing-header: 64px;
+  --spacing-player: 66px;
+  --spacing-sidebar: 420px;
+  --spacing-sidebar-md: 320px;
+}
+
+html,
+body {
+  background: var(--color-frame);
+  color: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* thin range sliders that turn green on hover, like the player's progress bar */
+input[type='range'].bar {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  background: transparent;
+  cursor: pointer;
+  --fill: 0%;
+}
+input[type='range'].bar::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, #fff var(--fill), #4d4d4d var(--fill));
+}
+input[type='range'].bar:hover::-webkit-slider-runnable-track,
+input[type='range'].bar:focus-visible::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, var(--color-green) var(--fill), #4d4d4d var(--fill));
+}
+input[type='range'].bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+}
+input[type='range'].bar:hover::-webkit-slider-thumb {
+  opacity: 1;
+}
+input[type='range'].bar::-moz-range-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: #4d4d4d;
+}
+input[type='range'].bar::-moz-range-progress {
+  height: 4px;
+  border-radius: 9999px;
+  background: #fff;
+}
+input[type='range'].bar:hover::-moz-range-progress {
+  background: var(--color-green);
+}
+input[type='range'].bar::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* vertical sliders for the equalizer */
+input[type='range'].eq {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 12px;
+  height: 160px;
+  accent-color: var(--color-green);
+  cursor: pointer;
+}
+
+@keyframes eqbar {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.eq-bar {
+  transform-origin: bottom;
+  animation: eqbar 0.9s ease-in-out infinite;
+}

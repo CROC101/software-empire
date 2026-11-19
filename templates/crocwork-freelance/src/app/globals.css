@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+
+/* Design tokens measured on the original homepage. Brand colours are overridden at runtime from brand.config. */
+@theme {
+  --font-sans: var(--font-thai), var(--font-latin), -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-display: var(--font-latin), var(--font-thai), -apple-system, system-ui, sans-serif;
+
+  --color-brand: var(--brand-primary, #1d6ce2);
+  --color-brand-dark: var(--brand-secondary, #0b47a3);
+  --color-brand-deep: #0d4fb3;
+  --color-brand-soft: #e8f0fe;
+  --color-brand-tint: #f2f6ff;
+  --color-ink: #2b313b;
+  --color-ink-2: #485261;
+  --color-ink-3: #728197;
+  --color-ink-60: #2b323b99;
+  --color-line: #d6dae1;
+  --color-line-2: #e8eaee;
+  --color-surface: #f5f6f8;
+  --color-star: #ffb400;
+  --color-danger: #e5484d;
+  --color-success: #12a150;
+
+  --text-2xs: 10px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 36px;
+  --text-3xl: 48px;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgba(43, 49, 59, 0.06), 0 2px 8px rgba(43, 49, 59, 0.06);
+  --shadow-lift: 0 8px 24px rgba(43, 49, 59, 0.14);
+  --shadow-nav: 0 2px 4px rgba(43, 49, 59, 0.08);
+  --shadow-panel: 0 4px 24px rgba(43, 49, 59, 0.12);
+
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-blink: blink 1s step-end infinite;
+
+  @keyframes shimmer {
+    0% { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+}
+
+html { -webkit-text-size-adjust: 100%; }
+body {
+  @apply bg-white text-ink font-sans text-sm antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+.container-fw { width: 100%; max-width: 1216px; margin-inline: auto; padding-inline: 16px; }
+@media (min-width: 1248px) { .container-fw { padding-inline: 0; } }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+.skeleton {
+  background: linear-gradient(90deg, #eef0f3 0px, #f7f8fa 160px, #eef0f3 320px);
+  background-size: 800px 100%;
+  @apply animate-shimmer;
+}
+
+.hero-bg { background: radial-gradient(120% 90% at 50% 0%, #dfe9ff 0%, #eef3ff 45%, #ffffff 100%); }
+.promo-bar-bg { background: linear-gradient(90deg, #6b4de6 0%, #a77be8 45%, #f7b9a0 100%); }
+
+:focus-visible { outline: 2px solid var(--color-brand); outline-offset: 2px; }
