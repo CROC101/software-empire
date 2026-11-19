@@ -58,6 +58,7 @@ export const parts = {
   "tabs-slide": lazy(() => import("./ui/tabs-slide")),
   "segmented-control": lazy(() => import("./ui/segmented-control")),
   "hamburger-morph": lazy(() => import("./ui/hamburger-morph")),
+  "curved-menu": lazy(() => import("./ui/curved-menu")),
   "bottom-bar": lazy(() => import("./ui/bottom-bar")),
   "side-rail": lazy(() => import("./ui/side-rail")),
   pager: lazy(() => import("./ui/pager")),
