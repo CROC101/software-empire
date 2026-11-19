@@ -1,10 +1,13 @@
 import { HubSwitcher, OrbitGallery, cn } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
 import { ArrowDown, ArrowRight, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useData } from "@/lib/data";
 import { env } from "@/lib/env";
+import { searchVideos, type Hit } from "@/lib/search";
 import { thumb } from "@/lib/youtube";
+import { GENRES } from "./movies";
 import { usePlayer } from "./player";
 import { TOOLS } from "./shell";
 
@@ -15,12 +18,19 @@ const tile =
 /** The launcher: a toolboxes-style home that opens each stream tool full screen. */
 export function HomePage() {
   const { current } = usePlayer();
-  const { featured } = useData();
-  // the featured shelf turning round the hero, padded to a full ring when the shelf is short
-  const ring = featured.length
-    ? Array.from({ length: 10 }, (_, i) =>
-        thumb(featured[i % featured.length]?.youtube_id ?? "", "mq"),
-      )
+  const { featured, loaded } = useData();
+  const [found, setFound] = useState<Hit[]>([]);
+  // an empty shelf falls back to the Thai-movies row of /movies (the Worker caches it 6 h)
+  useEffect(() => {
+    if (!loaded || featured.length) return;
+    const stop = new AbortController();
+    searchVideos(GENRES[0].q, "movie", stop.signal).then(setFound, () => undefined);
+    return () => stop.abort();
+  }, [loaded, featured.length]);
+  const pool = featured.length ? featured : found;
+  // padded to a full ring when the pool is short
+  const ring = pool.length
+    ? Array.from({ length: 10 }, (_, i) => thumb(pool[i % pool.length]?.youtube_id ?? "", "mq"))
     : [];
   return (
     <div
