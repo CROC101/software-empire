@@ -3,6 +3,7 @@
 import { Grip, Search } from "lucide-react";
 import * as React from "react";
 import { cn } from "../lib/cn";
+import { useSectionSpy } from "../lib/use-section-spy";
 
 /**
  * App launcher: a Google-style nine-dot button that opens a glass panel to get anywhere fast.
@@ -75,27 +76,10 @@ export function AppLauncher({
   const [q, setQ] = React.useState("");
   const [now, setNow] = React.useState<string>();
   const query = q.trim().toLowerCase();
-  const hrefs = sections.map((s) => s.href).join(" ");
 
   // the section crossing the middle of the screen is the one being read
-  React.useEffect(() => {
-    const owner = new Map<Element, string>();
-    for (const href of hrefs.split(" ")) {
-      const el = href.startsWith("#") ? document.getElementById(href.slice(1)) : null;
-      if (el) owner.set(el, href);
-    }
-    if (!owner.size) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setNow(owner.get(e.target));
-      },
-      { rootMargin: "-50% 0px -50% 0px" },
-    );
-    for (const el of owner.keys()) io.observe(el);
-    return () => {
-      io.disconnect();
-    };
-  }, [hrefs]);
+  const ids = sections.flatMap((s) => (s.href.startsWith("#") ? [s.href.slice(1)] : []));
+  useSectionSpy(ids, "-50% 0px -50% 0px", setNow);
 
   React.useEffect(() => {
     const el = panel.current;
@@ -138,7 +122,7 @@ export function AppLauncher({
   const shownApps = apps.filter((a) => match(query, a.name, a.slug));
   const shownLinks = links.filter((l) => match(query, l.label, l.keywords));
   const none = !shownSections.length && !shownApps.length && !shownLinks.length;
-  const at = sections.findIndex((s) => s.href === now);
+  const at = sections.findIndex((s) => s.href === `#${now ?? ""}`);
   const current = sections[at];
   // how far down the page, 0..1, by section (the water level in the button)
   const progress = at < 0 ? 0 : (at + 1) / sections.length;
@@ -218,7 +202,7 @@ export function AppLauncher({
                     <a
                       href={s.href}
                       onClick={close}
-                      aria-current={s.href === now ? "location" : undefined}
+                      aria-current={s.href === `#${now ?? ""}` ? "location" : undefined}
                       className="lgn-hit lgn-row"
                     >
                       <span aria-hidden className="lgn-ico">

@@ -34,6 +34,7 @@ export { TearFooter, type TearFooterProps } from "./components/tear-footer";
 export { StringTieFooter, type StringTieFooterProps } from "./components/string-tie-footer";
 export { InkWordmark } from "./components/ink-wordmark";
 export { useTokenColors } from "./lib/token-colors";
+export { useSectionSpy } from "./lib/use-section-spy";
 export { CrocReveal } from "./components/croc-reveal";
 export { LanyardBadge } from "./components/lanyard-badge";
 export { PhosphorNotFound } from "./components/phosphor-not-found";
