@@ -1,13 +1,14 @@
 # security headers for every file Cloudflare serves (Workers static assets read this file)
+# frames: same origin only, the playground previews /p/<slug> in an iframe; nobody else may frame us
 # shortcut: previews render inline (our own components only); user-submitted components need a
 # sandboxed iframe on a separate origin first (MASTER-SPEC §5)
 /*
-  Content-Security-Policy: base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'
+  Content-Security-Policy: base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=63072000; includeSubDomains
   Cross-Origin-Opener-Policy: same-origin
-  X-Frame-Options: DENY
+  X-Frame-Options: SAMEORIGIN
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
 # hashed build files never change: cache them for a year
