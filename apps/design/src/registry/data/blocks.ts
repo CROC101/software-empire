@@ -1,4 +1,4 @@
-import { def, text, type Category, type Control, type Entry } from "../types";
+import { def, range, text, type Category, type Control, type Entry } from "../types";
 
 const added = "2026-11-19";
 const b = (
@@ -197,5 +197,19 @@ export const blocks: readonly Entry[] = [
     "Product Launch",
     "หน้าเปิดตัวสินค้า ชวนลงชื่อรอ เทียบราคา และคำถามพบบ่อย",
     ["launch page", "6 sections"],
+  ),
+  b(
+    "content",
+    "where-globe",
+    "Where Globe",
+    "ลูกโลกหมุนช้าๆ มีหมุดเมืองที่ทำงาน ข้างๆ บอกเวลาที่นั่นตอนนี้",
+    ["cobe globe", "local time"],
+    [
+      text("city", "เมือง", "กรุงเทพ", 30),
+      range("lat", "ละติจูด", -60, 70, 0.25, 13.75),
+      range("lng", "ลองจิจูด", -180, 180, 0.25, 100.5),
+      text("zone", "เขตเวลา (IANA)", "Asia/Bangkok", 40),
+      text("pin", "ป้ายหมุด", "BKK · UTC+7", 30),
+    ],
   ),
 ];
