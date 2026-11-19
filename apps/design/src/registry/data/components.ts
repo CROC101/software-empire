@@ -365,6 +365,17 @@ export const components: readonly Entry[] = [
     "ปุ่มสามขีดแปลงเป็นกากบาทพร้อมเมนูเลื่อนลงทีละรายการ",
     ["menu toggle", "morph"],
   ),
+  {
+    ...c(
+      "navigation",
+      "curved-menu",
+      "Curved Menu",
+      "เมนูเต็มความสูงเลื่อนเข้าจากขวา ขอบโค้งค่อยๆ แบนลงตอนจอด เต็มจอบนมือถือ ตัวอักษรขยับทีละตัวเมื่อชี้",
+      ["full-screen menu", "curved edge", "letter stagger"],
+    ),
+    prompt:
+      "Build a React menu component (TypeScript, Tailwind v4, motion/react) for a shadcn-style project: put it in components/ui/curved-menu.tsx. A square button at the top right toggles three bars into a cross (CSS translate and rotate). The menu is a full-height panel that slides in from the right (x from calc(100% + 100px) to 0, 0.8 s, ease [0.76, 0, 0.24, 1]) with a curved leading edge: an SVG bulge (viewBox 0 0 100 100, preserveAspectRatio none) on its left side that scales flat on scaleX from the right edge as it lands and bulges again on exit. Inside: a small label, numbered links (mono 01, 02...) with big headings whose letters shift one after another on hover (split by grapheme with Intl.Segmenter so Thai marks stay on their letter), and a row of social text links at the bottom. Responsive by container queries: full width on a phone, a 36rem side sheet from @xl, type and padding step up from @md, the list scrolls if it is taller than the screen. Escape and clicking a link close it; aria-expanded and aria-controls on the button. Colours from tokens only (ink-50 panel, ink-950 text, blue-600 hover), transform and opacity only, and no motion under prefers-reduced-motion. The panel is absolute inside its box; use fixed for a page-wide menu.",
+  },
   c(
     "navigation",
     "bottom-bar",
