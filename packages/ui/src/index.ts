@@ -34,6 +34,7 @@ export { TearFooter, type TearFooterProps } from "./components/tear-footer";
 export { StringTieFooter, type StringTieFooterProps } from "./components/string-tie-footer";
 export { InkWordmark } from "./components/ink-wordmark";
 export { useTokenColors } from "./lib/token-colors";
+export { fxRamp, fxRgb, fxStats, useFx, type FxMaker, type FxScene, type FxSize } from "./lib/fx";
 export { useSectionSpy } from "./lib/use-section-spy";
 export { CrocReveal } from "./components/croc-reveal";
 export { LanyardBadge } from "./components/lanyard-badge";
