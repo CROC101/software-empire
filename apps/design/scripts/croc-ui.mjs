@@ -165,14 +165,19 @@ async function add(refs, { registry, overwrite, dry, cwd }) {
     for (const [abs, content, from] of writes) {
       if (!abs) throw new Error(`${item.name}: ${from} wants a path outside ${root}`);
       const rel = path.relative(cwd, abs);
-      if (existsSync(abs) && !overwrite) {
-        console.log(`skip  ${rel} (exists, --overwrite to replace)`);
+      const skip = `skip  ${rel} (exists, --overwrite to replace)`;
+      if (dry) {
+        console.log(existsSync(abs) && !overwrite ? skip : `would write ${rel}`);
         continue;
       }
-      console.log(`${dry ? "would write" : "write"} ${rel}`);
-      if (!dry) {
-        mkdirSync(path.dirname(abs), { recursive: true });
-        writeFileSync(abs, content);
+      mkdirSync(path.dirname(abs), { recursive: true });
+      try {
+        // "wx" checks and creates in one step, so nothing can slip in between
+        writeFileSync(abs, content, { flag: overwrite ? "w" : "wx" });
+        console.log(`write ${rel}`);
+      } catch (e) {
+        if (e?.code !== "EEXIST") throw e;
+        console.log(skip);
       }
     }
     if (item.cssVars?.light)
