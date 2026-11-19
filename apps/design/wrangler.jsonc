@@ -1,0 +1,18 @@
+{
+  // design: a Next static export on Cloudflare Workers (free plan: files under /_next/ never invoke the
+  // Worker, so they stay unlimited). /c/<slug> is served from c/<slug>.html (html_handling default);
+  // unknown paths get the export's 404.html. Deployed by .github/workflows/deploy.yml; setup: docs/DEPLOY.md.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "crocwork-design",
+  "compatibility_date": "2026-10-01",
+  // the shared launch gate: pages ask the hub (hub.gate('design'), via service binding HUB) first
+  "main": "../../packages/core/src/launch-gate-worker.ts",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/*", "!/_next/*", "!/fonts/*"],
+  },
+  "vars": { "APP": "design" },
+  "services": [{ "binding": "HUB", "service": "crocwork-hub" }],
+}

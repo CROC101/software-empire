@@ -39,6 +39,8 @@ jobs:
           - { app: community, kind: spa }
           - { app: tarot, kind: spa }
           - { app: stream, kind: spa }
+          # Next static export (no server): built like a Next app, shipped like a SPA
+          - { app: design, kind: export }
     environment: ${{ github.event_name == 'push' && 'production' || 'preview' }}
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -58,6 +60,7 @@ jobs:
       SITE_COMMUNITY: ${{ vars.SITE_COMMUNITY }}
       SITE_TAROT: ${{ vars.SITE_TAROT }}
       SITE_STREAM: ${{ vars.SITE_STREAM }}
+      SITE_DESIGN: ${{ vars.SITE_DESIGN }}
       SITE_CROCBYTE: ${{ vars.SITE_CROCBYTE }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -86,13 +89,14 @@ jobs:
             echo "URL_COMMUNITY=$(url community crocwork-community)"
             echo "URL_TAROT=$(url tarot crocwork-tarot)"
             echo "URL_STREAM=$(url stream crocwork-stream)"
+            echo "URL_DESIGN=$(url design crocwork-design)"
             echo "URL_CROCBYTE=$(url crocbyte crocbyte)"
           } >> "$GITHUB_ENV"
 
       # Next apps: OpenNext compiles .env.production into the Worker, so server-only values
-      # (APP_URL_*) are there at runtime too
+      # (APP_URL_*) are there at runtime too; a static export reads only the NEXT_PUBLIC_* ones
       - name: env (next)
-        if: matrix.kind == 'next'
+        if: matrix.kind != 'spa'
         working-directory: apps/${{ matrix.app }}
         run: |
           self="URL_${MATRIX_APP^^}"
@@ -108,6 +112,7 @@ jobs:
             echo "APP_URL_COMMUNITY=$URL_COMMUNITY"
             echo "APP_URL_TAROT=$URL_TAROT"
             echo "APP_URL_STREAM=$URL_STREAM"
+            echo "APP_URL_DESIGN=$URL_DESIGN"
             echo "APP_URL_COMMERCE=$URL_COMMERCE"
             echo "APP_URL_CROCBYTE=$URL_CROCBYTE"
           } > .env.production
@@ -117,6 +122,10 @@ jobs:
       - name: build (next)
         if: matrix.kind == 'next'
         run: pnpm --filter @empire/${{ matrix.app }} cf:build
+
+      - name: build (export)
+        if: matrix.kind == 'export'
+        run: pnpm --filter @empire/${{ matrix.app }} build
 
       # the Craft web builds are not in git: fetch each fork's release (SHA256-checked) into
       # public/craft before vite copies public/
