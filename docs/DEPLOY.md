@@ -30,7 +30,7 @@
    - **Secrets:** `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
    - **Variables:** `CF_WORKERS_SUBDOMAIN` = ส่วน `<ชื่อ>` ของ `<ชื่อ>.workers.dev`
 
-แอปจะอยู่ที่ `https://crocwork-<แอป>.<ชื่อ>.workers.dev` (hub, commerce, toolboxes, canva, community, tarot)
+แอปจะอยู่ที่ `https://crocwork-<แอป>.<ชื่อ>.workers.dev` (hub, commerce, toolboxes, canva, community, tarot, stream, design)
 
 ## 3. Supabase
 
@@ -71,7 +71,7 @@ Worker `crocwork-tarot` ส่งแจ้งเตือน 08:00 ทุกว�
 1. เพิ่มโดเมนใน Cloudflare (Add a domain) → เปลี่ยน nameserver ที่ผู้ขายโดเมนเป็นของ Cloudflare
 2. Workers → แต่ละแอป → Settings → Domains & Routes → Custom domain (`hub.<โดเมน>`, `canva.<โดเมน>` …)
 3. GitHub Variables: `SITE_HUB`, `SITE_COMMERCE`, `SITE_TOOLBOXES`, `SITE_CANVA`, `SITE_COMMUNITY`,
-   `SITE_CROCBYTE` = URL ใหม่ · `COOKIE_DOMAIN` = `.<โดเมน>` → รัน `deploy` ใหม่ (Actions → deploy → Run workflow)
+   `SITE_STREAM`, `SITE_DESIGN`, `SITE_CROCBYTE` = URL ใหม่ · `COOKIE_DOMAIN` = `.<โดเมน>` → รัน `deploy` ใหม่ (Actions → deploy → Run workflow)
 4. แก้ Site URL / Redirect URLs ใน Supabase ตามโดเมนใหม่
 
 ## 5. กู้ข้อมูลจาก backup
