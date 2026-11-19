@@ -2,8 +2,8 @@
 
 /* Design tokens measured on the original homepage. Brand colours are overridden at runtime from brand.config. */
 @theme {
-  --font-sans: var(--font-thai), var(--font-latin), -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  --font-display: var(--font-latin), var(--font-thai), -apple-system, system-ui, sans-serif;
+  --font-sans: var(--font-thai), -apple-system, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-display: var(--font-thai), -apple-system, system-ui, sans-serif;
 
   --color-brand: var(--brand-primary, #1d6ce2);
   --color-brand-dark: var(--brand-secondary, #0b47a3);
