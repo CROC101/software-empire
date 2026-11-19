@@ -513,6 +513,59 @@ a.sw-app:focus-visible .sw-tile {
     transform: translateX(-50%);
   }
 }
+
+/* pocket (pocket-section.tsx): the phone rises out of a pool. Two lapping layers of the house water
+   (7 s / 11 s, opposite ways), sides and floor fading into the page so no box shows */
+.pk-pool {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: -10;
+  width: min(52rem, 150vw);
+  height: 34rem;
+  translate: -50% 6rem;
+  overflow: hidden;
+  pointer-events: none;
+  mask: radial-gradient(ellipse 50% 70% at 50% 30%, black 55%, transparent);
+}
+.pk-pool > span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 200%;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--em-sky-500) 34%, transparent),
+    color-mix(in oklab, var(--em-blue-500) 26%, transparent) 40%,
+    color-mix(in oklab, var(--em-blue-700) 18%, transparent)
+  );
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 14 C25 4 50 4 75 14 S125 24 150 14 S175 4 200 14 V40 H0 Z'/%3E%3C/svg%3E")
+      0 0 / 50% 3rem repeat-x,
+    linear-gradient(black, black) 0 2.9rem / 100% 100% no-repeat;
+}
+.pk-pool > span + span {
+  opacity: 0.55;
+  translate: 0 0.6rem;
+  mask-position:
+    25% 0,
+    0 2.9rem;
+}
+.dark .pk-pool > span {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--em-blue-700) 55%, transparent),
+    color-mix(in oklab, var(--em-ink-975) 80%, transparent)
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pk-pool > span {
+    animation: cw-cookie-lap 7s linear infinite;
+  }
+  .pk-pool > span + span {
+    animation-duration: 11s;
+    animation-direction: reverse;
+  }
+}
 @keyframes cw-cookie-fill {
   to {
     transform: scaleY(7);

@@ -429,6 +429,49 @@ const WORK: {
     label: "หลายเลเยอร์ · บันทึกอัตโนมัติ",
     hue: 215,
   },
+  {
+    slug: "commerce",
+    tag: "Market",
+    title: "Commerce",
+    pitch: "ตลาดจ้างฟรีแลนซ์ ผู้ซื้อโอนเข้าพร้อมเพย์ของผู้ขายโดยตรง ไม่มีคนกลางถือเงิน",
+    detail:
+      "คำสั่งซื้อเดินทีละขั้นผ่านฟังก์ชันในฐานข้อมูลเท่านั้น ทุกขั้นบันทึกเป็นเหตุการณ์ในไทม์ไลน์ของคำสั่งซื้อ ข้ามขั้นจากหน้าเว็บไม่ได้",
+    shots: ["/previews/m-commerce.webp"],
+    label: "จ่ายตรงเข้าพร้อมเพย์ · ไม่มีค่าธรรมเนียม",
+    hue: 240,
+  },
+  {
+    slug: "tarot",
+    tag: "Daily",
+    title: "crocwork tarot",
+    pitch: "ไพ่ประจำวัน อ่านไพ่ 1 หรือ 3 ใบ เช็กอินรับเหรียญ",
+    detail: "นกฮูกประจำแอปแต่งตัวตามเทศกาล ทุกครั้งที่เปิดไพ่เก็บเป็นประวัติ ย้อนกลับมาอ่านได้เสมอ",
+    shots: ["/previews/m-tarot.webp"],
+    label: "ไพ่ประจำวัน · เช็กอินรับเหรียญ",
+    hue: 250,
+  },
+  {
+    slug: "design",
+    tag: "Registry",
+    title: "Design Registry",
+    pitch: "คลังคอมโพเนนต์ที่ขยับได้ ปรับค่าสด แล้วหยิบไปใช้",
+    detail:
+      "ทุกชิ้นในเว็บนี้มาจากคลังเดียวกัน ติดตั้งลงโปรเจกต์อื่นได้ด้วยคำสั่งเดียวผ่าน shadcn หรือคัดลอก prompt ไปให้ AI ทำต่อ",
+    shots: ["/previews/m-design.webp"],
+    label: "ปรับค่าสด · ติดตั้งคำสั่งเดียว",
+    hue: 228,
+  },
+  {
+    slug: "stream",
+    tag: "Watch",
+    title: "Stream",
+    pitch: "หนัง เพลง คลิปสั้น จาก YouTube ทางการ พับจอฟังต่อได้ ดูพร้อมเพื่อนได้",
+    detail:
+      "เล่นผ่าน youtube-nocookie ไม่ต้องใช้ API key ห้องดูพร้อมเพื่อนซิงก์กันผ่านช่อง Realtime ส่วนตัวของห้อง",
+    shots: ["/previews/m-stream.webp"],
+    label: "YouTube ทางการ · ดูพร้อมเพื่อน",
+    hue: 205,
+  },
 ];
 
 /**
@@ -646,6 +689,10 @@ const SHOTS = [
   ["/previews/m-canva.webp", "Empire Canvas", "มือถือ"],
   ["/previews/m-toolboxes.webp", "Toolboxes", "มือถือ"],
   ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ · มือถือ"],
+  ["/previews/m-commerce.webp", "Commerce", "มือถือ"],
+  ["/previews/m-tarot.webp", "crocwork tarot", "ไพ่ประจำวัน · มือถือ"],
+  ["/previews/m-design.webp", "Design Registry", "มือถือ"],
+  ["/previews/m-stream.webp", "Stream", "มือถือ"],
 ] as const;
 
 // every real screen, desktop and phone, interleaved so the flight alternates shapes
@@ -658,6 +705,10 @@ const TUNNEL = [
   ["/previews/m-community.webp", "Community", "ฟีด", "community"],
   ["/previews/m-canva.webp", "Empire Canvas", "มือถือ", "canva"],
   ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ", "toolboxes"],
+  ["/previews/m-commerce.webp", "Commerce", "มือถือ", "commerce"],
+  ["/previews/m-tarot.webp", "crocwork tarot", "ไพ่ประจำวัน", "tarot"],
+  ["/previews/m-design.webp", "Design Registry", "มือถือ", "design"],
+  ["/previews/m-stream.webp", "Stream", "มือถือ", "stream"],
 ] as const;
 
 export function WorkTunnel() {
