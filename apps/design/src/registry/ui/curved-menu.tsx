@@ -47,7 +47,8 @@ export default function CurvedMenu() {
     "block h-0.5 w-6 bg-(--em-ink-950) transition-[translate,rotate,opacity] duration-300";
 
   return (
-    <div className="@container relative grid size-full min-h-[30rem] place-items-center overflow-hidden bg-(--em-ink-975)">
+    // clip, not hidden: a hidden box scrolls to a link focused while the panel is off to the side
+    <div className="@container relative grid size-full min-h-[30rem] place-items-center overflow-clip bg-(--em-ink-975)">
       <p className="font-heading text-5xl font-black text-(--em-ink-50) @md:text-7xl">สวัสดี</p>
 
       <button

@@ -74,7 +74,9 @@ export function SiteMenu({ items }: { items: MenuItem[] }) {
         onClick={(e) => {
           if (e.target === e.currentTarget) close();
         }}
-        className="m-0 h-dvh max-h-none w-full max-w-none overflow-hidden bg-transparent p-0 backdrop:bg-transparent"
+        // clip, not hidden: showModal() focuses the close button while the panel is still off to
+        // the right, and a hidden box scrolls to it, so the panel popped in instead of sliding
+        className="m-0 h-dvh max-h-none w-full max-w-none overflow-clip bg-transparent p-0 backdrop:bg-transparent"
       >
         <AnimatePresence onExitComplete={() => dlg.current?.close()}>
           {open && (
