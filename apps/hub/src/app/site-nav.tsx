@@ -1,8 +1,14 @@
 "use client";
 
-import { AppLauncher, NimbusNavbar, useTokenColors, type NimbusFx } from "@empire/ui";
+import {
+  AppLauncher,
+  NimbusNavbar,
+  useSectionSpy,
+  useTokenColors,
+  type NimbusFx,
+} from "@empire/ui";
 import { Briefcase, HelpCircle, LayoutGrid, UserRound, Workflow } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // each link plays its own little scene when tapped
 const NAV: { href: string; label: string; icon: React.ReactNode; fx: NimbusFx }[] = [
@@ -12,6 +18,7 @@ const NAV: { href: string; label: string; icon: React.ReactNode; fx: NimbusFx }[
   { href: "#how", label: "ทำงานยังไง", icon: <Workflow aria-hidden />, fx: "glow" },
   { href: "#faq", label: "คำถาม", icon: <HelpCircle aria-hidden />, fx: "drop" },
 ];
+const SPY_IDS = NAV.map((n) => n.href.slice(1));
 
 /**
  * The header's water pill: the drop follows the section on screen (or the link you tap), its
@@ -35,28 +42,19 @@ export function SiteNav({
   const dark = bg ? parseInt(bg.slice(1, 3), 16) < 128 : initialTheme === "dark";
 
   // scroll spy: the section crossing the band 35–45% down the screen is the current one
+  const onEnter = useCallback((id: string) => {
+    if (performance.now() < lockedUntil.current) return;
+    const i = NAV.findIndex((n) => n.href === `#${id}`);
+    if (i >= 0) setActive(i);
+  }, []);
+  useSectionSpy(SPY_IDS, "-35% 0px -55% 0px", onEnter);
+  // the glide has landed: let the spy follow the page again
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting || performance.now() < lockedUntil.current) continue;
-          const i = NAV.findIndex((n) => n.href === `#${e.target.id}`);
-          if (i >= 0) setActive(i);
-        }
-      },
-      { rootMargin: "-35% 0px -55% 0px" },
-    );
-    for (const { href } of NAV) {
-      const el = document.getElementById(href.slice(1));
-      if (el) io.observe(el);
-    }
-    // the glide has landed: let the spy follow the page again
     const release = () => {
       lockedUntil.current = 0;
     };
     window.addEventListener("scrollend", release);
     return () => {
-      io.disconnect();
       window.removeEventListener("scrollend", release);
     };
   }, []);

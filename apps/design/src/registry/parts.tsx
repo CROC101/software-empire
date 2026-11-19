@@ -138,6 +138,11 @@ export const parts = {
   "portfolio-page": lazy(() => import("./ui/portfolio-page")),
   "agency-page": lazy(() => import("./ui/agency-page")),
   "launch-page": lazy(() => import("./ui/launch-page")),
+  "moon-rays": lazy(() => import("./ui/moon-rays")),
+  "printed-screen": lazy(() => import("./ui/printed-screen")),
+  "particle-title": lazy(() => import("./ui/particle-title")),
+  "count-up": lazy(() => import("./ui/count-up")),
+  "where-globe": lazy(() => import("./ui/where-globe")),
 };
 
 const lookup = parts as unknown as Record<string, ComponentType<Values> | undefined>;

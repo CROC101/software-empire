@@ -1,7 +1,7 @@
 "use client";
 
-import { LineSidebar } from "@empire/ui";
-import { useEffect, useState, type CSSProperties } from "react";
+import { LineSidebar, useSectionSpy } from "@empire/ui";
+import { useCallback, useState, type CSSProperties } from "react";
 
 /**
  * Desktop only: touch the screen's left edge and the page's sections slide out as a list whose
@@ -12,22 +12,10 @@ export function EdgeNav({ items }: { items: { label: string; href: string }[] })
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>();
 
-  useEffect(() => {
-    const seen = new Map<Element, string>();
-    for (const { href } of items) {
-      const el = href.startsWith("#") ? document.getElementById(href.slice(1)) : null;
-      if (el) seen.set(el, href);
-    }
-    // the section crossing the middle of the screen is the one being read
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(seen.get(e.target));
-      },
-      { rootMargin: "-50% 0px -50% 0px" },
-    );
-    for (const el of seen.keys()) io.observe(el);
-    return () => io.disconnect();
-  }, [items]);
+  // the section crossing the middle of the screen is the one being read
+  const ids = items.flatMap((i) => (i.href.startsWith("#") ? [i.href.slice(1)] : []));
+  const onEnter = useCallback((id: string) => setActive(`#${id}`), []);
+  useSectionSpy(ids, "-50% 0px -50% 0px", onEnter);
 
   return (
     <div

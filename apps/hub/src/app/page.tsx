@@ -9,6 +9,7 @@ import {
   ShinyText,
   LiquidThemeToggle,
   SeasonTree,
+  CountUp,
 } from "@empire/ui";
 import {
   ArrowUp,
@@ -39,7 +40,6 @@ import Link from "next/link";
 import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
 import { getContent, HUB_HOME, HUB_SUBSYSTEMS } from "@/lib/cms";
-import { CountUp } from "./count-up";
 import { MobileMenu } from "./mobile-menu";
 import { BackToTop } from "./nav-spy";
 import { DepthSection } from "./depth-section";
