@@ -694,4 +694,51 @@ export const components: readonly Entry[] = [
     "scroll snap",
     "edge fade",
   ]),
+  // from the hub: parts linked to their real code in packages/ui
+  c(
+    "background",
+    "moon-rays",
+    "Moon Rays",
+    "แสงจันทร์สาดลงมาจากมุมขวาบนเหนือน้ำยามค่ำ สองชั้นมีฝุ่นลอย เอนตามเมาส์",
+    ["god rays", "dust motes", "pointer lean"],
+    [
+      range("speed", "ความเร็ว", 0, 3, 0.1, 1.2),
+      range("intensity", "ความแรงของแสง", 0.5, 4, 0.1, 2.2),
+      range("dust", "ฝุ่นในแสง", 0, 1, 0.05, 0.35),
+      toggle("follow", "เอนตามเมาส์", true),
+    ],
+  ),
+  c(
+    "media",
+    "printed-screen",
+    "Printed Screen",
+    "ภาพหน้าจอพิมพ์เป็นเม็ดสกรีนสองสี เมาส์ผ่านตรงไหนเม็ดขยายจนเห็นหน้าจอจริง",
+    ["halftone print", "cursor reveal"],
+    [
+      text("src", "ที่อยู่รูป", "/previews/hub.webp", 200),
+      range("cellSize", "ระยะเม็ดสกรีน", 4, 14, 1, 7),
+      range("revealRadius", "รัศมีที่เปิดเห็น", 80, 260, 10, 170),
+      toggle("wander", "แสงลอยเองตอนไม่แตะ", true),
+    ],
+  ),
+  c(
+    "text",
+    "particle-title",
+    "Particle Title",
+    "หัวข้อแตกเป็นฝุ่นตรงที่เมาส์ผ่าน แล้วรวมกลับเป็นตัวอักษร ตามธีมของเว็บ",
+    ["particle text", "dissolve and gather"],
+    [text("text", "ข้อความ", "ทำคนเดียว ตั้งใจทุกชิ้น", 40)],
+  ),
+  c(
+    "data",
+    "count-up",
+    "Count Up",
+    "ตัวเลขนับขึ้นจากศูนย์ครั้งเดียวตอนโหลด ตัวเลขจริงอยู่ใน HTML ตั้งแต่แรก",
+    ["number ticker", "ease out"],
+    [
+      range("to", "ตัวเลข", 0, 100000, 1, 271),
+      range("ms", "มิลลิวินาที", 300, 4000, 100, 1200),
+      text("label", "คำอธิบาย", "เทสต์ฐานข้อมูลที่ผ่าน", 40),
+    ],
+  ),
 ];

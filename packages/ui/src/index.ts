@@ -120,6 +120,7 @@ export { CobeGlobe, type GlobePin } from "./components/cobe-globe";
 export { GlassBucket, type BucketChip } from "./components/glass-bucket";
 export { SeasonTree, type TreeFruit } from "./components/season-tree";
 export { BlueprintButton } from "./components/blueprint-button";
+export { CountUp } from "./components/count-up";
 export { RollingCounter } from "./components/rolling-counter";
 export { LineSidebar } from "./components/line-sidebar";
 export { DodgeField, type DodgeState } from "./components/dodge-field";
