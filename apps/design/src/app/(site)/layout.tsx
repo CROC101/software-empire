@@ -67,7 +67,8 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
       <footer className="border-t">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-10 text-sm text-muted-foreground sm:px-6 md:flex-row md:justify-between">
           <p>
-            {registry.length} ชิ้น: คอมโพเนนต์{" "}
+            {registry.length} ชิ้น: Exclusive{" "}
+            {registry.filter((e) => kindOf(e) === "exclusive").length} · คอมโพเนนต์{" "}
             {registry.filter((e) => kindOf(e) === "component").length} · บล็อก{" "}
             {registry.filter((e) => kindOf(e) === "block").length} · เทมเพลต{" "}
             {registry.filter((e) => kindOf(e) === "template").length}

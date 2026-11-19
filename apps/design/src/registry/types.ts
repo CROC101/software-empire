@@ -20,6 +20,7 @@ export type Control =
 export type Values = Record<string, string | number | boolean>;
 
 export const kinds = {
+  exclusive: "Exclusive",
   component: "คอมโพเนนต์",
   block: "บล็อกหน้าเว็บ",
   template: "เทมเพลตทั้งหน้า",
@@ -28,6 +29,7 @@ export type Kind = keyof typeof kinds;
 
 /** Category order here is the sidebar order. */
 export const categories = {
+  showcase: { label: "Hero แกลเลอรี", kind: "exclusive" },
   background: { label: "พื้นหลัง", kind: "component" },
   text: { label: "ตัวอักษร", kind: "component" },
   button: { label: "ปุ่ม", kind: "component" },
@@ -137,6 +139,7 @@ export function clampValue(c: Control, v: unknown): string | number | boolean {
 }
 
 const noun: Record<Kind, string> = {
+  exclusive: "showpiece landing-page hero (React)",
   component: "React component",
   block: "responsive landing-page section (React)",
   template: "full landing page (React) composed of sections",

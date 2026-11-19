@@ -5,6 +5,7 @@
  */
 import { blocks } from "./data/blocks";
 import { components } from "./data/components";
+import { exclusive } from "./data/exclusive";
 import { rebuilds } from "./data/rebuilds";
 import { remakes } from "./data/remakes";
 import type { Entry } from "./types";
@@ -361,6 +362,7 @@ export const registry: readonly Entry[] = [
   ...rebuilds,
   ...blocks,
   ...remakes,
+  ...exclusive,
 ];
 
 export function entry(slug: string): Entry | undefined {

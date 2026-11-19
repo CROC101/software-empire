@@ -127,6 +127,7 @@ function collectUi(rel, acc) {
 }
 
 const itemType = {
+  exclusive: "registry:block",
   component: "registry:component",
   block: "registry:block",
   template: "registry:page",

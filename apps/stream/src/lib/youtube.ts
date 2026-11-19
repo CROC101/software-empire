@@ -34,7 +34,7 @@ export function youtubeId(input: string): string | null {
 }
 
 /** Thumbnails come straight from YouTube's image host (no API key, no copy kept). */
-export const thumb = (id: string, size: "hq" | "sd" | "max" = "hq") =>
+export const thumb = (id: string, size: "mq" | "hq" | "sd" | "max" = "hq") =>
   `https://i.ytimg.com/vi/${id}/${size}${size === "max" ? "res" : ""}default.jpg`;
 
 /** One of the 3 storyboard frames YouTube keeps for every video (320x180). */
