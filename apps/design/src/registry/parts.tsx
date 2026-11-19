@@ -159,6 +159,22 @@ export const parts = {
   "pixel-snow": lazy(() => import("./ui/pixel-snow")),
   "topo-lines": lazy(() => import("./ui/topo-lines")),
   "radar-sweep": lazy(() => import("./ui/radar-sweep")),
+  "ripple-waitlist": lazy(() => import("./ui/ripple-waitlist")),
+  "letter-cta": lazy(() => import("./ui/letter-cta")),
+  "duo-compare": lazy(() => import("./ui/duo-compare")),
+  "service-accordion": lazy(() => import("./ui/service-accordion")),
+  "bento-play": lazy(() => import("./ui/bento-play")),
+  "scatter-about": lazy(() => import("./ui/scatter-about")),
+  "line-city-hero": lazy(() => import("./ui/line-city-hero")),
+  "arc-deck": lazy(() => import("./ui/arc-deck")),
+  "pass-menu": lazy(() => import("./ui/pass-menu")),
+  "retainer-card": lazy(() => import("./ui/retainer-card")),
+  "ink-fill-headline": lazy(() => import("./ui/ink-fill-headline")),
+  "glance-hero": lazy(() => import("./ui/glance-hero")),
+  "team-cards": lazy(() => import("./ui/team-cards")),
+  "tile-quotes": lazy(() => import("./ui/tile-quotes")),
+  "word-wheel": lazy(() => import("./ui/word-wheel")),
+  "month-scrubber": lazy(() => import("./ui/month-scrubber")),
 };
 
 const lookup = parts as unknown as Record<string, ComponentType<Values> | undefined>;
