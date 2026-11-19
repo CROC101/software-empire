@@ -2,8 +2,15 @@ import { BrandMark, HubSwitcher } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
 import type { ReactNode } from "react";
 import { CommandPalette } from "@/components/command-palette";
+import { SiteMenu } from "@/components/site-menu";
 import { hubUrl } from "@/lib/env";
 import { kinds, registry, kindOf, type Kind } from "@/registry/meta";
+
+const menu = [
+  ...(Object.keys(kinds) as Kind[]).map((k) => ({ label: kinds[k], href: `/#k=${k}` })),
+  { label: "React Bits", href: "/react-bits" },
+  { label: "เทมเพลตแอป", href: "/templates" },
+];
 
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -53,6 +60,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
             </li>
           </ul>
           <CommandPalette />
+          <SiteMenu items={menu} />
         </nav>
       </header>
       {children}
