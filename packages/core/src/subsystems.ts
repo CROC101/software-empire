@@ -52,11 +52,12 @@ export const subsystems = [
   },
 ] as const;
 
-/** The owner's public contact channels, shown in every app (HubSwitcher panel, hub footer). */
+/** The owner's public contact channels, shown in every app (HubSwitcher panel, hub footer). `icon` = a BrandIcon name in @empire/ui. */
 export const contactEmail = "skizzkat@gmail.com";
 export const contacts = [
-  { label: "Facebook", href: "https://www.facebook.com/sarawut.phusee" },
-  { label: "Discord", href: "https://discord.gg/sNYsVbh3v" },
-  { label: "Instagram", href: "https://www.instagram.com/sxrx_wut.18/" },
-  { label: "อีเมล", href: `mailto:${contactEmail}` },
+  { label: "Facebook", href: "https://www.facebook.com/sarawut.phusee", icon: "facebook" },
+  { label: "Instagram", href: "https://www.instagram.com/sxrx_wut.18/", icon: "instagram" },
+  { label: "Discord", href: "https://discord.gg/sNYsVbh3v", icon: "discord" },
+  { label: "GitHub", href: "https://github.com/CROC101", icon: "github" },
+  { label: "อีเมล", href: `mailto:${contactEmail}`, icon: "gmail" },
 ] as const;
