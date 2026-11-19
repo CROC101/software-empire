@@ -92,6 +92,7 @@ export {
   type GlassTuning,
 } from "./components/glass-icon-reveal";
 export { GlowCard } from "./components/glow-card";
+export { OrbitGallery, type OrbitGalleryProps } from "./components/orbit-gallery";
 export { ParticleTitle, type ParticleTitleProps } from "./components/particle-title";
 export { TextLoop } from "./components/text-loop";
 export { AppLauncher, type LauncherApp } from "./components/app-launcher";

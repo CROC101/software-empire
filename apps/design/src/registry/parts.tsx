@@ -159,6 +159,7 @@ export const parts = {
   "pixel-snow": lazy(() => import("./ui/pixel-snow")),
   "topo-lines": lazy(() => import("./ui/topo-lines")),
   "radar-sweep": lazy(() => import("./ui/radar-sweep")),
+  "orbit-gallery-hero": lazy(() => import("./ui/orbit-gallery-hero")),
   "ripple-waitlist": lazy(() => import("./ui/ripple-waitlist")),
   "letter-cta": lazy(() => import("./ui/letter-cta")),
   "duo-compare": lazy(() => import("./ui/duo-compare")),

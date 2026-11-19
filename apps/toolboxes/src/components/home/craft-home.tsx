@@ -15,7 +15,7 @@ import {
 import { Link } from "react-router";
 import type { Lang } from "@empire/core/lang";
 import { contacts } from "@empire/core/subsystems";
-import { TideReveal } from "@empire/ui";
+import { OrbitGallery, TideReveal } from "@empire/ui";
 import { CraftLineup } from "@/components/apps/craft-lineup";
 import { BlurText } from "@/components/home/blur-text";
 import { CraftTile } from "@/components/apps/craft-tile";
@@ -160,83 +160,23 @@ function Sec({
   );
 }
 
-/** Concentric rings and a slowly turning spiral behind the hero (decor). */
-const SPIRAL = (() => {
-  let d = "";
-  for (let t = 0; t <= 12 * Math.PI; t += 0.05) {
-    const r = 20 + 22 * t;
-    d += `${t ? "L" : "M"}${(850 + r * Math.cos(t)).toFixed(1)} ${(850 + r * Math.sin(t)).toFixed(1)}`;
-  }
-  return d;
-})();
-
-function Rings() {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 1700 1700"
-      className="pointer-events-none absolute top-[60%] left-1/2 size-[1700px] -translate-1/2 text-on-surface"
-    >
-      <g fill="none" stroke="currentColor">
-        {[110, 190, 270, 360, 450, 540, 640, 740, 840].map((r, i) => (
-          <circle key={r} cx="850" cy="850" r={r} strokeOpacity={0.08 + (i % 2) * 0.04} />
-        ))}
-        {[270, 450, 640, 840].map((r) => (
-          <circle
-            key={`t${r}`}
-            cx="850"
-            cy="850"
-            r={r}
-            strokeOpacity=".16"
-            strokeWidth="10"
-            strokeDasharray="1 58"
-          />
-        ))}
-        <g className="ch-spin vt-live">
-          <path d={SPIRAL} strokeOpacity=".35" strokeWidth="2.2" />
-        </g>
-      </g>
-    </svg>
-  );
-}
-
-/** Tiles bobbing around the hero: slug, left %, top px, size px. */
-const FLOATS: [string, number, number, number][] = [
-  ["texture", 3, 60, 84],
-  ["photo-editor", 21, 64, 76],
-  ["darkroom", 48, 40, 64],
-  ["sound", 86, 20, 88],
-  ["material", 82, 190, 80],
-  ["cad", 2, 500, 76],
-  ["vector", 60, 760, 80],
-  ["video", 92, 430, 68],
-];
+/** App screens on the hero's orbit ring. */
+const ORBIT = [
+  "texture",
+  "sound",
+  "material",
+  "cad",
+  "vector",
+  "darkroom",
+  "slides",
+  "pdf-editor",
+  "layout",
+  "icons",
+].map((slug) => `/craft-shots/${slug}.webp`);
 
 function Hero({ lang, title, intro, perks }: HeroProps) {
   return (
-    <section data-spy="crocwork" className="relative isolate overflow-hidden">
-      <Rings />
-      {FLOATS.map(([slug, x, y, size], i) => {
-        const app = CRAFT_APPS.find((a) => a.slug === slug);
-        if (!app) return null;
-        return (
-          <a
-            key={slug}
-            href={`#app-${slug}`}
-            tabIndex={-1}
-            aria-hidden
-            className="float-tile vt-live absolute hidden md:block"
-            style={{
-              left: `${x}%`,
-              top: y,
-              animationDuration: `${7 + (i % 3) * 2}s`,
-              animationDelay: `-${i}s`,
-            }}
-          >
-            <CraftTile app={app} size={size} />
-          </a>
-        );
-      })}
+    <OrbitGallery images={ORBIT} data-spy="crocwork">
       <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-7xl flex-col items-center justify-center px-4 py-20 text-center sm:px-8 md:min-h-[852px]">
         <p
           className="tb-rise font-display text-[clamp(3.5rem,15vw,11rem)] leading-[0.85] font-black tracking-tight"
@@ -296,7 +236,7 @@ function Hero({ lang, title, intro, perks }: HeroProps) {
           <ArrowDown aria-hidden className="size-4" />
         </a>
       </div>
-    </section>
+    </OrbitGallery>
   );
 }
 

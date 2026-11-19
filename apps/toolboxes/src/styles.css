@@ -140,12 +140,8 @@
   }
 }
 
-/* craft home (artcraft-style layout): a slow spiral over the rings, cards that lift, shots that ease in */
+/* craft home (artcraft-style layout): cards that lift, shots that ease in */
 @layer components {
-  .ch-spin {
-    transform-box: view-box;
-    transform-origin: 850px 850px;
-  }
   .ch-card .ch-shot {
     transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
@@ -159,15 +155,5 @@
   .ch-card:hover .ch-tile,
   .ch-pick:hover .ch-tile {
     transform: translateY(-4px) rotate(-3deg);
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .ch-spin {
-      animation: ch-spin 120s linear infinite;
-    }
-  }
-  @keyframes ch-spin {
-    to {
-      transform: rotate(360deg);
-    }
   }
 }

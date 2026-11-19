@@ -1,8 +1,10 @@
-import { HubSwitcher, cn } from "@empire/ui";
+import { HubSwitcher, OrbitGallery, cn } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
 import { ArrowDown, ArrowRight, Users } from "lucide-react";
 import { Link } from "react-router";
+import { useData } from "@/lib/data";
 import { env } from "@/lib/env";
+import { thumb } from "@/lib/youtube";
 import { usePlayer } from "./player";
 import { TOOLS } from "./shell";
 
@@ -10,46 +12,16 @@ const line = "border-[color-mix(in_oklab,var(--foreground)_12%,transparent)]";
 const tile =
   "place-items-center rounded-xl border bg-[color-mix(in_oklab,var(--background)_80%,var(--em-blue-500))] text-[var(--primary)] shadow-lg";
 
-/** Concentric rings behind the hero, drawn once (decor). */
-function Rings() {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 1200 1200"
-      className="pointer-events-none absolute left-1/2 top-1/2 -z-10 size-[1200px] -translate-x-1/2 -translate-y-1/2 text-[var(--foreground)]"
-    >
-      <g fill="none" stroke="currentColor">
-        {[90, 160, 240, 330, 430, 540].map((r, i) => (
-          <circle key={r} cx="600" cy="600" r={r} strokeOpacity={0.07 + (i % 2) * 0.04} />
-        ))}
-        {[240, 430].map((r) => (
-          <circle
-            key={`d${r}`}
-            cx="600"
-            cy="600"
-            r={r}
-            strokeOpacity=".16"
-            strokeWidth="8"
-            strokeDasharray="1 52"
-          />
-        ))}
-      </g>
-    </svg>
-  );
-}
-
-/** Tool tiles bobbing at the hero's edges: left %, top px, size px (wide screens only). */
-const FLOATS: [number, number, number][] = [
-  [4, 56, 72],
-  [88, 40, 80],
-  [9, 300, 64],
-  [84, 290, 68],
-  [94, 170, 56],
-];
-
 /** The launcher: a toolboxes-style home that opens each stream tool full screen. */
 export function HomePage() {
   const { current } = usePlayer();
+  const { featured } = useData();
+  // the featured shelf turning round the hero, padded to a full ring when the shelf is short
+  const ring = featured.length
+    ? Array.from({ length: 10 }, (_, i) =>
+        thumb(featured[i % featured.length]?.youtube_id ?? "", "mq"),
+      )
+    : [];
   return (
     <div
       className={cn(
@@ -79,30 +51,7 @@ export function HomePage() {
       </header>
 
       <main id="content">
-        <section className="relative isolate overflow-hidden">
-          <Rings />
-          {TOOLS.map(({ to, icon: Icon }, i) => {
-            const [x, y, size] = FLOATS[i] ?? [0, 0, 0];
-            return (
-              <Link
-                key={to}
-                to={to}
-                tabIndex={-1}
-                aria-hidden
-                className={cn("st-float vt-live absolute hidden md:grid", tile, line)}
-                style={{
-                  left: `${x}%`,
-                  top: y,
-                  width: size,
-                  height: size,
-                  animationDuration: `${6 + (i % 3) * 2}s`,
-                  animationDelay: `-${i}s`,
-                }}
-              >
-                <Icon className="size-1/2" />
-              </Link>
-            );
-          })}
+        <OrbitGallery images={ring} className="flex min-h-[34rem] items-center sm:min-h-[40rem]">
           <div className="st-rise relative mx-auto flex max-w-6xl flex-col items-center px-4 py-16 text-center sm:py-24">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
               Stream tools · {TOOLS.length + 1}
@@ -128,7 +77,7 @@ export function HomePage() {
               <ArrowDown className="size-4" aria-hidden />
             </a>
           </div>
-        </section>
+        </OrbitGallery>
 
         <section id="tools" aria-label="เครื่องมือ" className={cn("scroll-mt-16 border-t", line)}>
           <div className={cn("mx-auto max-w-6xl xl:border-x", line)}>

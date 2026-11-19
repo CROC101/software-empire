@@ -135,18 +135,3 @@ body {
     transform: scaleY(0.6);
   }
 }
-
-/* Home: tool tiles bob at the hero's edges (transform only; still under reduced motion) */
-@keyframes st-float {
-  50% {
-    transform: translateY(-10px);
-  }
-}
-.st-float {
-  animation: st-float 6s ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .st-float {
-    animation: none;
-  }
-}
