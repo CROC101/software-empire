@@ -35,6 +35,16 @@ describe("registry", () => {
     }
   });
 
+  it("credits every 21st.dev remake with its author's public page", () => {
+    const credited = registry.filter((e) => e.credit);
+    expect(credited.length).toBeGreaterThanOrEqual(16);
+    for (const e of credited) {
+      expect(e.credit?.url).toMatch(/^https:\/\/21st\.dev\/@[\w-]+\/components\/[\w-]+$/);
+      expect(e.credit?.url.startsWith(`https://21st.dev/${e.credit.author}/`)).toBe(true);
+      expect(e.prompt?.length).toBeGreaterThan(80);
+    }
+  });
+
   it("covers 100+ components, every category and kind, and no stray part files", () => {
     expect(registry.filter((e) => kindOf(e) === "component").length).toBeGreaterThanOrEqual(100);
     const used = new Set(registry.map((e) => e.category));

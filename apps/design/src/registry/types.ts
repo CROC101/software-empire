@@ -68,6 +68,8 @@ export type Entry = {
   prompt?: string;
   /** our own clean-room rebuild of this React Bits part (its title there); credited and linked, no code taken */
   inspiredBy?: string;
+  /** our own clean-room remake of a 21st.dev community part: its author and public page; no code taken */
+  credit?: { author: string; url: string };
 };
 
 export const kindOf = (e: Entry): Kind => categories[e.category].kind;

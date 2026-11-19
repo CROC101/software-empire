@@ -105,6 +105,19 @@ export default async function ComponentPage({ params }: Props) {
           </div>
           <h1 className="mt-2 font-heading text-3xl font-black sm:text-5xl">{e.name}</h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">{e.summary}</p>
+          {e.credit && (
+            <p className="mt-2 text-sm text-muted-foreground">
+              แรงบันดาลใจจาก{" "}
+              <a
+                href={e.credit.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                {e.credit.author} บน 21st.dev <span aria-hidden>↗</span>
+              </a>
+            </p>
+          )}
           <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="ผสมจาก">
             {e.blend.map((b) => (
               <li
