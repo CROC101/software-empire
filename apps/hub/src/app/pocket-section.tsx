@@ -20,6 +20,10 @@ const FEED = [
   ["/previews/m-canva.webp", "Empire Canvas", "หน้าแรก"],
   ["/previews/m-toolboxes.webp", "Toolboxes", "หน้าแรก"],
   ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ"],
+  ["/previews/m-commerce.webp", "Commerce", "หน้าแรก"],
+  ["/previews/m-tarot.webp", "crocwork tarot", "ไพ่ประจำวัน"],
+  ["/previews/m-design.webp", "Design Registry", "หน้าแรก"],
+  ["/previews/m-stream.webp", "Stream", "หน้าแรก"],
 ] as const;
 const START = 0.35; // the phone straightens and climbs first; the screens start playing after
 
@@ -56,7 +60,9 @@ const CHIPS = [
   { text: "Community · แชตเรียลไทม์", side: "left", top: "calc(100% + 5rem)", depth: 1 },
   { text: "Toolboxes · 121 เครื่องมือ", side: "right", top: "calc(100% + 9rem)", depth: 2 },
   { text: "Empire Canvas · หลายเลเยอร์", side: "left", top: "calc(100% + 15rem)", depth: 3 },
-  { text: "ธีมสว่าง · มืด ตามเครื่อง", side: "right", top: "calc(100% + 19rem)", depth: 1 },
+  { text: "Commerce · จ่ายตรงเข้าพร้อมเพย์", side: "right", top: "calc(100% + 19rem)", depth: 1 },
+  { text: "Stream · ดูพร้อมเพื่อน", side: "left", top: "calc(100% + 23rem)", depth: 2 },
+  { text: "ธีมสว่าง · มืด ตามเครื่อง", side: "right", top: "calc(100% + 27rem)", depth: 3 },
 ] as const;
 
 /**
@@ -103,7 +109,7 @@ function DepthTitle({ progress }: { progress: MotionValue<number> }) {
           <span className="pk-depth-blue">หน้าตาแบบนี้</span>
         </ScrollFloat>
       </h2>
-      {CHIPS.map((c, i) => (
+      {CHIPS.map((c) => (
         <motion.span
           key={c.text}
           aria-hidden
@@ -112,10 +118,7 @@ function DepthTitle({ progress }: { progress: MotionValue<number> }) {
             c.side === "left" ? "right-[calc(50%+9.5rem)]" : "left-[calc(50%+9.5rem)]"
           }`}
         >
-          <span
-            className="size-2 rounded-full"
-            style={{ background: i % 2 ? "var(--em-violet-500)" : "var(--em-blue-500)" }}
-          />
+          <span className="size-2 rounded-full bg-(--em-blue-500)" />
           {c.text}
         </motion.span>
       ))}
@@ -155,15 +158,11 @@ export function PocketSection() {
         tilt={26}
         titleComponent={(progress) => (
           <>
-            {/* blue glow that sits behind the phone as it climbs */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute top-full left-1/2 -z-10 size-[34rem] -translate-x-1/2 -translate-y-1/3 rounded-full blur-3xl"
-              style={{
-                background:
-                  "radial-gradient(closest-side, color-mix(in oklab, var(--em-blue-500) 20%, transparent), transparent)",
-              }}
-            />
+            {/* the phone rises out of a pool of the house water (globals.css .pk-pool) */}
+            <div aria-hidden className="pk-pool">
+              <span className="vt-live" />
+              <span className="vt-live" />
+            </div>
             <p className={`${EYEBROW} cw-blue`}>in your pocket</p>
             <DepthTitle progress={progress} />
             <Watch progress={progress} onLive={setLive} />
