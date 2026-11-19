@@ -1,9 +1,16 @@
 "use client";
 
 import { cn } from "@empire/ui";
-import { RotateCcw } from "lucide-react";
+import { Monitor, RotateCcw, Smartphone, Tablet } from "lucide-react";
 import { useState } from "react";
-import { clampValue, defaults, type Control, type Entry, type Values } from "@/registry/meta";
+import {
+  clampValue,
+  defaults,
+  kindOf,
+  type Control,
+  type Entry,
+  type Values,
+} from "@/registry/meta";
 import { Part } from "@/registry/parts";
 import { CopyButton } from "./copy-button";
 
@@ -92,6 +99,8 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
   const [values, setValues] = useState<Values>(() => defaults(entry));
   const [tab, setTab] = useState<"preview" | "code">("preview");
   const [run, setRun] = useState(0);
+  const [width, setWidth] = useState<"full" | "768" | "390">("full");
+  const page = kindOf(entry) !== "component";
 
   const tabButton = (t: typeof tab, label: string) => (
     <button
@@ -112,8 +121,13 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
   );
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[18rem_1fr]">
-      <aside className="order-2 h-fit rounded-xl border bg-card p-5 lg:order-1">
+    <div className={cn("grid gap-6", entry.controls.length > 0 && "lg:grid-cols-[18rem_1fr]")}>
+      <aside
+        className={cn(
+          "order-2 h-fit rounded-xl border bg-card p-5 lg:order-1",
+          !entry.controls.length && "hidden",
+        )}
+      >
         <div className="mb-4 flex items-center justify-between">
           <p className="font-mono text-xs tracking-[0.2em] text-muted-foreground uppercase">
             Props
@@ -148,7 +162,42 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
             {tabButton("preview", "Preview")}
             {tabButton("code", "Code")}
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
+            {tab === "preview" && (
+              <div
+                role="radiogroup"
+                aria-label="ความกว้างจอ"
+                className="flex rounded-md bg-(--em-ink-900) p-0.5"
+              >
+                {(
+                  [
+                    ["full", "เต็ม", Monitor],
+                    ["768", "แท็บเล็ต 768", Tablet],
+                    ["390", "มือถือ 390", Smartphone],
+                  ] as const
+                ).map(([w, label, Icon]) => (
+                  <button
+                    key={w}
+                    type="button"
+                    role="radio"
+                    aria-checked={width === w}
+                    aria-label={label}
+                    title={label}
+                    onClick={() => {
+                      setWidth(w);
+                    }}
+                    className={cn(
+                      "grid size-8 place-items-center rounded transition-colors",
+                      width === w
+                        ? "bg-(--em-ink-700) text-(--em-ink-50)"
+                        : "text-(--em-ink-400) hover:text-(--em-ink-100)",
+                    )}
+                  >
+                    <Icon aria-hidden className="size-4" />
+                  </button>
+                ))}
+              </div>
+            )}
             {tab === "preview" && (
               <button
                 type="button"
@@ -167,8 +216,21 @@ export function Playground({ entry, source }: { entry: Entry; source: string }) 
           </div>
         </div>
         {tab === "preview" ? (
-          <div id="panel-preview" role="tabpanel" className="h-[26rem] [&>*]:h-full">
-            <Part key={run} slug={entry.slug} values={values} />
+          <div
+            id="panel-preview"
+            role="tabpanel"
+            className={cn("overflow-auto", page ? "h-[36rem] bg-(--em-ink-900)" : "h-[26rem]")}
+          >
+            <div
+              className={cn(
+                "mx-auto",
+                page ? "min-h-full bg-background text-foreground" : "h-full [&>*]:h-full",
+                width !== "full" && "border-x border-(--em-ink-700)",
+              )}
+              style={{ maxWidth: width === "full" ? "100%" : `${width}px` }}
+            >
+              <Part key={run} slug={entry.slug} values={values} />
+            </div>
           </div>
         ) : (
           <div id="panel-code" role="tabpanel" className="h-[26rem] overflow-auto">

@@ -1,39 +1,162 @@
 "use client";
 
-import type { ComponentType } from "react";
-import { AuroraTide } from "./aurora-tide";
-import { BeamButton } from "./beam-button";
-import { ClickSpark } from "./click-spark";
-import { Constellation } from "./constellation";
-import { DecodeText } from "./decode-text";
-import { Dock } from "./dock";
-import { Island } from "./island";
-import { Marquee } from "./marquee";
-import type { Values } from "./meta";
-import { MetricBento } from "./metric-bento";
-import { PixelCard } from "./pixel-card";
-import { RevealText } from "./reveal-text";
-import { SpotlightCard } from "./spotlight-card";
+import { lazy, Suspense, type ComponentType } from "react";
+import type { Values } from "./types";
 
-const parts = {
-  "aurora-tide": AuroraTide,
-  "decode-text": DecodeText,
-  "reveal-text": RevealText,
-  "spotlight-card": SpotlightCard,
-  "pixel-card": PixelCard,
-  "click-spark": ClickSpark,
-  constellation: Constellation,
-  "beam-button": BeamButton,
-  dock: Dock,
-  island: Island,
-  "metric-bento": MetricBento,
-  marquee: Marquee,
-} satisfies Record<string, ComponentType<never>>;
+/** One lazy chunk per part, so the library only downloads what is on screen. */
+export const parts = {
+  "aurora-tide": lazy(() => import("./ui/aurora-tide")),
+  "decode-text": lazy(() => import("./ui/decode-text")),
+  "reveal-text": lazy(() => import("./ui/reveal-text")),
+  "spotlight-card": lazy(() => import("./ui/spotlight-card")),
+  "pixel-card": lazy(() => import("./ui/pixel-card")),
+  "click-spark": lazy(() => import("./ui/click-spark")),
+  constellation: lazy(() => import("./ui/constellation")),
+  "beam-button": lazy(() => import("./ui/beam-button")),
+  dock: lazy(() => import("./ui/dock")),
+  island: lazy(() => import("./ui/island")),
+  "metric-bento": lazy(() => import("./ui/metric-bento")),
+  marquee: lazy(() => import("./ui/marquee")),
+  "dot-grid": lazy(() => import("./ui/dot-grid")),
+  "mesh-drift": lazy(() => import("./ui/mesh-drift")),
+  "light-beams": lazy(() => import("./ui/light-beams")),
+  "ripple-rings": lazy(() => import("./ui/ripple-rings")),
+  starfield: lazy(() => import("./ui/starfield")),
+  "wave-lines": lazy(() => import("./ui/wave-lines")),
+  "grid-horizon": lazy(() => import("./ui/grid-horizon")),
+  "bubble-rise": lazy(() => import("./ui/bubble-rise")),
+  "light-rays": lazy(() => import("./ui/light-rays")),
+  "flicker-squares": lazy(() => import("./ui/flicker-squares")),
+  typewriter: lazy(() => import("./ui/typewriter")),
+  "word-rotate": lazy(() => import("./ui/word-rotate")),
+  "split-chars": lazy(() => import("./ui/split-chars")),
+  "fade-words": lazy(() => import("./ui/fade-words")),
+  "wavy-text": lazy(() => import("./ui/wavy-text")),
+  "marker-highlight": lazy(() => import("./ui/marker-highlight")),
+  "glow-heading": lazy(() => import("./ui/glow-heading")),
+  "flip-words": lazy(() => import("./ui/flip-words")),
+  "shine-text": lazy(() => import("./ui/shine-text")),
+  "tide-text": lazy(() => import("./ui/tide-text")),
+  "circle-text": lazy(() => import("./ui/circle-text")),
+  "magnetic-button": lazy(() => import("./ui/magnetic-button")),
+  "ripple-button": lazy(() => import("./ui/ripple-button")),
+  "shimmer-button": lazy(() => import("./ui/shimmer-button")),
+  "glow-button": lazy(() => import("./ui/glow-button")),
+  "arrow-button": lazy(() => import("./ui/arrow-button")),
+  "liquid-button": lazy(() => import("./ui/liquid-button")),
+  "burst-button": lazy(() => import("./ui/burst-button")),
+  "press-button": lazy(() => import("./ui/press-button")),
+  "copy-morph": lazy(() => import("./ui/copy-morph")),
+  "tilt-card": lazy(() => import("./ui/tilt-card")),
+  "glare-card": lazy(() => import("./ui/glare-card")),
+  "flip-card": lazy(() => import("./ui/flip-card")),
+  "stack-cards": lazy(() => import("./ui/stack-cards")),
+  "expand-cards": lazy(() => import("./ui/expand-cards")),
+  "border-glow-card": lazy(() => import("./ui/border-glow-card")),
+  "reflection-card": lazy(() => import("./ui/reflection-card")),
+  "product-card": lazy(() => import("./ui/product-card")),
+  "tabs-slide": lazy(() => import("./ui/tabs-slide")),
+  "segmented-control": lazy(() => import("./ui/segmented-control")),
+  "hamburger-morph": lazy(() => import("./ui/hamburger-morph")),
+  "bottom-bar": lazy(() => import("./ui/bottom-bar")),
+  "side-rail": lazy(() => import("./ui/side-rail")),
+  pager: lazy(() => import("./ui/pager")),
+  "underline-nav": lazy(() => import("./ui/underline-nav")),
+  "floating-input": lazy(() => import("./ui/floating-input")),
+  "otp-input": lazy(() => import("./ui/otp-input")),
+  "search-expand": lazy(() => import("./ui/search-expand")),
+  "toggle-switch": lazy(() => import("./ui/toggle-switch")),
+  "check-pop": lazy(() => import("./ui/check-pop")),
+  "rating-stars": lazy(() => import("./ui/rating-stars")),
+  "tag-input": lazy(() => import("./ui/tag-input")),
+  "strength-meter": lazy(() => import("./ui/strength-meter")),
+  "drop-zone": lazy(() => import("./ui/drop-zone")),
+  "orbit-spinner": lazy(() => import("./ui/orbit-spinner")),
+  "dots-loader": lazy(() => import("./ui/dots-loader")),
+  "wave-bars": lazy(() => import("./ui/wave-bars")),
+  "skeleton-shimmer": lazy(() => import("./ui/skeleton-shimmer")),
+  "tide-progress": lazy(() => import("./ui/tide-progress")),
+  "toast-stack": lazy(() => import("./ui/toast-stack")),
+  "live-dot": lazy(() => import("./ui/live-dot")),
+  "typing-dots": lazy(() => import("./ui/typing-dots")),
+  "success-burst": lazy(() => import("./ui/success-burst")),
+  "modal-rise": lazy(() => import("./ui/modal-rise")),
+  "drawer-sheet": lazy(() => import("./ui/drawer-sheet")),
+  "tooltip-float": lazy(() => import("./ui/tooltip-float")),
+  "dropdown-menu": lazy(() => import("./ui/dropdown-menu")),
+  "command-menu": lazy(() => import("./ui/command-menu")),
+  "hover-card": lazy(() => import("./ui/hover-card")),
+  "rolling-counter": lazy(() => import("./ui/rolling-counter")),
+  "bar-rise": lazy(() => import("./ui/bar-rise")),
+  "ring-gauge": lazy(() => import("./ui/ring-gauge")),
+  sparkline: lazy(() => import("./ui/sparkline")),
+  "heat-grid": lazy(() => import("./ui/heat-grid")),
+  timeline: lazy(() => import("./ui/timeline")),
+  leaderboard: lazy(() => import("./ui/leaderboard")),
+  "compare-slider": lazy(() => import("./ui/compare-slider")),
+  "snap-carousel": lazy(() => import("./ui/snap-carousel")),
+  "avatar-stack": lazy(() => import("./ui/avatar-stack")),
+  "lightbox-grid": lazy(() => import("./ui/lightbox-grid")),
+  "ken-burns": lazy(() => import("./ui/ken-burns")),
+  "album-fan": lazy(() => import("./ui/album-fan")),
+  "cursor-blob": lazy(() => import("./ui/cursor-blob")),
+  "magnet-dots": lazy(() => import("./ui/magnet-dots")),
+  "pointer-trail": lazy(() => import("./ui/pointer-trail")),
+  "drag-stickers": lazy(() => import("./ui/drag-stickers")),
+  "ripple-pond": lazy(() => import("./ui/ripple-pond")),
+  "spotlight-grid": lazy(() => import("./ui/spotlight-grid")),
+  "accordion-flow": lazy(() => import("./ui/accordion-flow")),
+  "bento-layout": lazy(() => import("./ui/bento-layout")),
+  "masonry-rise": lazy(() => import("./ui/masonry-rise")),
+  "sticky-stack": lazy(() => import("./ui/sticky-stack")),
+  "snap-row": lazy(() => import("./ui/snap-row")),
+  "hero-split": lazy(() => import("./ui/hero-split")),
+  "hero-centered": lazy(() => import("./ui/hero-centered")),
+  "hero-terminal": lazy(() => import("./ui/hero-terminal")),
+  "header-glass": lazy(() => import("./ui/header-glass")),
+  "header-mega": lazy(() => import("./ui/header-mega")),
+  "footer-columns": lazy(() => import("./ui/footer-columns")),
+  "features-grid": lazy(() => import("./ui/features-grid")),
+  "features-bento": lazy(() => import("./ui/features-bento")),
+  "features-alternating": lazy(() => import("./ui/features-alternating")),
+  "testimonials-wall": lazy(() => import("./ui/testimonials-wall")),
+  "logo-cloud": lazy(() => import("./ui/logo-cloud")),
+  "stats-band": lazy(() => import("./ui/stats-band")),
+  "pricing-tiers": lazy(() => import("./ui/pricing-tiers")),
+  "pricing-compare": lazy(() => import("./ui/pricing-compare")),
+  "cta-tide": lazy(() => import("./ui/cta-tide")),
+  "newsletter-box": lazy(() => import("./ui/newsletter-box")),
+  "contact-split": lazy(() => import("./ui/contact-split")),
+  "faq-accordion": lazy(() => import("./ui/faq-accordion")),
+  "team-grid": lazy(() => import("./ui/team-grid")),
+  "blog-cards": lazy(() => import("./ui/blog-cards")),
+  "steps-timeline": lazy(() => import("./ui/steps-timeline")),
+  "auth-card": lazy(() => import("./ui/auth-card")),
+  "not-found": lazy(() => import("./ui/not-found")),
+  "dashboard-shell": lazy(() => import("./ui/dashboard-shell")),
+  "saas-landing": lazy(() => import("./ui/saas-landing")),
+  "portfolio-page": lazy(() => import("./ui/portfolio-page")),
+  "agency-page": lazy(() => import("./ui/agency-page")),
+  "launch-page": lazy(() => import("./ui/launch-page")),
+};
 
-/** Renders one registry part with playground values (validated against its controls upstream). */
+const lookup = parts as unknown as Record<string, ComponentType<Values> | undefined>;
+
 export function Part({ slug, values }: { slug: string; values: Values }) {
-  const C = (parts as Record<string, ComponentType<Values> | undefined>)[slug];
-  return C ? <C {...values} /> : null;
+  const C = lookup[slug];
+  if (!C) return null;
+  return (
+    <Suspense
+      fallback={
+        <div
+          aria-hidden
+          className="size-full animate-pulse bg-(--em-ink-900)/40 motion-reduce:animate-none"
+        />
+      }
+    >
+      <C {...values} />
+    </Suspense>
+  );
 }
 
 export const partSlugs = Object.keys(parts);
