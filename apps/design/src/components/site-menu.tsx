@@ -26,14 +26,18 @@ export function SiteMenu({ items }: { items: MenuItem[] }) {
     if (!open) return;
     dlg.current?.showModal();
     const root = document.documentElement;
+    // keep the scrollbar's room, or the page under the shade jumps sideways
+    if (innerWidth > root.clientWidth) root.style.scrollbarGutter = "stable";
     root.style.overflow = "hidden";
     return () => {
       root.style.overflow = "";
+      root.style.scrollbarGutter = "";
     };
   }, [open]);
 
   const slide = still ? { duration: 0 } : { duration: 0.7, ease };
   const out = still ? { duration: 0 } : { duration: 0.45, ease };
+  const hidden = "translateX(calc(100% + 100px))";
   const close = () => {
     setOpen(false);
   };
@@ -87,9 +91,10 @@ export function SiteMenu({ items }: { items: MenuItem[] }) {
             <motion.nav
               key="panel"
               aria-label="เมนูหลัก"
-              initial={{ x: "calc(100% + 100px)" }}
-              animate={{ x: 0, transition: slide }}
-              exit={{ x: "calc(100% + 100px)", transition: out }}
+              // a whole `transform` string runs on the compositor (WAAPI); `x` would tick on the main thread
+              initial={{ transform: hidden }}
+              animate={{ transform: "translateX(0px)", transition: slide }}
+              exit={{ transform: hidden, transition: out }}
               className="absolute inset-y-0 right-0 flex w-full flex-col border-l bg-background text-foreground sm:w-[32rem]"
             >
               <button
@@ -108,60 +113,49 @@ export function SiteMenu({ items }: { items: MenuItem[] }) {
                 <ul>
                   {items.map((it, i) => (
                     <li key={it.href}>
-                      <motion.a
+                      <a
                         href={it.href}
-                        initial="rest"
-                        whileHover={still ? undefined : "hover"}
                         onClick={close}
-                        className="flex items-baseline gap-3 border-b py-4 outline-none hover:text-(--em-blue-600) focus-visible:text-(--em-blue-600) sm:py-5 dark:hover:text-(--em-sky-400) dark:focus-visible:text-(--em-sky-400)"
+                        className="group flex items-baseline gap-3 border-b py-4 outline-none hover:text-(--em-blue-600) focus-visible:text-(--em-blue-600) sm:py-5 dark:hover:text-(--em-sky-400) dark:focus-visible:text-(--em-sky-400)"
                       >
                         <span className="font-mono text-xs text-muted-foreground tabular-nums">
                           {String(i + 1).padStart(2, "0")}
                         </span>
-                        <motion.span
-                          variants={{ rest: { x: 0 }, hover: { x: -12 } }}
-                          transition={{
-                            type: "spring",
-                            staggerChildren: 0.04,
-                            delayChildren: 0.05,
-                          }}
-                          className="font-heading text-3xl font-black sm:text-4xl"
-                        >
+                        {/* plain CSS transitions: dozens of motion components per open made the slide stutter */}
+                        <span className="inline-block font-heading text-3xl font-black transition-transform duration-500 ease-out motion-safe:group-hover:-translate-x-3 motion-safe:group-focus-visible:-translate-x-3 sm:text-4xl">
                           {letters(it.label).map((g, j) => (
-                            <motion.span
+                            <span
                               key={j}
-                              variants={{ rest: { x: 0 }, hover: { x: 12 } }}
-                              transition={{ type: "spring" }}
-                              className="inline-block whitespace-pre"
+                              style={{ transitionDelay: `${j * 30}ms` }}
+                              className="inline-block whitespace-pre transition-transform duration-500 ease-out motion-safe:group-hover:translate-x-3 motion-safe:group-focus-visible:translate-x-3"
                             >
                               {g}
-                            </motion.span>
+                            </span>
                           ))}
-                        </motion.span>
-                      </motion.a>
+                        </span>
+                      </a>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* the curved edge: a bulge that scales flat as the panel lands (transform only) */}
-              <svg
+              {/* the curved edge: a bulge that scales flat as the panel lands. The <svg> box scales,
+                  not the path inside it, so it stays on the compositor instead of repainting the panel */}
+              <motion.svg
                 aria-hidden
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
+                style={{ transformOrigin: "100% 50%" }}
+                initial={{ transform: "scaleX(1)" }}
+                animate={{
+                  transform: "scaleX(0)",
+                  transition: still ? { duration: 0 } : { duration: 0.9, ease },
+                }}
+                exit={{ transform: "scaleX(1)", transition: out }}
                 className="absolute inset-y-0 -left-[99px] h-full w-[100px] fill-background"
               >
-                <motion.path
-                  d="M100 0 Q-100 50 100 100 Z"
-                  style={{ originX: 1 }}
-                  initial={{ scaleX: 1 }}
-                  animate={{
-                    scaleX: 0,
-                    transition: still ? { duration: 0 } : { duration: 0.9, ease },
-                  }}
-                  exit={{ scaleX: 1, transition: out }}
-                />
-              </svg>
+                <path d="M100 0 Q-100 50 100 100 Z" />
+              </motion.svg>
             </motion.nav>
           )}
         </AnimatePresence>
