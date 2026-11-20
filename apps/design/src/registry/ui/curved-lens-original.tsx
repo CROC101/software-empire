@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
-// V.original: the owner's own WebGL source, kept as written apart from three things.
+// V.original: a 21st.dev community component (author not named on the page), vendored
+// for crocwork.studio and kept as written apart from three things.
 // Colours are palette tokens instead of hex, the embedded webfont (licence unknown) is
 // replaced by the system serif, and the SVG noise grain is gone (house rule).
 // The cards sit on one WebGL canvas: the middle one reads flat, and the further a

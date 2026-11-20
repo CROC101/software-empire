@@ -49,7 +49,7 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "team",
       "lanyard-rail",
-      "Lanyard Rail Team Badges",
+      "Lanyard Rail Team Badges · Lite",
       "บัตรพนักงานห้อยสายจากราวเดียวกัน ชี้แล้วบัตรแกว่งและยกขึ้นมาข้างหน้า กดหรือ Enter พลิกดูประวัติด้านหลัง ลมพัดให้บัตรแกว่งทีละใบ ลูกศร Home End เลื่อนไปตามราว Esc พลิกกลับ จอแคบเลื่อนข้างทีละใบ",
       ["ทีม", "บัตร", "พลิก", "แกว่ง"],
       [range("seconds", "วินาทีระหว่างลมพัด", 2, 10, 1, 4)],
@@ -60,12 +60,38 @@ export const exclusive: readonly Entry[] = [
   {
     ...def(
       "2026-11-20",
+      "team",
+      "lanyard-rail-original",
+      "Lanyard Rail Team Badges · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["ทีม", "บัตร", "ฟิสิกส์", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a team section where ID badges hang from one horizontal rail. Each badge has a strap, a reel and a clip above a card whose front shows a coloured band, initials in a round portrait, name, role, a team chip and a barcode generated from the name. Pointing at a badge sways it from the top (rotate keyframes, transform-origin at the strap) and lifts it forward with a spring; click or Enter flips it with rotateY 180 to a back with a short bio and tags (both faces backface-hidden). Every few seconds a breeze sways the next badge, paused while the pointer or focus is inside. ArrowLeft/Right, Home and End move focus along the rail, Escape turns the badge back, and an aria-live line names the badge in front. Narrow screens scroll the rail sideways with scroll-snap. Transform and opacity only, still under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
       "carousel",
       "orbit-swing",
-      "Orbit Swing Carousel",
+      "Orbit Swing Carousel · Lite",
       "ภาพวงกลมหมุนบนวงโคจรกว้างที่จุดหมุนอยู่สูงเหนือเวที ภาพเก่าเหวี่ยงออกด้านหนึ่ง ภาพใหม่เหวี่ยงเข้าอีกด้าน หัวเรื่องสองน้ำหนักเลื่อนสลับทาง การ์ดจางสลับ ส่วนโค้งด้านหลังหมุนและเปลี่ยนสีตามภาพ มีปุ่มลูกศร จุด ภาพย่อ คีย์ลูกศร และปัด",
       ["สไลด์", "วงโคจร", "แกลเลอรี", "ปัด"],
       [range("tilt", "องศาที่เหวี่ยง", 20, 70, 5, 45)],
+    ),
+    prompt:
+      "Build a carousel where a round picture rides a wide orbit: its transform-origin sits far above the stage (around 50% -140%), so on each step the old picture rotates out to one side while the next rotates in from the other, in the direction of travel. Beside it a two-weight title wipes inside overflow-clipped lines, the thin word entering from the right and the heavy word from the left; a small card with a thumbnail, one line of text, tag chips and a link cross-fades with a short rise; an SVG arc behind the picture turns by a fixed angle per step and cross-fades to the slide's colour. Step with arrow buttons, pager dots, a thumbnail strip, ArrowLeft/Right on the focused region and a sideways swipe. Time-driven only, no scroll pinning; transform and opacity only, instant under prefers-reduced-motion; an aria-live line names the current slide. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "carousel",
+      "orbit-swing-original",
+      "Orbit Swing Carousel · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["สไลด์", "วงโคจร", "gsap", "ต้นฉบับ"],
+      [],
     ),
     prompt:
       "Build a carousel where a round picture rides a wide orbit: its transform-origin sits far above the stage (around 50% -140%), so on each step the old picture rotates out to one side while the next rotates in from the other, in the direction of travel. Beside it a two-weight title wipes inside overflow-clipped lines, the thin word entering from the right and the heavy word from the left; a small card with a thumbnail, one line of text, tag chips and a link cross-fades with a short rise; an SVG arc behind the picture turns by a fixed angle per step and cross-fades to the slide's colour. Step with arrow buttons, pager dots, a thumbnail strip, ArrowLeft/Right on the focused region and a sideways swipe. Time-driven only, no scroll pinning; transform and opacity only, instant under prefers-reduced-motion; an aria-live line names the current slide. Use your stack's design tokens for every colour.",
@@ -250,7 +276,7 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "carousel",
       "warp-ring",
-      "Warp Ring Carousel",
+      "Warp Ring Carousel · Lite",
       "การ์ดเรียงรอบทรงกระบอกแล้วหมุนเอง แต่ละรอบค่อย ๆ ออกตัว พุ่งเร็ว แล้วค่อย ๆ หยุด วงยืดออกนิดหนึ่งตอนพุ่ง การ์ดหน้าส่องแสงสีของตัวเองบนและล่าง ตัวเลขจาง ๆ ใหญ่สลับอยู่ข้างหลัง",
       ["สไลด์", "วงแหวน", "3D", "เล่นเอง"],
       [range("seconds", "วินาทีต่อรอบ", 2, 8, 0.5, 4)],
@@ -261,9 +287,22 @@ export const exclusive: readonly Entry[] = [
   {
     ...def(
       "2026-11-20",
+      "carousel",
+      "warp-ring-original",
+      "Warp Ring Carousel · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["สไลด์", "วงแหวน", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a ring carousel: six cards stand on a cylinder (each rotateY(k * 360/n) translateZ(r), with r about 0.95 of the card width) inside a preserve-3d stage pushed back by r under perspective. The ring rotates by -position * 360/n with a slow-fast-slow cubic-bezier (about 0.83, 0, 0.17, 1) over 1.4s, and turns one step on its own every few seconds, pausing while the pointer is over it or it has focus. On every turn the ring wrapper stretches scaleX 1 to 1.1 and back. Two soft blurred ellipses above and below the ring cross-fade to the front card's colour, and a huge faint two-digit numeral behind swaps with a short rise. Buttons and arrow keys step both ways; the title is announced politely. Transform and opacity only, no autoplay and instant changes under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
       "art-wall",
       "picture-rail",
-      "Picture Rail Gallery",
+      "Picture Rail Gallery · Lite",
       "ภาพพิมพ์ใส่กรอบแขวนด้วยลวดจากรางแขวนภาพ แต่ละภาพเอียงนิด ๆ ชี้แล้วภาพแกว่งจากตะขอ ภาพข้าง ๆ ขยับตาม มีไฟส่องจากด้านบน กดแล้วภาพหันหลังให้อ่านป้ายแกลเลอรี ถ้ายังไม่มีใครแตะ ไฟจะส่องทีละภาพเอง",
       ["แกลเลอรี", "กรอบภาพ", "แกว่ง", "พลิก"],
       [range("interval", "วินาทีที่ไฟส่องแต่ละภาพ", 2, 8, 0.5, 3)],
@@ -274,12 +313,38 @@ export const exclusive: readonly Entry[] = [
   {
     ...def(
       "2026-11-20",
+      "art-wall",
+      "picture-rail-original",
+      "Picture Rail Gallery · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["แกลเลอรี", "ผนังภาพ", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a gallery wall where framed prints hang from one picture rail. Each print is a thick moulding around a bevelled mat and the image, hung from a hook by two wires drawn in SVG to its top corners, with alternating wire lengths and a slightly crooked rest angle (about ±1.5deg). The hanging group rotates around its hook (transform-origin top). Pointing at or focusing a print kicks a damped swing (rotate keyframes rest, +6, -3.5, +1.5, rest degrees times an amplitude) and nudges its two neighbours at a third of the amplitude; alternate the sign per kick so each replays. The pointed print is lit by a radial spot from above and lifts with a spring. Click or Enter turns it with rotateY 180 to a back of brown paper with a gallery label (title, medium, size, year); Escape turns it back. Until the visitor interacts, the prints are lit one by one on an interval. A wall label under each frame and an aria-live line name the lit print. Narrow screens scroll the rail sideways with scroll-snap. Transform and opacity only, no swinging under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
       "product",
       "sneaker-hero",
-      "Sneaker Product Hero",
+      "Sneaker Product Hero · Lite",
       "หน้าสินค้ารองเท้าหนึ่งคู่ รองเท้าลอยอยู่เหนือเงาสะท้อนบนพื้น เลือกสีแล้วรองเท้าหมุนสลับ ไซซ์บอกว่าหมดหรือใกล้หมด กดถูกใจแล้วหัวใจแตกเป็นจุด ใส่ถุงแล้วมีแถบแจ้งสั้น ๆ",
       ["สินค้า", "รองเท้า", "เลือกสี", "ร้านค้า"],
       [range("price", "ราคา (บาท)", 990, 9990, 100, 4290)],
+    ),
+    prompt:
+      "Build a product hero for one sneaker. On the right, a side-profile shoe drawn in SVG from three colour roles (upper, accent, sole) floats with a slow bob and tilt over its own mirrored reflection, faded with a mask; a soft blurred halo in the upper colour sits behind. Picking a colourway swatch swaps the shoe: the old one leaves to the left with a small turn, the new one arrives from the right. On the left: eyebrow, name, star rating with count, short description, price, colour swatches (aria-pressed), a six-size grid where sold-out sizes for the colourway are disabled and struck through, and a polite live line that says pick a size, sold out, only N left or in stock. Add to bag is disabled until a size in stock is picked and shows a short status toast; the like button pops and bursts eight dots outward once. Transform and opacity only, no floating or bursts under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "product",
+      "sneaker-hero-original",
+      "Sneaker Product Hero · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["สินค้า", "รองเท้า", "gsap", "ต้นฉบับ"],
+      [],
     ),
     prompt:
       "Build a product hero for one sneaker. On the right, a side-profile shoe drawn in SVG from three colour roles (upper, accent, sole) floats with a slow bob and tilt over its own mirrored reflection, faded with a mask; a soft blurred halo in the upper colour sits behind. Picking a colourway swatch swaps the shoe: the old one leaves to the left with a small turn, the new one arrives from the right. On the left: eyebrow, name, star rating with count, short description, price, colour swatches (aria-pressed), a six-size grid where sold-out sizes for the colourway are disabled and struck through, and a polite live line that says pick a size, sold out, only N left or in stock. Add to bag is disabled until a size in stock is picked and shows a short status toast; the like button pops and bursts eight dots outward once. Transform and opacity only, no floating or bursts under prefers-reduced-motion. Use your stack's design tokens for every colour.",
@@ -302,7 +367,7 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "product",
       "coffee-pour",
-      "Coffee Pour Menu",
+      "Coffee Pour Menu · Lite",
       "เมนูร้านกาแฟที่ชงให้ดูเมื่อเลือก แก้วเก่าเลื่อนออกจากบาร์ แก้วใสใบใหม่หล่นลงมา แล้วแต่ละชั้นเทลงจากด้านบนตามสูตรทีละชั้น เต็มแล้วมีไอน้ำลอย",
       ["เมนู", "กาแฟ", "ร้านค้า", "เท"],
       [range("pour", "วินาทีต่อชั้น", 0.4, 2, 0.1, 0.9)],
@@ -313,9 +378,22 @@ export const exclusive: readonly Entry[] = [
   {
     ...def(
       "2026-11-20",
+      "product",
+      "coffee-pour-original",
+      "Coffee Pour Menu · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["เมนู", "กาแฟ", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a café menu that builds the drink you pick. The menu is a list of buttons (name, short description, price, aria-pressed). The bar on the right holds one clear glass keyed by drink and pick count inside AnimatePresence popLayout: the old glass slides off to the side with a small tilt while the new one drops in on a spring. Each recipe is a list of layers (colour, height, name); layer k pours after k times the pour time: a thin stream in the layer colour grows down from above (scaleY from the top), then the layer rises from the bottom of the glass (scaleY from the bottom), stacked with flex-col-reverse. Once full, three soft blurred steam wisps drift up and fade in a loop. Brew colours are mixed from palette tokens with color-mix so they follow the theme. A small legend of layers is announced politely. The newest pick always wins. Transform and opacity only, no pouring or steam under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
       "stories",
       "journal-spread",
-      "Journal Spread",
+      "Journal Spread · Lite",
       "สมุดบันทึกการเดินทางเปิดเป็นหน้าคู่ รูปติดด้วยขอบขาวหรือเทปกาว โน้ตบนกระดาษแผ่นเล็ก ภาพใหญ่พาดข้ามสองหน้าแล้วพับที่สันสมุด พลิกหน้าเองจนกว่าจะมีคนแตะ",
       ["สมุด", "พลิกหน้า", "3D", "เล่นเอง"],
       [range("seconds", "วินาทีต่อหน้า", 2, 10, 0.5, 4)],
@@ -326,12 +404,38 @@ export const exclusive: readonly Entry[] = [
   {
     ...def(
       "2026-11-20",
+      "stories",
+      "journal-spread-original",
+      "Journal Spread · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["สมุด", "รูปถ่าย", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a travel journal open on a double page. Each spread is described once at double width: an optional background picture plus photos (white polaroid border or a strip of translucent tape) and short notes, each placed by x, y and width as percentages of the whole spread with a small rotation, so items may cross the spine. Each page renders the full spread inside an overflow-clipped half (left page at 0, right page shifted by -100%), with a soft shade toward the spine. A page turn is a leaf over the right half with transform-origin at the spine and preserve-3d: forward, its front shows the current right page and its back the next left page while it rotates 0 to -180deg; backward is the reverse; under the leaf lie the destination pages, and the index commits on animation complete. Pages turn on their own every few seconds until the first touch; buttons, arrow keys and a sideways swipe turn by hand; the spread title and counter are announced politely. Transform and opacity only, instant changes under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
       "showcase",
       "contribution-skyline",
-      "Contribution Skyline",
+      "Contribution Skyline · Lite",
       "ตารางกิจกรรมรายวันที่ลุกขึ้นเป็นแท่ง 3 มิติเมื่อเลื่อนมาเห็น สลับ 2D กับ 3D ได้ ชี้วันไหนบอกวันที่และจำนวน",
       ["สถิติ", "แคนวาส", "ไอโซเมตริก"],
       [range("weeks", "จำนวนสัปดาห์", 8, 53, 1, 26)],
+    ),
+    prompt:
+      "Build an activity heatmap that stands up into a skyline. Draw a seeded sample of N weeks x 7 days on a canvas: each day is a square coloured by one of five levels (empty, then four steps of the brand blue). The first time it is half in view, morph it over 1.2 s into an isometric view where each square becomes a bar whose height is that day's count, with darker right and front faces, drawn back to front. A 2D / 3D toggle with aria-pressed morphs either way and stops any running morph. Pointing at a day shows a small tooltip with its date and count (hit-test the top faces, front-most wins). Show the total, the longest streak and the busiest day below. Read colours from CSS variables at draw time and redraw on resize. Reduced motion jumps straight to the chosen view. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "showcase",
+      "contribution-skyline-original",
+      "Contribution Skyline · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["สถิติ", "แคนวาส", "ต้นฉบับ"],
+      [],
     ),
     prompt:
       "Build an activity heatmap that stands up into a skyline. Draw a seeded sample of N weeks x 7 days on a canvas: each day is a square coloured by one of five levels (empty, then four steps of the brand blue). The first time it is half in view, morph it over 1.2 s into an isometric view where each square becomes a bar whose height is that day's count, with darker right and front faces, drawn back to front. A 2D / 3D toggle with aria-pressed morphs either way and stops any running morph. Pointing at a day shows a small tooltip with its date and count (hit-test the top faces, front-most wins). Show the total, the longest streak and the busiest day below. Read colours from CSS variables at draw time and redraw on resize. Reduced motion jumps straight to the chosen view. Use your stack's design tokens for every colour.",
@@ -367,10 +471,23 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "footer",
       "signature-pen-footer",
-      "Signature Pen Footer",
+      "Signature Pen Footer · Lite",
       "ปากกาสไตลัสร่อนเข้ามาเซ็นชื่อทีละเส้น ยกปากการะหว่างเส้น เซ็นเสร็จบรรทัดล่างกลายเป็นเวลาที่เซ็น แล้วลากเขียนเองได้",
       ["ฟุตเตอร์", "ลายเซ็น", "SVG"],
       [text("name", "ชื่อในคำอธิบาย", "crocwork")],
+    ),
+    prompt:
+      "Build a footer that signs itself. The signature is a few single-stroke SVG paths drawn in order (the run, a cross, a dot, an underline swash), each hidden with a dash array until written. When in view a stylus glides in lifted, its shadow on the paper closes in as the nib touches down, it writes each stroke at a steady speed by following getPointAtLength and revealing the dash, leans a little into its travel, lifts between strokes, then rests to the right. Write every frame straight to the DOM through refs so React does not re-render. When it lifts, the caption under the signing line becomes 'signed at <date, time> - ID <short hash of the name>'. Afterwards the pen hovers after a mouse or stylus pointer, pressing writes ink that dries and fades away, and a 'sign again' button replays it (cancel any run in progress). The copy above fades up word by word. Reduced motion: signature shown, pen at rest, no free drawing. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "footer",
+      "signature-pen-footer-original",
+      "Signature Pen Footer · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["ฟุตเตอร์", "ลายเซ็น", "ต้นฉบับ"],
+      [],
     ),
     prompt:
       "Build a footer that signs itself. The signature is a few single-stroke SVG paths drawn in order (the run, a cross, a dot, an underline swash), each hidden with a dash array until written. When in view a stylus glides in lifted, its shadow on the paper closes in as the nib touches down, it writes each stroke at a steady speed by following getPointAtLength and revealing the dash, leans a little into its travel, lifts between strokes, then rests to the right. Write every frame straight to the DOM through refs so React does not re-render. When it lifts, the caption under the signing line becomes 'signed at <date, time> - ID <short hash of the name>'. Afterwards the pen hovers after a mouse or stylus pointer, pressing writes ink that dries and fades away, and a 'sign again' button replays it (cancel any run in progress). The copy above fades up word by word. Reduced motion: signature shown, pen at rest, no free drawing. Use your stack's design tokens for every colour.",
@@ -387,5 +504,44 @@ export const exclusive: readonly Entry[] = [
     ),
     prompt:
       "Build a string-and-button envelope as a footer. A dark envelope body with a white pointed flap on top, held shut by two blue paper buttons with grommets, one on the flap's tip and one on the body. When in view the cord draws itself as a figure eight wound round both buttons (pathLength), a loose end sways from the lower button, then a short signature writes itself in on the body. Pressing either button (real buttons with aria-expanded) unwinds the cord, folds the flap back with a 3D rotateX round its top edge, and slides a note up out of the envelope with a thank-you line and a mailto link that is only focusable while open. Pressing again reverses it. Reduced motion: every change is instant. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "menu",
+      "link-preview",
+      "Link Preview",
+      "ลิงก์ในข้อความที่ชี้แล้วการ์ดภาพหน้าเว็บปลายทางลอยขึ้นมาตามเมาส์ เปิดดูก่อนกดได้",
+      ["ลิงก์", "การ์ดลอย", "hover"],
+      [],
+    ),
+    prompt:
+      "Build an inline link that previews its page. Wrap a link in a hover card (open after a short delay, close on leave). The card holds a screenshot of the target page: either a fixed image passed in, or one built from a screenshot service URL with the page URL and a fixed viewport. The card springs up from below with a slight scale, follows the pointer sideways on a spring (translate x from the pointer's offset inside the trigger), and links to the same page. Preload the image when the link mounts so the card opens with the picture ready. Keyboard focus opens it too. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "menu",
+      "user-dropdown",
+      "User Dropdown",
+      "เมนูบัญชีจากรูปโปรไฟล์ หัวการ์ดมีชื่อกับสถานะ เลือกสถานะจากเมนูย่อย รายการมีไอคอนกับป้าย",
+      ["เมนู", "บัญชี", "dropdown"],
+      [],
+    ),
+    prompt:
+      "Build an account menu opened from the user's avatar. The panel's header shows the avatar, name, handle and a small coloured status badge. Below it: a submenu to set the status (radio items with icons), then groups of items (profile, appearance, settings, notifications; plan, referrals; download apps, what's new; log out), each a row with a leading icon and, where it applies, a trailing badge, a small avatar or an external-link icon. Separators between groups. Use an accessible dropdown menu primitive so arrow keys, typeahead and escape work. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "scroll-text",
+      "text-scroll",
+      "Text Scroll Animation",
+      "ตัวอักษรแตกกระจายแล้วไหลกลับมาเรียงเป็นคำเมื่อเลื่อนหน้า 3 แบบ ตัวอักษรบิดหมุน ตัวอักษรตกลงมา และไอคอนที่หุบเข้ากลาง",
+      ["ตัวอักษร", "สกอลล์", "3D"],
+      [],
+    ),
+    prompt:
+      "Build three scroll-driven type scenes, each a tall section with a sticky stage. In each, split a word into characters and drive them from the section's scroll progress (0 to 0.5): first the letters start pushed out from the centre and turned on X by their distance from the middle, then settle in a row; second they start spread and lifted by their distance and fall into place; third a row of small icons between brackets starts spread and rotated and closes into the centre. Use transforms only. Use your stack's design tokens for every colour.",
   },
 ];
