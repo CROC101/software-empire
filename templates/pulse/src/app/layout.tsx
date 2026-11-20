@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
-import { TikTok_Sans } from 'next/font/google';
 import './globals.css';
 import { TikTokProvider } from '@/context/TikTokContext';
 import AppShell from '@/components/layout/AppShell';
-
-const font = TikTok_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-tiktok', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'Pulse - Make Your Day',
@@ -13,7 +10,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="light" className={font.variable} suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
+      <head>
+        {/* loaded by the browser, not at build: next/font's build-time fetch of TikTok Sans kept failing in CI */}
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=TikTok+Sans:wght@400..800&display=swap" />
+      </head>
       <body>
         <TikTokProvider>
           <AppShell>{children}</AppShell>
