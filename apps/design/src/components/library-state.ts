@@ -83,3 +83,42 @@ export function useFavs(): [ReadonlySet<string>, (slug: string) => void] {
   }, []);
   return [favs, toggle];
 }
+
+const STORED = "croc-stored";
+// blocked storage (private mode): picks still work for this visit
+const memory = new Map<string, string>();
+const onStored = (cb: () => void) => {
+  window.addEventListener("storage", cb);
+  window.addEventListener(STORED, cb);
+  return () => {
+    window.removeEventListener("storage", cb);
+    window.removeEventListener(STORED, cb);
+  };
+};
+
+/** One saved string, read after hydration (null on the server and the first paint), same tab and other tabs. */
+export function useStored(key: string): [string | null, (v: string) => void] {
+  const raw = useSyncExternalStore(
+    onStored,
+    () => {
+      try {
+        return localStorage.getItem(key) ?? memory.get(key) ?? null;
+      } catch {
+        return memory.get(key) ?? null;
+      }
+    },
+    () => null,
+  );
+  const set = useCallback(
+    (v: string) => {
+      try {
+        localStorage.setItem(key, v);
+      } catch {
+        memory.set(key, v);
+      }
+      window.dispatchEvent(new Event(STORED));
+    },
+    [key],
+  );
+  return [raw, set];
+}

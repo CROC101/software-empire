@@ -3,6 +3,7 @@ import path from "node:path";
 import { ChevronLeft, ChevronRight, Expand } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { CompareOriginal } from "@/components/compare-original";
 import { CopyButton } from "@/components/copy-button";
 import { InView } from "@/components/in-view";
 import { InstallPanel } from "@/components/install-panel";
@@ -146,6 +147,7 @@ export default async function ComponentPage({ params }: Props) {
 
       <div className="mt-8">
         <Playground entry={e} files={files} deps={deps} />
+        {e.inspiredBy && <CompareOriginal entry={e} title={e.inspiredBy} />}
       </div>
 
       <section aria-labelledby="install" className="mt-10 grid gap-4 md:grid-cols-2">

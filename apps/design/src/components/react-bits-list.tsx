@@ -5,6 +5,7 @@ import { useState } from "react";
 import data from "@/lib/react-bits.json";
 import { reactBitsUrl } from "@/lib/react-bits-url";
 import { CopyButton } from "./copy-button";
+import { useStored } from "./library-state";
 
 type Tool = "shadcn" | "jsrepo";
 const slug = (s: string) => s.replace(/\s+/g, "-").toLowerCase();
@@ -54,18 +55,27 @@ function Tabs<T extends string>({
  * `ours` maps a React Bits title to the slug of our own rebuild of it.
  */
 export function ReactBitsList({ ours = {} }: { ours?: Readonly<Record<string, string>> }) {
-  const [variant, setVariant] = useState("TS-TW");
-  const [tool, setTool] = useState<Tool>("shadcn");
+  // the picked variant and tool stay across reloads
+  const [saved, save] = useStored("croc-rb-pick");
+  const [v, t] = (saved ?? "").split("|");
+  const variant = v && data.variants.includes(v) ? v : "TS-TW";
+  const tool: Tool = t === "jsrepo" ? "jsrepo" : "shadcn";
+  const pick = (nv: string, nt: Tool) => save(`${nv}|${nt}`);
   const [open, setOpen] = useState<string | null>(null);
   return (
     <>
       <div className="vt-top sticky top-[3.6rem] z-20 -mx-4 flex flex-wrap items-center gap-x-6 gap-y-2 border-b bg-background/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
-        <Tabs label="ภาษาและสไตล์" items={data.variants} value={variant} onChange={setVariant} />
+        <Tabs
+          label="ภาษาและสไตล์"
+          items={data.variants}
+          value={variant}
+          onChange={(v) => pick(v, tool)}
+        />
         <Tabs
           label="เครื่องมือติดตั้ง"
           items={["shadcn", "jsrepo"] as const}
           value={tool}
-          onChange={setTool}
+          onChange={(t) => pick(variant, t)}
         />
       </div>
       {data.categories.map((c) => (

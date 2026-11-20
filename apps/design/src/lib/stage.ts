@@ -31,6 +31,25 @@ export function readStage(data: unknown, e: Entry): { values: Values; surface: S
   return { values, surface: m.surface as Surface };
 }
 
+/** where the playground keeps a part's last props, so full screen and a reload show exactly what was set */
+export const stageKey = (slug: string) => `croc-stage:${slug}`;
+
+export const stageText = (s: { values: Values; surface: Surface }): string =>
+  JSON.stringify({ type: "croc:stage", ...s });
+
+/** read back through readStage, so a stale or hand-edited entry is clamped like a message */
+export function parseStage(
+  raw: string | null,
+  e: Entry,
+): { values: Values; surface: Surface } | null {
+  if (!raw) return null;
+  try {
+    return readStage(JSON.parse(raw), e);
+  } catch {
+    return null;
+  }
+}
+
 export const pms = ["pnpm", "npm", "yarn", "bun"] as const;
 export type Pm = (typeof pms)[number] | "croc-ui";
 
