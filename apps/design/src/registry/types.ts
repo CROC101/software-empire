@@ -38,6 +38,8 @@ export const categories = {
   intro: { label: "อินโทรและโลโก้", kind: "exclusive" },
   atmosphere: { label: "บรรยากาศ", kind: "exclusive" },
   "art-wall": { label: "ผนังภาพ", kind: "exclusive" },
+  product: { label: "สินค้าและเมนู", kind: "exclusive" },
+  footer: { label: "ฟุตเตอร์", kind: "exclusive" },
   background: { label: "พื้นหลัง", kind: "component" },
   text: { label: "ตัวอักษร", kind: "component" },
   button: { label: "ปุ่ม", kind: "component" },
