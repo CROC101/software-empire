@@ -8,6 +8,7 @@ import { components } from "./data/components";
 import { exclusive } from "./data/exclusive";
 import { rebuilds } from "./data/rebuilds";
 import { remakes } from "./data/remakes";
+import { textOrigins, textRebuilds } from "./data/text-rebuilds";
 import type { Entry } from "./types";
 
 export * from "./types";
@@ -360,10 +361,11 @@ export const registry: readonly Entry[] = [
   ...core,
   ...components,
   ...rebuilds,
+  ...textRebuilds,
   ...blocks,
   ...remakes,
   ...exclusive,
-];
+].map((e) => (textOrigins[e.slug] ? { ...e, inspiredBy: textOrigins[e.slug] } : e));
 
 export function entry(slug: string): Entry | undefined {
   return registry.find((e) => e.slug === slug);
