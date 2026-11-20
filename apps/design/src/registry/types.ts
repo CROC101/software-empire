@@ -30,6 +30,10 @@ export type Kind = keyof typeof kinds;
 /** Category order here is the sidebar order. */
 export const categories = {
   showcase: { label: "Hero แกลเลอรี", kind: "exclusive" },
+  spotlight: { label: "Hero แสงไฟ", kind: "exclusive" },
+  stories: { label: "สตอรี่", kind: "exclusive" },
+  team: { label: "ทีม", kind: "exclusive" },
+  carousel: { label: "สไลด์วงโคจร", kind: "exclusive" },
   background: { label: "พื้นหลัง", kind: "component" },
   text: { label: "ตัวอักษร", kind: "component" },
   button: { label: "ปุ่ม", kind: "component" },
