@@ -1,19 +1,70 @@
 "use client";
 
-import { cn } from "@empire/ui";
-import { ArrowUpRight, Flame, Heart, LayoutGrid, Search, Sparkles, X } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
-import { filterEntries, isHot, isNew, sorts, type Sort } from "@/lib/library";
-import { categories, kindOf, kinds, type Category, type Entry, type Kind } from "@/registry/meta";
+import { cn, NimbusNavbar, useTokenColors, type NimbusFx, type NimbusNavItem } from "@empire/ui";
+import {
+  ArrowUpRight,
+  BadgeCheck,
+  Component,
+  Feather,
+  Flame,
+  Gem,
+  Heart,
+  Layers,
+  LayoutGrid,
+  LayoutTemplate,
+  PanelsTopLeft,
+  Search,
+  Sparkles,
+  X,
+} from "lucide-react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import {
+  filterEntries,
+  isHot,
+  isNew,
+  sorts,
+  versions,
+  type Sort,
+  type Version,
+} from "@/lib/library";
+import { categories, kinds, type Category, type Entry, type Kind } from "@/registry/meta";
 import { InView } from "./in-view";
 import { useFavs, useView } from "./library-state";
 import { Thumb } from "./preview";
 
 const kindList = Object.keys(kinds) as Kind[];
 const catList = Object.keys(categories) as Category[];
+const verList = Object.keys(versions) as Version[];
+
+const kindItem: Record<Kind, { icon: React.ReactNode; fx: NimbusFx }> = {
+  exclusive: { icon: <Gem aria-hidden />, fx: "glow" },
+  component: { icon: <Component aria-hidden />, fx: "spin" },
+  block: { icon: <PanelsTopLeft aria-hidden />, fx: "pop" },
+  template: { icon: <LayoutTemplate aria-hidden />, fx: "drop" },
+};
+const kindItems: NimbusNavItem[] = [
+  { label: "ทั้งหมด", icon: <LayoutGrid aria-hidden />, fx: "wave" },
+  ...kindList.map((k) => ({ label: kinds[k], ...kindItem[k] })),
+  { label: "ที่ชอบ", icon: <Heart aria-hidden />, fx: "pop" },
+];
+const verItems: NimbusNavItem[] = [
+  { label: "ทุกรุ่น", icon: <Layers aria-hidden />, fx: "wave" },
+  { label: versions.original, icon: <BadgeCheck aria-hidden />, fx: "glow" },
+  { label: versions.lite, icon: <Feather aria-hidden />, fx: "drop" },
+];
+
+// phones get the icon-only pill for kinds; labels stay as the buttons' accessible names
+const PHONE = "(max-width: 639px)";
+const onPhone = (cb: () => void) => {
+  const m = window.matchMedia(PHONE);
+  m.addEventListener("change", cb);
+  return () => {
+    m.removeEventListener("change", cb);
+  };
+};
 
 /**
- * The library: kinds and categories in a sidebar (a scrolling chip row on phones), search, sort by
+ * The library: kinds, Exclusive versions (V.original / Lite) and categories as water-drop navbars, search, sort by
  * popular / new / A–Z, favourites, and a grid of live previews. The whole view lives in the URL
  * hash, so a filtered list can be shared and the back button keeps it.
  */
@@ -39,47 +90,23 @@ export function Gallery({ entries }: { entries: readonly Entry[] }) {
   }, []);
 
   const shown = useMemo(() => filterEntries(entries, view, favs), [entries, view, favs]);
-  const count = (pred: (e: Entry) => boolean) => entries.filter(pred).length;
-
-  const navItem = (
-    active: boolean,
-    label: string,
-    n: number,
-    onClick: () => void,
-    icon?: React.ReactNode,
-  ) => (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={cn(
-        "flex w-full items-center justify-between gap-2 rounded-md px-3 py-1.5 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-ring",
-        active
-          ? "bg-primary/10 font-semibold text-primary"
-          : "text-muted-foreground hover:bg-muted hover:text-foreground",
-      )}
-    >
-      <span className="flex items-center gap-2">
-        {icon}
-        {label}
-      </span>
-      <span className="font-mono text-[11px] tabular-nums">{n}</span>
-    </button>
+  const phone = useSyncExternalStore(
+    onPhone,
+    () => window.matchMedia(PHONE).matches,
+    () => false,
   );
+  const bg = useTokenColors(["--background"])?.[0];
+  const tone = bg && parseInt(bg.slice(1, 3), 16) < 128 ? "dark" : "light";
 
-  const chip = (active: boolean, label: string, onClick: () => void) => (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={cn(
-        "shrink-0 rounded-full border px-3 py-1 text-sm whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-ring",
-        active ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:bg-muted",
-      )}
-    >
-      {label}
-    </button>
-  );
+  // a link like /#c=hero names only the category: its kind is the one to light up
+  const kind =
+    view.kind !== "all" ? view.kind : view.cat !== "all" ? categories[view.cat].kind : "all";
+  const kindAt = view.fav ? kindList.length + 1 : kind === "all" ? 0 : kindList.indexOf(kind) + 1;
+  const cats = kind === "all" ? [] : catList.filter((c) => categories[c].kind === kind);
+  const catItems: NimbusNavItem[] = [
+    { label: "ทุกหมวด", fx: "none" },
+    ...cats.map((c) => ({ label: categories[c].label, fx: "none" as const })),
+  ];
 
   const heading =
     view.cat !== "all"
@@ -89,72 +116,58 @@ export function Gallery({ entries }: { entries: readonly Entry[] }) {
         : view.fav
           ? "ที่ชอบ"
           : "ทั้งหมด";
+  const sub = view.ver !== "all" ? ` · ${versions[view.ver]}` : "";
 
   return (
     <section
       id="parts"
-      className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[14rem_1fr]"
+      aria-label="ชิ้นส่วนทั้งหมด"
+      className="mx-auto max-w-7xl px-4 py-12 sm:px-6"
     >
-      <aside aria-label="หมวด" className="hidden lg:block">
-        <div className="sticky top-20 max-h-[calc(100dvh-6rem)] space-y-5 overflow-y-auto pr-1 pb-6 [scrollbar-width:thin]">
-          <div className="space-y-0.5">
-            {navItem(
-              view.kind === "all" && !view.fav,
-              "ทั้งหมด",
-              entries.length,
-              () => {
-                setView({ kind: "all", cat: "all", fav: false });
-              },
-              <LayoutGrid aria-hidden className="size-4" />,
-            )}
-            {navItem(
-              view.fav,
-              "ที่ชอบ",
-              favs.size,
-              () => {
-                setView({ fav: !view.fav });
-              },
-              <Heart aria-hidden className="size-4" />,
-            )}
-          </div>
-          {kindList.map((k) => (
-            <div key={k}>
-              <button
-                type="button"
-                aria-pressed={view.kind === k && view.cat === "all"}
-                onClick={() => {
-                  setView({ kind: k, cat: "all" });
-                }}
-                className="mb-1 flex w-full items-center justify-between px-3 text-xs font-semibold tracking-wide text-foreground hover:text-primary aria-pressed:text-primary"
-              >
-                {kinds[k]}
-                <span className="font-mono text-[11px] text-muted-foreground tabular-nums">
-                  {count((e) => kindOf(e) === k)}
-                </span>
-              </button>
-              <div className="space-y-0.5">
-                {catList
-                  .filter((c) => categories[c].kind === k)
-                  .map((c) => (
-                    <div key={c}>
-                      {navItem(
-                        view.cat === c,
-                        categories[c].label,
-                        count((e) => e.category === c),
-                        () => {
-                          setView({ cat: c, kind: k });
-                        },
-                      )}
-                    </div>
-                  ))}
+      <div className="min-w-0">
+        <div className="flex flex-col items-center gap-3">
+          <NimbusNavbar
+            label="ชนิด"
+            items={kindItems}
+            active={kindAt}
+            compact={phone}
+            tone={tone}
+            onChange={(i) => {
+              const k = kindList[i - 1];
+              setView({ kind: k ?? "all", cat: "all", ver: "all", fav: i === kindList.length + 1 });
+            }}
+          />
+          {kind === "exclusive" && (
+            <NimbusNavbar
+              label="รุ่น"
+              items={verItems}
+              active={view.ver === "all" ? 0 : verList.indexOf(view.ver) + 1}
+              tone={tone}
+              onChange={(i) => {
+                setView({ ver: verList[i - 1] ?? "all" });
+              }}
+            />
+          )}
+          {cats.length > 0 && (
+            <div className="-mx-4 -my-3.5 self-stretch overflow-x-auto px-4 py-3.5 [scrollbar-width:none]">
+              {/* auto margins centre the pill when it fits and fall to 0 when it scrolls, so its start is never clipped; the padding leaves room for the water to bleed past the pill */}
+              <div className="mx-auto w-max">
+                <NimbusNavbar
+                  key={kind}
+                  label="หมวด"
+                  items={catItems}
+                  active={view.cat === "all" ? 0 : cats.indexOf(view.cat) + 1}
+                  tone={tone}
+                  onChange={(i) => {
+                    setView({ cat: cats[i - 1] ?? "all" });
+                  }}
+                />
               </div>
             </div>
-          ))}
+          )}
         </div>
-      </aside>
 
-      <div className="min-w-0">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
           <label className="flex min-w-0 flex-1 items-center gap-2 rounded-lg border bg-card px-3 py-2 shadow-sm focus-within:ring-2 focus-within:ring-ring">
             <Search aria-hidden className="size-4 shrink-0 text-muted-foreground" />
             <span className="sr-only">ค้นหาชิ้นส่วน</span>
@@ -216,43 +229,11 @@ export function Gallery({ entries }: { entries: readonly Entry[] }) {
           </div>
         </div>
 
-        <div
-          className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] lg:hidden"
-          role="group"
-          aria-label="ชนิด"
-        >
-          {chip(view.kind === "all" && !view.fav, "ทั้งหมด", () => {
-            setView({ kind: "all", cat: "all", fav: false });
-          })}
-          {kindList.map((k) => (
-            <span key={k} className="contents">
-              {chip(view.kind === k && view.cat === "all", kinds[k], () => {
-                setView({ kind: k, cat: "all" });
-              })}
-            </span>
-          ))}
-          {chip(view.fav, `ที่ชอบ ${String(favs.size)}`, () => {
-            setView({ fav: !view.fav });
-          })}
-        </div>
-        <div
-          className="-mx-4 mt-2 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] lg:hidden"
-          role="group"
-          aria-label="หมวด"
-        >
-          {catList
-            .filter((c) => view.kind === "all" || categories[c].kind === view.kind)
-            .map((c) => (
-              <span key={c} className="contents">
-                {chip(view.cat === c, categories[c].label, () => {
-                  setView(view.cat === c ? { cat: "all" } : { cat: c, kind: categories[c].kind });
-                })}
-              </span>
-            ))}
-        </div>
-
         <div className="mt-6 flex items-baseline justify-between gap-3">
-          <h2 className="font-heading text-2xl font-black">{heading}</h2>
+          <h2 className="font-heading text-2xl font-black">
+            {heading}
+            {sub}
+          </h2>
           <p className="text-sm text-muted-foreground" aria-live="polite">
             {shown.length} ชิ้น
           </p>
