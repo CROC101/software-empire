@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { pick, range, toggle, type Entry } from "@/registry/meta";
-import { aiPrompt, installCommand, readStage } from "./stage";
+import { aiPrompt, installCommand, parseStage, readStage, stageKey, stageText } from "./stage";
 
 const e = {
   slug: "dock",
@@ -31,6 +31,19 @@ describe("readStage", () => {
     expect(readStage("croc:stage", e)).toBeNull();
     expect(readStage({ type: "croc:stage", surface: "neon", values: {} }, e)).toBeNull();
     expect(readStage({ type: "other", surface: "grid", values: {} }, e)).toBeNull();
+  });
+});
+
+describe("stageText / parseStage", () => {
+  it("round-trips what the playground set, clamped, and ignores junk", () => {
+    const set = { surface: "grid" as const, values: { magnify: 2, size: "lg", labels: false } };
+    expect(parseStage(stageText(set), e)).toEqual(set);
+    expect(
+      parseStage('{"type":"croc:stage","surface":"grid","values":{"magnify":50}}', e)?.values,
+    ).toEqual({ magnify: 3, size: "sm", labels: true });
+    expect(parseStage("{not json", e)).toBeNull();
+    expect(parseStage(null, e)).toBeNull();
+    expect(stageKey("dock")).toBe("croc-stage:dock");
   });
 });
 

@@ -2,6 +2,7 @@ import { BrandMark, HubSwitcher } from "@empire/ui";
 import { subsystems } from "@empire/core/subsystems";
 import type { ReactNode } from "react";
 import { CommandPalette } from "@/components/command-palette";
+import { ScrollKeeper } from "@/components/scroll-keeper";
 import { SiteMenu } from "@/components/site-menu";
 import { hubUrl } from "@/lib/env";
 import { kinds, registry, kindOf, type Kind } from "@/registry/meta";
@@ -69,6 +70,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
             </li>
           </ul>
           <CommandPalette />
+          <ScrollKeeper />
           <SiteMenu items={menu} />
         </nav>
       </header>

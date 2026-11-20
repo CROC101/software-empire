@@ -2,8 +2,16 @@
 
 import { cn } from "@empire/ui";
 import { Monitor, RotateCcw, Smartphone, Tablet } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { defaultSurface, surfaces, type StageMessage, type Surface } from "@/lib/stage";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  defaultSurface,
+  parseStage,
+  stageKey,
+  stageText,
+  surfaces,
+  type StageMessage,
+  type Surface,
+} from "@/lib/stage";
 import {
   clampValue,
   defaults,
@@ -13,6 +21,7 @@ import {
   type Values,
 } from "@/registry/meta";
 import { CodeView, type CodeFile } from "./code-view";
+import { useStored } from "./library-state";
 
 function Field({
   c,
@@ -120,8 +129,14 @@ export function Playground({
   deps: readonly string[];
 }) {
   const component = kindOf(entry) === "component";
-  const [values, setValues] = useState<Values>(() => defaults(entry));
-  const [surface, setSurface] = useState<Surface>(() => defaultSurface(component));
+  // saved per part: full screen and a reload open on exactly what was set here
+  const [raw, setRaw] = useStored(stageKey(entry.slug));
+  const { values, surface } = useMemo(
+    () => parseStage(raw, entry) ?? { values: defaults(entry), surface: defaultSurface(component) },
+    [raw, entry, component],
+  );
+  const setValues = (v: Values) => setRaw(stageText({ values: v, surface }));
+  const setSurface = (s: Surface) => setRaw(stageText({ values, surface: s }));
   const [tab, setTab] = useState<"preview" | "code">("preview");
   const [run, setRun] = useState(0);
   const [width, setWidth] = useState<(typeof widths)[number][0]>("full");
@@ -190,7 +205,7 @@ export function Playground({
               key={c.key}
               c={c}
               value={values[c.key] ?? c.value}
-              set={(v) => setValues((old) => ({ ...old, [c.key]: clampValue(c, v) }))}
+              set={(v) => setValues({ ...values, [c.key]: clampValue(c, v) })}
             />
           ))}
         </div>

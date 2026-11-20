@@ -3,9 +3,17 @@
 import { cn } from "@empire/ui";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { defaultSurface, readStage, surfaceClass, type Surface } from "@/lib/stage";
+import {
+  defaultSurface,
+  parseStage,
+  readStage,
+  stageKey,
+  surfaceClass,
+  type Surface,
+} from "@/lib/stage";
 import { defaults, entry, kindOf, type Values } from "@/registry/meta";
 import { Part } from "@/registry/parts";
+import { useStored } from "./library-state";
 
 const noop = () => () => {};
 
@@ -16,7 +24,9 @@ const noop = () => () => {};
 export function FullPreview({ slug }: { slug: string }) {
   const e = entry(slug);
   const component = e ? kindOf(e) === "component" : true;
-  const [stage, setStage] = useState<{ values: Values; surface: Surface } | null>(null);
+  const [sent, setStage] = useState<{ values: Values; surface: Surface } | null>(null);
+  // opened full screen on its own: show what the playground had, not the defaults
+  const [raw] = useStored(stageKey(slug));
   const embedded = useSyncExternalStore(
     noop,
     () => window.self !== window.top,
@@ -38,6 +48,7 @@ export function FullPreview({ slug }: { slug: string }) {
   }, [e]);
 
   if (!e) return null;
+  const stage = sent ?? (embedded ? null : parseStage(raw, e));
   const surface = stage?.surface ?? defaultSurface(component);
   return (
     <main
