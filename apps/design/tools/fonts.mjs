@@ -29,10 +29,11 @@ const KINDS = ["ttf", "woff"];
 
 const text = (h) =>
   h
-    .replace(/<[^>]+>/g, "")
-    .replace(/&amp;/g, "&")
+    .replace(/<[^>]*>?/g, "")
+    .replace(/[<>]/g, "") // React escapes it anyway; keeps the manifest plain text
     .replace(/&#0?39;|&apos;/g, "'")
     .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&") // last, so "&amp;quot;" stays "&quot;"
     .trim();
 
 /** The <li> items of the meta list with this class on a font page. */
@@ -217,6 +218,9 @@ async function fetchAll() {
   const read = (p) => (existsSync(p) ? readFileSync(p) : null);
   await pool(
     Object.entries(lock).map(([path, { url, sha256 }]) => async () => {
+      // the lock is reviewed in git, but never let a key escape public/fontlib
+      if (!/^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\.(ttf|woff)$/.test(path) || path.includes(".."))
+        throw new Error(`fonts: bad path in lock: ${path}`);
       const file = join(PUB, path);
       if (read(file) && sha(read(file)) === sha256) return;
       const b = await get(url);
