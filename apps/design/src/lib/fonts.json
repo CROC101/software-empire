@@ -1,0 +1,5447 @@
+[
+  {
+    "slug": "0xa000",
+    "name": "0xA000",
+    "authors": ["Øyvind Kolås"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://pippin.gimp.org/0xA000/",
+    "tags": ["super-family", "monospace", "sans serif", "wonky", "smallsize", "pixel", "damage"],
+    "styles": [
+      {
+        "file": "0xa000-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-boxes-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-boxes",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-dots-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-dots",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-mono-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-monochrome-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-monochrome",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-pixelated-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-pixelated",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-squareish-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "0xa000-squareish",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "3270",
+    "name": "3270",
+    "authors": ["Ricardo Bánffy"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/rbanffy/3270font",
+    "tags": ["monospace", "mechanistic", "cyrillic"],
+    "styles": [
+      {
+        "file": "3270medium",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "aboensis",
+    "name": "Aboensis",
+    "authors": ["CTAN"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://ftp.jaist.ac.jp/pub/CTAN/fonts/aboensis",
+    "tags": ["paleographic", "script", "revival"],
+    "styles": [
+      {
+        "file": "aboensis-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "adaxi",
+    "name": "ADAXI",
+    "authors": ["La Scuola Open Source"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/lascuolaopensource/bca-font-Adaxi",
+    "tags": ["wonky", "graphic", "pixel"],
+    "styles": [
+      {
+        "file": "adaxi",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "aileron",
+    "name": "Aileron",
+    "authors": ["Sora Sagano"],
+    "licence": ["CC0 1.0"],
+    "source": "http://dotcolon.net/font/aileron/",
+    "tags": ["blackletter", "grotesque / lineale", "sans serif", "screen", "super-family"],
+    "styles": [
+      {
+        "file": "aileron-black-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-blackitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-heavy-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-heavyitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-lightitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-semibolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-thin-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-thinitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-ultralight-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "aileron-ultralightitalic-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "alef",
+    "name": "Alef",
+    "authors": ["Hagilda"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://alef.hagilda.com/",
+    "tags": ["sans serif", "symbols"],
+    "styles": [
+      {
+        "file": "alef-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "alef-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "alte-din-1451",
+    "name": "Alte DIN 1451",
+    "authors": ["Peter Wiegel"],
+    "licence": ["CC BY 3.0 DE"],
+    "source": "http://www.peter-wiegel.de/alteDin1451.html",
+    "tags": ["sans serif", "geometric"],
+    "styles": [
+      {
+        "file": "din1451alt-webfont",
+        "files": ["ttf"]
+      },
+      {
+        "file": "din1451alt_g-webfont",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "a-mono",
+    "name": "A MONO",
+    "authors": ["Klotter Supply"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://klotter.supply/a-mono/",
+    "tags": ["2020", "variable", "large character map", "sans serif", "monospace"],
+    "styles": [
+      {
+        "file": "amonovf",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "ancial",
+    "name": "Ancial",
+    "authors": ["Daytona Mess"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://daytonamess.itch.io/ancial",
+    "tags": ["revival", "paleographic", "damage"],
+    "styles": [
+      {
+        "file": "ancial-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "anka-coder",
+    "name": "Anka/Coder",
+    "authors": ["Andrey Makarov"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://code.google.com/p/anka-coder-fonts/",
+    "tags": ["wonky", "code", "grotesque / lineale", "monospace", "narrow", "extended / wide"],
+    "styles": [
+      {
+        "file": "ankacoder-b-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-bi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c75-b-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c75-bi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c75-i-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c75-r-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c87-b-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c87-bi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c87-i-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-c87-r-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-i-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ankacoder-r-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "anonymous-pro",
+    "name": "Anonymous Pro",
+    "authors": ["Mark Simonson"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.marksimonson.com/fonts/view/anonymous-pro",
+    "tags": ["monospace"],
+    "styles": [
+      {
+        "file": "anonymous_pro_minus-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "anonymous_pro_minus_b-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "anonymous_pro_minus_bi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "anonymous_pro_minus_i-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "apl333",
+    "name": "APL333",
+    "authors": ["Adrian Smith"],
+    "licence": ["Public Domain"],
+    "source": "https://aplwiki.com/wiki/Fonts",
+    "tags": ["code", "monospace", "2010", "rounded"],
+    "styles": [
+      {
+        "file": "apl333",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "apl386",
+    "name": "APL386",
+    "authors": ["Adám Brudzewsky", "Adrian Smith"],
+    "licence": ["Public Domain"],
+    "source": "https://github.com/abrudz/APL386",
+    "tags": ["rounded", "derivated"],
+    "styles": [
+      {
+        "file": "apl386",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "aquis",
+    "name": "Aquis",
+    "authors": ["Erwan Le Rétif"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://erwanleretif.xyz/typotheque",
+    "tags": ["2020", "narrow", "revival", "serif"],
+    "styles": [
+      {
+        "file": "aquis-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "archivo",
+    "name": "Archivo",
+    "authors": ["Héctor Gatti", "Omnibus"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.omnibus-type.com/fonts/archivo/",
+    "tags": ["grotesque / lineale", "narrow"],
+    "styles": [
+      {
+        "file": "archivo-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "archivo-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "archivo-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "archivo-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "archivo-mediumitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "archivo-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "archivo-semibold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "archivo-semibolditalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ark-typeface",
+    "name": "Ark-es Typeface",
+    "authors": ["Eddie Stuart"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontesk.com/ark-es-typeface/",
+    "tags": ["sans serif", "pixel", "super-family"],
+    "styles": [
+      {
+        "file": "arkesdensebold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "arkesdenselight",
+        "files": ["ttf"]
+      },
+      {
+        "file": "arkesdensemedium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "arkesdenseregular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "arkessolidbold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "arkessolidlight",
+        "files": ["ttf"]
+      },
+      {
+        "file": "arkessolidmedium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "arkessolidregular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "astloch",
+    "name": "Astloch",
+    "authors": ["Daniel Ratighan"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.fontsc.com/font/astloch",
+    "tags": ["blackletter", "generative", "monolinear"],
+    "styles": [
+      {
+        "file": "astloch-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "astloch-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "authentic-sans",
+    "name": "AUTHENTIC Sans",
+    "authors": ["AUTHENTIC"],
+    "licence": ["WTFPL"],
+    "source": "https://authentic.website/sans.html",
+    "tags": ["sans serif", "geometric", "grotesque / lineale", "narrow"],
+    "styles": [
+      {
+        "file": "authenticsans-130",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "authenticsans-150",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "authenticsans-60",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "authenticsans-90",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "authenticsans-condensed130",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "authenticsans-condensed150",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "authenticsans-condensed60",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "authenticsans-condensed90",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "autopia",
+    "name": "Autopia",
+    "authors": ["Antoine Gelgon"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/Luuse/foundry/Autopia",
+    "tags": ["wonky", "gaelic", "generative", "derivated", "glyphic / incise", "damage", "latex"],
+    "styles": [
+      {
+        "file": "autopia-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "autopia-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "autopiabold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "autopiabolditalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "avara",
+    "name": "Avara",
+    "authors": [
+      "Raphaël Bastide",
+      "Wei Huang",
+      "Lucas Le Bihan",
+      "Jérémy Landes",
+      "Walid Bouchouchi"
+    ],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/velvetyne/Avara",
+    "tags": ["serif", "mechanistic", "curveless"],
+    "styles": [
+      {
+        "file": "avara-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "avara-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "avara-bolditalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "bagnard",
+    "name": "Bagnard",
+    "authors": ["Sebastien Sanfilippo"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/sebsan/Bagnard",
+    "tags": ["garalde / old face", "serif"],
+    "styles": [
+      {
+        "file": "bagnard",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "banquise",
+    "name": "Banquise",
+    "authors": ["Bonjour Monde"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/bonjour-monde/fonderie/banquise-typeface",
+    "tags": ["pixel", "revival"],
+    "styles": [
+      {
+        "file": "banquise-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "barlow",
+    "name": "Barlow",
+    "authors": ["Jeremy Tribby", "Nguyễn Hồng Nhung"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/jpt/barlow",
+    "tags": ["super-family", "grotesque / lineale"],
+    "styles": [
+      {
+        "file": "barlow-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlow-blackitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlow-extralight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlow-extralightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlow-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlow-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowcondensed-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowcondensed-blackitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowcondensed-extralight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowcondensed-extralightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowcondensed-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowcondensed-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowsemicondensed-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowsemicondensed-blackitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowsemicondensed-extralight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowsemicondensed-extralightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowsemicondensed-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "barlowsemicondensed-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "bluu",
+    "name": "Bluu",
+    "authors": ["velvetyne", "Jean-Baptiste Morizot"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://velvetyne.fr/",
+    "tags": ["blackletter"],
+    "styles": [
+      {
+        "file": "bluunext-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "bluunext-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "bluunext-titling",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "borel",
+    "name": "Borel",
+    "authors": ["Rosalie Wagner"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/RosaWagner/Borel/tree/main/Borel/",
+    "tags": ["sans serif", "script", "paleographic"],
+    "styles": [
+      {
+        "file": "borel-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "boris",
+    "name": "Boris",
+    "authors": ["Giulia Boggio"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.giuliaboggio.xyz/portfolio/Boris.zip",
+    "tags": ["script", "sans serif", "monolinear"],
+    "styles": [
+      {
+        "file": "boris-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "breite",
+    "name": "Breite",
+    "authors": ["nicolasfpauly"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/metapolator/Breite",
+    "tags": ["generative", "grotesque / lineale", "sans serif", "geometric", "cyrillic"],
+    "styles": [
+      {
+        "file": "breitegrotesk-condensed",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "breitegrotesk-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "breitegrotesk-lightcondensed",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "breitegrotesk-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "caladea",
+    "name": "Caladea",
+    "authors": ["Carolina Giovagnoli", "Andres Torresi"],
+    "licence": ["Apache License, Version 2.0"],
+    "source": "https://fontlibrary.org/en/font/caladea",
+    "tags": ["serif"],
+    "styles": [
+      {
+        "file": "caladea-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "caladea-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "caladea-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "caladea-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "canola",
+    "name": "Canola",
+    "authors": ["Simon Egli"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/metapolator/canola",
+    "tags": ["serif", "slab", "generative"],
+    "styles": [
+      {
+        "file": "seanslab-compressedmedium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "seanslab-compressedregular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "seanslab-condensedsemibold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "seanslab-condensedthin",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "catv-6x12-9",
+    "name": "CATV 6X12 9",
+    "authors": ["Egor"],
+    "licence": ["CC BY SA"],
+    "source": "https://fontlibrary.org/en/font/catv-6x12-9",
+    "tags": ["code", "graphic", "monospace", "sans serif", "screen", "smallsize"],
+    "styles": [
+      {
+        "file": "catv_6x12_9-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "centaury",
+    "name": "Centaury",
+    "authors": ["Justine Gagnaire"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fonderiz.fr/centaury/",
+    "tags": ["2020", "revival", "serif", "graphic", "blackletter"],
+    "styles": [
+      {
+        "file": "centaury-display",
+        "files": ["ttf"]
+      },
+      {
+        "file": "centaury-displayitalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "centaury-italic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "centaury-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "charis-sil",
+    "name": "Charis SIL",
+    "authors": ["SIL International"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://software.sil.org/charis/download/",
+    "tags": ["serif", "humanist"],
+    "styles": [
+      {
+        "file": "charissil-b-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "charissil-bi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "charissil-i-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "charissil-r-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "chicago",
+    "name": "ChicagoFLF",
+    "authors": ["Robin Casady", "Susan Kare"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://openfontlibrary.org/en/font/chicagoflf",
+    "tags": ["code", "graphic", "monospace", "sans serif", "screen", "smallsize"],
+    "styles": [
+      {
+        "file": "chicagoflf-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "chivo",
+    "name": "Chivo",
+    "authors": ["Héctor Gatti", "Omnibus"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.omnibus-type.com/fonts/chivo/",
+    "tags": ["grotesque / lineale", "sans serif"],
+    "styles": [
+      {
+        "file": "chivo-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "chivo-blackitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "chivo-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "chivo-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "clear-sans",
+    "name": "Clear Sans",
+    "authors": ["Daniel Ratighan", "Intel"],
+    "licence": ["Apache License, Version 2.0"],
+    "source": "https://01.org/clear-sans",
+    "tags": ["large character map", "sans serif", "super-family", "screen"],
+    "styles": [
+      {
+        "file": "clearsans-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "clearsans-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "clearsans-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "clearsans-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "clearsans-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "clearsans-mediumitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "clearsans-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "clearsans-thin-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "cmrdd",
+    "name": "CMRDD",
+    "authors": ["Paul Bernhard"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/swrs/cmrdd",
+    "tags": ["rounded", "sans serif"],
+    "styles": [
+      {
+        "file": "cmrdd-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "cmrdd-bold_1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "cmrdd-extrabold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "cmrdd-extrabold_1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "cmrdd-italic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "cmrdd-italic_1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "cmrdd-regular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "cmrdd-regular_1",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "coaster-sans",
+    "name": "Coaster Sans",
+    "authors": ["printer_scanner"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/mother-type/CoasterSans/",
+    "tags": ["1970", "blackletter", "geometric", "graphic"],
+    "styles": [
+      {
+        "file": "coastersans-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "computer-modern",
+    "name": "Computer Modern",
+    "authors": ["Donald Knuth"],
+    "licence": ["GNU General Public License"],
+    "source": "http://checkmyworking.com/cm-web-fonts/",
+    "tags": [
+      "grotesque / lineale",
+      "large character map",
+      "monospace",
+      "narrow",
+      "sans serif",
+      "serif",
+      "super-family"
+    ],
+    "styles": [
+      {
+        "file": "cmunbbx-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbl-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbmo-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbmr-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbso-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbsr-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbtl-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbto-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbx-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunbxo-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunci-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunit-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunobi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunobx-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunorm-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunoti-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunrm-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunsl-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunso-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunss-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunsx-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmuntb-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunti-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmuntt-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmuntx-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunui-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunvi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cmunvt-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "cormorant",
+    "name": "Cormorant",
+    "authors": ["Catharsis Fonts"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/CatharsisFonts/Cormorant",
+    "tags": ["garalde / old face", "super-family", "serif"],
+    "styles": [
+      {
+        "file": "cormorant-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-book-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-bookitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-lightitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorant-semibolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-book-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-bookitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-lightitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantgaramond-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-book-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-bookitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-lightitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantinfant-semibolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantsc-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantsc-book-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantsc-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantsc-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantsc-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantunicase-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantunicase-book-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantunicase-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantunicase-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantunicase-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantupright-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantupright-book-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantupright-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantupright-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cormorantupright-semibold-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "cotham-sans",
+    "name": "Cotham Sans",
+    "authors": ["k-type", "Sebastien Sanfilippo"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/sebsan/Cotham",
+    "tags": ["grotesque / lineale", "sans serif"],
+    "styles": [
+      {
+        "file": "cothamsans",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "c-reduci",
+    "name": "C reduci",
+    "authors": ["Cuchulain Coker"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/c-reduci",
+    "tags": ["sans serif", "geometric", "graphic"],
+    "styles": [
+      {
+        "file": "creduci",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "dauphine",
+    "name": "Dauphine",
+    "authors": ["Alexandre Leray", "Stéphanie Vilayphiou", "Charles Mazé", "Coline Sunier"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/no-feature/dauphine",
+    "tags": ["geometric", "grotesque / lineale", "sans serif", "symbols"],
+    "styles": [
+      {
+        "file": "dauphine_regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "dejavu",
+    "name": "DejaVu",
+    "authors": ["Štěpán Roh", "other"],
+    "licence": ["Public Domain", "Bitstream Vera Fonts Copyright", "Arev Fonts Copyright"],
+    "source": "https://dejavu-fonts.github.io/",
+    "tags": [
+      "large character map",
+      "monospace",
+      "narrow",
+      "sans serif",
+      "super-family",
+      "cyrillic"
+    ],
+    "styles": [
+      {
+        "file": "dejavusans-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusans-boldoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusans-extralight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusans-oblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusans",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusanscondensed-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusanscondensed-boldoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusanscondensed-oblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusanscondensed",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusansmono-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusansmono-boldoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusansmono-oblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavusansmono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserif-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserif-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserif-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserif",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserifcondensed-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserifcondensed-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserifcondensed-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dejavuserifcondensed",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "diamondgrotesk",
+    "name": "DiamondGrotesk",
+    "authors": ["Beatriz Lima, Marco Antunes and Mariana Braga"],
+    "licence": ["CC0 1.0"],
+    "source": "https://github.com/Marcogouv/Diamond-Grotesk-Typeface",
+    "tags": ["2020", "graphic", "grotesque / lineale", "sans serif", "inktraps"],
+    "styles": [
+      {
+        "file": "diamondgrotesk-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "dinish",
+    "name": "DINish",
+    "authors": ["Bert Driehuis", "Altinn"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/playbeing/dinish",
+    "tags": ["sans serif", "revival", "geometric"],
+    "styles": [
+      {
+        "file": "dinish-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinish-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinish-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinishcondensed-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinishcondensed-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinishcondensed-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinishexpanded-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinishexpanded-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dinishexpanded-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "dof",
+    "name": "DOF",
+    "authors": ["Paul Bernhard"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/paulbernhard/dof",
+    "tags": ["code", "script", "sans serif", "latex", "generative"],
+    "styles": [
+      {
+        "file": "dof-1-extended-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-1-extended_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-1-italic-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-1-italic_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-1-regular-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-1-regular_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-2-extended-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-2-extended_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-2-italic-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-2-italic_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-2-regular-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-2-regular_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-3-extended-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-3-extended_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-3-italic-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-3-italic_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-3-regular-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-3-regular_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-italic_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-italic_2",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-italic_3",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-regular_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-regular_2",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "dof-afield-regular_3",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ductus",
+    "name": "Ductus",
+    "authors": ["Amélie Dumont"],
+    "licence": ["CC BY 1.0"],
+    "source": "https://gitlab.com/ameliedumont/fonts/-/tree/master/Ductus?ref_type=heads",
+    "tags": ["rounded", "generative", "graphic", "monospace", "sans serif", "2020"],
+    "styles": [
+      {
+        "file": "ductuscalligraphic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ductusgeometric",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ductusmonocalligraphic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ductusmonogeometric",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ductusmonoregular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ductusregular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "eb-garamond",
+    "name": "EB Garamond",
+    "authors": ["Georg Mayr-Duffner"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://bitbucket.org/georgd/eb-garamond/downloads/",
+    "tags": ["derivated", "serif", "garalde / old face", "cyrillic"],
+    "styles": [
+      {
+        "file": "ebgaramond08-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramond08-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramond12-allsc",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramond12-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramond12-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramondinitials",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramondinitialsf1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramondinitialsf2",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramondsc08-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ebgaramondsc12-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ecrou",
+    "name": "Écrou",
+    "authors": ["Guillaume Santial"],
+    "licence": ["CC BY SA"],
+    "source": "https://gstl.fr/ecrou/",
+    "tags": ["2010", "geometric", "sans serif", "blackletter"],
+    "styles": [
+      {
+        "file": "ecrou-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "elvenes",
+    "name": "Elvenes",
+    "authors": ["Justine Gagnaire"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fonderiz.fr/elvenes/",
+    "tags": ["curveless", "geometric", "wonky", "mechanistic", "damage"],
+    "styles": [
+      {
+        "file": "elvenes-bolddisplay",
+        "files": ["ttf"]
+      },
+      {
+        "file": "elvenes-regulardisplay",
+        "files": ["ttf"]
+      },
+      {
+        "file": "elvenes-thindisplay",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "cosmic-sans-neue-mono",
+    "name": "Fantasque Sans",
+    "authors": ["Jany Belluz"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/belluzj/fantasque-sans",
+    "tags": ["wonky", "derivated", "monospace", "sans serif"],
+    "styles": [
+      {
+        "file": "cosmicsansneuemono-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "cosmicsansneuemonobold-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ferrite-core",
+    "name": "Ferrite core",
+    "authors": ["Froyo Tam"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/froyotam/ferrite-core",
+    "tags": ["geometric", "monolinear", "1990"],
+    "styles": [
+      {
+        "file": "ferritecoredx-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ferritecoredx-display",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ferritecoredx-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ferritecoredx-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ferritecoredx-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "fibel",
+    "name": "Fibel",
+    "authors": ["Peter Wiegel"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.peter-wiegel.de/Fibel.html",
+    "tags": ["wonky", "extended / wide", "geometric", "grotesque / lineale", "sans serif"],
+    "styles": [
+      {
+        "file": "fibel_nord-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fibel_nord_italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fibel_sued-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fibel_sued_italic-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "fifteentwenty",
+    "name": "FifteenTwenty",
+    "authors": ["Stewart C. Russell"],
+    "licence": ["CC0 1.0", "WTFPL"],
+    "source": "https://scruss.com/blog/2016/04/23/fifteentwenty-commodore-1520-plotter-font/",
+    "tags": ["curveless", "monospace", "sans serif", "rounded", "code", "geometric", "derivated"],
+    "styles": [
+      {
+        "file": "fifteentwenty-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fifteentwenty-boldoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fifteentwenty-demi",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fifteentwenty-demioblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fifteentwenty-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fifteentwenty-lightoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fifteentwenty-oblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fifteentwenty",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "fivo-sans-modern",
+    "name": "Fivo Sans Modern",
+    "authors": ["Alex Slobzheninov"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.behance.net/gallery/54442585/FIvo-Sans-Modern-Free-Display-Typeface",
+    "tags": ["blackletter", "large character map", "sans serif", "derivated", "super-family"],
+    "styles": [
+      {
+        "file": "fivosansmodern-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-boldoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-extblkobliq",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-extrablack",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-heavy",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-heavyoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-mediumoblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-oblique",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "fivosansmodern-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "flexi-ibm-vga",
+    "name": "Flexi IBM VGA",
+    "authors": ["VileR"],
+    "licence": ["CC BY SA"],
+    "source": "https://int10h.org/blog/2020/12/more-font-updates-oldschool-pack-flexi-vga/#flexi-ibm-vga-v2-0",
+    "tags": ["monospace", "pixel"],
+    "styles": [
+      {
+        "file": "flexi_ibm_vga_false_437",
+        "files": ["ttf"]
+      },
+      {
+        "file": "flexi_ibm_vga_true_437",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "fontlab-font",
+    "name": "Fontlab Font",
+    "authors": ["Bryce Wilner"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/brycewilner/Fontlab-Font",
+    "tags": ["pixel", "wonky"],
+    "styles": [
+      {
+        "file": "fontlab",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "frames-part-one",
+    "name": "Frames Part One",
+    "authors": ["Nathan Laurent"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://nathanlaurent.github.io/frames.html",
+    "tags": ["monospace", "2020", "wonky", "geometric"],
+    "styles": [
+      {
+        "file": "framespartone-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "framespartone-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "framespartone-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "framespartone-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "framespartone-thin",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "galgo-condensed",
+    "name": "Galgo Condensed",
+    "authors": ["Giulia Boggio"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.giuliaboggio.xyz/fonts/galgo-condensed",
+    "tags": ["2020", "narrow", "revival", "large character map", "sans serif"],
+    "styles": [
+      {
+        "file": "galgo-medium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "galgo-medium_1",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "gap-sans",
+    "name": "Gap Sans",
+    "authors": ["Étienne Ozeray", "Alexandre Liziard"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/Interstices-/GapSans",
+    "tags": ["wonky", "grotesque / lineale", "derivated", "sans serif", "damage", "curveless"],
+    "styles": [
+      {
+        "file": "gapsans-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "gapsansblack-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "gapsansbold-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "garamon-d-t",
+    "name": "Garamon(d/t)",
+    "authors": ["Paul Tubert"],
+    "licence": ["WTFPL"],
+    "source": "https://www.fonderie.download/garamondt.html",
+    "tags": ["derivated", "generative", "revival", "monolinear"],
+    "styles": [
+      {
+        "file": "garamondt-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "garamondt-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "garcia",
+    "name": "Garcia",
+    "authors": ["Anton Moglia"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/antonmoglia/Garcia",
+    "tags": ["sans serif", "humanist"],
+    "styles": [
+      {
+        "file": "garcia-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "guidole",
+    "name": "Gidole",
+    "authors": ["Andreas Larsen"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/larsenwork/Gidole",
+    "tags": ["geometric", "grotesque / lineale", "rounded"],
+    "styles": [
+      {
+        "file": "gidole-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "gidolinya-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "glacier",
+    "name": "Glacier",
+    "authors": ["Quentin Juhel"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://juhel-quentin.fr/CrypType/",
+    "tags": ["wonky", "script"],
+    "styles": [
+      {
+        "file": "glacier-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "glacier-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "glacier-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "goozette",
+    "name": "Goozette",
+    "authors": ["Madeleine Barbaroux", "Alexandra Lambert"],
+    "licence": ["GNU General Public License"],
+    "source": "http://typotheque.le75.be/",
+    "tags": ["pixel", "serif", "revival"],
+    "styles": [
+      {
+        "file": "goozette",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "grammatika-regular",
+    "name": "Grammatika Regular",
+    "authors": ["Aleksandr Sukiasov"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://sourceforge.net/projects/grammatika/?source=directory",
+    "tags": ["inktraps", "sans serif"],
+    "styles": [
+      {
+        "file": "grammatika-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "hack",
+    "name": "Hack",
+    "authors": ["Chriss Impkins"],
+    "licence": ["Hack Open Font License", "Bitstream Vera Fonts Copyright"],
+    "source": "https://github.com/chrissimpkins/Hack",
+    "tags": ["code", "monospace"],
+    "styles": [
+      {
+        "file": "hack-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hack-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hack-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hack-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "half",
+    "name": "Half",
+    "authors": ["Bryce Wilner"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/brycewilner/Half",
+    "tags": ["cyrillic", "sans serif", "geometric", "graphic", "mechanistic", "wonky"],
+    "styles": [
+      {
+        "file": "half-21",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "half-39",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "half-51",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "half-75",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "hanken",
+    "name": "Hanken",
+    "authors": ["Alfredo Marco Pradil"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/hanken",
+    "tags": ["geometric", "rounded"],
+    "styles": [
+      {
+        "file": "hanken-book-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "heal-the-web",
+    "name": "Heal the web",
+    "authors": ["Rainbow Unicorn", "Jakub Kanior"],
+    "licence": ["MPL"],
+    "source": "https://healtheweb.site/",
+    "tags": ["geometric", "sans serif", "2010"],
+    "styles": [
+      {
+        "file": "healtheweba-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "healthewebb-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "herbiflora",
+    "name": "Herbiflora",
+    "authors": ["Ahyangyi"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/raphaelbastide/herbiflora",
+    "tags": ["2010", "wonky", "serif", "damage"],
+    "styles": [
+      {
+        "file": "herbiflora-1",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "hibana",
+    "name": "Hibana",
+    "authors": ["Shichao Yang"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://pygmalion.xyz/typefaces/hibana",
+    "tags": ["grotesque / lineale", "sans serif", "extended / wide"],
+    "styles": [
+      {
+        "file": "hibana-45submedium",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "hk-grotesk",
+    "name": "HK Grotesk",
+    "authors": ["Alfredo Marco Pradil", "Hanken Design Co."],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/hk-grotesk",
+    "tags": ["sans serif", "super-family"],
+    "styles": [
+      {
+        "file": "hkgrotesk-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hkgrotesk-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hkgrotesk-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hkgrotesk-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hkgrotesk-lightitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hkgrotesk-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hkgrotesk-mediumitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "hkgrotesk-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "honoka-mincho",
+    "name": "Honoka Mincho",
+    "authors": ["HONOKA Project"],
+    "licence": ["IPA Font License", "GNU General Public License"],
+    "source": "https://www.freejapanesefont.com/honoka-mincho-download/",
+    "tags": ["serif", "cyrillic"],
+    "styles": [
+      {
+        "file": "font_1_honokamin",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ia-writer",
+    "name": "iA Writer",
+    "authors": ["iA"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/iaolo/iA-Fonts/tree/master/iA Writer Quattro",
+    "tags": ["grotesque / lineale", "monospace", "sans serif", "derivated"],
+    "styles": [
+      {
+        "file": "iawriterduos-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawriterduos-bolditalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawriterduos-italic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawriterduos-regular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawritermonos-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawritermonos-bolditalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawritermonos-italic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawritermonos-regular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawriterquattros-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawriterquattros-bolditalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawriterquattros-italic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "iawriterquattros-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "inconsolata",
+    "name": "Inconsolata",
+    "authors": ["Raph Levien"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://en.wikipedia.org/wiki/Inconsolata",
+    "tags": ["monospace"],
+    "styles": [
+      {
+        "file": "inconsolata-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inconsolata-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "indira-k",
+    "name": "Indira K",
+    "authors": ["Peter Wiegel"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.peter-wiegel.de/IndiraK.html",
+    "tags": ["serif", "garalde / old face"],
+    "styles": [
+      {
+        "file": "indira_k-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "inknut-antiqua",
+    "name": "Inknut Antiqua",
+    "authors": ["Claus Eggers Sørensen"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/clauseggers/Inknut-Antiqua",
+    "tags": ["screen", "serif", "super-family"],
+    "styles": [
+      {
+        "file": "inknutantiqua-black-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inknutantiqua-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inknutantiqua-extrabold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inknutantiqua-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inknutantiqua-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inknutantiqua-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inknutantiqua-semibold-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "inria",
+    "name": "Inria",
+    "authors": ["Black[Foundry]"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/BlackFoundryCom/InriaFonts",
+    "tags": ["serif", "sans serif"],
+    "styles": [
+      {
+        "file": "inriasans-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriasans-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriasans-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriasans-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriasans-lightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriasans-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriaserif-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriaserif-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriaserif-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriaserif-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriaserif-lightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "inriaserif-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "instrument-serif",
+    "name": "Instrument Serif",
+    "authors": ["Rodrigo Fuenzalida"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/Instrument/instrument-serif/tree/main",
+    "tags": ["serif", "garalde / old face", "narrow", "1980"],
+    "styles": [
+      {
+        "file": "instrumentserif-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "instrumentserif-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "interval",
+    "name": "Interval",
+    "authors": ["Alex Chavot"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/interval",
+    "tags": ["monospace"],
+    "styles": [
+      {
+        "file": "interval",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "interval_bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "interval_bold_slanted",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "interval_slanted",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "iosevka",
+    "name": "Iosevka",
+    "authors": ["Belleve Invis"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/be5invis/Iosevka",
+    "tags": ["code", "sans serif", "geometric", "monospace"],
+    "styles": [
+      {
+        "file": "iosevka-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "iosevka-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "iosevka-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "iosevka-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "isobare",
+    "name": "Isobare",
+    "authors": ["Clémence Fontaine"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.clemencefontaine.fr/page/isobar.html",
+    "tags": ["graphic", "wonky", "damage", "organic"],
+    "styles": [
+      {
+        "file": "isobare-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "jet-brains-mono",
+    "name": "Jet Brains Mono",
+    "authors": ["Philipp Nurullin"],
+    "licence": ["Apache License, Version 2.0"],
+    "source": "https://www.jetbrains.com/lp/mono/",
+    "tags": ["monospace", "grotesque / lineale", "code"],
+    "styles": [
+      {
+        "file": "jetbrainsmono-bold-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "jetbrainsmono-bolditalic-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "jetbrainsmono-extrabold-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "jetbrainsmono-extrabolditalic-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "jetbrainsmono-italic-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "jetbrainsmono-medium-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "jetbrainsmono-mediumitalic-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "jetbrainsmono-regular-1",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "jost",
+    "name": "Jost",
+    "authors": ["Indestructible Type"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://indestructibletype.com/Jost.html",
+    "tags": [
+      "blackletter",
+      "super-family",
+      "geometric",
+      "grotesque / lineale",
+      "large character map",
+      "sans serif"
+    ],
+    "styles": [
+      {
+        "file": "jost-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-blackitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-book",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-bookitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-hairline",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-hairlineitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-heavy",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-heavyitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-lightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-mediumitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-semi",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-semiitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-thin",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "jost-thinitalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "jrug-punk",
+    "name": "JRUG PUNK",
+    "authors": ["JO 753"],
+    "licence": ["Apache License, Version 2.0"],
+    "source": "https://web.archive.org/web/20170607160430/http://www.nooalf.com/UBoWTXEZFoNS.htm",
+    "tags": ["wonky", "damage"],
+    "styles": [
+      {
+        "file": "jrug_punk-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "junicode",
+    "name": "Junicode",
+    "authors": ["Peter S. Baker"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/Fromager/junicode",
+    "tags": ["serif", "large character map", "garalde / old face", "variable"],
+    "styles": [
+      {
+        "file": "junicode-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-cond",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-conditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-condlight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-condlightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-exp",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-expitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-lightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-regular_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-smcondmedium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-smcondmediumitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-smexpsmbold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "junicode-smexpsmbolditalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "karla",
+    "name": "Karla",
+    "authors": ["Jonny Pinhorn"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.google.com/fonts#UsePlace:use/Collection:Karla",
+    "tags": ["grotesque / lineale", "sans serif"],
+    "styles": [
+      {
+        "file": "karla-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "karla-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "karla-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "karla-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "karmilla",
+    "name": "Karmilla",
+    "authors": ["Jonny Pinhorn", "Raphaël Bastide", "Manuel Schmalstieg"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/ms-studio/karmilla",
+    "tags": ["grotesque / lineale", "derivated"],
+    "styles": [
+      {
+        "file": "karmilla-bold-011-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "karmilla-regular-011-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "karrik",
+    "name": "Karrik",
+    "authors": ["Jean-Baptiste Morizot", "Lucas Le Bihan"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/phantomfoundry/karrik_fonts",
+    "tags": ["grotesque / lineale", "wonky", "damage"],
+    "styles": [
+      {
+        "file": "karrik-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "karrik-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "kikuta",
+    "name": "Kikuta",
+    "authors": ["Erwan Le Rétif"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://erwanleretif.xyz/typotheque",
+    "tags": ["2020", "variable", "monospace", "graphic", "sans serif", "rounded"],
+    "styles": [
+      {
+        "file": "kikuta-variable-vf",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "lab-mono",
+    "name": "Lab Mono",
+    "authors": ["Martin Wecke"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/hatsumatsu/Lab-Mono",
+    "tags": ["grotesque / lineale", "monospace"],
+    "styles": [
+      {
+        "file": "labmono-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "league-mono",
+    "name": "League Mono",
+    "authors": ["Tyler Finck"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.theleagueofmoveabletype.com/league-mono",
+    "tags": ["super-family", "sans serif", "monospace", "grotesque / lineale"],
+    "styles": [
+      {
+        "file": "leaguemono-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "leaguemono-extrabold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "leaguemono-light",
+        "files": ["ttf"]
+      },
+      {
+        "file": "leaguemono-medium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "leaguemono-regular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "leaguemono-semibold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "leaguemono-thin",
+        "files": ["ttf"]
+      },
+      {
+        "file": "leaguemono-ultralight",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "liberation",
+    "name": "Liberation",
+    "authors": ["Red Hat"],
+    "licence": ["Liberation Font License"],
+    "source": "https://fedorahosted.org/liberation-fonts/",
+    "tags": [
+      "grotesque / lineale",
+      "large character map",
+      "derivated",
+      "monospace",
+      "narrow",
+      "sans serif",
+      "serif",
+      "super-family"
+    ],
+    "styles": [
+      {
+        "file": "liberationmono-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationmono-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationmono-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationmono-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsans-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsans-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsans-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsans-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsansnarrow-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsansnarrow-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsansnarrow-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationsansnarrow-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationserif-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationserif-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationserif-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "liberationserif-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "libre-baskerville",
+    "name": "Libre Baskerville",
+    "authors": ["Pablo Impallari"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.impallari.com/projects/overview/libre-baskerville",
+    "tags": ["humanist", "large character map", "screen", "serif"],
+    "styles": [
+      {
+        "file": "librebaskerville-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "librebaskerville-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "librebaskerville-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "lil-grotesk",
+    "name": "Lil Grotesk",
+    "authors": ["Bastien Sozeau"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/bsozoo/LilGrotesk",
+    "tags": ["grotesque / lineale", "sans serif"],
+    "styles": [
+      {
+        "file": "lilgrotesk-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lilgrotesk-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "limousine",
+    "name": "Limousine",
+    "authors": ["Open Source Publishing"],
+    "licence": ["GNU General Public License"],
+    "source": "http://ospublish.constantvzw.org/foundry/limousine/",
+    "tags": ["sans serif", "derivated", "cyrillic"],
+    "styles": [
+      {
+        "file": "limousine",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "linux-libertine",
+    "name": "Linux Libertine",
+    "authors": ["Libertine Open Fonts Project"],
+    "licence": ["SIL Open Font License, 1.1", "GNU General Public License"],
+    "source": "http://www.linuxlibertine.org/",
+    "tags": ["garalde / old face", "glyphic / incise", "sans serif", "serif", "super-family"],
+    "styles": [
+      {
+        "file": "linbiolinum_kah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linbiolinum_rah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linbiolinum_rbah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linbiolinum_riah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_drah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_i-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_rah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_rbah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_rbiah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_riah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_rzah-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "linlibertine_rziah-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "lucette",
+    "name": "Lucette",
+    "authors": ["Yann Linguinou"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://linguinouyann.com/LUCETTE-1",
+    "tags": ["serif", "mechanistic"],
+    "styles": [
+      {
+        "file": "lucette-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lucette-regularitalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "luculent",
+    "name": "Luculent",
+    "authors": ["Andrew Kensler"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://eastfarthing.com/luculent/",
+    "tags": ["wonky", "bitmap", "code", "monospace", "smallsize"],
+    "styles": [
+      {
+        "file": "luculent-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "luculentb-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "luculentbi-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "luculenti-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "lunchtype",
+    "name": "Lunchtype",
+    "authors": ["Stefan Wetterstrand"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/fontalternative/lunchtype",
+    "tags": ["sans serif", "grotesque / lineale", "extended / wide"],
+    "styles": [
+      {
+        "file": "lunchtype22-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype22-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype22-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype23-light-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype23-medium-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype23-regular-italic-webfont",
+        "files": ["ttf"]
+      },
+      {
+        "file": "lunchtype24-light-expanded-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype24-medium-expanded-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype24-regular-expanded-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype25-light_condensed-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype25-medium-condensed-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "lunchtype25-regular_condensed-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "manusquared",
+    "name": "Manusquared",
+    "authors": ["Quentin Juhel"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/quentinjuhel/manusquared",
+    "tags": ["generative", "wonky", "damage", "curveless"],
+    "styles": [
+      {
+        "file": "manusquared-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "manusquared-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "maplemono",
+    "name": "MapleMono",
+    "authors": ["subframe7536"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/subframe7536/maple-font/releases/tag/v7.9",
+    "tags": ["monospace", "code", "2020", "rounded"],
+    "styles": [
+      {
+        "file": "maplemono-italic-1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "maplemono-regular-1",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "metaaccanthis",
+    "name": "MetaAccanthis",
+    "authors": ["Amélie Dumont"],
+    "licence": ["CC BY 1.0"],
+    "source": "https://gitlab.com/ameliedumont/fonts/-/tree/master/MetaAccanthis",
+    "tags": ["monolinear", "serif", "revival", "slab", "latex"],
+    "styles": [
+      {
+        "file": "metaaccanthis",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "metaaccanthisalternate",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "meyrin",
+    "name": "Meyrin CERN terminal font",
+    "authors": ["Brian Suda", "Tom Leaman"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/optional-is/Meyrin",
+    "tags": ["code", "monospace", "pixel"],
+    "styles": [
+      {
+        "file": "meyrin-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "moche",
+    "name": "Moche",
+    "authors": ["Vivien Gorse"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.pepite-collectif.com/portfolio/moche/",
+    "tags": ["sans serif", "reverse-contrast", "glyphic / incise"],
+    "styles": [
+      {
+        "file": "moche-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "moche-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "moche-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "monoid",
+    "name": "Monoid",
+    "authors": ["Andreas Larsen"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/larsenwork/monoid",
+    "tags": ["geometric", "monospace", "code", "smallsize", "screen"],
+    "styles": [
+      {
+        "file": "monoid-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "monoid-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "monoid-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "monoid-retina-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "monomusic",
+    "name": "MonoMusic",
+    "authors": ["Andreas Larsen"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/larsenwork/monomusic",
+    "tags": ["monospace", "geometric"],
+    "styles": [
+      {
+        "file": "monomusic-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "mplus-1c-heavy",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "montagu-slab",
+    "name": "Montagu Slab",
+    "authors": ["Květoslav Bartoš"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fonts.floriankarsten.com/montagu-slab",
+    "tags": ["serif", "variable"],
+    "styles": [
+      {
+        "file": "montaguslab144pt-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "montaguslab144pt-thin",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "montaguslab16pt-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "nanook",
+    "name": "Nanook",
+    "authors": ["Lucas Le Bihan"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/LucasLeBihan/Nanook",
+    "tags": ["mechanistic", "serif"],
+    "styles": [
+      {
+        "file": "nanook_bold",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "national-park-typeface",
+    "name": "National Park Typeface",
+    "authors": ["DO STUDIO"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://nationalparktypeface.com/",
+    "tags": ["rounded", "sans serif"],
+    "styles": [
+      {
+        "file": "nationalpark-heavy",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nationalpark-outline",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nationalpark-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nationalpark-thin",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "necto-mono",
+    "name": "Necto mono",
+    "authors": ["Collletttivo"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://collletttivo.it/",
+    "tags": ["monospace", "grotesque / lineale"],
+    "styles": [
+      {
+        "file": "nectomono-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "nighthawk",
+    "name": "Nighthawk",
+    "authors": ["Erwan Le Rétif"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://erwanleretif.xyz/typotheque",
+    "tags": ["grotesque / lineale", "sans serif", "wonky"],
+    "styles": [
+      {
+        "file": "nighthawk02022021-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "not-comic",
+    "name": "Not Comic",
+    "authors": ["Harrisson", "Louis Garrido"],
+    "licence": ["Copiez et reproduisez"],
+    "source": "https://notcomic.harrisson.be",
+    "tags": ["2020", "graphic", "revival", "rounded", "sans serif"],
+    "styles": [
+      {
+        "file": "notcomic",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "not-courrier-sans",
+    "name": "Not Courier Sans",
+    "authors": ["Open Source Publishing"],
+    "licence": ["GNU General Public License"],
+    "source": "http://ospublish.constantvzw.org/foundry/notcouriersans/",
+    "tags": ["monospace", "sans serif", "rounded", "derivated", "cyrillic"],
+    "styles": [
+      {
+        "file": "notcouriersans-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "notcouriersans",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "now-alt",
+    "name": "Now Alt",
+    "authors": ["Alfredo Marco Pradil"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/now-alt",
+    "tags": ["sans serif", "geometric", "grotesque / lineale"],
+    "styles": [
+      {
+        "file": "nowalt-black-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nowalt-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nowalt-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nowalt-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nowalt-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "nowalt-thin-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "old-standard-tt",
+    "name": "Old Standard TT",
+    "authors": ["Alexey Kryukov"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.fontsquirrel.com/fonts/Old-Standard-TT",
+    "tags": ["narrow", "didone", "cyrillic"],
+    "styles": [
+      {
+        "file": "oldstandard-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "oldstandard-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "oldstandard-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "orbit",
+    "name": "Orbit",
+    "authors": ["Sooun Cho"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/JAMO-TYPEFACE/Orbit/tree/main",
+    "tags": ["geometric", "monospace", "sans serif"],
+    "styles": [
+      {
+        "file": "orbit-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "orchard-linear",
+    "name": "Orchard Linear",
+    "authors": ["Rory King"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/nervousattack/Orchard",
+    "tags": ["wonky", "sans serif", "script"],
+    "styles": [
+      {
+        "file": "orchard-linear",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "overpass",
+    "name": "Overpass",
+    "authors": ["Red Hat"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/RedHatBrand/overpass",
+    "tags": ["grotesque / lineale", "sans serif", "super-family"],
+    "styles": [
+      {
+        "file": "overpass-bold-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "overpass-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "overpass-extralight-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "overpass-extralight_italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "overpass-light-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "overpass-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "overpass-regular-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "overpass-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "panamera",
+    "name": "Panamera",
+    "authors": ["Bastien Sozeau"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/uplaod/Panamera",
+    "tags": ["extended / wide", "grotesque / lineale"],
+    "styles": [
+      {
+        "file": "panamera-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "panamera-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "panamera-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "panchi-mono",
+    "name": "Panchi Mono",
+    "authors": ["Erwan Le Rétif"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://erwanleretif.xyz/typotheque",
+    "tags": ["revival", "monospace", "rounded", "wonky", "1960"],
+    "styles": [
+      {
+        "file": "panchimono-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "pecita",
+    "name": "Pecita",
+    "authors": ["Philippe Cochy"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://pecita.eu/",
+    "tags": ["large character map", "script", "cyrillic"],
+    "styles": [
+      {
+        "file": "pecita",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "playfair-display",
+    "name": "Playfair Display",
+    "authors": ["Claus Eggers Sørensen"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/clauseggers/Playfair",
+    "tags": ["didone", "garalde / old face", "serif", "super-family"],
+    "styles": [
+      {
+        "file": "playfairdisplay-black-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplay-blackitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplay-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplay-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplay-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplay-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplaysc-black-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplaysc-blackitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplaysc-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplaysc-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplaysc-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "playfairdisplaysc-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "pressuru",
+    "name": "Pressuru",
+    "authors": ["Roman Gornitsky"],
+    "licence": ["Other"],
+    "source": "http://abstrkt.ru/index.php?p=freefonts",
+    "tags": ["blackletter", "grotesque / lineale", "inktraps", "derivated", "narrow", "sans serif"],
+    "styles": [
+      {
+        "file": "pressuru-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "profont",
+    "name": "Profont",
+    "authors": ["Andrew Welch"],
+    "licence": ["MIT License (MIT)"],
+    "source": "https://tobiasjung.name/profont/",
+    "tags": ["monospace", "smallsize", "bitmap", "code", "sans serif", "screen", "1980"],
+    "styles": [
+      {
+        "file": "profontwindows-1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "profontwindows",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "prop-courier-sans",
+    "name": "PropCourier Sans",
+    "authors": ["Manufactura Independente"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitorious.org/libregraphicsmag/propcouriersans",
+    "tags": ["derivated", "rounded", "sans serif", "cyrillic"],
+    "styles": [
+      {
+        "file": "propcouriersans-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "propcouriersans-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "propcouriersans-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "propcouriersans-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ptath",
+    "name": "Ptah",
+    "authors": ["T Christopher White"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/assets/downloads/ptah/271b964e09c6b36aba9fbedd1b103aad/ptah.zip",
+    "tags": ["sans serif"],
+    "styles": [
+      {
+        "file": "ptah-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptah-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "pt-mono",
+    "name": "PT Mono",
+    "authors": ["ParaType"],
+    "licence": ["SIL Open Font License, 1.1", "ParaType Free Font Licensing Agreement"],
+    "source": "http://www.paratype.com/public/",
+    "tags": ["super-family", "large character map", "monospace", "cyrillic"],
+    "styles": [
+      {
+        "file": "ptm55f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptm75f_w",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "pt-sans",
+    "name": "PT Sans",
+    "authors": ["ParaType"],
+    "licence": ["SIL Open Font License, 1.1", "ParaType Free Font Licensing Agreement"],
+    "source": "http://www.paratype.com/public/",
+    "tags": ["super-family", "large character map", "sans serif", "cyrillic"],
+    "styles": [
+      {
+        "file": "ptc55f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptc75f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptn57f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptn77f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "pts55f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "pts56f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "pts75f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "pts76f_w",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "pt-serif",
+    "name": "PT Serif",
+    "authors": ["ParaType"],
+    "licence": ["SIL Open Font License, 1.1", "ParaType Free Font Licensing Agreement"],
+    "source": "http://www.paratype.com/public/",
+    "tags": ["super-family", "large character map", "cyrillic"],
+    "styles": [
+      {
+        "file": "ptf55f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptf56f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptf75f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptf76f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptz55f_w",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ptz56f_w",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "punk-nova",
+    "name": "Punk Nova",
+    "authors": ["Donald Knuth", "Khaled Hosny"],
+    "licence": ["Refer to original README"],
+    "source": "https://www.ctan.org/tex-archive/fonts/punknova/",
+    "tags": ["derivated", "wonky", "generative", "graphic", "script", "curveless", "latex"],
+    "styles": [
+      {
+        "file": "punknova-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "punknova-bold_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "punknova-boldslanted",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "punknova-boldslanted_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "punknova-slanted",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "punknova-slanted_1",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "punknova",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "punknova_1",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "quebec",
+    "name": "Québec",
+    "authors": ["Victor Gaultney, Annie Olsen, Pablo Ugerman"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/quebec",
+    "tags": ["sans serif", "derivated"],
+    "styles": [
+      {
+        "file": "quebec-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "quebec-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "quebec-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "quebec-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "quebec-lightitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "quebec-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "quebec-semibold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "quebec-semibolditalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "railway-sans",
+    "name": "Railway Sans",
+    "authors": ["Greg Fleming"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.fontspace.com/greg-fleming/railway",
+    "tags": ["humanist", "sans serif", "symbols"],
+    "styles": [
+      {
+        "file": "railway",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "railwayalternate",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ranchers",
+    "name": "Ranchers",
+    "authors": ["Pablo Impallari"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/ranchers",
+    "tags": ["reverse-contrast"],
+    "styles": [
+      {
+        "file": "ranchers-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "recursive",
+    "name": "Recursive",
+    "authors": ["Stephen Nixon", "Lisa Huang", "Katja Schimmel", "Rafał Buchner"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.recursive.design/",
+    "tags": ["super-family", "script", "variable"],
+    "styles": [
+      {
+        "file": "recursivemonocslst-med",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "recursivesanscslst-med",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "recursivesanslnrst-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "recursivesanslnrst-light",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "redaction",
+    "name": "Redaction",
+    "authors": ["Forest Young", "Jeremy Mickel"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.redaction.us/",
+    "tags": ["pixel", "serif", "damage"],
+    "styles": [
+      {
+        "file": "redaction-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction10-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction10-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction10-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction100-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction100-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction100-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction20-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction20-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction20-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction35-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction35-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction35-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction50-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction50-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction50-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction70-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction70-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "redaction70-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "roadiz-sans",
+    "name": "Roadiz Sans",
+    "authors": ["Nonpareille"],
+    "licence": ["GPLv3"],
+    "source": "https://github.com/roadiz/roadiz/",
+    "tags": ["monospace", "sans serif", "code"],
+    "styles": [
+      {
+        "file": "roadizsans-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "roadizsans-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "roadizsans-mono-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "roadizsans-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "routed-gothic-font",
+    "name": "Routed Gothic Font",
+    "authors": ["Darren Embry"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://webonastick.com/fonts/routed-gothic/",
+    "tags": ["derivated", "1970"],
+    "styles": [
+      {
+        "file": "routedgothic-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "routedgothic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "routedgothicnarrow-half-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "routedgothicnarrow-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "routedgothicnarrow",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "routedgothicwide-half-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "routedgothicwide-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "routedgothicwide",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "rubik",
+    "name": "Rubik",
+    "authors": ["Hubert and Fischer"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/googlefonts/rubik",
+    "tags": ["grotesque / lineale", "rounded", "super-family"],
+    "styles": [
+      {
+        "file": "rubik-black-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-blackitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-lightitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-mediumitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubik-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubikmonoone-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "rubikone-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "rumeur",
+    "name": "Rumeur",
+    "authors": ["Groupe CCC"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/groupeccc/Rumeur",
+    "tags": ["geometric", "sans serif", "wonky", "graphic", "damage"],
+    "styles": [
+      {
+        "file": "rumeur",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "sani-trixie",
+    "name": "Sani Trixie Sans",
+    "authors": ["GrandChaos9000"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://openfontlibrary.org/en/font/sani-trixie-sans",
+    "tags": ["sans serif", "cyrillic"],
+    "styles": [
+      {
+        "file": "sanitrixiesans",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "savate",
+    "name": "Savate",
+    "authors": ["Collectif Wech"],
+    "licence": ["MIT License (MIT)"],
+    "source": "https://github.com/CollectifWech/Savate",
+    "tags": ["reverse-contrast"],
+    "styles": [
+      {
+        "file": "savate-italique-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "savate-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "selectric",
+    "name": "Selectric",
+    "authors": ["Atelier Bek"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/atelierBek/selectric",
+    "tags": ["monospace", "mechanistic", "revival", "serif"],
+    "styles": [
+      {
+        "file": "selectricmono-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "selectricroman-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "server-mono",
+    "name": "Server Mono",
+    "authors": ["Jimmy Lee"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/internet-development/www-server-mono/releases",
+    "tags": ["monospace", "2020", "ascii", "screen"],
+    "styles": [
+      {
+        "file": "servermono-regular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "servermono-regularoblique",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "sinkin-sans",
+    "name": "Sinkin Sans",
+    "authors": ["k-type"],
+    "licence": ["Apache License, Version 2.0"],
+    "source": "http://www.fontsquirrel.com/fonts/sinkin-sans",
+    "tags": ["extended / wide", "grotesque / lineale", "inktraps"],
+    "styles": [
+      {
+        "file": "sinkinsans-300light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sinkinsans-500medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sinkinsans-700bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sinkinsans-900xblack-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "snap-it",
+    "name": "Snap-it mono",
+    "authors": ["Morgane Bartoli", "Corentin Moussard"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/Alune/snap-it-mono-font",
+    "tags": ["sans serif", "mechanistic", "monospace", "curveless"],
+    "styles": [
+      {
+        "file": "snap-itmono-16-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "sometype-mono",
+    "name": "Sometype Mono",
+    "authors": ["Ryoichi Tsunekawa"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://monospacedfont.com/",
+    "tags": ["monospace", "super-family"],
+    "styles": [
+      {
+        "file": "sometypemono-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sometypemono-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sometypemono-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sometypemono-mediumitalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sometypemono-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sometypemono-regularitalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "sono",
+    "name": "Sono",
+    "authors": ["Tyler Finck"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/sursly/sono",
+    "tags": ["monospace", "super-family", "variable", "rounded"],
+    "styles": [
+      {
+        "file": "sonomonospace-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sonomonospace-extrabold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sonomonospace-extralight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sonomonospace-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sonomonospace-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "source-code-pro",
+    "name": "Source Code Pro",
+    "authors": ["Adobe"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/adobe-fonts/source-code-pro",
+    "tags": ["monospace", "super-family"],
+    "styles": [
+      {
+        "file": "sourcecodepro-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcecodepro-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcecodepro-extralight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcecodepro-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcecodepro-medium",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcecodepro-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcecodepro-semibold",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "source-sans-pro",
+    "name": "Source Sans Pro",
+    "authors": ["Adobe"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/adobe-fonts/source-sans-pro",
+    "tags": ["sans serif", "super-family"],
+    "styles": [
+      {
+        "file": "sourcesanspro-black",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-blackit",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-boldit",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-extralight",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-extralightit",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-it",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-light",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-lightit",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-regular",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-semibold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourcesanspro-semiboldit",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "source-serif-pro",
+    "name": "Source Serif Pro",
+    "authors": ["Adobe"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://adobe.github.io/source-serif-pro/",
+    "tags": ["screen", "serif"],
+    "styles": [
+      {
+        "file": "sourceserifpro-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "sourceserifpro-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "space-mono",
+    "name": "Space Mono",
+    "authors": ["Colophon Foundry"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fonts.google.com/specimen/Space+Mono?selection.family=Space+Mono",
+    "tags": ["monospace", "geometric"],
+    "styles": [
+      {
+        "file": "spacemono-bold",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "spacemono-bolditalic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "spacemono-italic",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "spacemono-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "space-notorious",
+    "name": "Space Notorious",
+    "authors": ["Michaël Van Wilder"],
+    "licence": ["GNU General Public License"],
+    "source": "http://typotheque.le75.be/",
+    "tags": ["pixel", "sans serif", "wonky", "monospace", "code", "grotesque / lineale"],
+    "styles": [
+      {
+        "file": "space-notorious-rounded",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "sprat",
+    "name": "Sprat",
+    "authors": ["Ethan Nakache"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/EthanNakache/Sprat-type",
+    "tags": ["serif", "super-family"],
+    "styles": [
+      {
+        "file": "sprat-condensedblack",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-condensedbold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-condensedlight",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-condensedmedium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-condensedthin",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-condesedregular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-extendedblack",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-extendedbold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-extendedlight",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-extendedmedium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-extendedregular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-extendedthin",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-regular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-regularblack",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-regularbold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-regularlight",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-regularmedium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat-regularthin",
+        "files": ["ttf"]
+      },
+      {
+        "file": "sprat",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "steps-mono",
+    "name": "Steps Mono",
+    "authors": ["Raphaël Bastide", "Jean-Baptiste Morizot"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/raphaelbastide/steps-mono/",
+    "tags": ["monospace", "geometric", "sans serif", "narrow"],
+    "styles": [
+      {
+        "file": "steps-mono-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "steps-mono-thin",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "struggle",
+    "name": "Struggle",
+    "authors": ["Klotter Supply"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://klotter.supply/struggle",
+    "tags": ["wonky", "2020", "organic", "graphic", "rounded", "1970"],
+    "styles": [
+      {
+        "file": "struggle-regular_1",
+        "files": ["ttf"]
+      },
+      {
+        "file": "struggle-rotalics_1",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "syne",
+    "name": "Syne",
+    "authors": ["Bonjour Monde"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://gitlab.com/bonjour-monde/syne-typeface/tree/master",
+    "tags": [
+      "grotesque / lineale",
+      "sans serif",
+      "super-family",
+      "monospace",
+      "extended / wide",
+      "script",
+      "curveless"
+    ],
+    "styles": [
+      {
+        "file": "syne-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "syne-extra",
+        "files": ["ttf"]
+      },
+      {
+        "file": "syne-italic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "syne-mono",
+        "files": ["ttf"]
+      },
+      {
+        "file": "syne-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "techna-sans",
+    "name": "Techna Sans",
+    "authors": ["Carl Enlund"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/carlenlund/techna-sans",
+    "tags": ["sans serif", "geometric"],
+    "styles": [
+      {
+        "file": "technasans-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "terminal-grotesque",
+    "name": "Terminal Grotesque",
+    "authors": ["velvetyne", "Raphaël Bastide"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/raphaelbastide/Terminal-Grotesque/",
+    "tags": ["wonky", "grotesque / lineale", "pixel"],
+    "styles": [
+      {
+        "file": "terminal-grotesque",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "tgl",
+    "name": "TGL",
+    "authors": ["Peter Wiegel"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://www.peter-wiegel.de/TGL_0-16.html",
+    "tags": ["wonky", "rounded"],
+    "styles": [
+      {
+        "file": "tgl_0-16-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "tgl_0-17-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "tgl_0-17_alt-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "toren",
+    "name": "Toren",
+    "authors": ["Eli Heuer"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/eliheuer/tenpo",
+    "tags": ["serif", "monospace"],
+    "styles": [
+      {
+        "file": "toren-mono",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "toren-proportional",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "toren-rotalic",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "tribalium-neue",
+    "name": "Tribalium Neue",
+    "authors": ["Fonderie.download"],
+    "licence": ["WTFPL"],
+    "source": "https://fonderie.download/tribaliumneue.html",
+    "tags": ["2020", "gaelic", "organic", "graphic", "script"],
+    "styles": [
+      {
+        "file": "tribaliumneue-poster",
+        "files": ["ttf"]
+      },
+      {
+        "file": "tribaliumneue-regular",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "tuffy",
+    "name": "Tuffy",
+    "authors": ["Thatcher Ulrich"],
+    "licence": ["Public Domain"],
+    "source": "http://tulrich.com/fonts/",
+    "tags": ["grotesque / lineale", "wonky"],
+    "styles": [
+      {
+        "file": "tuffy-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "tuffy_bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "tuffy_bold_italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "tuffy_italic-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "ume-fonts",
+    "name": "Ume fonts",
+    "authors": ["Horai Wataru"],
+    "licence": ["Other", "UmeFont license"],
+    "source": "http://sourceforge.jp/projects/ume-font/wiki/FrontPage",
+    "tags": ["wonky", "derivated", "monospace", "serif", "super-family"],
+    "styles": [
+      {
+        "file": "ume-gothic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ume-mincho-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ume-p-gothic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "ume-p-mincho-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "unifraktur",
+    "name": "UniFraktur",
+    "authors": ["j mach wust"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://unifraktur.sourceforge.net/",
+    "tags": ["blackletter"],
+    "styles": [
+      {
+        "file": "unifrakturcook-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "unifrakturcook-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "unifrakturmaguntia-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "vagra",
+    "name": "Vägra!",
+    "authors": ["Falk Olavi Schröter"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://klotter.supply/vagra",
+    "tags": ["pixel", "wonky", "graphic", "script"],
+    "styles": [
+      {
+        "file": "vagra-pixel-large",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vagra-pixel",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vagra-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "verily-serif-mono",
+    "name": "Verily Serif Mono",
+    "authors": ["Stephen G. Hartke"],
+    "licence": ["Bitstream Vera Fonts Copyright"],
+    "source": "http://www.fontsquirrel.com/fonts/Verily-Serif-Mono",
+    "tags": ["monospace", "serif"],
+    "styles": [
+      {
+        "file": "verilyserifmono-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "version",
+    "name": "Version",
+    "authors": ["Christoph Haag", "Xavier Klein"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/xavierKlein/versionFont",
+    "tags": [
+      "graphic",
+      "derivated",
+      "monolinear",
+      "sans serif",
+      "serif",
+      "mechanistic",
+      "generative",
+      "wonky",
+      "curveless"
+    ],
+    "styles": [
+      {
+        "file": "version_01_100_skeletor",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_01_10_skeletor",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_01_20_skeletor",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_01_40_skeletor",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_01_50_skeletor",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_01_77_skeletor",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_01_80_skeletor",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_02_100_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_02_10_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_02_20_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_02_40_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_02_50_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_02_77_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_02_80_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_03_100_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_03_10_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_03_20_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_03_40_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_03_50_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_03_77_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_03_80_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_04_100_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_04_10_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_04_20_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_04_40_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_04_50_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_04_77_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_04_80_skeletor_avec",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "version_0_5_10",
+        "files": ["ttf"]
+      },
+      {
+        "file": "version_0_5_100",
+        "files": ["ttf"]
+      },
+      {
+        "file": "version_0_5_20",
+        "files": ["ttf"]
+      },
+      {
+        "file": "version_0_5_40",
+        "files": ["ttf"]
+      },
+      {
+        "file": "version_0_5_50",
+        "files": ["ttf"]
+      },
+      {
+        "file": "version_0_5_80",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "victor-mono",
+    "name": "Victor Mono",
+    "authors": ["Rune Bjørnerås"],
+    "licence": ["MIT License (MIT)"],
+    "source": "https://rubjo.github.io/victor-mono/",
+    "tags": ["sans serif", "code", "monospace", "grotesque / lineale"],
+    "styles": [
+      {
+        "file": "victormono-bold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-bolditalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-boldoblique",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-extralight",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-extralightitalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-extralightoblique",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-italic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-light",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-lightitalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-lightoblique",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-medium",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-mediumitalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-mediumoblique",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-oblique",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-regular",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-semibold",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-semibolditalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-semiboldoblique",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-thin",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-thinitalic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "victormono-thinoblique",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "vintage-propagandist",
+    "name": "Vintage Propagandist",
+    "authors": ["Loki Gwynbleidd"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://ko-fi.com/lokigwynbleidd/shop/fonts",
+    "tags": ["damage", "graphic", "revival", "serif", "1900"],
+    "styles": [
+      {
+        "file": "vintagepropagandist",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "violet-sans",
+    "name": "Violet sans",
+    "authors": ["Calvin Waterman", "Max Ackerman"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/violetoffice/violet_sans/tree/master",
+    "tags": ["sans serif", "2010", "grotesque / lineale", "extended / wide"],
+    "styles": [
+      {
+        "file": "violetsans-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "vollkorn",
+    "name": "Vollkorn",
+    "authors": ["Friedrich Althausen"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://vollkorn-typeface.com/",
+    "tags": ["super-family", "serif"],
+    "styles": [
+      {
+        "file": "vollkorn-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vollkorn-bolditalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vollkorn-italic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vollkorn-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vollkorn-mediumitalic-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vollkorn-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vollkorn-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "vollkorn-semibolditalic-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "wavy",
+    "name": "Wavy",
+    "authors": ["Lucas Watteau", "Julien Beyls"],
+    "licence": ["GNU General Public License"],
+    "source": "http://typotheque.le75.be/",
+    "tags": ["serif"],
+    "styles": [
+      {
+        "file": "wavy",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "w-droge",
+    "name": "W droge",
+    "authors": ["Open Source Publishing"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://osp.kitchen/foundry/w-droge/",
+    "tags": ["grotesque / lineale", "wonky", "geometric"],
+    "styles": [
+      {
+        "file": "w-droge-itinerary-webfont-1",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "westernic",
+    "name": "Westernic",
+    "authors": ["Erwan Le Rétif"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://erwanleretif.xyz/typotheque",
+    "tags": ["1900", "blackletter", "gaelic", "mechanistic"],
+    "styles": [
+      {
+        "file": "westernic-italic",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "whois-mono",
+    "name": "Whois Mono",
+    "authors": ["Raphaël Bastide"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/raphaelbastide/Whois-mono/",
+    "tags": ["geometric", "monospace"],
+    "styles": [
+      {
+        "file": "whois-mono",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "wontertype",
+    "name": "WonderType",
+    "authors": ["Clémence Fontaine"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://www.clemencefontaine.fr/page/wonder.html",
+    "tags": ["graphic", "damage"],
+    "styles": [
+      {
+        "file": "wondertype-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "work-avec",
+    "name": "Work Avec",
+    "authors": ["Open Source Publishing"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "http://osp.kitchen/foundry/work-avec/",
+    "tags": ["sans serif", "derivated", "large character map"],
+    "styles": [
+      {
+        "file": "workavec-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "workavec-semibold-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "work-sans",
+    "name": "Work Sans",
+    "authors": ["Wei Huang"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/weiweihuanghuang/Work-Sans",
+    "tags": ["grotesque / lineale", "screen", "super-family"],
+    "styles": [
+      {
+        "file": "worksans-black-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-extrabold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-extralight-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-light-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-medium-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-regular-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-semibold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "worksans-thin-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "xolonium",
+    "name": "Xolonium",
+    "authors": ["Severin Meyer"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://fontlibrary.org/en/font/xolonium",
+    "tags": ["sans serif", "large character map", "geometric"],
+    "styles": [
+      {
+        "file": "xolonium-bold-webfont",
+        "files": ["ttf", "woff"]
+      },
+      {
+        "file": "xolonium-regular-webfont",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  },
+  {
+    "slug": "xxqueen",
+    "name": "xxQueen",
+    "authors": ["studio muchogusto"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://studiomuchogusto.ch/typefoundry/",
+    "tags": ["2020", "damage", "graphic", "organic", "pixel", "script", "wonky"],
+    "styles": [
+      {
+        "file": "xxqueen-basic",
+        "files": ["ttf"]
+      },
+      {
+        "file": "xxqueen-juicy",
+        "files": ["ttf"]
+      }
+    ]
+  },
+  {
+    "slug": "young-serif",
+    "name": "Young Serif",
+    "authors": ["Bastien Sozeau"],
+    "licence": ["SIL Open Font License, 1.1"],
+    "source": "https://github.com/bsozoo/YoungSerif",
+    "tags": ["garalde / old face", "serif"],
+    "styles": [
+      {
+        "file": "youngserif-regular",
+        "files": ["ttf", "woff"]
+      }
+    ]
+  }
+]

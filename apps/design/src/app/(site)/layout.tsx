@@ -8,6 +8,7 @@ import { kinds, registry, kindOf, type Kind } from "@/registry/meta";
 
 const menu = [
   ...(Object.keys(kinds) as Kind[]).map((k) => ({ label: kinds[k], href: `/#k=${k}` })),
+  { label: "ฟอนต์", href: "/fonts" },
   { label: "React Bits", href: "/react-bits" },
   { label: "เทมเพลตแอป", href: "/templates" },
 ];
@@ -42,6 +43,14 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href="/fonts"
+                className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                ฟอนต์
+              </a>
+            </li>
             <li>
               <a
                 href="/react-bits"

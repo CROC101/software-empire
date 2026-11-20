@@ -15,9 +15,9 @@ import {
   statSync,
   writeFileSync,
 } from "node:fs";
-import { join, relative, sep } from "node:path";
+import { join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import { crc32, inflateRawSync } from "node:zlib";
+import { crc32, deflateRawSync, inflateRawSync } from "node:zlib";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const src = join(root, "templates");
@@ -46,7 +46,7 @@ function files(dir, base = dir) {
     .sort();
 }
 
-/** Store-only zip (no compression: the sources are small, and it keeps this writer tiny). */
+/** Zip with deflate where it saves bytes (fonts shrink ~half; a family must fit 25 MiB), else stored. */
 export function zip(entries) {
   const local = [];
   const central = [];
@@ -54,29 +54,33 @@ export function zip(entries) {
   for (const { name, data } of entries) {
     const n = Buffer.from(name, "utf8");
     const crc = crc32(data);
+    const packed = deflateRawSync(data, { level: 9 });
+    const deflate = packed.length < data.length;
+    const body = deflate ? packed : data;
     const head = Buffer.alloc(30);
     head.writeUInt32LE(0x04034b50, 0);
     head.writeUInt16LE(20, 4);
     head.writeUInt16LE(0x0800, 6); // utf-8 names
-    head.writeUInt16LE(0, 8); // stored
+    head.writeUInt16LE(deflate ? 8 : 0, 8); // deflate or stored
     head.writeUInt32LE(0, 10); // dos time/date: 1980, keeps the zip reproducible
     head.writeUInt32LE(crc, 14);
-    head.writeUInt32LE(data.length, 18);
+    head.writeUInt32LE(body.length, 18);
     head.writeUInt32LE(data.length, 22);
     head.writeUInt16LE(n.length, 26);
-    local.push(head, n, data);
+    local.push(head, n, body);
     const dir = Buffer.alloc(46);
     dir.writeUInt32LE(0x02014b50, 0);
     dir.writeUInt16LE(20, 4);
     dir.writeUInt16LE(20, 6);
     dir.writeUInt16LE(0x0800, 8);
+    dir.writeUInt16LE(deflate ? 8 : 0, 10);
     dir.writeUInt32LE(crc, 16);
-    dir.writeUInt32LE(data.length, 20);
+    dir.writeUInt32LE(body.length, 20);
     dir.writeUInt32LE(data.length, 24);
     dir.writeUInt16LE(n.length, 28);
     dir.writeUInt32LE(offset, 42);
     central.push(dir, n);
-    offset += 30 + n.length + data.length;
+    offset += 30 + n.length + body.length;
   }
   const size = central.reduce((s, b) => s + b.length, 0);
   const end = Buffer.alloc(22);
@@ -88,7 +92,7 @@ export function zip(entries) {
   return Buffer.concat([...local, ...central, end]);
 }
 
-/** Reads a store-only zip back (for the self-test). */
+/** Reads a zip from zip() back (for the self-test). */
 function unzip(buf) {
   const out = [];
   let p = 0;
@@ -153,14 +157,20 @@ function build(slug) {
   console.log(`templates: ${slug} built, ${entries.length} source files zipped`);
 }
 
-if (process.argv.includes("--self-test")) {
+// tools/fonts.mjs imports zip from here; only a direct run builds anything
+const isMain = !!process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (!isMain) {
+  // imported
+} else if (process.argv.includes("--self-test")) {
   const entries = [
     { name: "a/readme.md", data: Buffer.from("สวัสดี template\n") },
     { name: "a/empty.txt", data: Buffer.alloc(0) },
     { name: "a/bin", data: Buffer.from([0, 255, 10, 13]) },
+    { name: "a/big.ttf", data: Buffer.alloc(8192, "glyph ") }, // deflated
   ];
   const back = unzip(zip(entries));
-  if (back.length !== 3) throw new Error("self-test: entry count");
+  if (back.length !== entries.length) throw new Error("self-test: entry count");
   back.forEach((e, i) => {
     if (e.name !== entries[i].name || !e.data.equals(entries[i].data))
       throw new Error(`self-test: ${e.name}`);

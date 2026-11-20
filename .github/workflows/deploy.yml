@@ -129,6 +129,20 @@ jobs:
         if: matrix.app == 'design'
         run: node apps/design/tools/templates.mjs
 
+      # the font library is not in git: every file in tools/fonts.lock.json is fetched from its
+      # source, SHA256-checked, into public/fontlib with one zip per family. The source host is
+      # slow (~8 min for 150 MiB), so the files are cached by the lock; cached files are re-hashed
+      - name: font library cache (design)
+        if: matrix.app == 'design'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: apps/design/public/fontlib
+          key: fontlib-${{ hashFiles('apps/design/tools/fonts.lock.json') }}
+          restore-keys: fontlib-
+      - name: font library (design)
+        if: matrix.app == 'design'
+        run: node apps/design/tools/fonts.mjs
+
       - name: build (export)
         if: matrix.kind == 'export'
         run: pnpm --filter @empire/${{ matrix.app }} build
