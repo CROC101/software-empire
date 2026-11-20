@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { registry } from "@/registry/meta";
+import { kindOf, registry } from "@/registry/meta";
 import {
   filterEntries,
   fuzzy,
@@ -18,12 +18,13 @@ describe("library views", () => {
       ...initialView,
       cat: "hero" as const,
       kind: "block" as const,
+      ver: "lite" as const,
       sort: "new" as const,
       q: "แสง",
       fav: true,
     };
     expect(parseView(viewHash(v))).toEqual(v);
-    expect(parseView("#c=<script>&k=nope&s=zzz&q=" + "x".repeat(200))).toEqual({
+    expect(parseView("#c=<script>&k=nope&v=x&s=zzz&q=" + "x".repeat(200))).toEqual({
       ...initialView,
       q: "x".repeat(60),
     });
@@ -40,6 +41,15 @@ describe("library views", () => {
   });
 
   it("filters by kind, category, favourites and text", () => {
+    const originals = filterEntries(registry, { ...initialView, ver: "original" }, new Set());
+    const lites = filterEntries(registry, { ...initialView, ver: "lite" }, new Set());
+    expect(originals.length).toBeGreaterThan(0);
+    expect(originals.every((e) => e.slug.endsWith("-original") && kindOf(e) === "exclusive")).toBe(
+      true,
+    );
+    // every original has its Lite rewrite under the same slug without the suffix
+    const liteSlugs = new Set(lites.map((e) => e.slug));
+    expect(originals.every((e) => liteSlugs.has(e.slug.replace(/-original$/, "")))).toBe(true);
     const blocks = filterEntries(registry, { ...initialView, kind: "block" }, new Set());
     expect(blocks.length).toBeGreaterThan(0);
     expect(

@@ -37,6 +37,11 @@ export default defineConfig(
       "@typescript-eslint/no-unnecessary-type-parameters": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/no-misused-promises": "off",
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-misused-spread": "off",
+      "no-useless-escape": "off",
+      // the compiler flags performance.now() inside event handlers declared in the component body
+      "react-hooks/purity": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "no-useless-assignment": "off",
       "react-hooks/refs": "off",

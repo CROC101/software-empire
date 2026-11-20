@@ -15,14 +15,28 @@ import {
 export type Sort = "popular" | "new" | "az";
 export const sorts: Record<Sort, string> = { popular: "ยอดนิยม", new: "มาใหม่", az: "A–Z" };
 
+/** Exclusive parts come twice: the author's file as published, and our own rewrite of it. */
+export type Version = "original" | "lite";
+export const versions: Record<Version, string> = { original: "V.original", lite: "Lite" };
+export const versionOf = (e: Entry): Version | undefined =>
+  e.slug.endsWith("-original") ? "original" : e.name.endsWith("· Lite") ? "lite" : undefined;
+
 export type View = {
   kind: Kind | "all";
   cat: Category | "all";
+  ver: Version | "all";
   sort: Sort;
   q: string;
   fav: boolean;
 };
-export const initialView: View = { kind: "all", cat: "all", sort: "popular", q: "", fav: false };
+export const initialView: View = {
+  kind: "all",
+  cat: "all",
+  ver: "all",
+  sort: "popular",
+  q: "",
+  fav: false,
+};
 
 const order = new Map(registry.map((e, i) => [e.slug, i]));
 const pos = (e: Entry) => order.get(e.slug) ?? 0;
@@ -84,6 +98,7 @@ export function filterEntries(list: readonly Entry[], v: View, favs: ReadonlySet
       (e) =>
         (v.kind === "all" || kindOf(e) === v.kind) &&
         (v.cat === "all" || e.category === v.cat) &&
+        (v.ver === "all" || versionOf(e) === v.ver) &&
         (!v.fav || favs.has(e.slug)) &&
         matches(e, v.q),
     ),
@@ -93,6 +108,7 @@ export function filterEntries(list: readonly Entry[], v: View, favs: ReadonlySet
 
 const isKind = (x: string | null): x is Kind => x !== null && x in kinds;
 const isCat = (x: string | null): x is Category => x !== null && x in categories;
+const isVer = (x: string | null): x is Version => x !== null && x in versions;
 const isSort = (x: string | null): x is Sort => x !== null && x in sorts;
 
 /** The hash is visitor input: unknown keys fall back to defaults, the query is capped. */
@@ -101,9 +117,11 @@ export function parseView(hash: string): View {
   const cat = p.get("c");
   const kind = p.get("k");
   const sort = p.get("s");
+  const ver = p.get("v");
   return {
     cat: isCat(cat) ? cat : "all",
     kind: isCat(cat) ? categories[cat].kind : isKind(kind) ? kind : "all",
+    ver: isVer(ver) ? ver : "all",
     sort: isSort(sort) ? sort : "popular",
     q: (p.get("q") ?? "").slice(0, 60),
     fav: p.get("f") === "1",
@@ -114,6 +132,7 @@ export function viewHash(v: View): string {
   const p = new URLSearchParams();
   if (v.cat !== "all") p.set("c", v.cat);
   else if (v.kind !== "all") p.set("k", v.kind);
+  if (v.ver !== "all") p.set("v", v.ver);
   if (v.sort !== "popular") p.set("s", v.sort);
   if (v.q) p.set("q", v.q);
   if (v.fav) p.set("f", "1");

@@ -263,10 +263,23 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "carousel",
       "arc-fan",
-      "Spring Arc Fan",
+      "Spring Arc Fan · Lite",
       "การ์ดสิบใบกางเป็นพัดบนล้อที่มีจุดหมุนอยู่ไกลใต้เวที เวลาเลื่อน การ์ดใบนำขยับก่อนแล้วแรงส่งไล่ออกไปทีละใบเหมือนดีดสาย ตอนเปิดหน้าการ์ดลอยขึ้นแล้วกางออก",
       ["สไลด์", "พัด", "สปริง", "ปัด"],
       [range("gap", "องศาระหว่างการ์ด", 8, 24, 1, 16)],
+    ),
+    prompt:
+      "Build a fanned wheel carousel of ten cards. Every card is absolutely centred at the bottom of the stage with transform-origin far below it (about 50% 280%), and rotates by (index - current) times a gap angle, so the deck reads as an arc. Each card animates on its own spring with a delay proportional to its distance from the current card, so a step starts at the leading card and ripples outward like a plucked string. On first view the cards rise from below and fan out from the centre. The current card lifts and grows slightly; cards fade with distance and z-order follows distance. Step with arrow buttons, ArrowLeft/Right, Home/End, a sideways swipe or a click on any card; the big label above is announced politely. No wheel or scroll hijacking. Transform and opacity only, instant under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "carousel",
+      "arc-fan-original",
+      "Chained Spring Arc Carousel · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["สไลด์", "พัด", "ต้นฉบับ"],
+      [],
     ),
     prompt:
       "Build a fanned wheel carousel of ten cards. Every card is absolutely centred at the bottom of the stage with transform-origin far below it (about 50% 280%), and rotates by (index - current) times a gap angle, so the deck reads as an arc. Each card animates on its own spring with a delay proportional to its distance from the current card, so a step starts at the leading card and ripples outward like a plucked string. On first view the cards rise from below and fan out from the centre. The current card lifts and grows slightly; cards fade with distance and z-order follows distance. Step with arrow buttons, ArrowLeft/Right, Home/End, a sideways swipe or a click on any card; the big label above is announced politely. No wheel or scroll hijacking. Transform and opacity only, instant under prefers-reduced-motion. Use your stack's design tokens for every colour.",
@@ -445,7 +458,7 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "spotlight",
       "comeback-poster",
-      "Comeback Poster",
+      "Comeback Poster · Lite",
       "ฮีโร่แบบโปสเตอร์คอนเสิร์ต หัวกระดาษชื่อใหญ่กับคำธีม 12 คำ เหนือทุ่งดอกป๊อปปี้ที่ไหวตามลม ชี้คำแล้วชื่อถอดรหัส กดแล้วลมพัด",
       ["โปสเตอร์", "SVG", "ตัวอักษร"],
       [text("title", "ชื่อบนโปสเตอร์", "COMEBACK", 12)],
@@ -456,12 +469,38 @@ export const exclusive: readonly Entry[] = [
   {
     ...def(
       "2026-11-20",
+      "spotlight",
+      "comeback-poster-original",
+      "Comeback Poster · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["โปสเตอร์", "SVG", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a gig-poster hero. A paper masthead holds a giant title and a grid of twelve theme words; under it a field of poppies on two hills with a hooded figure in a white robe. Poppies are SVG (stem, five petals, dark centre), seeded so server and client agree, sorted by depth, some behind the figure and some in front; each sways on its own loop and parts sideways round the pointer on a spring. Clicking the field blooms a clutch of five new poppies there (cap the total). Hovering or focusing a word decodes the title into it (letters settle left to right, the rest flicker); clicking keeps it (aria-pressed) and sends a gust that tilts the poppies one after another from left to right. The hood turns a few degrees toward the pointer. Screen readers get the title once from a visually hidden copy, not every flicker. Reduced motion: still field, words set without decoding. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
       "footer",
       "doodle-crew-footer",
-      "Doodle Crew Footer",
+      "Doodle Crew Footer · Lite",
       "หน้าสุดท้ายของสมุดสเก็ตช์ ชื่อแบรนด์ตัวยักษ์ มีตัวการ์ตูนพิง นั่ง และโผล่หลังตัวอักษร ตามองตามเมาส์ กดแล้วกระโดดพูด",
       ["ฟุตเตอร์", "วาดมือ", "ตัวละคร"],
       [text("word", "คำยักษ์", "CROCWORK", 9)],
+    ),
+    prompt:
+      "Build a footer like the last page of a sketchbook. The brand word (4 to 9 letters) is set huge in a heavy face; a hand-drawn ground line draws under it first, then the letters stamp in left to right (scale down from 1.6 on a spring), then a small crew of hand-drawn characters pops up: one leans on a letter, one sits on top, one peeks over from behind. Their pupils follow the pointer across the footer and they blink on their own loops. Clicking one (a real button with an accessible label) makes it hop and say a short line in a speech bubble. Doodles (star, loop, heart, cross, squiggle) drift down and turn; catching one pops it and it comes back from the top. Then a line of copy fades up word by word and two buttons rise. Letters wobble on hover. Reduced motion: everything in place, nothing drifts. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "footer",
+      "doodle-crew-footer-original",
+      "Doodle Crew Footer · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["ฟุตเตอร์", "วาดมือ", "ต้นฉบับ"],
+      [],
     ),
     prompt:
       "Build a footer like the last page of a sketchbook. The brand word (4 to 9 letters) is set huge in a heavy face; a hand-drawn ground line draws under it first, then the letters stamp in left to right (scale down from 1.6 on a spring), then a small crew of hand-drawn characters pops up: one leans on a letter, one sits on top, one peeks over from behind. Their pupils follow the pointer across the footer and they blink on their own loops. Clicking one (a real button with an accessible label) makes it hop and say a short line in a speech bubble. Doodles (star, loop, heart, cross, squiggle) drift down and turn; catching one pops it and it comes back from the top. Then a line of copy fades up word by word and two buttons rise. Letters wobble on hover. Reduced motion: everything in place, nothing drifts. Use your stack's design tokens for every colour.",
@@ -497,10 +536,23 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "footer",
       "string-tie-footer",
-      "String Tie Footer",
+      "String Tie Footer · Lite",
       "ฟุตเตอร์ซองจดหมายผูกเชือกพันกระดุม เชือกพันเป็นเลขแปดเมื่อเห็น แล้วลายเซ็นเขียนตัวเอง กดกระดุมแล้วเชือกคลาย ฝาพับเปิด จดหมายเลื่อนออกมา",
       ["ฟุตเตอร์", "ซองจดหมาย", "3D"],
       [text("email", "อีเมลบนจดหมาย", "hello@example.com")],
+    ),
+    prompt:
+      "Build a string-and-button envelope as a footer. A dark envelope body with a white pointed flap on top, held shut by two blue paper buttons with grommets, one on the flap's tip and one on the body. When in view the cord draws itself as a figure eight wound round both buttons (pathLength), a loose end sways from the lower button, then a short signature writes itself in on the body. Pressing either button (real buttons with aria-expanded) unwinds the cord, folds the flap back with a 3D rotateX round its top edge, and slides a note up out of the envelope with a thank-you line and a mailto link that is only focusable while open. Pressing again reverses it. Reduced motion: every change is instant. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "footer",
+      "string-tie-footer-original",
+      "String Tie Footer · V.original",
+      "ต้นฉบับตามที่ผู้เขียนเผยแพร่บน 21st.dev ทั้งไฟล์ รุ่น Lite คือฉบับที่เราเขียนใหม่เองจากชิ้นนี้",
+      ["ฟุตเตอร์", "ซองจดหมาย", "ต้นฉบับ"],
+      [],
     ),
     prompt:
       "Build a string-and-button envelope as a footer. A dark envelope body with a white pointed flap on top, held shut by two blue paper buttons with grommets, one on the flap's tip and one on the body. When in view the cord draws itself as a figure eight wound round both buttons (pathLength), a loose end sways from the lower button, then a short signature writes itself in on the body. Pressing either button (real buttons with aria-expanded) unwinds the cord, folds the flap back with a 3D rotateX round its top edge, and slides a note up out of the envelope with a thank-you line and a mailto link that is only focusable while open. Pressing again reverses it. Reduced motion: every change is instant. Use your stack's design tokens for every colour.",
