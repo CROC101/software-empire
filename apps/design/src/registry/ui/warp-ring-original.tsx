@@ -3,6 +3,7 @@
  * Vendored as published for crocwork.studio; the code is the author's, kept as written apart from:
  * - nothing
  * - type-checking is off for this file: it was written without the strict index checks this repo turns on
+ * - the screen-reader line turns every line break of a title into a space, not only the first
  */
 // @ts-nocheck
 "use client";
@@ -1701,7 +1702,7 @@ export function WarpCarousel({
         }}
       >
         {front
-          ? `${front.title.replace("\n", " ")}: ${front.value}${front.unit || ""}. ${front.footer || ""}`
+          ? `${front.title.replaceAll("\n", " ")}: ${front.value}${front.unit || ""}. ${front.footer || ""}`
           : ""}
       </div>
     </div>

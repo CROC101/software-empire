@@ -3,6 +3,7 @@
  * Vendored as published for crocwork.studio; the code is the author's, kept as written apart from:
  * - the embedded "JSC Hand" font (licence not stated) is dropped; notes fall back to the cursive face
  * - type-checking is off for this file: it was written without the strict index checks this repo turns on
+ * - the file came without the page's demo; a small demo with our sample data is added at the end as the default export
  */
 // @ts-nocheck
 "use client";
@@ -322,7 +323,7 @@ const ACTIONS: { id: JournalAction; label: string }[] = [
   { id: "add", label: "Add a page" },
 ];
 
-export default function JournalSpreadCarousel({
+export function JournalSpreadCarousel({
   spreads,
   title = "Journal",
   meta,
@@ -685,4 +686,51 @@ export default function JournalSpreadCarousel({
       </p>
     </div>
   );
+}
+
+// --- Demo (crocwork sample data) ---
+const DEMO_SPREADS: JournalSpread[] = [
+  {
+    id: "sea",
+    label: "ทริปทะเล",
+    image: "/orbit/aurora-tide.webp",
+    prints: [
+      { src: "/orbit/ripple-pond.webp", x: 58, y: 14, w: 22, rotate: 4, caption: "เช้าวันแรก" },
+    ],
+    notes: [
+      { x: 8, y: 66, w: 30, rotate: -3, title: "ทะเล", body: "น้ำใสจนเห็นเงาเมฆ", style: "card" },
+    ],
+  },
+  {
+    id: "stars",
+    label: "คืนดูดาว",
+    paper: "var(--em-ink-50)",
+    prints: [
+      { src: "/orbit/deep-galaxy.webp", x: 6, y: 10, w: 26, rotate: -5 },
+      { src: "/orbit/float-particles.webp", x: 30, y: 44, w: 22, rotate: 3, tape: true },
+      { src: "/orbit/where-globe.webp", x: 62, y: 16, w: 28, rotate: 2 },
+    ],
+    notes: [{ x: 60, y: 72, w: 30, rotate: -2, body: "นับดาวตกได้ 7 ดวง", style: "card" }],
+  },
+  {
+    id: "market",
+    label: "ตลาดเช้า",
+    image: "/orbit/tide-plasma.webp",
+    prints: [{ src: "/orbit/particle-title.webp", x: 10, y: 18, w: 24, rotate: -3, tape: true }],
+    notes: [{ x: 56, y: 70, w: 34, rotate: 2, body: "ข้าวเหนียวหมดก่อนเจ็ดโมง", style: "ink" }],
+  },
+  {
+    id: "home",
+    label: "กลับบ้าน",
+    paper: "var(--em-ink-50)",
+    prints: [
+      { src: "/orbit/warp-lanes.webp", x: 8, y: 14, w: 30, rotate: 2 },
+      { src: "/orbit/ripple-mesh.webp", x: 58, y: 30, w: 30, rotate: -4, tape: true },
+    ],
+    notes: [{ x: 14, y: 70, w: 24, rotate: -4, body: "ไว้มาอีกนะ", style: "card" }],
+  },
+];
+
+export default function JournalSpreadCarouselDemo() {
+  return <JournalSpreadCarousel spreads={DEMO_SPREADS} title="Journal" />;
 }

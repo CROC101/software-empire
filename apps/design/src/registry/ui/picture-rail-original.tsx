@@ -2,6 +2,7 @@
  * Picture Rail Gallery: the original component by a 21st.dev community author (name not given on the page).
  * Vendored as published for crocwork.studio; the code is the author's, kept as written apart from:
  * - nothing
+ * - the file came without the page's demo; a small demo with our sample data is added at the end as the default export
  */
 "use client";
 import * as React from "react";
@@ -2164,4 +2165,66 @@ function Detail({
   );
 }
 
-export default PictureRailGallery;
+// --- Demo (crocwork sample data) ---
+const DEMO_PRINTS: PictureRailItem[] = [
+  {
+    id: "aurora",
+    title: "Aurora Tide",
+    artist: "crocwork",
+    year: "2026",
+    image: "/orbit/aurora-tide.webp",
+    frame: "black",
+    mat: true,
+    tag: "ฉบับ 3/20",
+    details: ["Giclée บนกระดาษฝ้าย", "40 × 50 ซม."],
+  },
+  {
+    id: "galaxy",
+    title: "Deep Galaxy",
+    artist: "crocwork",
+    year: "2026",
+    image: "/orbit/deep-galaxy.webp",
+    aspect: 1.3,
+    frame: "oak",
+    tag: "ฉบับ 7/12",
+    details: ["พิมพ์บนอะลูมิเนียม", "60 × 45 ซม."],
+  },
+  {
+    id: "globe",
+    title: "Where Globe",
+    artist: "crocwork",
+    year: "2025",
+    image: "/orbit/where-globe.webp",
+    aspect: 1,
+    frame: "white",
+    mat: true,
+    tag: "ฉบับ 1/5",
+    details: ["Giclée บนกระดาษฝ้าย", "50 × 50 ซม."],
+  },
+  {
+    id: "pond",
+    title: "Ripple Pond",
+    artist: "crocwork",
+    year: "2026",
+    image: "/orbit/ripple-pond.webp",
+    aspect: 0.67,
+    frame: "black",
+    tag: "ฉบับ 9/30",
+    details: ["พิมพ์บนผ้าใบ", "40 × 60 ซม."],
+  },
+  {
+    id: "plasma",
+    title: "Tide Plasma",
+    artist: "crocwork",
+    year: "2025",
+    image: "/orbit/tide-plasma.webp",
+    frame: "oak",
+    mat: true,
+    tag: "ฉบับ 2/10",
+    details: ["Giclée บนกระดาษฝ้าย", "30 × 40 ซม."],
+  },
+];
+
+export default function PictureRailGalleryDemo() {
+  return <PictureRailGallery items={DEMO_PRINTS} eyebrow="Gallery" heading="ผนังภาพ" />;
+}

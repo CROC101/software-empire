@@ -3,9 +3,11 @@
  * Vendored as published for crocwork.studio; the code is the author's, kept as written apart from:
  * - nothing
  * - type-checking is off for this file: it was written without the strict index checks this repo turns on
+ * - the file came without the page's demo; a small demo with our sample data is added at the end as the default export
  */
 // @ts-nocheck
 "use client";
+import { useTokenColors } from "@empire/ui";
 import * as React from "react";
 import gsap from "gsap";
 
@@ -196,7 +198,7 @@ function Stars({ value }: { value: number }) {
   );
 }
 
-export default function SneakerProductHero({
+export function SneakerProductHero({
   variants,
   defaultVariant = 0,
   eyebrow = "Women's Racing Shoe",
@@ -1226,4 +1228,48 @@ export default function SneakerProductHero({
       )}
     </section>
   );
+}
+
+// --- Demo (crocwork sample data) ---
+// The page shipped photos we do not have, so the shoe is drawn as an SVG in each colourway's token colours.
+const DEMO_WAYS = [
+  { name: "Tide", upper: "--em-blue-600", accent: "--em-sky-400", sole: "--em-ink-0" },
+  { name: "Ink", upper: "--em-ink-850", accent: "--em-coral-500", sole: "--em-ink-100" },
+  { name: "Moss", upper: "--em-croc-600", accent: "--em-gold-300", sole: "--em-ink-50" },
+  { name: "Chalk", upper: "--em-ink-100", accent: "--em-blue-600", sole: "--em-ink-300" },
+];
+const DEMO_FIXED = ["--em-ink-700", "--em-ink-975", "--em-ink-0"];
+const DEMO_TOKENS = [...DEMO_WAYS.flatMap((w) => [w.upper, w.accent, w.sole]), ...DEMO_FIXED];
+
+function shoeSvg(upper: string, accent: string, sole: string, [rim, seam, lace]: string[]) {
+  const laces = [0, 1, 2, 3, 4]
+    .map(
+      (k) =>
+        `<path d="M${168 + k * 17} ${84 - k * 10} l14 10" stroke="${lace}" stroke-width="4" stroke-linecap="round"/>`,
+    )
+    .join("");
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 190">` +
+    `<path d="M22 146 Q20 168 46 170 L358 170 Q384 168 382 146 Z" fill="${sole}"/>` +
+    `<path d="M30 170 L356 170 Q360 178 350 180 L40 180 Q28 178 30 170 Z" fill="${rim}"/>` +
+    `<path d="M28 146 C26 120 48 108 88 104 C130 100 160 80 190 60 C210 47 235 38 262 38 L300 40 C318 42 330 54 338 72 C350 98 372 114 378 146 Z" fill="${upper}"/>` +
+    `<path d="M28 146 C27 126 40 112 70 106 C76 120 74 136 66 146 Z" fill="${accent}" opacity="0.85"/>` +
+    `<path d="M118 132 C170 124 226 98 300 116" fill="none" stroke="${accent}" stroke-width="9" stroke-linecap="round"/>` +
+    `<path d="M352 80 L374 120 L378 146 L356 146 Z" fill="${accent}"/>` +
+    `<path d="M262 38 C276 50 304 54 326 56" fill="none" stroke="${seam}" stroke-opacity="0.35" stroke-width="4"/>` +
+    laces +
+    `</svg>`;
+  return "data:image/svg+xml," + encodeURIComponent(svg);
+}
+
+export default function SneakerProductHeroDemo() {
+  const c = useTokenColors(DEMO_TOKENS);
+  // the image needs real colours, which only exist once the page has its theme
+  if (!c) return null;
+  const fixed = c.slice(DEMO_WAYS.length * 3);
+  const variants: SneakerVariant[] = DEMO_WAYS.map((w, i) => {
+    const [upper = "", accent = "", sole = ""] = c.slice(i * 3, i * 3 + 3);
+    return { name: w.name, swatch: `var(${w.upper})`, src: shoeSvg(upper, accent, sole, fixed) };
+  });
+  return <SneakerProductHero variants={variants} />;
 }

@@ -2,6 +2,7 @@
  * Team Lanyard Rail: the original component by a 21st.dev community author (name not given on the page).
  * Vendored as published for crocwork.studio; the code is the author's, kept as written apart from:
  * - nothing
+ * - the file came without the page's demo; a small demo with our sample data is added at the end as the default export
  */
 "use client";
 import * as React from "react";
@@ -1889,4 +1890,64 @@ export function TeamLanyardRail({
   );
 }
 
-export default TeamLanyardRail;
+// --- Demo (crocwork sample data) ---
+const DEMO_TEAM: LanyardMember[] = [
+  {
+    id: "parichat",
+    name: "ปาริชาต ทองดี",
+    role: "นักออกแบบ",
+    team: "Design",
+    image: "/orbit/aurora-tide.webp",
+    bio: "ดูแลระบบดีไซน์ สี ตัวอักษร และท่าทางของทุกหน้า",
+    tags: ["Figma", "Motion"],
+    links: [{ label: "Portfolio", href: "#" }],
+    tone: 1,
+  },
+  {
+    id: "thanakorn",
+    name: "ธนากร ศรีสุข",
+    role: "วิศวกรหน้าบ้าน",
+    team: "Web",
+    image: "/orbit/deep-galaxy.webp",
+    bio: "ทำหน้าเว็บให้เร็วและกดได้ด้วยคีย์บอร์ดทุกปุ่ม",
+    tags: ["React", "a11y"],
+    links: [{ label: "GitHub", href: "#" }],
+    tone: 2,
+  },
+  {
+    id: "kamonwan",
+    name: "กมลวรรณ แสงทอง",
+    role: "วิศวกรหลังบ้าน",
+    team: "Data",
+    image: "/orbit/where-globe.webp",
+    bio: "ดูแลฐานข้อมูล สิทธิ์การเข้าถึง และงานที่รันเบื้องหลัง",
+    tags: ["Postgres", "RLS"],
+    tone: 3,
+  },
+  {
+    id: "wichai",
+    name: "วิชัย มณีรัตน์",
+    role: "ผู้จัดการผลิตภัณฑ์",
+    team: "Product",
+    image: "/orbit/ripple-pond.webp",
+    bio: "เรียงงานให้ทีมทำสิ่งที่สำคัญที่สุดก่อน",
+    tags: ["Roadmap", "Research"],
+    tone: 4,
+  },
+  {
+    id: "suda",
+    name: "สุดา พรหมมา",
+    role: "นักทดสอบ",
+    team: "QA",
+    image: "/orbit/tide-plasma.webp",
+    bio: "ลองทุกปุ่มบนจอเล็กและจอใหญ่ก่อนปล่อยงาน",
+    tags: ["Playwright", "Vitest"],
+    tone: 5,
+  },
+];
+
+export default function TeamLanyardRailDemo() {
+  return (
+    <TeamLanyardRail items={DEMO_TEAM} eyebrow="Team" heading="คนที่อยู่เบื้องหลัง" autoplay />
+  );
+}
