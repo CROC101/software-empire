@@ -211,13 +211,26 @@ export const exclusive: readonly Entry[] = [
       "2026-11-20",
       "carousel",
       "curved-lens",
-      "Curved Lens Carousel",
+      "Curved Lens Carousel · Lite",
       "สไลด์ภาพที่มองผ่านเลนส์โค้ง ใบกลางแบนตรง ใบที่ออกห่างจากกลางยิ่งสูง ลึก และหันข้าง มีสีแยกที่ขอบเหมือนเลนส์ ลากหรือสะบัดแล้วหยุดที่ใบใกล้สุด วนไม่รู้จบ",
       ["สไลด์", "เลนส์", "3D", "ลาก"],
       [range("bend", "ความโค้งของเลนส์", 0, 2, 0.1, 1)],
     ),
     prompt:
       "Build a looping photo carousel seen through a curved lens. Cards share one position value; each card's signed distance from it (the short way round the loop) drives translateX, rotateY (turned away from the centre), scaleY (taller further out), a negative translateZ and opacity, so the centre card reads flat and the outer ones bend away. Two tinted copies behind each card slide apart with distance to fake chromatic split at the rim. Dragging sets the position directly; on release a flick picks the nearest whole card up to two away and a critically damped spring settles there. Arrow keys and buttons step; clicking a side card brings it to the centre. The caption rises in per slide and is announced politely. A bend value scales every effect; 0 is flat. Transform and opacity only, instant under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "carousel",
+      "curved-lens-original",
+      "Curved Lens Carousel · V.original",
+      "ต้นฉบับ WebGL ของสไลด์เลนส์โค้ง การ์ดทุกใบวาดบนแคนวาสเดียว ใบนอกยืดสูงและโค้งตามเลนส์จริงพร้อมสีแยกที่ขอบ หัวเรื่องลอยขึ้นทีละตัว ลากหรือสะบัดแล้วสปริงหยุดที่ใบใกล้สุด",
+      ["สไลด์", "เลนส์", "WebGL", "ลาก"],
+      [range("bend", "ความโค้งของเลนส์", 0, 2, 0.05, 0.55)],
+    ),
+    prompt:
+      "Build a looping photo carousel seen through a curved lens, drawn on one WebGL canvas. Each card is a 36 x 12 grid mesh; the vertex shader places it at its signed offset from a shared scroll position (the short way round the loop), then stretches it taller and pinches it narrower by bend * x squared, so the centre card is flat and the outer ones bulge like glass. The fragment shader covers the photo into the card, splits red and blue sideways more toward the rim and with speed, darkens the outer cards, adds a thin rounded rim of light and a soft top sheen. Cards rise in one after another on first view. Dragging moves the position directly; on release a flick throws to the nearest whole card up to three away and a critically damped spring settles there; arrow keys and two buttons step. Only run the frame loop while something moves and the stage is on screen. The title of the current slide rises in letter by letter in a large serif with its kicker and caption, a counter and a progress bar sit at the bottom right, and the caption region is announced politely. Fall back to a plain image without WebGL. Reduced motion: no intro, no spring, no wobble. Use your stack's design tokens for every colour.",
   },
   {
     ...def(
