@@ -175,6 +175,7 @@ export const parts = {
   "murmuration-word": lazy(() => import("./ui/murmuration-word")),
   "hoarfrost-pane": lazy(() => import("./ui/hoarfrost-pane")),
   "curved-lens": lazy(() => import("./ui/curved-lens")),
+  "curved-lens-original": lazy(() => import("./ui/curved-lens-original")),
   "arc-fan": lazy(() => import("./ui/arc-fan")),
   "warp-ring": lazy(() => import("./ui/warp-ring")),
   "picture-rail": lazy(() => import("./ui/picture-rail")),
