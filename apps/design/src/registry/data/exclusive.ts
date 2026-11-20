@@ -258,4 +258,121 @@ export const exclusive: readonly Entry[] = [
     prompt:
       "Build a gallery wall where framed prints hang from one picture rail. Each print is a thick moulding around a bevelled mat and the image, hung from a hook by two wires drawn in SVG to its top corners, with alternating wire lengths and a slightly crooked rest angle (about ±1.5deg). The hanging group rotates around its hook (transform-origin top). Pointing at or focusing a print kicks a damped swing (rotate keyframes rest, +6, -3.5, +1.5, rest degrees times an amplitude) and nudges its two neighbours at a third of the amplitude; alternate the sign per kick so each replays. The pointed print is lit by a radial spot from above and lifts with a spring. Click or Enter turns it with rotateY 180 to a back of brown paper with a gallery label (title, medium, size, year); Escape turns it back. Until the visitor interacts, the prints are lit one by one on an interval. A wall label under each frame and an aria-live line name the lit print. Narrow screens scroll the rail sideways with scroll-snap. Transform and opacity only, no swinging under prefers-reduced-motion. Use your stack's design tokens for every colour.",
   },
+  {
+    ...def(
+      "2026-11-20",
+      "product",
+      "sneaker-hero",
+      "Sneaker Product Hero",
+      "หน้าสินค้ารองเท้าหนึ่งคู่ รองเท้าลอยอยู่เหนือเงาสะท้อนบนพื้น เลือกสีแล้วรองเท้าหมุนสลับ ไซซ์บอกว่าหมดหรือใกล้หมด กดถูกใจแล้วหัวใจแตกเป็นจุด ใส่ถุงแล้วมีแถบแจ้งสั้น ๆ",
+      ["สินค้า", "รองเท้า", "เลือกสี", "ร้านค้า"],
+      [range("price", "ราคา (บาท)", 990, 9990, 100, 4290)],
+    ),
+    prompt:
+      "Build a product hero for one sneaker. On the right, a side-profile shoe drawn in SVG from three colour roles (upper, accent, sole) floats with a slow bob and tilt over its own mirrored reflection, faded with a mask; a soft blurred halo in the upper colour sits behind. Picking a colourway swatch swaps the shoe: the old one leaves to the left with a small turn, the new one arrives from the right. On the left: eyebrow, name, star rating with count, short description, price, colour swatches (aria-pressed), a six-size grid where sold-out sizes for the colourway are disabled and struck through, and a polite live line that says pick a size, sold out, only N left or in stock. Add to bag is disabled until a size in stock is picked and shows a short status toast; the like button pops and bursts eight dots outward once. Transform and opacity only, no floating or bursts under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "showcase",
+      "project-deck",
+      "Project Deck",
+      "การ์ดงานที่แจกลงกองทีละใบ ใบใหม่ลอยขึ้นจากด้านล่างแล้ววางทับ ใบที่ถูกทับถอยหลังและยกขอบให้เห็นเป็นกอง ปุ่มเปิดงานฝังอยู่ในมุมที่ถูกตัดของการ์ด เล่นเองจนกว่าจะมีคนแตะ",
+      ["ผลงาน", "การ์ดซ้อน", "สปริง", "เล่นเอง"],
+      [range("seconds", "วินาทีต่อใบ", 2, 8, 0.5, 3.5)],
+    ),
+    prompt:
+      "Build a project deck: five full-bleed project cards that deal onto one stack. Card k is either still below the stage (translateY about 115%, transparent) or dealt; a dealt card covered by m newer cards scales to 1 - 0.05m and lifts by 4% per card (capped at three, hidden beyond) with transform-origin top, so the pile shows its edges. Each card springs to its state. A notch cut from the bottom-right corner, filled with the page background and rounded on its inner corner, holds the square visit button. The deck deals on its own every few seconds and loops until the visitor touches it; up/down buttons, arrow keys and a vertical swipe deal or take back. The name, kind and year beside it are announced politely, with a 01 / 05 counter. Never pinned or tied to page scroll. Transform and opacity only, instant under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "product",
+      "coffee-pour",
+      "Coffee Pour Menu",
+      "เมนูร้านกาแฟที่ชงให้ดูเมื่อเลือก แก้วเก่าเลื่อนออกจากบาร์ แก้วใสใบใหม่หล่นลงมา แล้วแต่ละชั้นเทลงจากด้านบนตามสูตรทีละชั้น เต็มแล้วมีไอน้ำลอย",
+      ["เมนู", "กาแฟ", "ร้านค้า", "เท"],
+      [range("pour", "วินาทีต่อชั้น", 0.4, 2, 0.1, 0.9)],
+    ),
+    prompt:
+      "Build a café menu that builds the drink you pick. The menu is a list of buttons (name, short description, price, aria-pressed). The bar on the right holds one clear glass keyed by drink and pick count inside AnimatePresence popLayout: the old glass slides off to the side with a small tilt while the new one drops in on a spring. Each recipe is a list of layers (colour, height, name); layer k pours after k times the pour time: a thin stream in the layer colour grows down from above (scaleY from the top), then the layer rises from the bottom of the glass (scaleY from the bottom), stacked with flex-col-reverse. Once full, three soft blurred steam wisps drift up and fade in a loop. Brew colours are mixed from palette tokens with color-mix so they follow the theme. A small legend of layers is announced politely. The newest pick always wins. Transform and opacity only, no pouring or steam under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "stories",
+      "journal-spread",
+      "Journal Spread",
+      "สมุดบันทึกการเดินทางเปิดเป็นหน้าคู่ รูปติดด้วยขอบขาวหรือเทปกาว โน้ตบนกระดาษแผ่นเล็ก ภาพใหญ่พาดข้ามสองหน้าแล้วพับที่สันสมุด พลิกหน้าเองจนกว่าจะมีคนแตะ",
+      ["สมุด", "พลิกหน้า", "3D", "เล่นเอง"],
+      [range("seconds", "วินาทีต่อหน้า", 2, 10, 0.5, 4)],
+    ),
+    prompt:
+      "Build a travel journal open on a double page. Each spread is described once at double width: an optional background picture plus photos (white polaroid border or a strip of translucent tape) and short notes, each placed by x, y and width as percentages of the whole spread with a small rotation, so items may cross the spine. Each page renders the full spread inside an overflow-clipped half (left page at 0, right page shifted by -100%), with a soft shade toward the spine. A page turn is a leaf over the right half with transform-origin at the spine and preserve-3d: forward, its front shows the current right page and its back the next left page while it rotates 0 to -180deg; backward is the reverse; under the leaf lie the destination pages, and the index commits on animation complete. Pages turn on their own every few seconds until the first touch; buttons, arrow keys and a sideways swipe turn by hand; the spread title and counter are announced politely. Transform and opacity only, instant changes under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "showcase",
+      "contribution-skyline",
+      "Contribution Skyline",
+      "ตารางกิจกรรมรายวันที่ลุกขึ้นเป็นแท่ง 3 มิติเมื่อเลื่อนมาเห็น สลับ 2D กับ 3D ได้ ชี้วันไหนบอกวันที่และจำนวน",
+      ["สถิติ", "แคนวาส", "ไอโซเมตริก"],
+      [range("weeks", "จำนวนสัปดาห์", 8, 53, 1, 26)],
+    ),
+    prompt:
+      "Build an activity heatmap that stands up into a skyline. Draw a seeded sample of N weeks x 7 days on a canvas: each day is a square coloured by one of five levels (empty, then four steps of the brand blue). The first time it is half in view, morph it over 1.2 s into an isometric view where each square becomes a bar whose height is that day's count, with darker right and front faces, drawn back to front. A 2D / 3D toggle with aria-pressed morphs either way and stops any running morph. Pointing at a day shows a small tooltip with its date and count (hit-test the top faces, front-most wins). Show the total, the longest streak and the busiest day below. Read colours from CSS variables at draw time and redraw on resize. Reduced motion jumps straight to the chosen view. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "spotlight",
+      "comeback-poster",
+      "Comeback Poster",
+      "ฮีโร่แบบโปสเตอร์คอนเสิร์ต หัวกระดาษชื่อใหญ่กับคำธีม 12 คำ เหนือทุ่งดอกป๊อปปี้ที่ไหวตามลม ชี้คำแล้วชื่อถอดรหัส กดแล้วลมพัด",
+      ["โปสเตอร์", "SVG", "ตัวอักษร"],
+      [text("title", "ชื่อบนโปสเตอร์", "COMEBACK", 12)],
+    ),
+    prompt:
+      "Build a gig-poster hero. A paper masthead holds a giant title and a grid of twelve theme words; under it a field of poppies on two hills with a hooded figure in a white robe. Poppies are SVG (stem, five petals, dark centre), seeded so server and client agree, sorted by depth, some behind the figure and some in front; each sways on its own loop and parts sideways round the pointer on a spring. Clicking the field blooms a clutch of five new poppies there (cap the total). Hovering or focusing a word decodes the title into it (letters settle left to right, the rest flicker); clicking keeps it (aria-pressed) and sends a gust that tilts the poppies one after another from left to right. The hood turns a few degrees toward the pointer. Screen readers get the title once from a visually hidden copy, not every flicker. Reduced motion: still field, words set without decoding. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "footer",
+      "doodle-crew-footer",
+      "Doodle Crew Footer",
+      "หน้าสุดท้ายของสมุดสเก็ตช์ ชื่อแบรนด์ตัวยักษ์ มีตัวการ์ตูนพิง นั่ง และโผล่หลังตัวอักษร ตามองตามเมาส์ กดแล้วกระโดดพูด",
+      ["ฟุตเตอร์", "วาดมือ", "ตัวละคร"],
+      [text("word", "คำยักษ์", "CROCWORK", 9)],
+    ),
+    prompt:
+      "Build a footer like the last page of a sketchbook. The brand word (4 to 9 letters) is set huge in a heavy face; a hand-drawn ground line draws under it first, then the letters stamp in left to right (scale down from 1.6 on a spring), then a small crew of hand-drawn characters pops up: one leans on a letter, one sits on top, one peeks over from behind. Their pupils follow the pointer across the footer and they blink on their own loops. Clicking one (a real button with an accessible label) makes it hop and say a short line in a speech bubble. Doodles (star, loop, heart, cross, squiggle) drift down and turn; catching one pops it and it comes back from the top. Then a line of copy fades up word by word and two buttons rise. Letters wobble on hover. Reduced motion: everything in place, nothing drifts. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "footer",
+      "signature-pen-footer",
+      "Signature Pen Footer",
+      "ปากกาสไตลัสร่อนเข้ามาเซ็นชื่อทีละเส้น ยกปากการะหว่างเส้น เซ็นเสร็จบรรทัดล่างกลายเป็นเวลาที่เซ็น แล้วลากเขียนเองได้",
+      ["ฟุตเตอร์", "ลายเซ็น", "SVG"],
+      [text("name", "ชื่อในคำอธิบาย", "crocwork")],
+    ),
+    prompt:
+      "Build a footer that signs itself. The signature is a few single-stroke SVG paths drawn in order (the run, a cross, a dot, an underline swash), each hidden with a dash array until written. When in view a stylus glides in lifted, its shadow on the paper closes in as the nib touches down, it writes each stroke at a steady speed by following getPointAtLength and revealing the dash, leans a little into its travel, lifts between strokes, then rests to the right. Write every frame straight to the DOM through refs so React does not re-render. When it lifts, the caption under the signing line becomes 'signed at <date, time> - ID <short hash of the name>'. Afterwards the pen hovers after a mouse or stylus pointer, pressing writes ink that dries and fades away, and a 'sign again' button replays it (cancel any run in progress). The copy above fades up word by word. Reduced motion: signature shown, pen at rest, no free drawing. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "footer",
+      "string-tie-footer",
+      "String Tie Footer",
+      "ฟุตเตอร์ซองจดหมายผูกเชือกพันกระดุม เชือกพันเป็นเลขแปดเมื่อเห็น แล้วลายเซ็นเขียนตัวเอง กดกระดุมแล้วเชือกคลาย ฝาพับเปิด จดหมายเลื่อนออกมา",
+      ["ฟุตเตอร์", "ซองจดหมาย", "3D"],
+      [text("email", "อีเมลบนจดหมาย", "hello@example.com")],
+    ),
+    prompt:
+      "Build a string-and-button envelope as a footer. A dark envelope body with a white pointed flap on top, held shut by two blue paper buttons with grommets, one on the flap's tip and one on the body. When in view the cord draws itself as a figure eight wound round both buttons (pathLength), a loose end sways from the lower button, then a short signature writes itself in on the body. Pressing either button (real buttons with aria-expanded) unwinds the cord, folds the flap back with a 3D rotateX round its top edge, and slides a note up out of the envelope with a thank-you line and a mailto link that is only focusable while open. Pressing again reverses it. Reduced motion: every change is instant. Use your stack's design tokens for every colour.",
+  },
 ];
