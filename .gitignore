@@ -46,3 +46,4 @@ graphify-out/
 apps/toolboxes/public/craft/
 # clone templates: built by apps/design/tools/templates.mjs (deploy.yml runs it)
 apps/design/public/tpl/
+apps/design/public/fontlib/
