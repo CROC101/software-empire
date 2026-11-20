@@ -40,6 +40,8 @@ export const categories = {
   "art-wall": { label: "ผนังภาพ", kind: "exclusive" },
   product: { label: "สินค้าและเมนู", kind: "exclusive" },
   footer: { label: "ฟุตเตอร์", kind: "exclusive" },
+  menu: { label: "เมนูและการ์ดลอย", kind: "exclusive" },
+  "scroll-text": { label: "ตัวอักษรตามสกอลล์", kind: "exclusive" },
   background: { label: "พื้นหลัง", kind: "component" },
   text: { label: "ตัวอักษร", kind: "component" },
   button: { label: "ปุ่ม", kind: "component" },
