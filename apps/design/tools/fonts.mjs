@@ -27,10 +27,12 @@ const LOCK = join(app, "tools/fonts.lock.json");
 const PUB = join(app, "public/fontlib");
 const KINDS = ["ttf", "woff"];
 
+// tags are dropped, then no < or > survives at all (React escapes it anyway; keeps the manifest plain)
 const text = (h) =>
   h
-    .replace(/<[^>]*>?/g, "")
-    .replace(/[<>]/g, "") // React escapes it anyway; keeps the manifest plain text
+    .split(/<[^>]*>/)
+    .join("")
+    .replace(/[<>]/g, "")
     .replace(/&#0?39;|&apos;/g, "'")
     .replace(/&quot;/g, '"')
     .replace(/&amp;/g, "&") // last, so "&amp;quot;" stays "&quot;"
