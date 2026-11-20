@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import type { CSSProperties, ReactNode } from 'react';
-import { Noto_Sans_Thai } from 'next/font/google';
+import localFont from 'next/font/local';
 import { brand } from '@/config/brand.config';
 import { PromoBar } from '@/components/PromoBar';
 import { Header } from '@/components/Header';
@@ -8,11 +8,11 @@ import { Footer } from '@/components/Footer';
 import { Providers } from '@/components/Providers';
 import './globals.css';
 
-// Noto Sans Thai carries the Latin glyphs too. Inter was dropped: Google serves it as extensionless
-// font?kit= URLs, which next 15's next/font loader cannot handle (it crashes the build).
-const thai = Noto_Sans_Thai({
-  subsets: ['thai', 'latin'],
-  weight: ['400', '500', '600', '700'],
+// Noto Sans Thai carries the Latin glyphs too. Bundled locally (OFL, licence beside the file): Google
+// serves URLs that next 15's next/font/google loader cannot parse, which crashed the deploy build.
+const thai = localFont({
+  src: './fonts/NotoSansThai-Variable.woff2',
+  weight: '100 900',
   variable: '--font-thai',
   display: 'swap',
 });
