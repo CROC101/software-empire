@@ -37,6 +37,7 @@ export const categories = {
   "water-ui": { label: "ปุ่มและเมนูน้ำ", kind: "exclusive" },
   intro: { label: "อินโทรและโลโก้", kind: "exclusive" },
   atmosphere: { label: "บรรยากาศ", kind: "exclusive" },
+  "art-wall": { label: "ผนังภาพ", kind: "exclusive" },
   background: { label: "พื้นหลัง", kind: "component" },
   text: { label: "ตัวอักษร", kind: "component" },
   button: { label: "ปุ่ม", kind: "component" },

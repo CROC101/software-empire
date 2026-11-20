@@ -206,4 +206,56 @@ export const exclusive: readonly Entry[] = [
     prompt:
       "Build a frosted window pane: ice crystals grow in from the frame toward the centre as branching fern patterns (diffusion-limited growth on a grid, seeded from the edges), drawn on a canvas over a soft night street scene. Dragging the pointer or a finger wipes the frost away along the stroke, leaving clear glass that slowly frosts over again. Coverage sets how far the frost reaches in. The pane has an accessible description; under prefers-reduced-motion the frost appears fully grown and wiping still works without regrowth animation. Use your stack's design tokens for every colour.",
   },
+  {
+    ...def(
+      "2026-11-20",
+      "carousel",
+      "curved-lens",
+      "Curved Lens Carousel",
+      "สไลด์ภาพที่มองผ่านเลนส์โค้ง ใบกลางแบนตรง ใบที่ออกห่างจากกลางยิ่งสูง ลึก และหันข้าง มีสีแยกที่ขอบเหมือนเลนส์ ลากหรือสะบัดแล้วหยุดที่ใบใกล้สุด วนไม่รู้จบ",
+      ["สไลด์", "เลนส์", "3D", "ลาก"],
+      [range("bend", "ความโค้งของเลนส์", 0, 2, 0.1, 1)],
+    ),
+    prompt:
+      "Build a looping photo carousel seen through a curved lens. Cards share one position value; each card's signed distance from it (the short way round the loop) drives translateX, rotateY (turned away from the centre), scaleY (taller further out), a negative translateZ and opacity, so the centre card reads flat and the outer ones bend away. Two tinted copies behind each card slide apart with distance to fake chromatic split at the rim. Dragging sets the position directly; on release a flick picks the nearest whole card up to two away and a critically damped spring settles there. Arrow keys and buttons step; clicking a side card brings it to the centre. The caption rises in per slide and is announced politely. A bend value scales every effect; 0 is flat. Transform and opacity only, instant under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "carousel",
+      "arc-fan",
+      "Spring Arc Fan",
+      "การ์ดสิบใบกางเป็นพัดบนล้อที่มีจุดหมุนอยู่ไกลใต้เวที เวลาเลื่อน การ์ดใบนำขยับก่อนแล้วแรงส่งไล่ออกไปทีละใบเหมือนดีดสาย ตอนเปิดหน้าการ์ดลอยขึ้นแล้วกางออก",
+      ["สไลด์", "พัด", "สปริง", "ปัด"],
+      [range("gap", "องศาระหว่างการ์ด", 8, 24, 1, 16)],
+    ),
+    prompt:
+      "Build a fanned wheel carousel of ten cards. Every card is absolutely centred at the bottom of the stage with transform-origin far below it (about 50% 280%), and rotates by (index - current) times a gap angle, so the deck reads as an arc. Each card animates on its own spring with a delay proportional to its distance from the current card, so a step starts at the leading card and ripples outward like a plucked string. On first view the cards rise from below and fan out from the centre. The current card lifts and grows slightly; cards fade with distance and z-order follows distance. Step with arrow buttons, ArrowLeft/Right, Home/End, a sideways swipe or a click on any card; the big label above is announced politely. No wheel or scroll hijacking. Transform and opacity only, instant under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "carousel",
+      "warp-ring",
+      "Warp Ring Carousel",
+      "การ์ดเรียงรอบทรงกระบอกแล้วหมุนเอง แต่ละรอบค่อย ๆ ออกตัว พุ่งเร็ว แล้วค่อย ๆ หยุด วงยืดออกนิดหนึ่งตอนพุ่ง การ์ดหน้าส่องแสงสีของตัวเองบนและล่าง ตัวเลขจาง ๆ ใหญ่สลับอยู่ข้างหลัง",
+      ["สไลด์", "วงแหวน", "3D", "เล่นเอง"],
+      [range("seconds", "วินาทีต่อรอบ", 2, 8, 0.5, 4)],
+    ),
+    prompt:
+      "Build a ring carousel: six cards stand on a cylinder (each rotateY(k * 360/n) translateZ(r), with r about 0.95 of the card width) inside a preserve-3d stage pushed back by r under perspective. The ring rotates by -position * 360/n with a slow-fast-slow cubic-bezier (about 0.83, 0, 0.17, 1) over 1.4s, and turns one step on its own every few seconds, pausing while the pointer is over it or it has focus. On every turn the ring wrapper stretches scaleX 1 to 1.1 and back. Two soft blurred ellipses above and below the ring cross-fade to the front card's colour, and a huge faint two-digit numeral behind swaps with a short rise. Buttons and arrow keys step both ways; the title is announced politely. Transform and opacity only, no autoplay and instant changes under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-20",
+      "art-wall",
+      "picture-rail",
+      "Picture Rail Gallery",
+      "ภาพพิมพ์ใส่กรอบแขวนด้วยลวดจากรางแขวนภาพ แต่ละภาพเอียงนิด ๆ ชี้แล้วภาพแกว่งจากตะขอ ภาพข้าง ๆ ขยับตาม มีไฟส่องจากด้านบน กดแล้วภาพหันหลังให้อ่านป้ายแกลเลอรี ถ้ายังไม่มีใครแตะ ไฟจะส่องทีละภาพเอง",
+      ["แกลเลอรี", "กรอบภาพ", "แกว่ง", "พลิก"],
+      [range("interval", "วินาทีที่ไฟส่องแต่ละภาพ", 2, 8, 0.5, 3)],
+    ),
+    prompt:
+      "Build a gallery wall where framed prints hang from one picture rail. Each print is a thick moulding around a bevelled mat and the image, hung from a hook by two wires drawn in SVG to its top corners, with alternating wire lengths and a slightly crooked rest angle (about ±1.5deg). The hanging group rotates around its hook (transform-origin top). Pointing at or focusing a print kicks a damped swing (rotate keyframes rest, +6, -3.5, +1.5, rest degrees times an amplitude) and nudges its two neighbours at a third of the amplitude; alternate the sign per kick so each replays. The pointed print is lit by a radial spot from above and lifts with a spring. Click or Enter turns it with rotateY 180 to a back of brown paper with a gallery label (title, medium, size, year); Escape turns it back. Until the visitor interacts, the prints are lit one by one on an interval. A wall label under each frame and an aria-live line name the lit print. Narrow screens scroll the rail sideways with scroll-snap. Transform and opacity only, no swinging under prefers-reduced-motion. Use your stack's design tokens for every colour.",
+  },
 ];
