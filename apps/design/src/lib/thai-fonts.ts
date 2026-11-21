@@ -3,6 +3,7 @@
  * Nothing is rehosted: pictures and downloads load from f0nt.com, so each designer's terms,
  * counter and page stay theirs. This file holds the pure parts: filters, facets and the URL state.
  */
+import { found, hasAll, type Found } from "./search";
 
 export type ThaiFont = {
   /** post id */
@@ -304,12 +305,16 @@ function matches(index: ThaiIndex, f: ThaiFont, s: ThaiState): boolean {
   if (s.y && !f.d.startsWith(s.y)) return false;
   if (s.a && f.a !== s.a) return false;
   if (s.t.some((id) => !f.t.includes(id))) return false;
-  const q = s.q.trim().toLowerCase();
-  if (!q) return true;
-  return [f.n, f.s, index.authors[f.a] ?? "", ...f.t.map((id) => index.tags[id]?.[0] ?? "")].some(
-    (x) => x.toLowerCase().includes(q),
-  );
+  return hasAll(s.q, fontText(index, f));
 }
+
+/** What a search reads: name, slug, designer and tag names. */
+export const fontText = (index: ThaiIndex, f: ThaiFont) => [
+  f.n,
+  f.s,
+  index.authors[f.a] ?? "",
+  ...f.t.map((id) => index.tags[id]?.[0] ?? ""),
+];
 
 export function filterThai(index: ThaiIndex, s: ThaiState): ThaiFont[] {
   const out = index.fonts.filter((f) => matches(index, f, s));
@@ -317,6 +322,14 @@ export function filterThai(index: ThaiIndex, s: ThaiState): ThaiFont[] {
   else if (s.sort === "az") out.sort((a, b) => a.n.localeCompare(b.n, "th"));
   else out.sort((a, b) => b.d.localeCompare(a.d) || b.i - a.i);
   return out;
+}
+
+/** filterThai, or the closest fonts when the words find none (inside the other filters if they leave any). */
+export function searchThai(index: ThaiIndex, s: ThaiState): Found<ThaiFont> {
+  const hits = filterThai(index, s);
+  if (hits.length) return { items: hits, rescue: null };
+  const pool = filterThai(index, { ...s, q: "" });
+  return found(hits, pool.length ? pool : index.fonts, s.q, (f) => fontText(index, f), 24);
 }
 
 /** How many fonts each tag would leave if added to the current picks. */

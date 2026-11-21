@@ -1,11 +1,22 @@
 "use client";
 
-import { cn } from "@empire/ui";
-import { useState } from "react";
+import { cn, NimbusNavbar, type NimbusFx } from "@empire/ui";
+import {
+  Component,
+  LayoutGrid,
+  MousePointerClick,
+  Search,
+  Sparkles,
+  Type,
+  Wallpaper,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import data from "@/lib/react-bits.json";
 import { reactBitsUrl } from "@/lib/react-bits-url";
+import { found, hasAll } from "@/lib/search";
 import { CopyButton } from "./copy-button";
-import { useStored } from "./library-state";
+import { useNimbus, useStored } from "./library-state";
+import { RescueNote } from "./rescue-note";
 
 type Tool = "shadcn" | "jsrepo";
 const slug = (s: string) => s.replace(/\s+/g, "-").toLowerCase();
@@ -14,6 +25,28 @@ const command = (tool: Tool, name: string) =>
   tool === "shadcn"
     ? `npx shadcn@latest add @react-bits/${name}`
     : `npx jsrepo@latest add https://reactbits.dev/r/${name}`;
+
+const catIcon: Record<string, [React.ReactNode, NimbusFx]> = {
+  "Text Animations": [<Type key="i" aria-hidden />, "wave"],
+  Animations: [<Sparkles key="i" aria-hidden />, "spin"],
+  Components: [<Component key="i" aria-hidden />, "pop"],
+  Micro: [<MousePointerClick key="i" aria-hidden />, "drop"],
+  Backgrounds: [<Wallpaper key="i" aria-hidden />, "glow"],
+};
+const catNames = data.categories.map((c) => c.name);
+type Item = { cat: string; title: string; component: string };
+const all: Item[] = data.categories.flatMap((c) => c.items.map((it) => ({ cat: c.name, ...it })));
+
+/** Search state in the query string (?q=&c=&ours=1), so reload, back and shared links keep it. */
+function readFind(search: string) {
+  const p = new URLSearchParams(search);
+  const c = p.get("c") ?? "";
+  return {
+    q: (p.get("q") ?? "").slice(0, 60),
+    c: catNames.includes(c) ? c : "",
+    mine: p.get("ours") === "1",
+  };
+}
 
 function Tabs<T extends string>({
   label,
@@ -62,6 +95,45 @@ export function ReactBitsList({ ours = {} }: { ours?: Readonly<Record<string, st
   const tool: Tool = t === "jsrepo" ? "jsrepo" : "shadcn";
   const pick = (nv: string, nt: Tool) => save(`${nv}|${nt}`);
   const [open, setOpen] = useState<string | null>(null);
+  const [find, setFind] = useState({ q: "", c: "", mine: false });
+  const [ready, setReady] = useState(false);
+  const { phone, tone } = useNimbus();
+  useEffect(() => {
+    // the query string is only readable after mount (static export)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFind(readFind(location.search));
+    setReady(true);
+  }, []);
+  useEffect(() => {
+    if (!ready) return;
+    const p = new URLSearchParams();
+    if (find.q) p.set("q", find.q);
+    if (find.c) p.set("c", find.c);
+    if (find.mine) p.set("ours", "1");
+    const qs = p.size ? `?${p}` : "";
+    if (qs !== location.search)
+      history.replaceState(history.state, "", `${location.pathname}${qs}${location.hash}`);
+  }, [find, ready]);
+
+  const text = (it: Item) => [
+    it.title,
+    it.component,
+    it.cat,
+    ours[it.title] ? "ของเรา crocwork" : "",
+  ];
+  const { items, rescue } = useMemo(() => {
+    const pool = all.filter(
+      (it) => (!find.c || it.cat === find.c) && (!find.mine || ours[it.title]),
+    );
+    const hits = pool.filter((it) => hasAll(find.q, text(it)));
+    return found(hits, pool.length ? pool : all, find.q, text);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [find, ours]);
+  const sections = data.categories
+    .map((c) => ({ name: c.name, items: items.filter((it) => it.cat === c.name) }))
+    .filter((c) => c.items.length);
+  const mineCount = all.filter((it) => ours[it.title]).length;
+
   return (
     <>
       <div className="vt-top sticky top-[3.6rem] z-20 -mx-4 flex flex-wrap items-center gap-x-6 gap-y-2 border-b bg-background/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
@@ -78,7 +150,61 @@ export function ReactBitsList({ ours = {} }: { ours?: Readonly<Record<string, st
           onChange={(t) => pick(variant, t)}
         />
       </div>
-      {data.categories.map((c) => (
+
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <label className="relative min-w-0 flex-1 basis-60">
+          <span className="sr-only">ค้นหาใน React Bits</span>
+          <Search
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+          />
+          <input
+            type="search"
+            value={find.q}
+            onChange={(e) => setFind((f) => ({ ...f, q: e.target.value.slice(0, 60) }))}
+            placeholder="ชื่อชิ้น เช่น aurora, glitch, dock"
+            className="h-10 w-full rounded-md border bg-background pr-3 pl-9 text-sm outline-none focus-visible:border-ring"
+          />
+        </label>
+        <button
+          type="button"
+          aria-pressed={find.mine}
+          onClick={() => setFind((f) => ({ ...f, mine: !f.mine }))}
+          className="inline-flex h-10 items-center gap-1.5 rounded-full border px-3 text-sm transition-colors hover:bg-muted aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background"
+        >
+          มีของเรา <span className="text-xs opacity-60 tabular-nums">{mineCount}</span>
+        </button>
+        <p className="text-sm text-muted-foreground tabular-nums" aria-live="polite">
+          {items.length} ชิ้น
+        </p>
+      </div>
+      <div className="-mx-4 mt-2 overflow-x-auto px-4 py-3.5 [scrollbar-width:none]">
+        <div className="mx-auto w-max">
+          <NimbusNavbar
+            label="หมวด React Bits"
+            items={[
+              { label: "ทั้งหมด", icon: <LayoutGrid aria-hidden />, fx: "drop" },
+              ...data.categories.map((c) => {
+                const [icon, fx] = catIcon[c.name] ?? [
+                  <LayoutGrid key="i" aria-hidden />,
+                  "wave" as const,
+                ];
+                return { label: c.name, icon, fx };
+              }),
+            ]}
+            active={find.c ? catNames.indexOf(find.c) + 1 : 0}
+            compact={phone}
+            tone={tone}
+            onChange={(i) => setFind((f) => ({ ...f, c: catNames[i - 1] ?? "" }))}
+          />
+        </div>
+      </div>
+      {rescue && (
+        <div className="mt-2">
+          <RescueNote rescue={rescue} q={find.q} />
+        </div>
+      )}
+      {sections.map((c) => (
         <section key={c.name} aria-labelledby={slug(c.name)} className="mt-10">
           <h2 id={slug(c.name)} className="font-heading text-2xl font-black">
             {c.name}{" "}

@@ -3,33 +3,47 @@
 import { cn } from "@empire/ui";
 import { CornerDownLeft, Search } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { rank, sortEntries } from "@/lib/library";
-import { categories, kinds, kindOf, registry } from "@/registry/meta";
+import { GROUPS, searchAll, thaiHits, type Group, type Hit } from "@/lib/everything";
+import { parseIndex } from "@/lib/thai-fonts";
+import { RescueNote } from "./rescue-note";
 
-/** Ctrl/⌘K anywhere: type to find a part, arrows to move, Enter to open. A native <dialog> keeps focus and Esc. */
+const groups = Object.entries(GROUPS) as [Group, string][];
+
+/**
+ * Ctrl/⌘K anywhere: one search over parts, Thai and Latin fonts, React Bits and app templates, with
+ * chips to keep one kind. Arrows move, Enter opens. A native <dialog> keeps focus and Esc.
+ */
 export function CommandPalette() {
   const dialog = useRef<HTMLDialogElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const [q, setQ] = useState("");
   const [at, setAt] = useState(0);
+  const [group, setGroup] = useState<Group | "">("");
+  const [thai, setThai] = useState<Hit[] | null>(null);
+  const loading = useRef(false);
 
-  const hits = useMemo(
-    () =>
-      // popular first, then a stable sort by fuzzy score keeps popular order among ties
-      sortEntries(registry, "popular")
-        .map((e) => ({ e, r: rank(e, q) }))
-        .filter((x) => x.r > 0)
-        .sort((a, b) => b.r - a.r)
-        .slice(0, 30)
-        .map((x) => x.e),
-    [q],
-  );
+  const { items: hits, rescue } = useMemo(() => searchAll(q, group, thai ?? []), [q, group, thai]);
 
   const open = () => {
     setQ("");
     setAt(0);
+    setGroup("");
     dialog.current?.showModal();
     input.current?.focus();
+    // the Thai index is ~1 MB: fetch it the first time the palette opens, not with every page
+    if (!loading.current) {
+      loading.current = true;
+      fetch("/data/f0nt.json")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((raw: unknown) => {
+          const index = raw ? parseIndex(raw) : null;
+          if (index) setThai(thaiHits(index));
+          else loading.current = false;
+        })
+        .catch(() => {
+          loading.current = false;
+        });
+    }
   };
 
   useEffect(() => {
@@ -46,10 +60,9 @@ export function CommandPalette() {
     };
   }, []);
 
-  const go = (slug: string) => {
+  const go = (href: string) => {
     // full load on purpose: Next 16 export writes /c/<slug> RSC payloads where client navigation does not look (404)
-    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-    window.location.assign(`/c/${slug}`);
+    window.location.assign(href);
   };
 
   return (
@@ -60,12 +73,12 @@ export function CommandPalette() {
         className="ml-auto flex items-center gap-2 rounded-lg border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
       >
         <Search aria-hidden className="size-4" />
-        <span className="hidden sm:inline">ค้นหาชิ้นส่วน</span>
+        <span className="hidden sm:inline">ค้นหาทั้งเว็บ</span>
         <kbd className="hidden rounded border px-1.5 font-mono text-[10px] sm:inline">Ctrl K</kbd>
       </button>
       <dialog
         ref={dialog}
-        aria-label="ค้นหาชิ้นส่วน"
+        aria-label="ค้นหาทั้งเว็บ"
         onClick={(e) => {
           if (e.target === e.currentTarget) e.currentTarget.close();
         }}
@@ -79,7 +92,7 @@ export function CommandPalette() {
             role="combobox"
             aria-expanded="true"
             aria-controls="palette-list"
-            aria-activedescendant={hits[at] ? `pal-${hits[at].slug}` : undefined}
+            aria-activedescendant={hits[at] ? `pal-${at}` : undefined}
             value={q}
             maxLength={60}
             onChange={(e) => {
@@ -94,16 +107,45 @@ export function CommandPalette() {
                 e.preventDefault();
                 setAt((i) => Math.max(i - 1, 0));
               } else if (e.key === "Enter" && hits[at]) {
-                go(hits[at].slug);
+                go(hits[at].href);
               }
             }}
-            placeholder="พิมพ์ชื่อ หมวด หรือลูกเล่น"
+            placeholder="ชิ้นส่วน ฟอนต์ React Bits หรือแอป"
             className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
           />
           <kbd className="rounded border px-1.5 font-mono text-[10px] text-muted-foreground">
             Esc
           </kbd>
         </label>
+        <div
+          role="group"
+          aria-label="ชนิด"
+          className="flex gap-1.5 overflow-x-auto border-b px-3 py-2 [scrollbar-width:none]"
+        >
+          {[["", "ทั้งหมด"] as const, ...groups].map(([k, label]) => (
+            <button
+              key={k}
+              type="button"
+              aria-pressed={group === k}
+              onClick={() => {
+                setGroup(k);
+                setAt(0);
+                input.current?.focus();
+              }}
+              className="shrink-0 rounded-full border px-2.5 py-1 text-xs transition-colors hover:bg-muted aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {rescue && (
+          <div className="px-3 pt-2">
+            <RescueNote rescue={rescue} q={q} />
+          </div>
+        )}
+        {group === "thai" && !thai && (
+          <p className="px-4 pt-3 text-sm text-muted-foreground">กำลังโหลดรายชื่อฟอนต์ไทย</p>
+        )}
         <ul
           id="palette-list"
           role="listbox"
@@ -112,15 +154,15 @@ export function CommandPalette() {
         >
           {hits.map((e, i) => (
             <li
-              key={e.slug}
-              id={`pal-${e.slug}`}
+              key={e.key}
+              id={`pal-${i}`}
               role="option"
               aria-selected={i === at}
               onMouseMove={() => {
                 setAt(i);
               }}
               onClick={() => {
-                go(e.slug);
+                go(e.href);
               }}
               className={cn(
                 "flex cursor-pointer items-center gap-3 rounded-md px-3 py-2",
@@ -129,16 +171,11 @@ export function CommandPalette() {
             >
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-medium">{e.name}</span>
-                <span className="block truncate text-xs text-muted-foreground">
-                  {kinds[kindOf(e)]} · {categories[e.category].label}
-                </span>
+                <span className="block truncate text-xs text-muted-foreground">{e.sub}</span>
               </span>
               {i === at && <CornerDownLeft aria-hidden className="size-4 text-muted-foreground" />}
             </li>
           ))}
-          {!hits.length && (
-            <li className="px-3 py-8 text-center text-sm text-muted-foreground">ไม่พบ</li>
-          )}
         </ul>
       </dialog>
     </>
