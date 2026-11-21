@@ -596,4 +596,95 @@ export const exclusive: readonly Entry[] = [
     prompt:
       "Build three scroll-driven type scenes, each a tall section with a sticky stage. In each, split a word into characters and drive them from the section's scroll progress (0 to 0.5): first the letters start pushed out from the centre and turned on X by their distance from the middle, then settle in a row; second they start spread and lifted by their distance and fall into place; third a row of small icons between brackets starts spread and rotated and closes into the centre. Use transforms only. Use your stack's design tokens for every colour.",
   },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "cloud-hero",
+      "Cloud Hero · Lite",
+      "Hero เต็มจอบนท้องฟ้าที่มีเมฆลอยผ่าน (ธีมมืดเป็นคืนเดือนหงาย) หัวข้อใหญ่ บรรทัดใต้หัวข้อมีคำที่ตัวอักษรค่อยๆ ชัดขึ้นจากเบลอทีละตัว ปุ่ม และตัวเลขจริงเรียงด้านล่าง",
+      ["hero", "เมฆ", "WebGL", "ท้องฟ้า"],
+      [
+        text("line1", "หัวข้อ บรรทัด 1", "ระบบที่ผมสร้าง", 40),
+        text("line2", "หัวข้อ บรรทัด 2", "ทำงานได้จริง", 40),
+        text("lead", "ข้อความหน้าคำที่เปลี่ยน", "ผมทำเองทุกขั้น", 40),
+        range("seconds", "วินาทีต่อคำ", 1.5, 6, 0.5, 2.5),
+      ],
+    ),
+    prompt:
+      "Build a full-height hero over a WebGL sky. One fragment shader draws a vertical sky gradient, a soft light glow at the top right and six clouds drifting sideways at different speeds and heights; each cloud is a dome-topped ellipse filled with domain-warped billow noise and shaded by a second density sample above it, and far clouds fade toward the sky colour. Take the sky, cloud and glow colours from design tokens: a day sky in the light theme, a deep night sky with grey clouds and a pale moon glow in the dark theme, re-read when the theme flips. Pause the loop when off screen or the tab is hidden, and draw one still frame under reduced motion. Over it: a dark scrim from the left so white text stays readable, a faint 8 by 12 grid, an eyebrow with a short rule, a heavy two-line headline, a line under it whose last word changes every few seconds with each letter (split by grapheme) fading in from a 20px blur with a tinted start colour and a 45ms stagger, the actions, and three true numbers along the bottom. Keep the full word list in a screen-reader-only span. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "water-tribe-hero",
+      "Water Tribe Hero",
+      "Hero เดิมของ crocwork แบบเผ่าน้ำ ป้ายแก้วมีแสงวิ่งผ่านชื่อ หัวข้อหนาบรรทัดท้ายนับเลขขึ้นเป็นสีน้ำ ขีดเส้นใต้แบบมือวาด กล่องแก้วที่ตำแหน่งในทีมผลัดกันโผล่ขึ้นมา และต้นไม้ริมน้ำที่ผลไม้คือระบบต่างๆ ตามฤดูกาล",
+      ["hero", "เผ่าน้ำ", "ต้นไม้", "ฤดูกาล"],
+      [
+        text("line1", "หัวข้อ บรรทัด 1", "ระบบที่ผมสร้าง", 40),
+        text("line2", "หัวข้อ บรรทัด 2", "ทำงานได้จริง", 40),
+        range("count", "จำนวนระบบ", 1, 12, 1, 7),
+        pick(
+          "season",
+          "ฤดู / เทศกาล",
+          [
+            "theme",
+            "bloom",
+            "rain",
+            "snow",
+            "space",
+            "songkran",
+            "loykrathong",
+            "halloween",
+            "christmas",
+            "newyear",
+          ],
+          "theme",
+        ),
+      ],
+    ),
+    prompt:
+      "Build a two-column hero. Left: a glass chip (translucent background, hairline border, inner top highlight) with a small dot, the studio name in small mono caps with a light glint sweeping across it now and then, and a short tagline; a heavy three-line headline whose last line reads 'all N systems' with N counting up from zero, set in a sky-to-blue water gradient over a hand-drawn underline (one uneven SVG stroke); a glass box reading 'my team =' followed by role names that rotate every 2.4 seconds, each sliding up letter by letter from a clipped line so the slot is never blank; then a solid primary button and a glass secondary button. Right: an illustrated tree by the water whose fruit are links to the systems and whose foliage follows the season. Stack on phones with the scene after the headline. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "cloud-hero-original",
+      "Cloud Hero · V.original",
+      "ต้นฉบับตามที่ได้มาทั้งไฟล์ วิดีโอพื้นหลังเต็มจอ เส้นกริดจางๆ หัวข้อใหญ่ชิดซ้ายที่คำท้ายเปลี่ยนทุก 2.5 วินาทีโดยตัวอักษรค่อยๆ ชัดจากเบลอเป็นสีรุ้งแล้วกลายเป็นขาว และตัวเลข 3 ชุดด้านล่าง รุ่นของเราคือ Cloud Hero",
+      ["hero", "วิดีโอ", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a full-screen black hero with a looping muted background video (object-cover, 80% opacity) under two scrims: a left-to-right dark gradient for the text side and a top-to-bottom one for the bottom edge. Add a faint grid of 8 horizontal and 12 vertical hairlines. On the left, an eyebrow in small mono with a short rule before it, then a huge left-aligned two-line headline whose last word cycles through a list every 2.5 seconds: each letter animates from opacity 0 and a 20px blur to sharp over 500ms with a cubic ease-out and a 45ms stagger, tinted along a colour ramp while it settles, then turns white. The eyebrow and headline fade up on mount. Along the bottom, three metrics, each a big value over a small muted label. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "atmosphere",
+      "cloud-sky",
+      "Cloud Sky · Lite",
+      "ท้องฟ้า WebGL มีเมฆฟูลอยผ่าน สีมาจาก token ของธีม กลางวันเป็นฟ้าใส ธีมมืดเป็นคืนเดือนหงายเมฆสีเทา หยุดวาดเมื่อเลื่อนพ้นจอ ใส่เนื้อหาซ้อนด้านบนได้",
+      ["เมฆ", "WebGL", "shader", "ท้องฟ้า"],
+      [range("speed", "ความเร็ว", 0, 3, 0.1, 1), range("count", "จำนวนเมฆ", 1, 6, 1, 6)],
+    ),
+    prompt:
+      "Build a WebGL1 cloud sky as a box that fills its parent and holds children on top. A full-screen triangle runs one fragment shader: a vertical sky gradient, a soft glow at the top right (sun by day, a pale moon at night), and up to six clouds drifting sideways at their own speed and height, wrapping around; each cloud is a dome-topped ellipse whose edge is broken by domain-warped billow noise, with a second density sample above it for self-shadow, and far clouds fade toward the sky. Read every colour from design tokens at runtime and re-read them when the theme class flips: a clear day sky in light, a deep night sky with grey clouds in dark. Pause the loop when the box is off screen or the tab is hidden, draw one still frame under reduced motion, and show the sky gradient alone without WebGL. Props: speed and cloud count. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "atmosphere",
+      "cloud-sky-original",
+      "Cloud Sky · V.original",
+      "ต้นฉบับตามที่ได้มาทั้งไฟล์ ท้องฟ้า WebGL มีเมฆฟูลอยผ่าน 6 ก้อน แสงแดดมุมขวาบน เมฆบางชั้นสูง ปรับความเร็วกับจำนวนเมฆได้ รุ่นของเราคือ Cloud Sky",
+      ["เมฆ", "WebGL", "shader", "ต้นฉบับ"],
+      [range("speed", "ความเร็ว", 0, 3, 0.1, 1), range("count", "จำนวนเมฆ", 1, 6, 1, 6)],
+    ),
+    prompt:
+      "Build a WebGL1 cloud sky as a box that fills its parent and can hold children centred on top. A full-screen triangle runs one fragment shader: a vertical gradient between a top and a bottom sky colour, a horizon haze, a soft sun glow at the top right, a thin band of cirrus streaks from stretched fbm noise, and up to six clouds that drift sideways at their own speed and height and wrap around. Each cloud is an ellipse with a taller dome on top whose edge is broken by domain-warped billow noise; a second density sample above it darkens the underside for self-shadow, a soft rim catches the light, and far clouds blend toward the sky. Props: speed, count, cloud colour and the two sky colours (hex). Resize with a ResizeObserver at up to 2x device pixels and hold time at zero under reduced motion. Use your stack's design tokens for every colour.",
+  },
 ];

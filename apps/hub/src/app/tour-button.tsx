@@ -10,7 +10,8 @@ export function TourButton() {
     <button
       type="button"
       onClick={() => window.dispatchEvent(new Event(BUILD_TOUR_EVENT))}
-      className="cw-glass inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5"
+      // sits on the cloud sky: the same see-through glass as the hero's other secondary action
+      className="inline-flex items-center gap-2 rounded-xl border border-(--em-ink-0)/40 bg-(--em-ink-0)/10 px-5 py-3 text-sm font-bold text-(--em-ink-0) backdrop-blur-sm transition-transform hover:-translate-y-0.5"
     >
       <span aria-hidden>▶</span> ดูการสร้างเว็บนี้
     </button>

@@ -29,6 +29,7 @@ export type Kind = keyof typeof kinds;
 
 /** Category order here is the sidebar order. */
 export const categories = {
+  "studio-hero": { label: "Hero ของสตูดิโอ", kind: "exclusive" },
   showcase: { label: "Hero แกลเลอรี", kind: "exclusive" },
   spotlight: { label: "Hero แสงไฟ", kind: "exclusive" },
   stories: { label: "สตอรี่", kind: "exclusive" },
