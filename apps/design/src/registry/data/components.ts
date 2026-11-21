@@ -307,7 +307,7 @@ export const components: readonly Entry[] = [
   c(
     "card",
     "flip-card",
-    "Flip Card",
+    "Turn Card",
     "ชี้หรือกดแล้วพลิกดูด้านหลัง",
     ["flip", "two faces"],
     [pick("trigger", "พลิกเมื่อ", ["hover", "click"], "hover")],
