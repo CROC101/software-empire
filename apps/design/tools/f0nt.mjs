@@ -29,6 +29,8 @@ export const decode = (s) =>
     .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
     .replace(/&([a-z]+);/gi, (m, k) => ENT[k.toLowerCase()] ?? m)
+    // names are plain text: no angle brackets survive, even ones that came in as &lt;
+    .replace(/[<>]/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
@@ -143,6 +145,7 @@ async function crawl() {
 
 function selfTest() {
   assert.equal(decode("สลัดโรล &#8211; A&amp;B <b>x</b>"), "สลัดโรล – A&B x");
+  assert.equal(decode("&lt;script&gt;x"), "scriptx");
   const html =
     '<img src="https://www.f0nt.com/wp-content/uploads/2026/11/A-0.webp" srcset="https://www.f0nt.com/wp-content/uploads/2026/11/A-0.webp 1600w, https://www.f0nt.com/wp-content/uploads/2026/11/A-0-150x150.webp 150w, https://www.f0nt.com/wp-content/uploads/2026/11/A-0-300x300.webp 300w" />' +
     '<a href="https://www.f0nt.com/?dl_name=rd/A.zip">x</a><a href="https://www.f0nt.com/?dl_name=rd/A.zip">y</a>' +
