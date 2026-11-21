@@ -4,13 +4,14 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv, type Plugin } from "vite";
 
 /** Build-only CSP: the dev server needs inline scripts for HMR, the production bundle doesn't. */
-function contentSecurityPolicy(supabaseUrl: string): Plugin {
+function contentSecurityPolicy(supabaseUrl: string, hubUrl: string): Plugin {
   const policy = [
     "default-src 'self'",
     "script-src 'self'",
     // React style={{…}} attributes need inline styles; scripts stay locked
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' blob: data:",
+    // the hub serves the subsystem logos shown in HubSwitcher
+    `img-src 'self' blob: data: ${new URL(hubUrl).origin}`,
     `connect-src 'self' ${new URL(supabaseUrl).origin}`,
     "worker-src 'self' blob:",
     "object-src 'none'",
@@ -40,7 +41,10 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
-      contentSecurityPolicy(env.VITE_SUPABASE_URL ?? "http://localhost:54321"),
+      contentSecurityPolicy(
+        env.VITE_SUPABASE_URL ?? "http://localhost:54321",
+        env.VITE_HUB_URL ?? "http://localhost:3000",
+      ),
     ],
     resolve: { alias: { "@": `${import.meta.dirname}/src` } },
     test: {

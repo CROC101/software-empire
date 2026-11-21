@@ -9,14 +9,15 @@ import { fetchOembed, youtubeId } from "./src/lib/youtube";
  * YouTube's official player: its loader script from www.youtube.com, the frame from the
  * no-cookie host, thumbnails from i.ytimg.com. Nothing else from outside.
  */
-function contentSecurityPolicy(supabaseUrl: string): Plugin {
+function contentSecurityPolicy(supabaseUrl: string, hubUrl: string): Plugin {
   const supabase = new URL(supabaseUrl).origin;
   const realtime = supabase.replace(/^http/, "ws");
   const policy = [
     "default-src 'self'",
     "script-src 'self' https://www.youtube.com",
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' blob: data: https://i.ytimg.com",
+    // the hub serves the subsystem logos shown in HubSwitcher
+    `img-src 'self' blob: data: https://i.ytimg.com ${new URL(hubUrl).origin}`,
     "frame-src https://www.youtube-nocookie.com",
     // REST + Realtime (watch together)
     `connect-src 'self' ${supabase} ${realtime}`,
@@ -73,7 +74,10 @@ export default defineConfig(({ mode }) => {
       react(),
       tailwindcss(),
       devOembed(),
-      contentSecurityPolicy(env.VITE_SUPABASE_URL ?? "http://localhost:54321"),
+      contentSecurityPolicy(
+        env.VITE_SUPABASE_URL ?? "http://localhost:54321",
+        env.VITE_HUB_URL ?? "http://localhost:3000",
+      ),
     ],
     resolve: { alias: { "@": `${import.meta.dirname}/src` } },
     test: {
