@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, NimbusNavbar, useTokenColors, type NimbusFx, type NimbusNavItem } from "@empire/ui";
+import { cn, NimbusNavbar, type NimbusFx, type NimbusNavItem } from "@empire/ui";
 import {
   ArrowUpRight,
   BadgeCheck,
@@ -17,10 +17,10 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
-  filterEntries,
   isHot,
+  searchEntries,
   isNew,
   sorts,
   versions,
@@ -29,7 +29,8 @@ import {
 } from "@/lib/library";
 import { categories, kinds, type Category, type Entry, type Kind } from "@/registry/meta";
 import { InView } from "./in-view";
-import { useFavs, useView } from "./library-state";
+import { useFavs, useNimbus, useView } from "./library-state";
+import { RescueNote } from "./rescue-note";
 import { Thumb } from "./preview";
 
 const kindList = Object.keys(kinds) as Kind[];
@@ -52,16 +53,6 @@ const verItems: NimbusNavItem[] = [
   { label: versions.original, icon: <BadgeCheck aria-hidden />, fx: "glow" },
   { label: versions.lite, icon: <Feather aria-hidden />, fx: "drop" },
 ];
-
-// phones get the icon-only pill for kinds; labels stay as the buttons' accessible names
-const PHONE = "(max-width: 639px)";
-const onPhone = (cb: () => void) => {
-  const m = window.matchMedia(PHONE);
-  m.addEventListener("change", cb);
-  return () => {
-    m.removeEventListener("change", cb);
-  };
-};
 
 /**
  * The library: kinds, Exclusive versions (V.original / Lite) and categories as water-drop navbars, search, sort by
@@ -89,14 +80,12 @@ export function Gallery({ entries }: { entries: readonly Entry[] }) {
     };
   }, []);
 
-  const shown = useMemo(() => filterEntries(entries, view, favs), [entries, view, favs]);
-  const phone = useSyncExternalStore(
-    onPhone,
-    () => window.matchMedia(PHONE).matches,
-    () => false,
+  const { items: shown, rescue } = useMemo(
+    () => searchEntries(entries, view, favs),
+    [entries, view, favs],
   );
-  const bg = useTokenColors(["--background"])?.[0];
-  const tone = bg && parseInt(bg.slice(1, 3), 16) < 128 ? "dark" : "light";
+  // phones get the icon-only pill for kinds; labels stay as the buttons' accessible names
+  const { phone, tone } = useNimbus();
 
   // a link like /#c=hero names only the category: its kind is the one to light up
   const kind =
@@ -238,6 +227,12 @@ export function Gallery({ entries }: { entries: readonly Entry[] }) {
             {shown.length} ชิ้น
           </p>
         </div>
+
+        {rescue && (
+          <div className="mt-4">
+            <RescueNote rescue={rescue} q={view.q} />
+          </div>
+        )}
 
         <ul className="mt-4 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
           {shown.map((e) => {

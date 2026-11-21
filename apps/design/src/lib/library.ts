@@ -11,6 +11,7 @@ import {
   type Entry,
   type Kind,
 } from "@/registry/meta";
+import { found, hasAll, type Found } from "./search";
 
 export type Sort = "popular" | "new" | "az";
 export const sorts: Record<Sort, string> = { popular: "ยอดนิยม", new: "มาใหม่", az: "A–Z" };
@@ -59,13 +60,16 @@ const newest = new Set(
 export const isNew = (e: Entry) => newest.has(e.slug);
 export const isHot = (e: Entry) => e.rank !== undefined && e.rank <= 10;
 
-export function matches(e: Entry, q: string): boolean {
-  const s = q.trim().toLowerCase();
-  if (!s) return true;
-  return [e.name, e.slug, e.summary, categories[e.category].label, ...e.blend].some((x) =>
-    x.toLowerCase().includes(s),
-  );
-}
+export const entryText = (e: Entry) => [
+  e.name,
+  e.slug,
+  e.summary,
+  categories[e.category].label,
+  ...e.blend,
+];
+
+/** Every word of the query appears in the part's name, slug, summary, category or blends. */
+export const matches = (e: Entry, q: string) => hasAll(q, entryText(e));
 
 /** Query characters in order inside text (Raycast-style). Higher is tighter: runs and word starts score more; 0 = no match. */
 export function fuzzy(text: string, q: string): number {
@@ -104,6 +108,19 @@ export function filterEntries(list: readonly Entry[], v: View, favs: ReadonlySet
     ),
     v.sort,
   );
+}
+
+/** filterEntries, or the closest parts when the query finds none (within the other filters if they hold any). */
+export function searchEntries(
+  list: readonly Entry[],
+  v: View,
+  favs: ReadonlySet<string>,
+): Found<Entry> {
+  const hits = filterEntries(list, v, favs);
+  if (hits.length) return { items: hits, rescue: null };
+  const pool = filterEntries(list, { ...v, q: "" }, favs);
+  const r = found(hits, pool.length ? pool : list, v.q, entryText);
+  return r.rescue?.how === "layout" ? { ...r, items: sortEntries(r.items, v.sort) } : r;
 }
 
 const isKind = (x: string | null): x is Kind => x !== null && x in kinds;

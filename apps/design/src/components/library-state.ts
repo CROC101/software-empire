@@ -1,5 +1,6 @@
 "use client";
 
+import { useTokenColors } from "@empire/ui";
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { initialView, parseView, viewHash, type View } from "@/lib/library";
 
@@ -121,4 +122,25 @@ export function useStored(key: string): [string | null, (v: string) => void] {
     [key],
   );
   return [raw, set];
+}
+
+/* ---------- water-drop bars: compact on phones, water tone from the page background ---------- */
+
+const PHONE = "(max-width: 639px)";
+const onPhone = (cb: () => void) => {
+  const m = window.matchMedia(PHONE);
+  m.addEventListener("change", cb);
+  return () => {
+    m.removeEventListener("change", cb);
+  };
+};
+
+export function useNimbus(): { phone: boolean; tone: "dark" | "light" | undefined } {
+  const phone = useSyncExternalStore(
+    onPhone,
+    () => window.matchMedia(PHONE).matches,
+    () => false,
+  );
+  const bg = useTokenColors(["--background"])?.[0];
+  return { phone, tone: bg ? (parseInt(bg.slice(1, 3), 16) < 128 ? "dark" : "light") : undefined };
 }

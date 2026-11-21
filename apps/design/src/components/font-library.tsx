@@ -5,16 +5,17 @@ import { ArrowUpRight, Download, Search, Type } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { CopyButton } from "@/components/copy-button";
 import { InView } from "@/components/in-view";
+import { RescueNote } from "@/components/rescue-note";
 import { siteUrl } from "@/lib/env";
 import {
   defaultStyle,
   faceCss,
   faceName,
   faceSrc,
-  filterFonts,
   fontFamilies,
   fontUrl,
   fontZip,
+  searchFonts,
   styleLabel,
   topTags,
   type FontFamily,
@@ -140,7 +141,13 @@ export function FontLibrary() {
   const [size, setSize] = useState(44);
   const [q, setQ] = useState("");
   const [tag, setTag] = useState("all");
-  const shown = useMemo(() => filterFonts(fontFamilies, q, tag), [q, tag]);
+  useEffect(() => {
+    // a link from the site search (?q=) opens filtered; read after mount (static export)
+    const from = new URLSearchParams(location.search).get("q");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (from) setQ(from.slice(0, 60));
+  }, []);
+  const { items: shown, rescue } = useMemo(() => searchFonts(fontFamilies, q, tag), [q, tag]);
   const bg = useTokenColors(["--background"])?.[0];
   const tone = bg && parseInt(bg.slice(1, 3), 16) < 128 ? "dark" : "light";
 
@@ -206,9 +213,14 @@ export function FontLibrary() {
         </div>
       </div>
 
-      <p className="mt-6 font-mono text-xs text-muted-foreground tabular-nums" aria-live="polite">
+      <p className="mt-6 text-xs text-muted-foreground tabular-nums" aria-live="polite">
         {shown.length} ฟอนต์
       </p>
+      {rescue && (
+        <div className="mt-4">
+          <RescueNote rescue={rescue} q={q} />
+        </div>
+      )}
       {shown.length ? (
         <ul className="grid gap-x-10 md:grid-cols-2">
           {shown.map((f) => (

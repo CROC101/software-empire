@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { TemplatePreview } from "@/components/template-preview";
-import { templateBase, templates, templateZip } from "@/lib/templates";
+import { TemplateList } from "@/components/template-list";
+import { templates } from "@/lib/templates";
 
 export const metadata: Metadata = {
   title: "เทมเพลตแอป",
@@ -25,56 +25,7 @@ export default function TemplatesPage() {
           ข้อมูลในตัวอย่างเป็นข้อมูลสมมติ ดาวน์โหลดซอร์สไปเปิดแก้ต่อในเครื่องได้
         </p>
       </header>
-      <ul className="grid gap-x-6 gap-y-12 md:grid-cols-2">
-        {templates.map((t) => (
-          <li key={t.slug} className="flex flex-col gap-3">
-            <TemplatePreview src={templateBase(t.slug)} title={`ตัวอย่าง ${t.name}`} />
-            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <h2 className="font-heading text-xl font-black">{t.name}</h2>
-              <span className="font-mono text-xs text-muted-foreground">{t.stack}</span>
-            </div>
-            <p className="text-sm text-muted-foreground">{t.about}</p>
-            <p className="flex items-center gap-2 text-sm">
-              {t.inspired.icon && (
-                // eslint-disable-next-line @next/next/no-img-element -- a 20px static svg
-                <img src={`/brands/${t.inspired.icon}.svg`} alt="" className="size-5" />
-              )}
-              <span>
-                แรงบันดาลใจจาก{" "}
-                {t.inspired.url ? (
-                  <a
-                    href={t.inspired.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline underline-offset-4 hover:text-(--em-blue-600) dark:hover:text-(--em-sky-400)"
-                  >
-                    {t.inspired.name}
-                  </a>
-                ) : (
-                  t.inspired.name
-                )}
-              </span>
-            </p>
-            <div className="flex flex-wrap gap-2 text-sm">
-              <a
-                href={templateZip(t.slug)}
-                download
-                className="rounded-md bg-foreground px-3 py-1.5 text-background hover:opacity-90"
-              >
-                ดาวน์โหลดซอร์ส
-              </a>
-              <a
-                href={templateBase(t.slug)}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-md border px-3 py-1.5 hover:bg-muted"
-              >
-                เปิดเต็มจอ <span aria-hidden>↗</span>
-              </a>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <TemplateList />
       <p className="mt-16 max-w-3xl text-sm text-muted-foreground">
         ชื่อและโลโก้ของ Netflix, YouTube, Spotify, TikTok, Instagram, Fastwork, Canva, 21st.dev,
         React Bits และ ArtCraft เป็นเครื่องหมายการค้าของเจ้าของแต่ละราย ใช้ที่นี่เพื่อบอกว่าเทมเพลตไหนได้แรงบันดาลใจจากอะไรเท่านั้น

@@ -4,6 +4,7 @@
  * Every family keeps its own licence: the card shows it and the zip carries it.
  */
 import list from "./fonts.json";
+import { found, hasAll, type Found } from "./search";
 
 export type FontFormat = "ttf" | "woff";
 export type FontStyle = { file: string; files: FontFormat[] };
@@ -73,11 +74,18 @@ export function topTags(fams: readonly FontFamily[], n: number): string[] {
     .map(([t]) => t);
 }
 
+export const familyText = (f: FontFamily) => [f.name, f.slug, ...f.authors, ...f.tags];
+
 export function filterFonts(fams: readonly FontFamily[], q: string, tag: string): FontFamily[] {
-  const s = q.trim().toLowerCase();
-  return fams.filter(
-    (f) =>
-      (tag === "all" || f.tags.includes(tag)) &&
-      (!s || [f.name, f.slug, ...f.authors, ...f.tags].some((x) => x.toLowerCase().includes(s))),
-  );
+  return fams.filter((f) => (tag === "all" || f.tags.includes(tag)) && hasAll(q, familyText(f)));
+}
+
+/** filterFonts, or the closest families when the words find none (inside the tag if it holds any). */
+export function searchFonts(
+  fams: readonly FontFamily[],
+  q: string,
+  tag: string,
+): Found<FontFamily> {
+  const pool = filterFonts(fams, "", tag);
+  return found(filterFonts(fams, q, tag), pool.length ? pool : fams, q, familyText, 18);
 }
