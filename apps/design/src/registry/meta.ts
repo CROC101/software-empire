@@ -9,6 +9,7 @@ import { exclusive } from "./data/exclusive";
 import { rebuilds } from "./data/rebuilds";
 import { remakes } from "./data/remakes";
 import { animOrigins, animRebuilds } from "./data/anim-rebuilds";
+import { compOrigins, compRebuilds } from "./data/comp-rebuilds";
 import { microOrigins, microRebuilds } from "./data/micro-rebuilds";
 import { textOrigins, textRebuilds } from "./data/text-rebuilds";
 import type { Entry } from "./types";
@@ -144,7 +145,7 @@ const core: readonly Entry[] = [
     slug: "spotlight-card",
     added: "2026-11-18",
     rank: 2,
-    name: "Spotlight Card",
+    name: "Glass Spotlight",
     summary: "การ์ดกระจกที่เอียงตามเมาส์ ถูกดึงเข้าหาเคอร์เซอร์ และมีไฟส่องตามขอบ",
     category: "card",
     blend: ["magnetic", "3D tilt", "spotlight border"],
@@ -363,6 +364,7 @@ const origins: Readonly<Record<string, string>> = {
   ...textOrigins,
   ...animOrigins,
   ...microOrigins,
+  ...compOrigins,
 };
 
 export const registry: readonly Entry[] = [
@@ -372,6 +374,7 @@ export const registry: readonly Entry[] = [
   ...textRebuilds,
   ...animRebuilds,
   ...microRebuilds,
+  ...compRebuilds,
   ...blocks,
   ...remakes,
   ...exclusive,
