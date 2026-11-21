@@ -382,4 +382,12 @@ export const bgRebuilds: readonly Entry[] = [
     ["swirl", "low-res", "pixel field"],
     [range("speed", "ความเร็ว", 0.1, 3, 0.1, 0.4)],
   ),
+  m(
+    "Evil Eye",
+    "storm-eye",
+    "Storm Eye",
+    "ม่านตาแสงลุกโชนรอบรูม่านตาแนวตั้ง รูม่านตาค่อยๆ หันตามเมาส์",
+    ["iris", "pointer gaze", "pixel field"],
+    [range("speed", "ความเร็ว", 0.1, 3, 0.1, 0.6)],
+  ),
 ];
