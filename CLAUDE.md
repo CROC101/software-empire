@@ -53,7 +53,8 @@ node apps/toolboxes/tools/apps.mjs [clone] [app...]  # สร้างแอป�
 node apps/toolboxes/tools/icons.mjs   # สร้างคลังไอคอน /icons ใหม่จาก theSVG (เฉพาะไอคอนที่สัญญาอนุญาตให้แจกต่อ) ลง public/icons
 node apps/toolboxes/tools/craft/rebrand.mjs <clone> <app>  # ทำ fork ของแอป storytold Craft ให้เป็น crocwork (ชื่อ ไอคอน ตัวติดตั้ง คำแปล) · --self-test
 node apps/toolboxes/tools/craft/web.mjs [slug]  # ลงเว็บบิลด์ของแอป Craft จาก release ของ fork (tag ใน src/lib/craft-apps.ts) ลง public/craft/<slug>/ ตรวจ SHA256 ก่อน · public/craft ไม่อยู่ใน git (deploy.yml รันให้เอง) · wasm ใหญ่ถูกบีบเป็นชิ้นละ ≤ 20 MiB เพราะ Cloudflare รับไฟล์ละไม่เกิน 25 MiB (รู้จัก index.html 3 แบบ: Trunk, EffectCraft, LightCraft + Next export ของ crocwork Video; แบบอื่น web.mjs หยุดเอง)
-node apps/design/tools/fonts.mjs [--scan]  # คลังฟอนต์ /fonts: ไม่มี flag = โหลดทุกไฟล์ใน tools/fonts.lock.json (ตรวจ SHA256) ลง public/fontlib + zip ละครอบครัว (deploy.yml รันให้) · --scan = อ่าน usemodify.com ใหม่ เขียน src/lib/fonts.json + lock (ไฟล์ที่ต้นทาง 404 ถูกข้าม) · ใบอนุญาตของแต่ละฟอนต์อยู่ในการ์ดและ LICENSE.txt ใน zip
+node apps/design/tools/fonts.mjs [--scan]  # คลังฟอนต์อังกฤษ /fonts/en: ไม่มี flag = โหลดทุกไฟล์ใน tools/fonts.lock.json (ตรวจ SHA256) ลง public/fontlib + zip ละครอบครัว (deploy.yml รันให้) · --scan = อ่าน usemodify.com ใหม่ เขียน src/lib/fonts.json + lock (ไฟล์ที่ต้นทาง 404 ถูกข้าม) · ใบอนุญาตของแต่ละฟอนต์อยู่ในการ์ดและ LICENSE.txt ใน zip
+node apps/design/tools/f0nt.mjs [--self-test]  # ดัชนีฟอนต์ไทยจาก f0nt.com (REST API) ลง public/data/f0nt.json · ไม่เก็บไฟล์ฟอนต์ ลิงก์ดาวน์โหลดผ่าน ?dl_name= ของต้นฉบับ · รันใหม่เพื่ออัปเดต · /fonts = ไทย, /fonts/en = คลังอังกฤษ
 pnpm --filter @empire/canva dev      # http://localhost:3006 (ต้องล็อกอิน)
 pnpm --filter @empire/community dev  # http://localhost:3001 (ต้องล็อกอิน)
 pnpm --filter @empire/community smoke  # social graph ผ่าน HTTP จริง (ต้อง db:start)
