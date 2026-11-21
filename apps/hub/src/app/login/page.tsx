@@ -53,7 +53,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           <p className="font-heading text-2xl font-bold leading-snug">
             บัญชีเดียว เปิดได้ทุกระบบ
             <br />
-            Community · Commerce · Toolboxes · Empire Canvas
+            Community · Commerce · Toolboxes · Canvas · Tarot · Design · Stream · CrocByte
           </p>
           <footer className="text-sm font-semibold text-muted-foreground">— crocwork.studio</footer>
         </blockquote>

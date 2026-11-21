@@ -126,6 +126,7 @@ export { GlassBucket, type BucketChip } from "./components/glass-bucket";
 export { SeasonTree, type TreeFruit, type TreeSeason } from "./components/season-tree";
 export { CloudSky } from "./components/cloud-sky";
 export { CloudHero, type CloudHeroStat } from "./components/cloud-hero";
+export { StormHero } from "./components/storm-hero";
 export { BlueprintButton } from "./components/blueprint-button";
 export { CountUp } from "./components/count-up";
 export { RollingCounter } from "./components/rolling-counter";

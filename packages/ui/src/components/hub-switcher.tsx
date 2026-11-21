@@ -11,8 +11,6 @@ export type HubApp = {
   name: string;
   summary: string;
   accent: string;
-  /** tile artwork at <hub>/logos/<slug>-light|dark.webp */
-  logo?: boolean;
 };
 
 /**
@@ -98,18 +96,11 @@ export function HubSwitcher({
                   )}
                 >
                   <span className="flex items-center gap-2 text-sm font-semibold">
-                    {app.logo ? (
-                      <SubsystemLogo
-                        base={hub(`/logos/${app.slug}`)}
-                        className="size-6 shrink-0 rounded-md"
-                      />
-                    ) : (
-                      <span
-                        aria-hidden
-                        className="size-2.5 shrink-0 rounded-full"
-                        style={{ background: app.accent }}
-                      />
-                    )}
+                    {/* tile artwork at <hub>/logos/<slug>-light|dark.webp */}
+                    <SubsystemLogo
+                      base={hub(`/logos/${app.slug}`)}
+                      className="size-6 shrink-0 rounded-md"
+                    />
                     {app.name}
                   </span>
                   <span className="line-clamp-2 text-xs text-muted-foreground">

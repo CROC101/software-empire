@@ -187,6 +187,7 @@ export const parts = {
   "water-tribe-hero": lazy(() => import("./ui/water-tribe-hero")),
   "cloud-hero-original": lazy(() => import("./ui/cloud-hero-original")),
   "cloud-sky": lazy(() => import("./ui/cloud-sky")),
+  "storm-hero": lazy(() => import("./ui/storm-hero")),
   "cloud-sky-original": lazy(() => import("./ui/cloud-sky-original")),
   "lanyard-rail-original": lazy(() => import("./ui/lanyard-rail-original")),
   "warp-ring-original": lazy(() => import("./ui/warp-ring-original")),

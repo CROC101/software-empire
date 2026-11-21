@@ -5,7 +5,7 @@ import {
   CrocReveal,
   TideReveal,
   LiquidThemeToggle,
-  CloudHero,
+  StormHero,
   CountUp,
   SubsystemLogo,
 } from "@empire/ui";
@@ -14,7 +14,6 @@ import {
   Blocks,
   BriefcaseBusiness,
   Clock3,
-  Code2,
   Cpu,
   GitBranch,
   Globe2,
@@ -68,7 +67,6 @@ import {
   WorkReel,
   WorkSection,
   WorkTunnel,
-  APP_ICON,
 } from "./sections";
 import { StackCard } from "./stack-card";
 import { EdgeNav } from "./edge-nav";
@@ -157,12 +155,11 @@ const LAUNCHER = {
     { href: "#top", label: "กลับขึ้นบนสุด", icon: <ArrowUp />, keywords: "top" },
   ],
   apps: subsystems.map((s) => {
-    const Icon = APP_ICON[s.slug] ?? Code2;
     return {
       slug: s.slug,
       name: s.name,
       href: `/go/${s.slug}`,
-      icon: s.logo ? <SubsystemLogo base={`/logos/${s.slug}`} /> : <Icon aria-hidden />,
+      icon: <SubsystemLogo base={`/logos/${s.slug}`} />,
       accent: s.accent,
       soon: !appUrl(s.slug),
     };
@@ -265,9 +262,9 @@ export default async function HomePage() {
       </header>
 
       <main data-tour-root>
-        {/* a sky of drifting clouds (moonlit at night); the old tree hero is kept in the design
-            registry as water-tribe-hero */}
-        <CloudHero
+        {/* WebGL clouds with the night film (/hero/sky.mp4, after a 21st.dev hero) screened over
+            them; the cloud-only hero is CloudHero, the old tree hero is water-tribe-hero in design */}
+        <StormHero
           className="-mt-16 pt-16"
           eyebrow={
             <>
@@ -278,12 +275,8 @@ export default async function HomePage() {
               <span>{home.text("hero.chip")}</span>
             </>
           }
-          title={
-            <>
-              <span className="block">{home.text("hero.line1")}</span>
-              <span className="block">{home.text("hero.line2")}</span>
-            </>
-          }
+          lines={[home.text("hero.line1"), home.text("hero.line2")]}
+          video="/hero/sky.mp4"
           lead="ทีมของผม ="
           words={ROLES}
           stats={[
@@ -314,7 +307,7 @@ export default async function HomePage() {
           </Link>
           <TourButton />
           <p className="basis-full text-sm text-(--em-ink-0)/75">{home.text("hero.promise")}</p>
-        </CloudHero>
+        </StormHero>
 
         {home
           .sections()
