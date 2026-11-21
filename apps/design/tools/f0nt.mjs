@@ -23,9 +23,15 @@ const LICENCE = { 1441: "c", 1443: "p", 1442: "d" };
 const OUT = join(dirname(fileURLToPath(import.meta.url)), "../public/data/f0nt.json");
 
 const ENT = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " " };
-export const decode = (s) =>
+// drop each <tag> by cutting at "<" up to the next ">" (an unclosed "<" drops the rest),
+// so no "<" can survive the way it can after a one-pass regex replace
+const stripTags = (s) =>
   s
-    .replace(/<[^>]*>/g, "")
+    .split("<")
+    .map((part, i) => (i === 0 ? part : part.slice(part.indexOf(">") + 1 || part.length)))
+    .join("");
+export const decode = (s) =>
+  stripTags(s)
     .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
     .replace(/&([a-z]+);/gi, (m, k) => ENT[k.toLowerCase()] ?? m)
