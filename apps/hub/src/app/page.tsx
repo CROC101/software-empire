@@ -10,6 +10,7 @@ import {
   LiquidThemeToggle,
   SeasonTree,
   CountUp,
+  SubsystemLogo,
 } from "@empire/ui";
 import {
   ArrowUp,
@@ -168,7 +169,7 @@ const LAUNCHER = {
       slug: s.slug,
       name: s.name,
       href: `/go/${s.slug}`,
-      icon: <Icon aria-hidden />,
+      icon: s.logo ? <SubsystemLogo base={`/logos/${s.slug}`} /> : <Icon aria-hidden />,
       accent: s.accent,
       soon: !appUrl(s.slug),
     };

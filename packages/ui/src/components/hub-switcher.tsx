@@ -3,9 +3,17 @@ import { BrandIcon } from "./brand-icon";
 import { useId, type ReactNode } from "react";
 import { cn } from "../lib/cn";
 import { Ambience, AmbienceButton } from "./ambience";
+import { SubsystemLogo } from "./subsystem-logo";
 import { SunMoonThemeToggle } from "./sun-moon-theme-toggle";
 
-export type HubApp = { slug: string; name: string; summary: string; accent: string };
+export type HubApp = {
+  slug: string;
+  name: string;
+  summary: string;
+  accent: string;
+  /** tile artwork at <hub>/logos/<slug>-light|dark.webp */
+  logo?: boolean;
+};
 
 /**
  * "Explore the hub" launcher every app carries: back to the portfolio hub, or jump to any
@@ -90,11 +98,18 @@ export function HubSwitcher({
                   )}
                 >
                   <span className="flex items-center gap-2 text-sm font-semibold">
-                    <span
-                      aria-hidden
-                      className="size-2.5 shrink-0 rounded-full"
-                      style={{ background: app.accent }}
-                    />
+                    {app.logo ? (
+                      <SubsystemLogo
+                        base={hub(`/logos/${app.slug}`)}
+                        className="size-6 shrink-0 rounded-md"
+                      />
+                    ) : (
+                      <span
+                        aria-hidden
+                        className="size-2.5 shrink-0 rounded-full"
+                        style={{ background: app.accent }}
+                      />
+                    )}
                     {app.name}
                   </span>
                   <span className="line-clamp-2 text-xs text-muted-foreground">
