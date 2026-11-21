@@ -3792,3 +3792,9 @@ html.em-intro [data-tour-root] {
   color: var(--em-ink-0);
   box-shadow: 0 18px 40px -18px color-mix(in oklab, var(--em-ink-975) 80%, transparent);
 }
+
+/* SubsystemLogo: the theme class on <html> picks the artwork, so it follows the toggle live */
+:root.dark .em-logo-light,
+:root:not(.dark) .em-logo-dark {
+  display: none;
+}

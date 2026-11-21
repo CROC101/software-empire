@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { SubsystemLogo } from "@empire/ui";
 import { appUrl } from "@/lib/apps";
 import { subsystems } from "@/lib/subsystems";
 
@@ -20,9 +21,13 @@ export function SubsystemGrid() {
               <div className="flex items-center justify-between">
                 <span
                   aria-hidden
-                  className="grid size-11 place-items-center rounded-xl bg-[var(--tile)] font-heading text-lg font-bold text-white"
+                  className="grid size-11 place-items-center overflow-hidden rounded-xl bg-[var(--tile)] font-heading text-lg font-bold text-white"
                 >
-                  {s.name.charAt(0)}
+                  {s.logo ? (
+                    <SubsystemLogo base={`/logos/${s.slug}`} className="size-full" />
+                  ) : (
+                    s.name.charAt(0)
+                  )}
                 </span>
                 <span
                   className={

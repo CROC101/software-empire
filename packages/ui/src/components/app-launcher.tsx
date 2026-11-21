@@ -225,7 +225,7 @@ export function AppLauncher({
                     <>
                       <span
                         aria-hidden
-                        className="grid size-11 place-items-center rounded-2xl text-white shadow-md [&_svg]:size-5"
+                        className="grid size-11 place-items-center overflow-hidden rounded-2xl text-white shadow-md [&_img]:size-full [&_svg]:size-5"
                         style={{
                           background: `linear-gradient(145deg, color-mix(in oklab, ${app.accent} 80%, white), ${app.accent})`,
                         }}

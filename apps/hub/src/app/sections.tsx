@@ -22,6 +22,7 @@ import {
   RollingCounter,
   SplitFlapText,
   ScrollFloat,
+  SubsystemLogo,
 } from "@empire/ui";
 import { Haggle } from "./haggle";
 import { PrintedScreen } from "./printed-screen";
@@ -566,7 +567,11 @@ export function WorkReel() {
         const tile = (
           <>
             <span className="sw-tile" style={{ ["--a" as string]: s.accent }}>
-              <Icon className="size-7" aria-hidden />
+              {s.logo ? (
+                <SubsystemLogo base={`/logos/${s.slug}`} className="size-full rounded-[inherit]" />
+              ) : (
+                <Icon className="size-7" aria-hidden />
+              )}
               <span
                 aria-hidden
                 className={`sw-dot ${open ? "bg-success" : "bg-[var(--em-gold-300)]"}`}
