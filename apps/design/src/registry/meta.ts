@@ -8,6 +8,7 @@ import { components } from "./data/components";
 import { exclusive } from "./data/exclusive";
 import { rebuilds } from "./data/rebuilds";
 import { remakes } from "./data/remakes";
+import { animOrigins, animRebuilds } from "./data/anim-rebuilds";
 import { textOrigins, textRebuilds } from "./data/text-rebuilds";
 import type { Entry } from "./types";
 
@@ -191,7 +192,7 @@ const core: readonly Entry[] = [
     slug: "click-spark",
     added: "2026-11-18",
     rank: 14,
-    name: "Click Spark",
+    name: "Tap Sparks",
     summary: "แตะตรงไหนก็มีประกายแตกออกเป็นเส้นรอบจุดนั้น วาดบน canvas",
     category: "interaction",
     blend: ["click spark", "ripple"],
@@ -357,15 +358,18 @@ const core: readonly Entry[] = [
   },
 ];
 
+const origins: Readonly<Record<string, string>> = { ...textOrigins, ...animOrigins };
+
 export const registry: readonly Entry[] = [
   ...core,
   ...components,
   ...rebuilds,
   ...textRebuilds,
+  ...animRebuilds,
   ...blocks,
   ...remakes,
   ...exclusive,
-].map((e) => (textOrigins[e.slug] ? { ...e, inspiredBy: textOrigins[e.slug] } : e));
+].map((e) => (origins[e.slug] ? { ...e, inspiredBy: origins[e.slug] } : e));
 
 export function entry(slug: string): Entry | undefined {
   return registry.find((e) => e.slug === slug);
