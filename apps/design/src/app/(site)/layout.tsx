@@ -9,7 +9,8 @@ import { kinds, registry, kindOf, type Kind } from "@/registry/meta";
 
 const menu = [
   ...(Object.keys(kinds) as Kind[]).map((k) => ({ label: kinds[k], href: `/#k=${k}` })),
-  { label: "ฟอนต์", href: "/fonts" },
+  { label: "ฟอนต์ไทย", href: "/fonts" },
+  { label: "ฟอนต์อังกฤษ", href: "/fonts/en" },
   { label: "React Bits", href: "/react-bits" },
   { label: "เทมเพลตแอป", href: "/templates" },
 ];
@@ -44,13 +45,27 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
                 </a>
               </li>
             ))}
-            <li>
+            {/* hover or keyboard focus opens the two font libraries; the link itself goes to Thai */}
+            <li className="group relative">
               <a
                 href="/fonts"
-                className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                aria-haspopup="true"
+                className="rounded-md px-3 py-1.5 text-muted-foreground group-focus-within:bg-muted group-focus-within:text-foreground hover:bg-muted hover:text-foreground"
               >
                 ฟอนต์
               </a>
+              <ul className="invisible absolute top-full left-0 z-40 min-w-40 rounded-md border bg-background p-1 opacity-0 shadow-sm transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                <li>
+                  <a href="/fonts" className="block rounded-sm px-3 py-2 hover:bg-muted">
+                    ฟอนต์ไทย
+                  </a>
+                </li>
+                <li>
+                  <a href="/fonts/en" className="block rounded-sm px-3 py-2 hover:bg-muted">
+                    ฟอนต์อังกฤษ
+                  </a>
+                </li>
+              </ul>
             </li>
             <li>
               <a
