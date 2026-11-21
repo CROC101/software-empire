@@ -267,4 +267,13 @@ export const microRebuilds: readonly Entry[] = [
     ["hold fill", "release drain", "keyboard"],
     [range("seconds", "เวลากดค้าง (วินาที)", 0.5, 3, 0.1, 1.2)],
   ),
+  m(
+    "Flying Button",
+    "button",
+    "smoke-launch",
+    "Smoke Launch",
+    "ปุ่มที่กดแล้วพุ่งขึ้นฟ้า ทิ้งกลุ่มควันไว้ข้างล่าง แล้วร่อนกลับลงที่เดิม",
+    ["lift-off", "smoke puffs", "spring return"],
+    [text("label", "ข้อความ", "ออกเดินทาง", 24)],
+  ),
 ];

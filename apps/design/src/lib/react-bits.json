@@ -631,6 +631,10 @@
         {
           "title": "Squish Switch",
           "component": "SquishSwitch"
+        },
+        {
+          "title": "Flying Button",
+          "component": "FlyingButton"
         }
       ]
     },
@@ -892,6 +896,10 @@
         {
           "title": "Balatro",
           "component": "Balatro"
+        },
+        {
+          "title": "Evil Eye",
+          "component": "EvilEye"
         }
       ]
     }

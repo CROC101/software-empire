@@ -370,6 +370,8 @@ export const parts = {
   "cell-trail": lazy(() => import("./ui/cell-trail")),
   "chrome-flow": lazy(() => import("./ui/chrome-flow")),
   "pixel-swirl": lazy(() => import("./ui/pixel-swirl")),
+  "storm-eye": lazy(() => import("./ui/storm-eye")),
+  "smoke-launch": lazy(() => import("./ui/smoke-launch")),
 };
 
 const lookup = parts as unknown as Record<string, ComponentType<Values> | undefined>;
