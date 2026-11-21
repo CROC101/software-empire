@@ -9,6 +9,7 @@ import { exclusive } from "./data/exclusive";
 import { rebuilds } from "./data/rebuilds";
 import { remakes } from "./data/remakes";
 import { animOrigins, animRebuilds } from "./data/anim-rebuilds";
+import { bgOrigins, bgRebuilds } from "./data/bg-rebuilds";
 import { compOrigins, compRebuilds } from "./data/comp-rebuilds";
 import { microOrigins, microRebuilds } from "./data/micro-rebuilds";
 import { textOrigins, textRebuilds } from "./data/text-rebuilds";
@@ -365,6 +366,7 @@ const origins: Readonly<Record<string, string>> = {
   ...animOrigins,
   ...microOrigins,
   ...compOrigins,
+  ...bgOrigins,
 };
 
 export const registry: readonly Entry[] = [
@@ -375,6 +377,7 @@ export const registry: readonly Entry[] = [
   ...animRebuilds,
   ...microRebuilds,
   ...compRebuilds,
+  ...bgRebuilds,
   ...blocks,
   ...remakes,
   ...exclusive,

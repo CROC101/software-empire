@@ -86,7 +86,7 @@ export const components: readonly Entry[] = [
   c(
     "background",
     "light-rays",
-    "Light Rays",
+    "Surface Rays",
     "แสงลอดผิวน้ำเป็นแฉกและหมุนช้าๆ",
     ["god rays", "conic sweep"],
     [range("rays", "จำนวนแฉก", 6, 24, 1, 12), range("speed", "วินาทีต่อรอบ", 10, 60, 1, 30)],
