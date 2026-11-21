@@ -389,7 +389,9 @@ function FontCard({
           <a
             key={dl}
             href={downloadUrl(dl)}
-            rel="nofollow noopener"
+            // f0nt.com answers 404 to file requests whose Referer is another site
+            rel="nofollow noopener noreferrer"
+            referrerPolicy="no-referrer"
             className={
               i === 0 ? `${link} bg-foreground text-background hover:bg-foreground/85` : link
             }
