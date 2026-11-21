@@ -1,11 +1,9 @@
 "use client";
 
 import { ambientSkip } from "../lib/ambient";
-import type { Season } from "@empire/core/theme";
 import * as React from "react";
 import { cn } from "../lib/cn";
-import { useTokenColors } from "../lib/token-colors";
-import { useAmbience } from "./ambience";
+import { useTokenColors, watchTheme } from "../lib/token-colors";
 
 /**
  * A tree on a little island in a pond, under the moon, dressed for the season. Its fruit are the
@@ -91,7 +89,19 @@ interface Look {
   moon: number; // token for the moon's face at night
   moonSize: number; // share of the scene
 }
-const LOOKS: Record<Season, Look> = {
+/** A season or a festival (the names of the ambience values in @empire/core/theme). */
+export type TreeSeason =
+  | "space"
+  | "rain"
+  | "snow"
+  | "bloom"
+  | "halloween"
+  | "loykrathong"
+  | "christmas"
+  | "newyear"
+  | "songkran";
+
+const LOOKS: Record<TreeSeason, Look> = {
   // hot season: the golden shower tree (ราชพฤกษ์) in flower
   bloom: {
     leaves: [C.croc4, C.croc6],
@@ -307,7 +317,7 @@ const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const HORIZON = 0.72; // share of the height where the water starts
 const STRIP = 6; // reflection strip height, px
 // leaves behind the branches are a shade deeper, so the crown has volume
-const BACK: Record<Season, number> = {
+const BACK: Record<TreeSeason, number> = {
   bloom: C.croc8,
   rain: C.croc8,
   snow: C.croc8,
@@ -332,8 +342,11 @@ export function SeasonTree({
   sceneClassName = "aspect-square",
   treeX = 0.5,
   hint = "แตะหรือเขย่าต้นไม้ แล้วระบบจะหล่นลงน้ำ",
+  season,
 }: {
   fruits: readonly TreeFruit[];
+  /** The look to dress in; without it, a spring bloom by day and a starry night in the dark theme. */
+  season?: TreeSeason;
   className?: string;
   /** Size of the scene (the caption sits under it). */
   sceneClassName?: string;
@@ -342,8 +355,13 @@ export function SeasonTree({
   /** Small caption under the scene. */
   hint?: string;
 }) {
-  const { season, dark } = useAmbience();
-  const key: Season = season ?? (dark ? "space" : "bloom");
+  // the .dark class on <html> only, so the tree needs no app theme store
+  const dark = React.useSyncExternalStore(
+    watchTheme,
+    () => document.documentElement.classList.contains("dark"),
+    () => false,
+  );
+  const key: TreeSeason = season ?? (dark ? "space" : "bloom");
   const look = LOOKS[key];
   const tokens = useTokenColors(TOKENS);
   const wrapRef = React.useRef<HTMLDivElement>(null);

@@ -3798,3 +3798,28 @@ html.em-intro [data-tour-root] {
 :root:not(.dark) .em-logo-dark {
   display: none;
 }
+
+/* CloudHero: each letter of the changing word comes out of a blur, tinted like water, then settles */
+.em-blur-in {
+  animation: em-blur-in 0.5s cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+@keyframes em-blur-in {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+    color: var(--em-sky-400);
+  }
+  70% {
+    color: var(--em-blue-200);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    color: inherit;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .em-blur-in {
+    animation: none;
+  }
+}
