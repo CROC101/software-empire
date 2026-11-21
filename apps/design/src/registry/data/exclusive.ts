@@ -601,7 +601,7 @@ export const exclusive: readonly Entry[] = [
       "2026-11-22",
       "studio-hero",
       "cloud-hero",
-      "Cloud Hero",
+      "Cloud Hero · Lite",
       "Hero เต็มจอบนท้องฟ้าที่มีเมฆลอยผ่าน (ธีมมืดเป็นคืนเดือนหงาย) หัวข้อใหญ่ บรรทัดใต้หัวข้อมีคำที่ตัวอักษรค่อยๆ ชัดขึ้นจากเบลอทีละตัว ปุ่ม และตัวเลขจริงเรียงด้านล่าง",
       ["hero", "เมฆ", "WebGL", "ท้องฟ้า"],
       [
@@ -652,8 +652,8 @@ export const exclusive: readonly Entry[] = [
     ...def(
       "2026-11-22",
       "studio-hero",
-      "hero-section-original",
-      "Hero Section · V.original",
+      "cloud-hero-original",
+      "Cloud Hero · V.original",
       "ต้นฉบับตามที่ได้มาทั้งไฟล์ วิดีโอพื้นหลังเต็มจอ เส้นกริดจางๆ หัวข้อใหญ่ชิดซ้ายที่คำท้ายเปลี่ยนทุก 2.5 วินาทีโดยตัวอักษรค่อยๆ ชัดจากเบลอเป็นสีรุ้งแล้วกลายเป็นขาว และตัวเลข 3 ชุดด้านล่าง รุ่นของเราคือ Cloud Hero",
       ["hero", "วิดีโอ", "ต้นฉบับ"],
       [],
@@ -665,9 +665,22 @@ export const exclusive: readonly Entry[] = [
     ...def(
       "2026-11-22",
       "atmosphere",
-      "cloud-shader-original",
-      "Cloud Shader · V.original",
-      "ต้นฉบับตามที่ได้มาทั้งไฟล์ ท้องฟ้า WebGL มีเมฆฟูลอยผ่าน 6 ก้อน แสงแดดมุมขวาบน เมฆบางชั้นสูง ปรับความเร็วกับจำนวนเมฆได้ รุ่นของเราคือ CloudSky ใน Cloud Hero",
+      "cloud-sky",
+      "Cloud Sky · Lite",
+      "ท้องฟ้า WebGL มีเมฆฟูลอยผ่าน สีมาจาก token ของธีม กลางวันเป็นฟ้าใส ธีมมืดเป็นคืนเดือนหงายเมฆสีเทา หยุดวาดเมื่อเลื่อนพ้นจอ ใส่เนื้อหาซ้อนด้านบนได้",
+      ["เมฆ", "WebGL", "shader", "ท้องฟ้า"],
+      [range("speed", "ความเร็ว", 0, 3, 0.1, 1), range("count", "จำนวนเมฆ", 1, 6, 1, 6)],
+    ),
+    prompt:
+      "Build a WebGL1 cloud sky as a box that fills its parent and holds children on top. A full-screen triangle runs one fragment shader: a vertical sky gradient, a soft glow at the top right (sun by day, a pale moon at night), and up to six clouds drifting sideways at their own speed and height, wrapping around; each cloud is a dome-topped ellipse whose edge is broken by domain-warped billow noise, with a second density sample above it for self-shadow, and far clouds fade toward the sky. Read every colour from design tokens at runtime and re-read them when the theme class flips: a clear day sky in light, a deep night sky with grey clouds in dark. Pause the loop when the box is off screen or the tab is hidden, draw one still frame under reduced motion, and show the sky gradient alone without WebGL. Props: speed and cloud count. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "atmosphere",
+      "cloud-sky-original",
+      "Cloud Sky · V.original",
+      "ต้นฉบับตามที่ได้มาทั้งไฟล์ ท้องฟ้า WebGL มีเมฆฟูลอยผ่าน 6 ก้อน แสงแดดมุมขวาบน เมฆบางชั้นสูง ปรับความเร็วกับจำนวนเมฆได้ รุ่นของเราคือ Cloud Sky",
       ["เมฆ", "WebGL", "shader", "ต้นฉบับ"],
       [range("speed", "ความเร็ว", 0, 3, 0.1, 1), range("count", "จำนวนเมฆ", 1, 6, 1, 6)],
     ),

@@ -8,7 +8,7 @@ import { useTokenColors, watchTheme } from "../lib/token-colors";
  * A sky of drifting clouds drawn by one WebGL1 fragment shader. The cloud maths (dome-topped
  * envelopes filled with domain-warped billow noise, a second sample above for self-shadow) is the
  * cloud shader published for Aceternity UI; the vendored original is in the design registry
- * (cloud-shader-original). Ours takes its colours from palette tokens, turns the sun into the
+ * (cloud-sky-original). Ours takes its colours from palette tokens, turns the sun into the
  * moon at night, stops drawing off screen and holds one still frame under reduced motion.
  */
 

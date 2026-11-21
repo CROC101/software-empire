@@ -30,7 +30,7 @@ export type CloudHeroStat = { value: ReactNode; label: string };
  * A full-height hero over a sky of drifting clouds (a moonlit night in the dark theme): eyebrow,
  * a big headline, a line under it whose last word swaps every few seconds (letters come out of a blur),
  * the actions, and true numbers along the bottom. Layout after the 21st.dev hero-section
- * (hero-section-original in the design registry); the sky is CloudSky.
+ * (cloud-hero-original in the design registry); the sky is CloudSky.
  */
 export function CloudHero({
   eyebrow,
