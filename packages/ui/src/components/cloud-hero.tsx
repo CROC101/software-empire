@@ -7,7 +7,7 @@ import { useReducedMotionAfterMount } from "../lib/use-reduced-motion";
 import { CloudSky } from "./cloud-sky";
 
 /** One word whose letters come out of a blur one after another, tinted like water, then settle white. */
-function BlurWord({ word }: { word: string }) {
+export function BlurWord({ word }: { word: string }) {
   return (
     <span key={word} aria-hidden className="vt-live inline-block whitespace-nowrap">
       {graphemes(word).map((g, i) => (

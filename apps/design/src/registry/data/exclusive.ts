@@ -600,6 +600,24 @@ export const exclusive: readonly Entry[] = [
     ...def(
       "2026-11-22",
       "studio-hero",
+      "storm-hero",
+      "Storm Hero",
+      "Hero เต็มจอที่รวมเมฆ WebGL กับวิดีโอกลางคืนเป็นท้องฟ้าเดียว วิดีโอซ้อนแบบ screen ย้อมเป็นสีน้ำเงิน มีฟ้าแลบในเมฆเป็นระยะ เมฆ วิดีโอ และตัวหนังสือขยับคนละระยะตามเมาส์ หัวข้อใหญ่ค่อยๆ ชัดจากเบลอทีละตัว คำท้ายบรรทัดล่างเปลี่ยนเรื่อยๆ และตัวเลขจริงเรียงด้านล่าง",
+      ["hero", "เมฆ", "วิดีโอ", "WebGL", "parallax"],
+      [
+        text("line1", "หัวข้อ บรรทัด 1", "ระบบที่ผมสร้าง", 40),
+        text("line2", "หัวข้อ บรรทัด 2", "ทำงานได้จริง", 40),
+        text("lead", "ข้อความหน้าคำที่เปลี่ยน", "ทีมของผม =", 40),
+        range("seconds", "วินาทีต่อคำ", 1.5, 6, 0.5, 2.5),
+      ],
+    ),
+    prompt:
+      "Build a full-height hero that blends two skies into one. Back layer: a WebGL cloud sky (one fragment shader, a vertical gradient, a soft glow top right, drifting billow-noise clouds; colours from design tokens, re-read when the theme flips). Over it: a muted looping background video, object-cover, mix-blend-mode screen so its black drops out and only its light stays, tinted toward the brand blue with a hue-rotate filter, played only while the hero is on screen and dimmer on phones. Then a lightning layer: a radial glow at the top right that flashes twice every nine seconds and is otherwise invisible. Then a dark scrim from the left and from the bottom so white text stays readable, and a faint 8 by 12 grid. Pointer parallax: write the pointer position as two CSS variables (-1..1) once per animation frame and let each layer translate by its own distance (clouds a little, the video more, the text slightly the other way) with a 700ms ease-out transition; skip it on touch screens. Content: an eyebrow with a short rule, a very large two-line headline (clamp up to about 8.5rem, heavy weight, tight leading) whose letters, split by grapheme, each come out of a 20px blur with a 38ms stagger that runs on across both lines, a full-text screen-reader-only copy, a line under it whose last word changes every few seconds with the same blur-in, the actions, and three true numbers along the bottom in a three-column row with a hairline on top of each. Reduced motion: one still frame, the video paused, no flashes, no parallax. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
       "cloud-hero",
       "Cloud Hero · Lite",
       "Hero เต็มจอบนท้องฟ้าที่มีเมฆลอยผ่าน (ธีมมืดเป็นคืนเดือนหงาย) หัวข้อใหญ่ บรรทัดใต้หัวข้อมีคำที่ตัวอักษรค่อยๆ ชัดขึ้นจากเบลอทีละตัว ปุ่ม และตัวเลขจริงเรียงด้านล่าง",

@@ -3823,3 +3823,32 @@ html.em-intro [data-tour-root] {
     animation: none;
   }
 }
+/* StormHero: lightning somewhere in the clouds, a double flicker every nine seconds */
+.em-storm-flash {
+  opacity: 0;
+  animation: em-storm-flash 9s ease-out 2s infinite;
+}
+@keyframes em-storm-flash {
+  0%,
+  86%,
+  100% {
+    opacity: 0;
+  }
+  87% {
+    opacity: 0.6;
+  }
+  88% {
+    opacity: 0.1;
+  }
+  89.5% {
+    opacity: 0.45;
+  }
+  93% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .em-storm-flash {
+    animation: none;
+  }
+}

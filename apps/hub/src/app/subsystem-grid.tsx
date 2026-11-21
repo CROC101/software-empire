@@ -23,11 +23,7 @@ export function SubsystemGrid() {
                   aria-hidden
                   className="grid size-11 place-items-center overflow-hidden rounded-xl bg-[var(--tile)] font-heading text-lg font-bold text-white"
                 >
-                  {s.logo ? (
-                    <SubsystemLogo base={`/logos/${s.slug}`} className="size-full" />
-                  ) : (
-                    s.name.charAt(0)
-                  )}
+                  <SubsystemLogo base={`/logos/${s.slug}`} className="size-full" />
                 </span>
                 <span
                   className={

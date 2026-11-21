@@ -42,11 +42,9 @@ import {
   RefreshCw,
   LayoutGrid,
   MessagesSquare,
-  Music,
   Palette,
   ShieldCheck,
   Sparkles,
-  Store,
   Workflow,
   Wrench,
 } from "lucide-react";
@@ -532,17 +530,6 @@ function Phones({
 
 /* ── work reel: a pinned scroll interlude before the case studies ── */
 
-export const APP_ICON: Record<string, typeof Code2> = {
-  community: MessagesSquare,
-  commerce: Store,
-  toolboxes: Wrench,
-  tarot: Sparkles,
-  design: LayoutGrid,
-  canva: Palette,
-  crocbyte: Code2,
-  stream: Music,
-};
-
 export function WorkReel() {
   const live = subsystems.filter((s) => appUrl(s.slug)).length;
   return (
@@ -562,16 +549,11 @@ export function WorkReel() {
         </>
       }
       items={subsystems.map((s) => {
-        const Icon = APP_ICON[s.slug] ?? Code2;
         const open = Boolean(appUrl(s.slug));
         const tile = (
           <>
             <span className="sw-tile" style={{ ["--a" as string]: s.accent }}>
-              {s.logo ? (
-                <SubsystemLogo base={`/logos/${s.slug}`} className="size-full rounded-[inherit]" />
-              ) : (
-                <Icon className="size-7" aria-hidden />
-              )}
+              <SubsystemLogo base={`/logos/${s.slug}`} className="size-full rounded-[inherit]" />
               <span
                 aria-hidden
                 className={`sw-dot ${open ? "bg-success" : "bg-[var(--em-gold-300)]"}`}
@@ -687,6 +669,8 @@ const DESKTOP_SHOTS = [
   ["/previews/community.webp", "community"],
   ["/previews/canva.webp", "canva"],
   ["/previews/toolboxes.webp", "toolboxes"],
+  ["/previews/tarot.webp", "tarot"],
+  ["/previews/design.webp", "design"],
 ] as const;
 
 const SHOTS = [
@@ -713,7 +697,9 @@ const TUNNEL = [
   ["/previews/m-tools.webp", "Toolboxes", "เครื่องมือ", "toolboxes"],
   ["/previews/m-commerce.webp", "Commerce", "มือถือ", "commerce"],
   ["/previews/m-tarot.webp", "crocwork tarot", "ไพ่ประจำวัน", "tarot"],
+  ["/previews/tarot.webp", "crocwork tarot", "เดสก์ท็อป", "tarot"],
   ["/previews/m-design.webp", "Design Registry", "มือถือ", "design"],
+  ["/previews/design.webp", "Design Registry", "เดสก์ท็อป", "design"],
   ["/previews/m-stream.webp", "Stream", "มือถือ", "stream"],
 ] as const;
 
