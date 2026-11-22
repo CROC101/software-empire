@@ -22,6 +22,8 @@ const rise = {
 export function MarqueeHero({
   eyebrow,
   lines,
+  title,
+  background,
   lead,
   shots,
   children,
@@ -31,6 +33,10 @@ export function MarqueeHero({
   eyebrow?: ReactNode;
   /** Headline lines; the second reads in crocwork blue. Words rise one by one. */
   lines: string[];
+  /** Replaces the rising words with your own headline content; `lines` stay its accessible text. */
+  title?: ReactNode;
+  /** Decoration behind everything, e.g. <GridPulse />. */
+  background?: ReactNode;
   lead?: ReactNode;
   shots: MarqueeHeroShot[];
   /** Actions under the lead (buttons, links). */
@@ -50,6 +56,7 @@ export function MarqueeHero({
         className,
       )}
     >
+      {background}
       <div className="z-10 flex flex-1 flex-col items-center justify-center pt-16 pb-[min(44svh,24rem)]">
         {eyebrow && (
           <motion.div
@@ -61,22 +68,31 @@ export function MarqueeHero({
             {eyebrow}
           </motion.div>
         )}
-        <motion.h1
-          initial={show}
-          animate="show"
-          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
-          className="pk-depth max-w-5xl font-heading text-5xl leading-[1.1] font-black text-balance text-foreground md:text-7xl"
-        >
-          {lines.map((line, l) => (
-            <span key={l} className={cn("block", l === 1 && "cw-blue")}>
-              {line.split(" ").map((word) => (
-                <motion.span key={w++} variants={rise} className="inline-block">
-                  {word}&nbsp;
-                </motion.span>
-              ))}
-            </span>
-          ))}
-        </motion.h1>
+        {title ? (
+          <h1
+            aria-label={lines.join(" ")}
+            className="w-full max-w-5xl font-heading text-5xl leading-[1.1] font-black text-foreground md:text-7xl"
+          >
+            {title}
+          </h1>
+        ) : (
+          <motion.h1
+            initial={show}
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+            className="pk-depth max-w-5xl font-heading text-5xl leading-[1.1] font-black text-balance text-foreground md:text-7xl"
+          >
+            {lines.map((line, l) => (
+              <span key={l} className={cn("block", l === 1 && "cw-blue")}>
+                {line.split(" ").map((word) => (
+                  <motion.span key={w++} variants={rise} className="inline-block">
+                    {word}&nbsp;
+                  </motion.span>
+                ))}
+              </span>
+            ))}
+          </motion.h1>
+        )}
         {lead && (
           <motion.div
             initial={show}

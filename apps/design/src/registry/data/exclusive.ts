@@ -600,6 +600,45 @@ export const exclusive: readonly Entry[] = [
     ...def(
       "2026-11-22",
       "studio-hero",
+      "grid-pulse",
+      "Grid Pulse",
+      "ตารางเส้นบางที่สว่างเป็นสีรุ้งตรงที่เมาส์ผ่านแล้วค่อยดับ ไม่ทับตัวหนังสือที่ติด data-grid-avoid",
+      ["พื้นหลัง", "ตาราง", "เมาส์"],
+      [],
+    ),
+    prompt:
+      "Build a hero background: a fine CSS grid of hairlines (foreground at 7%) with a canvas on top. Cells near the pointer light up in a hue spectrum and fade a moment later; a few ambient cells pulse on their own. Read the theme from the inherited text colour to pick a light or dark lightness ladder. Never light cells under text marked data-grid-avoid. Mask the bottom edge so the next section climbs over it. Reduced motion: grid only.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "shiny-text-rb",
+      "Shiny Text · React Bits",
+      "React Bits Shiny Text ต้นฉบับ แสงวิ่งผ่านตัวหนังสือ ใช้กับธีมมืด",
+      ["ข้อความ", "แสง", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Render text clipped to a background so a soft band of light sweeps across it on a loop: base colour plus a shine colour, configurable angle, width, softness, speed and delay. Pause when off screen. Use for dark themes, with colours from your design tokens.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "tech-text",
+      "Tech Text · V.original",
+      "React Bits Tech Text ต้นฉบับ ตัวหนังสือบนแคนวาสมีเส้นไกด์ประ ป้ายวัดขนาด และจุดเล็ก ๆ ตามเมาส์ ใช้กับธีมสว่าง",
+      ["ข้อความ", "แคนวาส", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Draw a headline on a canvas like a type specimen: near the pointer, dashed guide lines, metric labels and small specks reveal letter by letter, letters can be dragged and spring back. Resolve colours from design tokens before drawing (a canvas cannot read CSS variables). Expose the text through role=img and aria-label. Use for light themes.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
       "marquee-hero",
       "Marquee Hero · Lite",
       "ฮีโร่สว่างไม่มี WebGL หัวข้อลอยขึ้นทีละคำ แถบภาพหน้าจอจริงเลื่อนวนด้านล่าง แต่ละใบเอียงนิด ๆ วนด้วย CSS ล้วน ไม่กินสคริปต์ต่อเฟรม",
