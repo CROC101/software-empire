@@ -2,6 +2,7 @@ import {
   AmbienceButton,
   AppLauncher,
   BuildTour,
+  GridPulse,
   CrocReveal,
   TideReveal,
   LiquidThemeToggle,
@@ -70,6 +71,7 @@ import {
   WorkTunnel,
 } from "./sections";
 import { StackCard } from "./stack-card";
+import { HeroTitle } from "./hero-title";
 import { EdgeNav } from "./edge-nav";
 
 // desktop screenshots are 2880 × 1800, so the 16:10 cards stay sharp on 2x screens
@@ -273,6 +275,8 @@ export default async function HomePage() {
             </>
           }
           lines={[home.text("hero.line1"), home.text("hero.line2")]}
+          title={<HeroTitle lines={[home.text("hero.line1"), home.text("hero.line2")]} />}
+          background={<GridPulse className="vt-live" />}
           lead={home.text("hero.promise")}
           shots={HERO_SHOTS}
         >

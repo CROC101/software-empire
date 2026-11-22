@@ -153,3 +153,9 @@ export { ScrollFloat } from "./components/scroll-float";
 export { DitherVeil } from "./components/dither-veil";
 export { HalftoneReveal } from "./components/halftone-reveal";
 export { BuildTour, BUILD_TOUR_EVENT, layerKind } from "./components/build-tour";
+export {
+  default as ShinyTextOriginal,
+  type ShinyTextProps as ShinyTextOriginalProps,
+} from "./components/shiny-text-original";
+export { default as TechText, type TechTextProps } from "./components/tech-text";
+export { GridPulse, type GridPulseProps } from "./components/grid-pulse";

@@ -240,7 +240,7 @@ export function BuildTour({ auto = true, skipLabel = "Skip" }: BuildTourProps) {
       }
       setCount({ built: total(), total: total() });
       try {
-        sessionStorage.setItem("em-intro-seen", "1");
+        localStorage.setItem("em-intro-seen", "1");
       } catch {
         // storage blocked: the tour may play again next visit, nothing breaks
       }
