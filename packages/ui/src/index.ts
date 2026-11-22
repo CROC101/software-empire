@@ -159,3 +159,4 @@ export {
 } from "./components/shiny-text-original";
 export { default as TechText, type TechTextProps } from "./components/tech-text";
 export { GridPulse, type GridPulseProps } from "./components/grid-pulse";
+export { Provably, type ProvablyCredential, type ProvablyProps } from "./components/provably";

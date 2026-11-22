@@ -43,9 +43,9 @@ export const HUB_HOME: CmsPage = {
       label: "ส่วนบนสุด",
       movable: false,
       fields: {
-        chip: { kind: "text", label: "ป้ายเล็กบนหัว", default: "ซอฟต์แวร์ · AI · ระบบหลังบ้าน" },
         line1: { kind: "text", label: "หัวข้อ บรรทัด 1", default: "ระบบที่ผมสร้าง" },
         line2: { kind: "text", label: "หัวข้อ บรรทัด 2", default: "ทำงานได้จริง" },
+        last: { kind: "text", label: "คำหลังสวิตช์ตรวจระบบ", default: "พิสูจน์ได้" },
         cta: { kind: "text", label: "ปุ่มหลัก", default: "ดูผลงาน" },
         promise: {
           kind: "text",

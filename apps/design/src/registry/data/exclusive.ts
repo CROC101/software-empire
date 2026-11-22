@@ -639,6 +639,45 @@ export const exclusive: readonly Entry[] = [
     ...def(
       "2026-11-22",
       "studio-hero",
+      "hub-hero-gridpulse",
+      "Hub Hero · Grid Pulse",
+      "hero หน้าแรกของ hub ชุดก่อน Provably: ตาราง Grid Pulse ด้านหลัง หัวข้อ Shiny Text ตอนมืด Tech Text ตอนสว่าง และแถบภาพหน้าจอเลื่อนช้า ๆ ด้านล่าง",
+      ["hero", "ประวัติ", "ตาราง", "ภาพหน้าจอ"],
+      [],
+    ),
+    prompt:
+      "Build a full-viewport light hero with no WebGL. Behind everything, a fine hairline grid whose cells light up near the pointer and fade. Centre: a small chip (a Latin mono label plus a short line), a two-line headline (on dark themes a sweeping shine across the text, on light themes a canvas type-specimen headline whose second line is the accent blue), a muted lead line and two buttons. Along the bottom, a band of 16:10 screenshots slides sideways forever as one CSS transform loop, cards tilted a few degrees, edges masked to transparent. Reduced motion: text in place, band still. Colours from design tokens only.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "provably",
+      "Provably · Lite",
+      "hero Provably ในคำของ crocwork ตามที่ hub ใช้ สวิตช์ตรวจระบบแทนตัวอักษรแรกของคำสุดท้าย การ์ดระบบย่อยเอียงซ้อนกัน ตัวเลขระบบที่เปิดใช้ และตรา TESTED IN CI ซ่อน navbar ของตัวเองให้หน้าเว็บใช้ของเดิม",
+      ["hero", "สวิตช์", "การ์ด", "ตรา"],
+      [],
+    ),
+    prompt:
+      "Build a full-viewport white hero on a thin grid. Left: a Latin eyebrow chip, a two-line headline whose letters rise one by one (split by grapheme so Thai marks stay on their letter), then a last line where a pill switch stands in for the first letter; flipping it turns the page from 'not checked' to 'checked': a soft wave washes across, a stats card counts up the live number with a state word, and a stack of three tilted sample cards (title, maker, four skills, accent colour per card from a token) settles flatter and shows a status. A round stamp in the corner rotates and flips to a short explanation. Two actions under a muted lead line. Hide the hero's own navbar when there is no brand and no links, so the host page keeps its own. Respect reduced motion.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "provably-original",
+      "Provably · V.original",
+      "ต้นฉบับตามที่ได้มาทั้งไฟล์ hero แพลตฟอร์มใบรับรอง มี navbar ของตัวเอง สวิตช์ Verify แทนตัวอักษรแรก การ์ดใบรับรองเอียงซ้อน ตัวนับทักษะ ตรา OFFICIALLY VERIFIED และแถบโลโก้ (ข้อความตัวอย่างภาษาอังกฤษของผู้สร้าง)",
+      ["hero", "ต้นฉบับ", "สวิตช์", "ใบรับรอง"],
+      [],
+    ),
+    prompt:
+      "Build a certification-platform hero exactly like this: a white panel on a faint grid with a top navbar (brand, three links, a contact button). Headline 'We make / skills / official.' where the first letter of 'official' is a pill switch labelled 'Verify skills'. Turning it on sends a wave across the panel, a stats card counts to 125,000+ and switches 'completed' to 'verified', and a stack of three tilted credential cards (Product Design, Data Analysis, UX Writing, each with an accent colour and four skills) straightens and shows Verified; a card can be opened and its link copied. A rotating round stamp reads READY TO VERIFY / OFFICIALLY VERIFIED and flips to a back face. Under the panel a 'Trusted by' strip of six logos. Autoplay verifies after a few seconds; reduced motion shows the settled state.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
       "marquee-hero",
       "Marquee Hero · Lite",
       "ฮีโร่สว่างไม่มี WebGL หัวข้อลอยขึ้นทีละคำ แถบภาพหน้าจอจริงเลื่อนวนด้านล่าง แต่ละใบเอียงนิด ๆ วนด้วย CSS ล้วน ไม่กินสคริปต์ต่อเฟรม",
