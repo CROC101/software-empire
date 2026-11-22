@@ -5,8 +5,13 @@ import { subsystems } from "./subsystems";
 
 const httpUrl = z.url({ protocol: /^https?$/ });
 
-/** Where a subsystem is deployed, from server env APP_URL_<SLUG>. Unset = not live yet. */
+/** Subsystems that live as a page inside the hub itself, not as a deployed app. */
+const HUB_PAGES: Partial<Record<string, string>> = { crocbyte: "/crocbyte" };
+
+/** Where a subsystem lives: a hub page, else server env APP_URL_<SLUG>. Unset = not live yet. */
 export function appUrl(slug: string): string | undefined {
+  const page = HUB_PAGES[slug];
+  if (page) return page;
   const raw = process.env[`APP_URL_${slug.toUpperCase()}`];
   return raw ? httpUrl.parse(raw) : undefined;
 }
@@ -14,7 +19,7 @@ export function appUrl(slug: string): string | undefined {
 /** Only deployed Empire apps may receive the user back after sign-in. */
 const appOrigins = subsystems.flatMap(({ slug }) => {
   const url = appUrl(slug);
-  return url ? [new URL(url).origin] : [];
+  return url && !url.startsWith("/") ? [new URL(url).origin] : [];
 });
 
 export function safeNext(value: unknown): string {

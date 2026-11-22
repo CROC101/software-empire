@@ -42,7 +42,7 @@ export const subsystems = [
   {
     slug: "crocbyte",
     name: "CrocByte",
-    summary: "เว็บรับงานฟรีแลนซ์ของผมเอง ระบบสมาชิก VIP และอันดับลูกค้า",
+    summary: "พอร์ตโฟลิโอของผมเอง แนะนำตัว ผลงาน และทุกช่องทางติดต่อ",
     accent: "var(--em-teal-600)",
   },
   {

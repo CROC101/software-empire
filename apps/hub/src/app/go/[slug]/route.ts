@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export function GET(request: NextRequest, { params }: RouteContext<"/go/[slug]">) {
   return params.then(({ slug }) => {
     const known = subsystems.some((app) => app.slug === slug);
-    const target = known ? appUrl(slug) : undefined;
-    return NextResponse.redirect(target ?? new URL("/#subsystems", request.url));
+    const target = known ? appUrl(slug) : undefined; // absolute, or a hub page like /crocbyte
+    return NextResponse.redirect(new URL(target ?? "/#subsystems", request.url));
   });
 }

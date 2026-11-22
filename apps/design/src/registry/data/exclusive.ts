@@ -678,6 +678,32 @@ export const exclusive: readonly Entry[] = [
     ...def(
       "2026-11-22",
       "studio-hero",
+      "elias",
+      "Elias · Lite",
+      "hero พอร์ตโฟลิโอ Elias ในคำของ crocwork ตามที่ hub /crocbyte ใช้ ชื่อยักษ์สองบรรทัด มาสคอตจระเข้ดินปั้นแทนรูปคน หนังสือคือระบบย่อยจริง และจดหมายถึงลูกค้าที่พิมพ์เองทีละตัว ตัดตามพยางค์ไทย",
+      ["hero", "พอร์ตโฟลิโอ", "หนังสือ", "จดหมาย"],
+      [],
+    ),
+    prompt:
+      "Build a personal portfolio hero in white and the accent blue: a slim navbar (status note left, links either side of a wordmark, one contact button), a giant two-line name (first line in the accent, second in ink) that rises letter by letter, a cut-out mascot standing in front of the name with a soft pointer parallax, a small book card that cycles through the owner's real projects (each a pastel cover drawn in SVG with token colours; hover swings the cover open to a first page), and a letter pad that types short promises to clients one by one, then folds into an envelope sealed with wax. Split every typed or animated string by grapheme so Thai marks stay on their letter, and never letter-space Thai. Social links at the bottom. Respect reduced motion.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "elias-original",
+      "Elias · V.original",
+      "ต้นฉบับตามที่ได้มาทั้งไฟล์ hero นักเขียน Elias Monroe มี splash เปิดตัว ชื่อยักษ์ รูปตัดขอบ การ์ดหนังสือ 4 เล่มเปิดปกได้ จดหมายถึงพรุ่งนี้พิมพ์เองแล้วปิดผนึก (ข้อความตัวอย่างภาษาอังกฤษของผู้สร้าง สีตามธีม crocwork)",
+      ["hero", "ต้นฉบับ", "หนังสือ", "จดหมาย"],
+      [],
+    ),
+    prompt:
+      "Build an author hero exactly like this: an ink splash traces then floods the name and opens onto the page; a navbar with 'Now writing · Book two', Home and About me left of the wordmark 'Elias', Books and Journal right of it and a Contact button; the giant name 'Elias / Monroe' (first line in the accent); a waist-cropped cut-out portrait between the name lines with pointer parallax; roles 'Author · Thinker · Researcher', the headline 'Stories and ideas / for a more thoughtful / tomorrow.' and a short description; a book card that cycles four pastel books (sunrise, lamp, path, days covers), tilting toward the cursor and swinging its cover open; a 'letter to tomorrow' that types four promises, stamps 'Seal & send', folds into an envelope with a wax seal 'E' and a postmark; LinkedIn, Twitter and Instagram links. A custom cursor and an ink spotlight follow the pointer. Reduced motion shows the settled hero.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
       "marquee-hero",
       "Marquee Hero · Lite",
       "ฮีโร่สว่างไม่มี WebGL หัวข้อลอยขึ้นทีละคำ แถบภาพหน้าจอจริงเลื่อนวนด้านล่าง แต่ละใบเอียงนิด ๆ วนด้วย CSS ล้วน ไม่กินสคริปต์ต่อเฟรม",
