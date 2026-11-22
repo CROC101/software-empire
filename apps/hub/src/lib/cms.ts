@@ -54,6 +54,7 @@ export const HUB_HOME: CmsPage = {
         },
       },
     },
+    { key: "lens", label: "เลนส์โค้ง (ระบบย่อยบนมือถือ)" },
     {
       key: "status",
       label: "สถานะระบบ",

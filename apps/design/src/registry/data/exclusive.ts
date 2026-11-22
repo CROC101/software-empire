@@ -600,6 +600,58 @@ export const exclusive: readonly Entry[] = [
     ...def(
       "2026-11-22",
       "studio-hero",
+      "marquee-hero",
+      "Marquee Hero · Lite",
+      "ฮีโร่สว่างไม่มี WebGL หัวข้อลอยขึ้นทีละคำ แถบภาพหน้าจอจริงเลื่อนวนด้านล่าง แต่ละใบเอียงนิด ๆ วนด้วย CSS ล้วน ไม่กินสคริปต์ต่อเฟรม",
+      ["ฮีโร่", "มาร์คี", "ภาพหน้าจอ"],
+      [],
+    ),
+    prompt:
+      "Build a light hero with no WebGL: a pill chip, a two-line headline whose words rise one after another on a spring (the second line in the accent), a lead line and the actions. Along the bottom a band of real screenshots slides forever: render the list twice in one row and move the row by -50% with a linear CSS keyframe, so it costs no script per frame. Tilt cards alternately -2 and 3 degrees and fade the band in and out at its top and bottom with a mask. Serve the screenshots at twice their shown size so they stay sharp on retina. Reduced motion: text in place, band still. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "marquee-hero-original",
+      "Marquee Hero · V.original",
+      "ต้นฉบับ hero-3 (AnimatedMarqueeHero) หัวข้อลอยขึ้นทีละคำ ปุ่มเด้งเมื่อชี้ แถบภาพแนวตั้งเลื่อนวนด้านล่าง",
+      ["ฮีโร่", "มาร์คี", "ต้นฉบับ"],
+      [],
+    ),
+    prompt:
+      "Build a centred hero: a pill tagline, a large headline whose words fade up one by one on a spring stagger, a description and one rounded call to action that grows on hover and shrinks on press. In the bottom third, a row of portrait images (the list twice) slides forever with motion's animate x from -100% to 0%, 40 s linear, each card tilted -2 or 5 degrees, the band masked to fade at its top and bottom. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "glass-trust-hero",
+      "Glass Trust Hero",
+      "ฮีโร่มืดสไตล์กระจก ซ้ายเป็นหัวข้อใหญ่และปุ่ม ขวาเป็นการ์ดตัวเลขพร้อมแถบความพึงพอใจ และการ์ดโลโก้ลูกค้าเลื่อนวน ทุกส่วนค่อย ๆ ลอยขึ้นตามลำดับ",
+      ["ฮีโร่", "กระจก", "ตัวเลข", "มาร์คี"],
+      [],
+    ),
+    prompt:
+      "Build a dark hero in two columns over a faint photo masked to fade at the bottom. Left: a glass badge with a star, a three-line headline with the middle word in a light-to-gold text gradient, a muted paragraph and two rounded buttons (solid light, and glass with a play icon). Right: a glass stats card (icon tile, big figure, a labelled progress bar, a hairline, three mini stats split by thin rules, and pills including a pinging live dot) and a glass card whose client logos scroll forever as one CSS loop masked at both sides. Everything fades up in order with short staggered delays. Reduced motion: no fades, no loop. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
+      "status-live",
+      "Status · Live",
+      "แถบมืดของหน้า hub บอกสถานะระบบจริง ตัวเลขหมุนขึ้น ป้ายพลิกบอกชื่อระบบที่ออนไลน์ และเทอร์มินัล crocwork status พร้อมป้ายเปิดใช้แล้ว / กำลังทำ",
+      ["สถานะ", "เทอร์มินัล", "ตัวเลข", "มืด"],
+      [],
+    ),
+    prompt:
+      "Build a dark status band: a faint square grid masked to a soft ellipse. Left: a mono eyebrow with a pinging live dot, a two-line black headline (second line in the accent), an intro, three glass stat cards whose numbers roll to their value, and a split-flap board cycling '<APP> ONLINE' for each live app. Right: a terminal card with a gradient hairline rim and a coloured shadow, three window dots, '$ crocwork status' then one row per app with a pill (live or in progress), then a short quote command. Only real data. Use your stack's design tokens for every colour.",
+  },
+  {
+    ...def(
+      "2026-11-22",
+      "studio-hero",
       "storm-hero",
       "Storm Hero",
       "Hero เต็มจอที่รวมเมฆ WebGL กับวิดีโอกลางคืนเป็นท้องฟ้าเดียว วิดีโอซ้อนแบบ screen ย้อมเป็นสีน้ำเงิน มีฟ้าแลบในเมฆเป็นระยะ เมฆ วิดีโอ และตัวหนังสือขยับคนละระยะตามเมาส์ หัวข้อใหญ่ค่อยๆ ชัดจากเบลอทีละตัว คำท้ายบรรทัดล่างเปลี่ยนเรื่อยๆ และตัวเลขจริงเรียงด้านล่าง",
