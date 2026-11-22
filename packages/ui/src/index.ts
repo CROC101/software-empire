@@ -160,3 +160,10 @@ export {
 export { default as TechText, type TechTextProps } from "./components/tech-text";
 export { GridPulse, type GridPulseProps } from "./components/grid-pulse";
 export { Provably, type ProvablyCredential, type ProvablyProps } from "./components/provably";
+export {
+  Elias,
+  type EliasBook,
+  type EliasLetter,
+  type EliasNavItem,
+  type EliasProps,
+} from "./components/elias";
