@@ -2,12 +2,10 @@ import {
   AmbienceButton,
   AppLauncher,
   BuildTour,
-  GridPulse,
   CrocReveal,
   TideReveal,
   LiquidThemeToggle,
-  MarqueeHero,
-  CountUp,
+  Provably,
   SubsystemLogo,
 } from "@empire/ui";
 import {
@@ -41,7 +39,6 @@ import { getContent, HUB_HOME, HUB_SUBSYSTEMS } from "@/lib/cms";
 import { MobileMenu } from "./mobile-menu";
 import { BackToTop } from "./nav-spy";
 import { DepthSection } from "./depth-section";
-import { TourButton } from "./tour-button";
 import { Stage } from "./stage";
 import { ActivitySkyline } from "./activity-skyline";
 import { RhythmRing } from "./rhythm-ring";
@@ -71,14 +68,14 @@ import {
   WorkTunnel,
 } from "./sections";
 import { StackCard } from "./stack-card";
-import { HeroTitle } from "./hero-title";
 import { EdgeNav } from "./edge-nav";
 
-// desktop screenshots are 2880 × 1800, so the 16:10 cards stay sharp on 2x screens
-const HERO_SHOTS = ["hub", "community", "tarot", "canva", "design", "toolboxes"].map((slug) => ({
-  src: `/previews/${slug}.webp`,
-  alt: slug,
-}));
+// three subsystems on the hero's sample cards; accents are their palette tokens
+const HERO_CARDS = [
+  ["canva", "pen", ["Layers", "Supabase Storage", "Vite", "RLS"]],
+  ["commerce", "chart", ["Escrow จำลอง", "PromptPay", "Next.js", "pgTAP"]],
+  ["design", "type", ["Components", "Prompts", "Next.js", "Copy code"]],
+] as const;
 
 const NAV = [
   { href: "#about", label: "เกี่ยวกับ" },
@@ -221,7 +218,6 @@ export default async function HomePage() {
   return (
     <div className="relative min-h-dvh overflow-x-clip bg-background">
       <BuildTour skipLabel="ข้ามการสร้าง" />
-      <span id="top" aria-hidden className="absolute top-0 h-px w-px" />
       <header data-tour-root className="vt-top sticky top-0 z-40 border-b bg-background/95">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5 font-heading text-lg font-extrabold">
@@ -261,60 +257,70 @@ export default async function HomePage() {
       </header>
 
       <main data-tour-root>
-        {/* no WebGL here (StormHero lagged on phones): words rise, real screens slide along the
-            bottom; StormHero and CloudHero stay in the design registry */}
-        <MarqueeHero
+        {/* Provably, kept as the original looks (only the words are ours); its own navbar stays
+            hidden because brand and links are empty, so the water-drop navbar above leads.
+            The heroes before it (MarqueeHero + GridPulse, StormHero, CloudHero) live in the design registry */}
+        <Provably
           className="-mt-16"
-          eyebrow={
-            <>
-              <span className="font-mono text-[11px] font-semibold uppercase tracking-widest">
-                crocwork studio
-              </span>
-              {/* Thai is never letter-spaced or set in mono */}
-              <span>{home.text("hero.chip")}</span>
-            </>
-          }
-          lines={[home.text("hero.line1"), home.text("hero.line2")]}
-          title={<HeroTitle lines={[home.text("hero.line1"), home.text("hero.line2")]} />}
-          background={<GridPulse className="vt-live" />}
-          lead={home.text("hero.promise")}
-          shots={HERO_SHOTS}
-        >
-          <a
-            href="#subsystems"
-            className="cw-btn-blue cw-btn-water inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5"
-          >
-            {/* water rises inside on hover */}
-            <span className="cw-water" aria-hidden>
-              <span />
-              <span />
-            </span>
-            {home.text("hero.cta")} <span aria-hidden>↓</span>
-          </a>
-          <Link
-            href={cta.href}
-            className="cw-glass inline-flex items-center rounded-xl border px-5 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5"
-          >
-            ลองเล่นดู
-          </Link>
-          <TourButton />
-          <dl className="mt-4 flex basis-full justify-center gap-8 text-sm text-muted-foreground">
-            {(
-              [
-                [subsystems.filter((x) => appUrl(x.slug)).length, "ระบบเปิดใช้แล้ว"],
-                [subsystems.length, "ระบบในพอร์ตนี้"],
-                [PGTAP_TESTS, "เทสต์ฐานข้อมูล"],
-              ] as const
-            ).map(([n, label]) => (
-              <div key={label} className="flex flex-col-reverse items-center">
-                <dt>{label}</dt>
-                <dd className="font-heading text-2xl font-black text-foreground tabular-nums">
-                  <CountUp to={n} />
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </MarqueeHero>
+          brand={{ name: "", href: "#top" }}
+          copy={{
+            eyebrow: "crocwork studio",
+            lines: [home.text("hero.line1"), home.text("hero.line2")],
+            // the switch stands in for the first letter, so the word starts with a space
+            lastWord: ` ${home.text("hero.last")}`,
+            subtext: home.text("hero.promise"),
+          }}
+          links={{
+            explore: { label: home.text("hero.cta"), href: "#subsystems" },
+            howItWorks: { label: "ลองเล่นดู", href: cta.href },
+          }}
+          toggle={{ label: "ตรวจระบบ", hint: { pointer: "คลิกเพื่อตรวจ", touch: "แตะเพื่อตรวจ" } }}
+          stats={{
+            value: subsystems.filter((x) => appUrl(x.slug)).length,
+            suffix: "",
+            word: "ระบบ",
+            states: { off: "สร้างเสร็จ", on: "เปิดใช้แล้ว" },
+            note: `จาก ${String(subsystems.length)} ระบบในพอร์ตนี้ · ${String(PGTAP_TESTS)} เทสต์ฐานข้อมูล`,
+          }}
+          certificate={{
+            kicker: "Subsystem",
+            type: "crocwork subsystem",
+            sampleLabel: "การ์ดตัวอย่าง",
+            demoNote: "ภาพประกอบ ไม่ใช่ใบรับรองจริง",
+            recipientLabel: "สร้างโดย",
+            recipientNote: "ผมคนเดียว",
+            status: { on: "ผ่าน CI", off: "ยังไม่ตรวจ" },
+            statusDetail: {
+              on: "ทุก PR ของระบบนี้ต้องผ่าน lint, typecheck, test และ build ก่อน merge",
+              off: "กดสวิตช์ตรวจระบบเพื่อดูผล",
+            },
+            hover: "ดูรายละเอียด",
+            share: { idle: "คัดลอกลิงก์", done: "คัดลอกแล้ว", locked: "ตรวจก่อนจึงแชร์ได้" },
+            tilt: { rest: 9, verified: 4, hover: 0 },
+          }}
+          credentials={HERO_CARDS.map(([slug, icon, skills]) => {
+            const x = subsystems.find((y) => y.slug === slug);
+            return {
+              title: x?.name ?? slug,
+              recipient: "crocwork studio",
+              accent: x?.accent ?? "var(--em-blue-500)",
+              icon,
+              skills: [...skills],
+            };
+          })}
+          statusBadge={{
+            off: "READY TO CHECK",
+            on: "TESTED IN CI",
+            tail: "CROCWORK STUDIO",
+            stampTilt: -6,
+            hint: "ดูตรา",
+            back: {
+              title: "ตรวจได้ทุกระบบ",
+              text: "ทุก PR ต้องผ่าน lint, typecheck, test และ build ก่อน merge",
+              action: "กลับ",
+            },
+          }}
+        />
 
         {home
           .sections()
