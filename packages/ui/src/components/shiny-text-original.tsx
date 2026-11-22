@@ -1,6 +1,6 @@
+/* eslint-disable */
 // @ts-nocheck -- upstream code kept verbatim; it is not written for this repo's strict flags
 "use client";
-/* eslint-disable */
 // Vendored verbatim from React Bits (ShinyText, ts-tailwind), github.com/DavidHDev/react-bits, MIT + Commons Clause.
 
 import { useEffect, useRef } from "react";
