@@ -5,7 +5,7 @@ import {
   CrocReveal,
   TideReveal,
   LiquidThemeToggle,
-  StormHero,
+  MarqueeHero,
   CountUp,
   SubsystemLogo,
 } from "@empire/ui";
@@ -51,6 +51,7 @@ import { SignOff } from "./sign-off";
 import { SiteNav } from "./site-nav";
 import { Wardrobe } from "./wardrobe";
 import { HiddenWork } from "./hidden-work";
+import { LensSection } from "./lens-section";
 import {
   AboutSection,
   ContactSection,
@@ -71,16 +72,11 @@ import {
 import { StackCard } from "./stack-card";
 import { EdgeNav } from "./edge-nav";
 
-const ROLES = [
-  "Product Manager",
-  "Tech Lead",
-  "AI Engineer",
-  "UX Designer",
-  "DBA",
-  "DevOps",
-  "QA",
-  "คนเดียวทั้งหมด",
-];
+// desktop screenshots are 2880 × 1800, so the 16:10 cards stay sharp on 2x screens
+const HERO_SHOTS = ["hub", "community", "tarot", "canva", "design", "toolboxes"].map((slug) => ({
+  src: `/previews/${slug}.webp`,
+  alt: slug,
+}));
 
 const NAV = [
   { href: "#about", label: "เกี่ยวกับ" },
@@ -185,6 +181,7 @@ export default async function HomePage() {
         rounds={home.number("status.rounds")}
       />
     ),
+    lens: <LensSection />,
     depth: <DepthSection />,
     croc: (
       <CrocReveal
@@ -262,10 +259,10 @@ export default async function HomePage() {
       </header>
 
       <main data-tour-root>
-        {/* WebGL clouds with the night film (/hero/sky.mp4, after a 21st.dev hero) screened over
-            them; the cloud-only hero is CloudHero, the old tree hero is water-tribe-hero in design */}
-        <StormHero
-          className="-mt-16 pt-16"
+        {/* no WebGL here (StormHero lagged on phones): words rise, real screens slide along the
+            bottom; StormHero and CloudHero stay in the design registry */}
+        <MarqueeHero
+          className="-mt-16"
           eyebrow={
             <>
               <span className="font-mono text-[11px] font-semibold uppercase tracking-widest">
@@ -276,17 +273,8 @@ export default async function HomePage() {
             </>
           }
           lines={[home.text("hero.line1"), home.text("hero.line2")]}
-          video="/hero/sky.mp4"
-          lead="ทีมของผม ="
-          words={ROLES}
-          stats={[
-            {
-              value: <CountUp to={subsystems.filter((x) => appUrl(x.slug)).length} />,
-              label: "ระบบเปิดใช้แล้ว",
-            },
-            { value: <CountUp to={subsystems.length} />, label: "ระบบในพอร์ตนี้" },
-            { value: <CountUp to={PGTAP_TESTS} />, label: "เทสต์ฐานข้อมูล" },
-          ]}
+          lead={home.text("hero.promise")}
+          shots={HERO_SHOTS}
         >
           <a
             href="#subsystems"
@@ -301,13 +289,28 @@ export default async function HomePage() {
           </a>
           <Link
             href={cta.href}
-            className="inline-flex items-center rounded-xl border border-(--em-ink-0)/40 bg-(--em-ink-0)/10 px-5 py-3 text-sm font-bold text-(--em-ink-0) backdrop-blur-sm transition-transform hover:-translate-y-0.5"
+            className="cw-glass inline-flex items-center rounded-xl border px-5 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5"
           >
             ลองเล่นดู
           </Link>
           <TourButton />
-          <p className="basis-full text-sm text-(--em-ink-0)/75">{home.text("hero.promise")}</p>
-        </StormHero>
+          <dl className="mt-4 flex basis-full justify-center gap-8 text-sm text-muted-foreground">
+            {(
+              [
+                [subsystems.filter((x) => appUrl(x.slug)).length, "ระบบเปิดใช้แล้ว"],
+                [subsystems.length, "ระบบในพอร์ตนี้"],
+                [PGTAP_TESTS, "เทสต์ฐานข้อมูล"],
+              ] as const
+            ).map(([n, label]) => (
+              <div key={label} className="flex flex-col-reverse items-center">
+                <dt>{label}</dt>
+                <dd className="font-heading text-2xl font-black text-foreground tabular-nums">
+                  <CountUp to={n} />
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </MarqueeHero>
 
         {home
           .sections()

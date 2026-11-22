@@ -3852,3 +3852,10 @@ html.em-intro [data-tour-root] {
     animation: none;
   }
 }
+
+/* MarqueeHero band: the list is drawn twice, so half a lap lands on the start */
+@keyframes em-marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
